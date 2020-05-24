@@ -10,6 +10,7 @@
 		0FCAD1DBEB133A70E299D807 /* Pods_FlickTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */; };
 		25B7162BF6C14E7A1225DD01 /* Pods_Flick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB53720A824B4207A2982A0A /* Pods_Flick.framework */; };
 		3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF012479CC3900F08C60 /* ListViewController.swift */; };
+		3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
 		D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B12477C7A40048900F /* AppDelegate.swift */; };
 		D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B32477C7A40048900F /* SceneDelegate.swift */; };
@@ -24,6 +25,11 @@
 		D47866862478BB8A009E42FE /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866852478BB8A009E42FE /* Endpoint.swift */; };
 		D47866882478BBE5009E42FE /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866872478BBE5009E42FE /* Response.swift */; };
 		D478668A2478BC03009E42FE /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866892478BC03009E42FE /* Body.swift */; };
+		D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* TabOptionCell.swift */; };
+		D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668F24798ADA009E42FE /* UIColor+Shared.swift */; };
+		D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786693247A09F5009E42FE /* ProfileViewController.swift */; };
+		D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786695247A0A03009E42FE /* DiscoverViewController.swift */; };
+		D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786697247A0DF4009E42FE /* TabPageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +53,7 @@
 		06887911EDAD906CA17C4F2C /* Pods-Flick-FlickUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.release.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.release.xcconfig"; sourceTree = "<group>"; };
 		22B7223526D81FE8EB4483A3 /* Pods-Flick.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.debug.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.debug.xcconfig"; sourceTree = "<group>"; };
 		3095FF012479CC3900F08C60 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaInListCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB53720A824B4207A2982A0A /* Pods_Flick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +77,11 @@
 		D47866852478BB8A009E42FE /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		D47866872478BBE5009E42FE /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		D47866892478BC03009E42FE /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
+		D478668C24797CA2009E42FE /* TabOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCell.swift; sourceTree = "<group>"; };
+		D478668F24798ADA009E42FE /* UIColor+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Shared.swift"; sourceTree = "<group>"; };
+		D4786693247A09F5009E42FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D4786695247A0A03009E42FE /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
+		D4786697247A0DF4009E42FE /* TabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPageViewController.swift; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick_FlickUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,13 +128,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		3095FF032479DCCB00F08C60 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
 		77A0E8CFE25A27E90EDC8605 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,9 +163,10 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
-				3095FF032479DCCB00F08C60 /* Cell */,
+				D478668E24798ABF009E42FE /* Extensions */,
+				D478668B24797C56009E42FE /* Cells */,
 				D47866822478B9F7009E42FE /* Networking */,
-				D47866812478B8CE009E42FE /* Controller */,
+				D47866812478B8CE009E42FE /* Controllers */,
 				D41FE8B12477C7A40048900F /* AppDelegate.swift */,
 				D41FE8B32477C7A40048900F /* SceneDelegate.swift */,
 				D41FE8B72477C7A40048900F /* Main.storyboard */,
@@ -189,14 +195,17 @@
 			path = FlickUITests;
 			sourceTree = "<group>";
 		};
-		D47866812478B8CE009E42FE /* Controller */ = {
+		D47866812478B8CE009E42FE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				D478667F2478B4F0009E42FE /* HomeViewController.swift */,
 				3095FF012479CC3900F08C60 /* ListViewController.swift */,
+				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
+				D4786695247A0A03009E42FE /* DiscoverViewController.swift */,
+				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		D47866822478B9F7009E42FE /* Networking */ = {
@@ -208,6 +217,23 @@
 				D47866892478BC03009E42FE /* Body.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		D478668B24797C56009E42FE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D478668C24797CA2009E42FE /* TabOptionCell.swift */,
+				3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		D478668E24798ABF009E42FE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D478668F24798ADA009E42FE /* UIColor+Shared.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -450,13 +476,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
+				D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */,
 				D47866862478BB8A009E42FE /* Endpoint.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
 				D478668A2478BC03009E42FE /* Body.swift in Sources */,
+				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
 				D47866842478BB4C009E42FE /* NetworkManager.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
+				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
+				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
+				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
+				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
 				D47866882478BBE5009E42FE /* Response.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
