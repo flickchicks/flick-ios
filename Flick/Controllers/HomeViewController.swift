@@ -56,7 +56,7 @@ class HomeViewController: UIViewController {
         tabCollectionView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         tabCollectionView.layer.shadowOffset = CGSize(width: 4.0, height: 8.0)
         tabCollectionView.layer.shadowOpacity = 0.07
-        tabCollectionView.layer.shadowRadius = 0.0
+        tabCollectionView.layer.shadowRadius = 4.0
         view.addSubview(tabCollectionView)
 
         setUpConstraints()
