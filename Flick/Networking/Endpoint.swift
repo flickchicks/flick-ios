@@ -7,11 +7,15 @@
 //
 
 import Foundation
+import FutureNova
 
-static func setupEndpointConfig() {
+extension Endpoint {
+
+    static func setupEndpointConfig() {
 
         // TODO: Add base networking URL to Keys
-        let baseURL = Keys.serverURL
+//        let baseURL = Keys.serverURL
+        let baseURL = "example.example.com"
 
         #if LOCAL
             Endpoint.config.scheme = "http"
@@ -22,4 +26,8 @@ static func setupEndpointConfig() {
         Endpoint.config.host = baseURL
         // TODO: Update common path
         Endpoint.config.commonPath = "/api/v1"
+
     }
+
+}
+
