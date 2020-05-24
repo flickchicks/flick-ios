@@ -12,12 +12,12 @@ import UIKit
 class TabOptionCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
-    private let tabLabel = UILabel()
     private let activeTabIndicatorView = UIView()
+    private let tabLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private let activeTabIndicatorViewSize = CGSize(width: 8, height: 8)
     private var activeCellColor: UIColor = .colorFromCode(0x2B25A6)
+    private let activeTabIndicatorViewSize = CGSize(width: 8, height: 8)
     private var inactiveCellColor: UIColor = .colorFromCode(0x6E6E87)
 
     override var isSelected: Bool {
@@ -31,7 +31,6 @@ class TabOptionCell: UICollectionViewCell {
         super.init(frame: frame)
 
         // TODO: Fix styling of views
-
         tabLabel.textColor = inactiveCellColor
         tabLabel.font = .systemFont(ofSize: 16)
         addSubview(tabLabel)

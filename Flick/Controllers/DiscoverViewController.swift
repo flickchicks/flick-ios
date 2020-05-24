@@ -12,10 +12,10 @@ class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
     // TODO: Remove dummy label
-
     private let titleLabel = UILabel()
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         view.backgroundColor = .colorFromCode(0xF4F5FF)
 
