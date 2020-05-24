@@ -134,7 +134,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (mediaCollectionView.frame.width - 2 * 20) / 3.0
-        let height = width * 3/2
+        let height = width * 3 / 2
         return CGSize(width: width, height: height)
     }
 
