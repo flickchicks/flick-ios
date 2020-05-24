@@ -8,18 +8,18 @@
 
 import Foundation
 
-static func setupEndpointConfig() {
-
-        // TODO: Add base networking URL to Keys
-        let baseURL = Keys.serverURL
-
-        #if LOCAL
-            Endpoint.config.scheme = "http"
-            Endpoint.config.port = 5000
-        #else
-            Endpoint.config.scheme = "http"
-        #endif
-        Endpoint.config.host = baseURL
-        // TODO: Update common path
-        Endpoint.config.commonPath = "/api/v1"
-    }
+//static func setupEndpointConfig() {
+//
+//        // TODO: Add base networking URL to Keys
+//        let baseURL = Keys.serverURL
+//
+//        #if LOCAL
+//            Endpoint.config.scheme = "http"
+//            Endpoint.config.port = 5000
+//        #else
+//            Endpoint.config.scheme = "http"
+//        #endif
+//        Endpoint.config.host = baseURL
+//        // TODO: Update common path
+//        Endpoint.config.commonPath = "/api/v1"
+//    }
