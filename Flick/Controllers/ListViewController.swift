@@ -30,18 +30,7 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .lightPurple
 
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.barTintColor = .lightPurple
-        navigationController?.navigationBar.shadowImage = UIImage()
-
-        let backButton = UIButton()
-        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
-        backButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 22, height: 18))
-        }
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
+        setupNavigationBar()
 
         listNameLabel.text = listName
         listNameLabel.font = .boldSystemFont(ofSize: 20)
@@ -81,10 +70,25 @@ class ListViewController: UIViewController {
         setupConstraints()
     }
 
+    private func setupNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.barTintColor = .lightPurple
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 22, height: 18))
+        }
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+
     private func setupConstraints() {
         addButton.snp.makeConstraints { make in
             make.centerY.equalTo(mediaContainerView.snp.top)
-            make.trailing.equalTo(mediaContainerView.snp.trailing).offset(-40)
+            make.trailing.equalTo(mediaContainerView.snp.trailing).inset(40)
             make.size.equalTo(buttonSize)
         }
 

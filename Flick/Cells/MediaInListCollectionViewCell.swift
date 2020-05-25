@@ -19,11 +19,6 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
         backgroundColor = .lightGray
 
         contentView.addSubview(mediaImageView)
-        
-        setupConstraints()
-    }
-
-    private func setupConstraints() {
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
