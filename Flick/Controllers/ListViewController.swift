@@ -15,7 +15,7 @@ class ListViewController: UIViewController {
     private let addButton = UIButton()
     private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
-    private let mediaContainerView = UIView()
+    private let mediaContainerView = RoundTopView(hasShadow: true)
     private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -37,16 +37,6 @@ class ListViewController: UIViewController {
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         view.addSubview(listNameLabel)
 
-        mediaContainerView.backgroundColor = .white
-        mediaContainerView.clipsToBounds = false
-        mediaContainerView.layer.cornerRadius = 50
-        mediaContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        mediaContainerView.layer.shadowColor = UIColor.black.cgColor
-        mediaContainerView.layer.shadowOffset = CGSize(width: 0, height: -4)
-        mediaContainerView.layer.shadowOpacity = 0.1
-        mediaContainerView.layer.shadowRadius = 8
-        view.addSubview(mediaContainerView)
-
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
         mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
         mediaCollectionViewLayout.minimumLineSpacing = cellPadding
@@ -58,6 +48,7 @@ class ListViewController: UIViewController {
         mediaCollectionView.dataSource = self
         mediaCollectionView.delegate = self
         mediaCollectionView.showsVerticalScrollIndicator = false
+        view.addSubview(mediaContainerView)
         view.addSubview(mediaCollectionView)
 
         addButton.setImage(UIImage(named: "addButton"), for: .normal)

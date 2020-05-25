@@ -11,6 +11,7 @@
 		25B7162BF6C14E7A1225DD01 /* Pods_Flick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB53720A824B4207A2982A0A /* Pods_Flick.framework */; };
 		3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF012479CC3900F08C60 /* ListViewController.swift */; };
 		3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */; };
+		3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF07247B93D700F08C60 /* RoundTopView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
 		D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B12477C7A40048900F /* AppDelegate.swift */; };
 		D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B32477C7A40048900F /* SceneDelegate.swift */; };
@@ -54,6 +55,7 @@
 		22B7223526D81FE8EB4483A3 /* Pods-Flick.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.debug.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.debug.xcconfig"; sourceTree = "<group>"; };
 		3095FF012479CC3900F08C60 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaInListCollectionViewCell.swift; sourceTree = "<group>"; };
+		3095FF07247B93D700F08C60 /* RoundTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundTopView.swift; sourceTree = "<group>"; };
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB53720A824B4207A2982A0A /* Pods_Flick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +130,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		3095FF06247B939A00F08C60 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3095FF07247B93D700F08C60 /* RoundTopView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		77A0E8CFE25A27E90EDC8605 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +173,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				3095FF06247B939A00F08C60 /* Views */,
 				D478668E24798ABF009E42FE /* Extensions */,
 				D478668B24797C56009E42FE /* Cells */,
 				D47866822478B9F7009E42FE /* Networking */,
@@ -478,6 +489,7 @@
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */,
 				D47866862478BB8A009E42FE /* Endpoint.swift in Sources */,
+				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
 				D478668A2478BC03009E42FE /* Body.swift in Sources */,
 				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
