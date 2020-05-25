@@ -12,7 +12,7 @@ target 'Flick' do
 	pod 'FBSDKCoreKit'
 
 	# Networking
-    	pod 'Alamofire', '~> 5.2'
+    	pod 'Alamofire'
 
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
