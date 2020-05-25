@@ -19,10 +19,6 @@
 		D41FE8C92477C7A80048900F /* FlickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8C82477C7A80048900F /* FlickTests.swift */; };
 		D41FE8D42477C7A80048900F /* FlickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8D32477C7A80048900F /* FlickUITests.swift */; };
 		D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478667F2478B4F0009E42FE /* HomeViewController.swift */; };
-		D47866842478BB4C009E42FE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866832478BB4C009E42FE /* NetworkManager.swift */; };
-		D47866862478BB8A009E42FE /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866852478BB8A009E42FE /* Endpoint.swift */; };
-		D47866882478BBE5009E42FE /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866872478BBE5009E42FE /* Response.swift */; };
-		D478668A2478BC03009E42FE /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866892478BC03009E42FE /* Body.swift */; };
 		D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* TabOptionCell.swift */; };
 		D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668F24798ADA009E42FE /* UIColor+Shared.swift */; };
 		D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786693247A09F5009E42FE /* ProfileViewController.swift */; };
@@ -69,10 +65,6 @@
 		D41FE8D32477C7A80048900F /* FlickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickUITests.swift; sourceTree = "<group>"; };
 		D41FE8D52477C7A80048900F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D478667F2478B4F0009E42FE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		D47866832478BB4C009E42FE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		D47866852478BB8A009E42FE /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
-		D47866872478BBE5009E42FE /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		D47866892478BC03009E42FE /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		D478668C24797CA2009E42FE /* TabOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCell.swift; sourceTree = "<group>"; };
 		D478668F24798ADA009E42FE /* UIColor+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Shared.swift"; sourceTree = "<group>"; };
 		D4786693247A09F5009E42FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -206,10 +198,6 @@
 		D47866822478B9F7009E42FE /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				D47866832478BB4C009E42FE /* NetworkManager.swift */,
-				D47866852478BB8A009E42FE /* Endpoint.swift */,
-				D47866872478BBE5009E42FE /* Response.swift */,
-				D47866892478BC03009E42FE /* Body.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -471,17 +459,13 @@
 			files = (
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */,
-				D47866862478BB8A009E42FE /* Endpoint.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
-				D478668A2478BC03009E42FE /* Body.swift in Sources */,
 				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
-				D47866842478BB4C009E42FE /* NetworkManager.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
-				D47866882478BBE5009E42FE /* Response.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
