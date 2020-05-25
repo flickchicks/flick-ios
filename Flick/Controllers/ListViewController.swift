@@ -20,6 +20,7 @@ class ListViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
+    private let cellPadding: CGFloat = 20
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
     // Temp values
@@ -47,8 +48,8 @@ class ListViewController: UIViewController {
         view.addSubview(mediaContainerView)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
-        mediaCollectionViewLayout.minimumInteritemSpacing = 20
-        mediaCollectionViewLayout.minimumLineSpacing = 20
+        mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
+        mediaCollectionViewLayout.minimumLineSpacing = cellPadding
         mediaCollectionViewLayout.scrollDirection = .vertical
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaCollectionViewLayout)
@@ -137,7 +138,7 @@ extension ListViewController: UICollectionViewDataSource {
 extension ListViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (mediaCollectionView.frame.width - 2 * 20) / 3.0
+        let width = (mediaCollectionView.frame.width - 2 * cellPadding) / 3.0
         let height = width * 3 / 2
         return CGSize(width: width, height: height)
     }
