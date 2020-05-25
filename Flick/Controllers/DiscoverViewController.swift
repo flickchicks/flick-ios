@@ -17,7 +17,7 @@ class DiscoverViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        view.backgroundColor = .colorFromCode(0xF4F5FF)
+        view.backgroundColor = .lightPurple
 
         titleLabel.text = "Discover"
         titleLabel.font = .systemFont(ofSize: 32)
@@ -30,7 +30,6 @@ class DiscoverViewController: UIViewController {
         }
 
     }
-
 
 }
 

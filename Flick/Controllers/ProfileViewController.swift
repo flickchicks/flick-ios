@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        view.backgroundColor = .colorFromCode(0xF4F5FF)
+        view.backgroundColor = .lightPurple
 
         titleLabel.text = "Profile"
         titleLabel.font = .systemFont(ofSize: 32)
@@ -28,6 +28,6 @@ class ProfileViewController: UIViewController {
             make.leading.trailing.equalToSuperview().offset(24)
             make.height.equalTo(50)
         }
-
     }
+
 }

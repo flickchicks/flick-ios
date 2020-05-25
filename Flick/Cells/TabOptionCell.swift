@@ -16,9 +16,9 @@ class TabOptionCell: UICollectionViewCell {
     private let tabLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private var activeCellColor: UIColor = .colorFromCode(0x2B25A6)
+    private var activeCellColor: UIColor = .darkPurple
     private let activeTabIndicatorViewSize = CGSize(width: 8, height: 8)
-    private var inactiveCellColor: UIColor = .colorFromCode(0x6E6E87)
+    private var inactiveCellColor: UIColor = .mediumGray
 
     override var isSelected: Bool {
         didSet {
