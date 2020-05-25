@@ -19,9 +19,7 @@ class LoginViewController: UIViewController {
         loginButton.permissions = ["public_profile", "email"]
         loginButton.center = view.center
         view.addSubview(loginButton)
-        
     }
-
 
 }
 

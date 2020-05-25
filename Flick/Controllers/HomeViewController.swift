@@ -25,11 +25,11 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .colorFromCode(0xFBFBFF)
+        view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
 
         backgroundView = UIView()
-        backgroundView.backgroundColor = .colorFromCode(0xF4F5FF)
+        backgroundView.backgroundColor = .lightPurple
         view.addSubview(backgroundView)
 
         tabPageViewController = TabPageViewController()
@@ -46,7 +46,7 @@ class HomeViewController: UIViewController {
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
         tabCollectionView.register(TabOptionCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
-        tabCollectionView.backgroundColor = UIColor.colorFromCode(0xFBFBFF)
+        tabCollectionView.backgroundColor = .white
         tabCollectionView.clipsToBounds = true
         tabCollectionView.layer.masksToBounds = false
         tabCollectionView.layer.cornerRadius = 24
