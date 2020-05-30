@@ -12,7 +12,7 @@ target 'Flick' do
 	pod 'FBSDKCoreKit'
 
 	# Networking
-    	pod 'FutureNova', :git => 'https://github.com/cuappdev/ios-networking.git'
+    	pod 'Alamofire'
 
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
