@@ -10,6 +10,7 @@ import UIKit
 
 extension UIColor {
 
+    static let darkBlue = colorFromCode(0x0B0629)
     static let darkPurple = colorFromCode(0x2B25A6)
     static let lightPurple = colorFromCode(0xF7F5FE)
     static let mediumGray = colorFromCode(0x6E6E87)
