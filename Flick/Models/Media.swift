@@ -10,10 +10,10 @@ import Foundation
 
 struct Media: Codable {
 
-    var id: String
+    var mediaId: String
     var title: String
     var tags: [String]
-    var poster: String
+    var posterPic: String
     var director: String
     var isTV: Bool
     var dateReleased: String

@@ -1,23 +1,23 @@
 //
-//  MediaList.swift
+//  Body.swift
 //  Flick
 //
-//  Created by Lucy Xu on 5/25/20.
+//  Created by Lucy Xu on 5/30/20.
 //  Copyright © 2020 flick. All rights reserved.
 //
 
 import Foundation
 
-struct MediaList: Codable {
+// MARK: - Request Bodies
 
-    var listId: String
+struct MediaListBody: Codable {
+
+    var movieIds: [String]
     var collaborators: [String]
     var isPrivate: Bool
-    var isFavorite: Bool
     var timestamp: String
     var listName: String
-    var listPic: String
     var tags: [String]
-    var media: [Media]
+    var listPic: String
 
 }

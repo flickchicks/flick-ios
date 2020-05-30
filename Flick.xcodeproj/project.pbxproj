@@ -32,6 +32,7 @@
 		D478669F247C57D2009E42FE /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669E247C57D2009E42FE /* Media.swift */; };
 		D47866A1247C57F8009E42FE /* MediaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A0247C57F8009E42FE /* MediaList.swift */; };
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
+		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		D478669E247C57D2009E42FE /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick_FlickUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,6 +229,7 @@
 			children = (
 				D4786699247C05E4009E42FE /* NetworkManager.swift */,
 				D478669B247C0625009E42FE /* Response.swift */,
+				D4F64D3424824BF200A5A2E5 /* Body.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
+				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,

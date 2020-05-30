@@ -58,13 +58,13 @@ class NetworkManager {
     }
 
     /// [POST] Create new list for a user
-    static func createMediaList(userId: String, list: MediaList, completion: @escaping (String) -> Void) {
+    static func createMediaList(userId: String, list: MediaListBody, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "movie_ids": list.movieIds,
             "collaborators": list.collaborators,
             "is_private": list.isPrivate,
             "timestamp": list.timestamp,
-            "list_name": list.name
+            "list_name": list.listName
         ]
 
         Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
@@ -87,6 +87,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaListsData = try? jsonDecoder.decode(Response<MediaListsResponse>.self, from: data) {
                     let mediaLists = mediaListsData.data.lists
                     completion(mediaLists)
@@ -99,10 +100,11 @@ class NetworkManager {
 
     /// [GET] Get list of a user by id
     static func getMediaList(userId: String, listId: String, completion: @escaping (MediaList) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/lists/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
                     completion(mediaList)
@@ -114,18 +116,18 @@ class NetworkManager {
     }
 
     /// [POST] Update list of a user by id
-    static func updateMediaList(userId: String, listId: String, list: MediaList, completion: @escaping (MediaList) -> Void) {
+    static func updateMediaList(userId: String, listId: String, list: MediaListBody, completion: @escaping (MediaList) -> Void) {
         // TODO: Revisit parameters. Current implementation omits delete_media_ids and add_media_ids
         let parameters: [String: Any] = [
             "movie_ids": list.movieIds,
             "collaborators": list.collaborators,
             "is_private": list.isPrivate,
             "tags": list.tags,
-            "list_name": list.name,
-            "list_pic": list.picture
+            "list_name": list.listName,
+            "list_pic": list.listPic
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/lists/\(listId)", method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -141,7 +143,7 @@ class NetworkManager {
 
     /// [DELETE] Delete list of a user by id
     static func getMediaList(userId: String, listId: String, completion: @escaping (String) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/lists/\(listId)", method: .delete, encoding: JSONEncoding.default).validate().responseData { response in
+        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .delete, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -222,6 +224,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let friendsData = try? jsonDecoder.decode(Response<FriendsDataResponse>.self, from: data) {
                     let friendsList = friendsData.data.friends
                     completion(friendsList)
@@ -242,6 +245,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
                     let media = mediaData.data
                     completion(media)
