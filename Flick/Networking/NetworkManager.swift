@@ -47,6 +47,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<User>.self, from: data) {
                     let user = userData.data
                     completion(user)
@@ -131,6 +132,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
                     completion(mediaList)
