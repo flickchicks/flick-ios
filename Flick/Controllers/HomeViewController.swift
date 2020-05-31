@@ -37,6 +37,7 @@ class HomeViewController: UIViewController {
 
         tabContainerView = UIView()
         view.addSubview(tabContainerView)
+        tabPageViewController.view.frame = tabContainerView.frame
         tabContainerView.addSubview(tabPageViewController.view)
 
         let tabLayout = UICollectionViewFlowLayout()
@@ -45,7 +46,7 @@ class HomeViewController: UIViewController {
         tabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: tabLayout)
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
-        tabCollectionView.register(TabOptionCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
+        tabCollectionView.register(TabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
         tabCollectionView.backgroundColor = .white
         tabCollectionView.clipsToBounds = true
         tabCollectionView.layer.masksToBounds = false
@@ -99,7 +100,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tabCellReuseIdentifier, for: indexPath) as? TabOptionCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tabCellReuseIdentifier, for: indexPath) as? TabOptionCollectionViewCell else { return UICollectionViewCell() }
         if indexPath.item == activeTabIndex {
             cell.isSelected = true
         }

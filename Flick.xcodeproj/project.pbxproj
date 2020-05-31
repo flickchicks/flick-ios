@@ -22,7 +22,7 @@
 		D41FE8C92477C7A80048900F /* FlickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8C82477C7A80048900F /* FlickTests.swift */; };
 		D41FE8D42477C7A80048900F /* FlickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8D32477C7A80048900F /* FlickUITests.swift */; };
 		D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478667F2478B4F0009E42FE /* HomeViewController.swift */; };
-		D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* TabOptionCell.swift */; };
+		D478668D24797CA2009E42FE /* TabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* TabOptionCollectionViewCell.swift */; };
 		D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668F24798ADA009E42FE /* UIColor+Shared.swift */; };
 		D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786693247A09F5009E42FE /* ProfileViewController.swift */; };
 		D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786695247A0A03009E42FE /* DiscoverViewController.swift */; };
@@ -33,6 +33,9 @@
 		D47866A1247C57F8009E42FE /* MediaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A0247C57F8009E42FE /* MediaList.swift */; };
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
 		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
+		D4F64D372483016D00A5A2E5 /* SummaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */; };
+		D4F64D39248303C700A5A2E5 /* ActivitySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */; };
+		D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +80,7 @@
 		D41FE8D32477C7A80048900F /* FlickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickUITests.swift; sourceTree = "<group>"; };
 		D41FE8D52477C7A80048900F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D478667F2478B4F0009E42FE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		D478668C24797CA2009E42FE /* TabOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCell.swift; sourceTree = "<group>"; };
+		D478668C24797CA2009E42FE /* TabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D478668F24798ADA009E42FE /* UIColor+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Shared.swift"; sourceTree = "<group>"; };
 		D4786693247A09F5009E42FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D4786695247A0A03009E42FE /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +91,9 @@
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
+		D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySummary.swift; sourceTree = "<group>"; };
+		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick_FlickUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,8 +243,10 @@
 		D478668B24797C56009E42FE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				D478668C24797CA2009E42FE /* TabOptionCell.swift */,
+				D478668C24797CA2009E42FE /* TabOptionCollectionViewCell.swift */,
 				3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */,
+				D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */,
+				D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -257,6 +265,7 @@
 				D478669E247C57D2009E42FE /* Media.swift */,
 				D47866A0247C57F8009E42FE /* MediaList.swift */,
 				D47866A2247C5805009E42FE /* User.swift */,
+				D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -501,19 +510,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
-				D478668D24797CA2009E42FE /* TabOptionCell.swift in Sources */,
+				D478668D24797CA2009E42FE /* TabOptionCollectionViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
+				D4F64D39248303C700A5A2E5 /* ActivitySummary.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
 				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
+				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
+				D4F64D372483016D00A5A2E5 /* SummaryCollectionViewCell.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
