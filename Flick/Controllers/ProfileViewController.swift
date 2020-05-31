@@ -21,9 +21,11 @@ class ProfileViewController: UIViewController {
     private var activitySummaryCollectionView: UICollectionView!
     private let listsContainerView = RoundTopView(hasShadow: true)
     private var listsTableView: UITableView!
+    private let addListButton = UIButton()
 
     private let profileImageSize = CGSize(width: 70, height: 70)
     private let sideButtonsSize = CGSize(width: 24, height: 24)
+    private let addListButtonSize = CGSize(width: 44, height: 44)
     private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
     private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
@@ -66,7 +68,29 @@ class ProfileViewController: UIViewController {
             isPrivate: false,
             isFavorite: false,
             timestamp: "time",
-            listName: "name",
+            listName: "Saved",
+            listPic: "null",
+            tags: ["tag"],
+            media: []
+        ),
+        MediaList(
+            listId: "id",
+            collaborators: ["collab"],
+            isPrivate: false,
+            isFavorite: false,
+            timestamp: "time",
+            listName: "Watchlist",
+            listPic: "null",
+            tags: ["tag"],
+            media: []
+        ),
+        MediaList(
+            listId: "id",
+            collaborators: ["collab"],
+            isPrivate: false,
+            isFavorite: false,
+            timestamp: "time",
+            listName: "K Drama",
             listPic: "null",
             tags: ["tag"],
             media: []
@@ -76,6 +100,8 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
 
         mediaLists[0].media = [media,media,media,media,media,media,media,media]
+        mediaLists[1].media = [media,media,media]
+        mediaLists[2].media = [media,media,media,media,media,media,media,media]
 
         super.viewDidLoad()
         view.backgroundColor = .lightPurple
@@ -108,13 +134,11 @@ class ProfileViewController: UIViewController {
 
         view.addSubview(userInfoView)
 
-
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
         view.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         view.addSubview(settingsButton)
-
 
         let activitySummaryLayout = UICollectionViewFlowLayout()
         activitySummaryLayout.minimumInteritemSpacing = 6
@@ -133,6 +157,10 @@ class ProfileViewController: UIViewController {
         listsTableView.separatorStyle = .none
         listsContainerView.addSubview(listsTableView)
         view.addSubview(listsContainerView)
+
+        addListButton.setImage(UIImage(named: "addButton"), for: .normal)
+        addListButton.layer.cornerRadius = addListButtonSize.width / 2
+        view.addSubview(addListButton)
 
         setupConstraints()
 
@@ -175,7 +203,7 @@ class ProfileViewController: UIViewController {
             make.top.equalTo(userInfoView.snp.bottom).offset(18)
             make.centerX.equalToSuperview()
             make.width.equalTo(146) // Temp
-            make.height.equalTo(37)
+            make.height.equalTo(40)
         }
 
         settingsButton.snp.makeConstraints { make in
@@ -193,6 +221,12 @@ class ProfileViewController: UIViewController {
         listsContainerView.snp.makeConstraints { make in
             make.top.equalTo(activitySummaryCollectionView.snp.bottom).offset(22) //200 is temp
             make.leading.trailing.bottom.equalToSuperview()
+        }
+
+        addListButton.snp.makeConstraints { make in
+            make.centerY.equalTo(listsContainerView.snp.top)
+            make.trailing.equalTo(listsContainerView.snp.trailing).inset(40)
+            make.size.equalTo(addListButtonSize)
         }
 
         listsTableView.snp.makeConstraints { make in
@@ -240,11 +274,10 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print("size")
         if collectionView == friendsCollectionView {
             return CGSize(width: 20, height: 20)
         } else {
-            return CGSize(width: 70, height: 37)
+            return CGSize(width: 70, height: 40)
         }
     }
 }
@@ -261,7 +294,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 174
     }
 }
 

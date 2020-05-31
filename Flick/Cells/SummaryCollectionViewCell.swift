@@ -22,12 +22,15 @@ class SummaryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+//        backgroundColor = .blue
+
         numberLabel.textColor = .mediumGray
         numberLabel.font = .boldSystemFont(ofSize: 18)
         addSubview(numberLabel)
 
         titleLabel.textColor = .mediumGray
         titleLabel.textAlignment = .center
+//        titleLabel.backgroundColor = .cyan
         titleLabel.font = .systemFont(ofSize: 15)
         addSubview(titleLabel)
 

@@ -16,7 +16,7 @@ extension UIColor {
     static let darkPurple = colorFromCode(0x2B25A6)
     static let lightPurple = colorFromCode(0xF7F5FE)
     static let mediumGray = colorFromCode(0x6E6E87)
-    static let darkBlueGray = colorFromCode(0x3F3A58)
+    static let darkBlue2 = colorFromCode(0x3F3A58)
 
     public static func colorFromCode(_ code: Int) -> UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
