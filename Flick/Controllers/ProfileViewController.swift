@@ -11,35 +11,33 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let profileImageView = UIImageView()
-    private let notificationButton = UIButton()
-    private let settingsButton = UIButton()
-    private let nameLabel = UILabel()
-    private let usernameLabel = UILabel()
-    private let userInfoView = UIView()
-    private var friendsCollectionView: UICollectionView!
     private var activitySummaryCollectionView: UICollectionView!
+    private let addListButton = UIButton()
+    private var friendsPreviewView: FriendsPreviewView!
     private let listsContainerView = RoundTopView(hasShadow: true)
     private var listsTableView: UITableView!
-    private let addListButton = UIButton()
+    private let nameLabel = UILabel()
+    private let notificationButton = UIButton()
+    private let profileImageView = UIImageView()
+    private let settingsButton = UIButton()
+    private let userInfoView = UIView()
+    private let usernameLabel = UILabel()
 
+    // MARK: - Private Data Vars
     private let profileImageSize = CGSize(width: 70, height: 70)
     private let sideButtonsSize = CGSize(width: 24, height: 24)
     private let addListButtonSize = CGSize(width: 44, height: 44)
-    private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
     private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
 
     // TODO: Update with backend values
     private let name = "Alanna Zhou"
     private let username = "alannaz"
-
     private let friends = ["A", "B", "C", "D"]
     private let activitySummary = [
         ActivitySummary(count: 6, title: "Lists"),
         ActivitySummary(count: 8, title: "Thoughts")
     ]
-
     private let media = Media(
         mediaId: "123",
         title: "Title",
@@ -60,7 +58,6 @@ class ProfileViewController: UIViewController {
         tomatoRating: "4",
         platforms: ["Netflix"]
     )
-
     private var mediaLists: [MediaList] = [
         MediaList(
             listId: "id",
@@ -99,6 +96,7 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
 
+        // TODO: Update with backend values
         mediaLists[0].media = [media,media,media,media,media,media,media,media]
         mediaLists[1].media = [media,media,media]
         mediaLists[2].media = [media,media,media,media,media,media,media,media]
@@ -120,17 +118,8 @@ class ProfileViewController: UIViewController {
         usernameLabel.textColor = .mediumGray
         userInfoView.addSubview(usernameLabel)
 
-//        userInfoView.backgroundColor = .brown
-
-        let friendsLayout = UICollectionViewFlowLayout()
-        friendsLayout.minimumInteritemSpacing = 0
-
-        friendsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: friendsLayout)
-        friendsCollectionView.delegate = self
-        friendsCollectionView.dataSource = self
-        friendsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: friendsCellReuseIdentifier)
-        friendsCollectionView.backgroundColor = .white
-        userInfoView.addSubview(friendsCollectionView)
+        friendsPreviewView = FriendsPreviewView(friends: friends, layoutMode: .condensed)
+        userInfoView.addSubview(friendsPreviewView)
 
         view.addSubview(userInfoView)
 
@@ -168,6 +157,11 @@ class ProfileViewController: UIViewController {
 
     private func setupConstraints() {
 
+        let numFriendsInPreview = min(friends.count, 7) + 1
+        let fullFriendsWidth = numFriendsInPreview * 20
+        let overlapFriendsWidth = (numFriendsInPreview-1) * 8
+        let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
+
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
             make.centerX.equalToSuperview()
@@ -185,10 +179,10 @@ class ProfileViewController: UIViewController {
             make.height.equalTo(15)
         }
 
-        friendsCollectionView.snp.makeConstraints { make in
+        friendsPreviewView.snp.makeConstraints { make in
             make.leading.equalTo(usernameLabel.snp.trailing).offset(20)
             make.top.bottom.height.equalToSuperview()
-            make.width.equalTo(100)
+            make.width.equalTo(friendsPreviewWidth)
             make.height.equalTo(20)
             make.trailing.equalToSuperview()
         }
@@ -247,26 +241,13 @@ extension ProfileViewController: UICollectionViewDelegate {
 
 extension ProfileViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == friendsCollectionView {
-            return friends.count
-        } else {
-            return activitySummary.count
-        }
+        return activitySummary.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == friendsCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsCellReuseIdentifier, for: indexPath)
-            cell.backgroundColor = .deepPurple
-            cell.backgroundView = UIImageView(image: UIImage(named: "temp"))
-            cell.layer.cornerRadius = 10
-            print(cell)
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: activitySummaryCellReuseIdentifier, for: indexPath) as? SummaryCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(with: activitySummary[indexPath.item])
-            return cell
-        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: activitySummaryCellReuseIdentifier, for: indexPath) as? SummaryCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(with: activitySummary[indexPath.item])
+        return cell
     }
 }
 
@@ -274,11 +255,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout {
     
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == friendsCollectionView {
-            return CGSize(width: 20, height: 20)
-        } else {
-            return CGSize(width: 70, height: 40)
-        }
+        return CGSize(width: 70, height: 40)
     }
 }
 
