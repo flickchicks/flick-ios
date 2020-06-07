@@ -45,7 +45,7 @@ class TagCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    
+
     func configure(for text: String, type: TagType) {
         self.type = type
         switch type {

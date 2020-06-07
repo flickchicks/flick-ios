@@ -152,11 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				3095FF07247B93D700F08C60 /* RoundTopView.swift */,
-<<<<<<< HEAD
 				D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */,
-=======
 				3095FF0D2484916D00F08C60 /* MediaListHeaderView.swift */,
->>>>>>> Re-setup collection view and add list summary
 			);
 			path = Views;
 			sourceTree = "<group>";
