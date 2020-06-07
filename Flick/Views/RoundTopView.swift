@@ -20,7 +20,7 @@ class RoundTopView: UIView {
 
         if hasShadow {
             layer.shadowColor = UIColor.black.cgColor
-            layer.shadowOffset = CGSize(width: 0, height: -4)
+            layer.shadowOffset = CGSize(width: 0, height: -8)
             layer.shadowOpacity = 0.1
             layer.shadowRadius = 8
         }
