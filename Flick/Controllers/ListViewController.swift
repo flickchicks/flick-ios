@@ -30,7 +30,6 @@ class ListViewController: UIViewController {
     private let edgeInsets: CGFloat = 28
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
-    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
     // TODO: Replace with data from backend
     private let listName = "Foreign Films"
@@ -60,8 +59,12 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
+        mediaCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+
         setupSections()
-        setupConstraints()
     }
 
     private func setupNavigationBar() {
@@ -77,13 +80,6 @@ class ListViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-    }
-
-    private func setupConstraints() {
-        mediaCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
     }
     
     private func setupSections() {
