@@ -122,7 +122,7 @@ class ProfileViewController: UIViewController {
         usernameLabel.textColor = .mediumGray
         userInfoView.addSubview(usernameLabel)
 
-        friendsPreviewView = UsersPreviewView(friends: friends, cellSpacing: condensedCellSpacing)
+        friendsPreviewView = UsersPreviewView(users: friends, usersLayoutMode: .friends)
         userInfoView.addSubview(friendsPreviewView)
 
         view.addSubview(userInfoView)
@@ -151,6 +151,7 @@ class ProfileViewController: UIViewController {
         listsContainerView.addSubview(listsTableView)
         view.addSubview(listsContainerView)
 
+        // TODO: Replace button image
         addListButton.setImage(UIImage(named: "addButton"), for: .normal)
         addListButton.layer.cornerRadius = addListButtonSize.width / 2
         view.addSubview(addListButton)

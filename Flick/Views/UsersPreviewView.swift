@@ -9,25 +9,33 @@
 import UIKit
 import SnapKit
 
+enum UsersLayoutMode { case friends, collaborators }
+
 class UsersPreviewView: UIView {
 
     // MARK: - Private View Vars
-    private var friendsCollectionView: UICollectionView!
+    private var usersCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
-    // TODO: Replace friends with User array after networking is done
-//    private var friends: [User] = []
     private var cellSpacing: CGFloat!
-    private var friends: [String] = []
-    private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
-    private var friendsPreview: [String] = []
-    private let numMaxFriends = 7
+    private var modeCellSpacing: [UsersLayoutMode : CGFloat] = [
+        .friends : -8,
+        .collaborators : -5
+    ]
+    private let numMaxusers = 7
+    // TODO: Replace users with User array after networking is done
+//    private var users: [User] = []
+    private var users: [String] = []
+    private var usersLayoutMode: UsersLayoutMode!
+    private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
+    private var usersPreview: [String] = []
 
-    init(friends: [String], cellSpacing: Int) {
-        self.friends = friends
-        self.cellSpacing = CGFloat(cellSpacing)
+    init(users: [String], usersLayoutMode : UsersLayoutMode) {
+        self.users = users
+        self.cellSpacing = modeCellSpacing[usersLayoutMode]
+        self.usersLayoutMode = usersLayoutMode
         super.init(frame: .zero)
-        getFriendsPreview()
+        getUsersPreview()
         setupViews()
         setupConstraints()
     }
@@ -36,28 +44,28 @@ class UsersPreviewView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Sets friendsPreview to first numMaxFriends friends in array if number of friends in array exceeds
-    /// numMaxFriends, otherwise sets friendsPreview to friends
-    func getFriendsPreview() {
-        friendsPreview = Array(friends.prefix(numMaxFriends))
+    /// Sets usersPreview to first numMaxusers users in array if number of users in array exceeds
+    /// numMaxusers, otherwise sets usersPreview to users
+    func getUsersPreview() {
+        usersPreview = Array(users.prefix(numMaxusers))
     }
 
     func setupViews() {
 
-        let friendsLayout = UICollectionViewFlowLayout()
-        friendsLayout.minimumInteritemSpacing = cellSpacing
+        let usersLayout = UICollectionViewFlowLayout()
+        usersLayout.minimumInteritemSpacing = cellSpacing
 
-        friendsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: friendsLayout)
-        friendsCollectionView.delegate = self
-        friendsCollectionView.dataSource = self
-        friendsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: friendsCellReuseIdentifier)
-        friendsCollectionView.backgroundColor = .none
-        addSubview(friendsCollectionView)
+        usersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: usersLayout)
+        usersCollectionView.delegate = self
+        usersCollectionView.dataSource = self
+        usersCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: usersCellReuseIdentifier)
+        usersCollectionView.backgroundColor = .none
+        addSubview(usersCollectionView)
         
     }
 
     func setupConstraints() {
-        friendsCollectionView.snp.makeConstraints { make in
+        usersCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -67,16 +75,23 @@ class UsersPreviewView: UIView {
 extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellSpacing == -8 ? friendsPreview.count + 1 : friendsPreview.count // Add one more cell for last detail cell
+        switch usersLayoutMode {
+        case .collaborators:
+            return usersPreview.count
+        case .friends:
+            return usersPreview.count + 1 // Add one more cell for last detail cell
+        case .none:
+            return usersPreview.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsCellReuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellReuseIdentifier, for: indexPath)
         cell.backgroundColor = .deepPurple
         cell.layer.borderColor = UIColor.white.cgColor
         cell.layer.borderWidth = 0.625
         cell.layer.cornerRadius = 10
-        let cellImage = indexPath.item == friendsPreview.count ? "ellipsis" : "temp"
+        let cellImage = indexPath.item == usersPreview.count ? "ellipsis" : "temp"
         // Note: Ellipsis image seems low quality
         cell.backgroundView = UIImageView(image: UIImage(named: cellImage))
         return cell

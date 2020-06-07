@@ -9,8 +9,6 @@
 import UIKit
 import SnapKit
 
-//enum ListShareStatus { case hidden, shared, neither }
-
 class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
@@ -47,6 +45,7 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
+        mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 0)
         mediaCollectionView.backgroundColor = .none
         mediaCollectionView.isScrollEnabled = true
         mediaCollectionView.showsHorizontalScrollIndicator = false
@@ -55,9 +54,9 @@ class ListTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func setUpCollaborators(collaborators: [String]) {
+    func setupCollaborators(collaborators: [String]) {
 
-        let collaboratorsPreviewView = UsersPreviewView(friends: collaborators, cellSpacing: collaboratorsCellSpacing)
+        let collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
         addSubview(collaboratorsPreviewView)
 
         // Calculate width of friends preview based on number of friends and spacing between cells
@@ -75,7 +74,7 @@ class ListTableViewCell: UITableViewCell {
 
     }
 
-    func setUpPrivateIcon() {
+    func setupPrivateIcon() {
 
         let lockImageView = UIImageView(image: UIImage(named: "lock"))
         addSubview(lockImageView)
@@ -122,10 +121,11 @@ class ListTableViewCell: UITableViewCell {
         self.media = list.media
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.listName
+        // TODO: Are these inclusive or exclusive?
         if list.collaborators.count > 0 {
-            setUpCollaborators(collaborators: list.collaborators)
+            setupCollaborators(collaborators: list.collaborators)
         } else if list.isPrivate {
-            setUpPrivateIcon()
+            setupPrivateIcon()
         }
     }
 
