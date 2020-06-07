@@ -12,21 +12,21 @@ class MediaListHeaderView: UICollectionReusableView {
     
     // MARK: - Private View Vars
     private let addButton = UIButton()
+    private let containerView = UIView()
     private let editButton = UIButton()
-    private let sortButton = UIButton()
     private let roundView = RoundTopView(hasShadow: true)
+    private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .lightPurple
+        backgroundColor = .offWhite
 
-//        roundView.clipsToBounds = true
-        addSubview(roundView)
-//        roundView.addSubview(fullRoundView)
-//        roundView.mask = maskingView
+        containerView.addSubview(roundView)
+        containerView.clipsToBounds = true
+        addSubview(containerView)
         
         addButton.setImage(UIImage(named: "addButton"), for: .normal)
         addButton.layer.cornerRadius = buttonSize.width / 2
@@ -65,16 +65,16 @@ class MediaListHeaderView: UICollectionReusableView {
         
         roundView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(buttonSize.height / 2)
-//            make.height.equalTo(80)
-            make.bottom.equalToSuperview()
+            make.height.equalTo(90)
             make.leading.trailing.equalToSuperview()
         }
         
-//        roundView.snp.makeConstraints { make in
-//            make.top.equalToSuperview().inset(buttonSize.height / 2)
-//            make.bottom.equalToSuperview()
-//            make.leading.trailing.equalToSuperview()
-//        }
+        containerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+        }
+
     }
     
     required init?(coder aDecoder: NSCoder) {
