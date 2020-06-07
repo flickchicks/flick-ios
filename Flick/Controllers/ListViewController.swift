@@ -156,7 +156,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            return CGSize(width: collectionView.frame.width, height: 250)
+            return CGSize(width: collectionView.frame.width, height: 192)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
             let height = width * 3 / 2
