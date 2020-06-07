@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
 
         backgroundView = UIView()
-        backgroundView.backgroundColor = .lightPurple
+        backgroundView.backgroundColor = .offWhite
         view.addSubview(backgroundView)
 
         tabPageViewController = TabPageViewController()
