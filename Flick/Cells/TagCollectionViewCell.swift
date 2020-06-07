@@ -11,6 +11,19 @@ import UIKit
 class TagCollectionViewCell: UICollectionViewCell {
     
     private let tagLabel = UILabel()
+    
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                backgroundColor = .lightPurple
+                layer.borderWidth = 1
+                layer.borderColor = UIColor.darkPurple.cgColor
+            } else {
+                backgroundColor = .white
+                layer.borderWidth = 0
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
