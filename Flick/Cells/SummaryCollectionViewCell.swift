@@ -37,8 +37,8 @@ class SummaryCollectionViewCell: UICollectionViewCell {
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(numberLabel.snp.bottom)
             make.centerX.equalToSuperview()
+            make.top.equalTo(numberLabel.snp.bottom)
             make.size.equalTo(titleLabelSize)
         }
     }

@@ -9,15 +9,19 @@
 import UIKit
 import SnapKit
 
+//enum ListShareStatus { case hidden, shared, neither }
+
 class ListTableViewCell: UITableViewCell {
 
-    private let titleLabel = UILabel()
-    private let seeAllButton = UIButton()
+    // MARK: - Private View Vars
     private var mediaCollectionView: UICollectionView!
+    private let seeAllButton = UIButton()
+    private let titleLabel = UILabel()
 
-    private var media: [Media]!
+    // MARK: - Private Data Vars
+    private var collaboratorsCellSpacing: Int!
     private var list: MediaList!
-
+    private var media: [Media]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -32,6 +36,7 @@ class ListTableViewCell: UITableViewCell {
         seeAllButton.setTitle("See all", for: .normal)
         seeAllButton.setTitleColor(.darkBlue2, for: .normal)
         seeAllButton.titleLabel?.font = .boldSystemFont(ofSize: 12)
+        seeAllButton.addTarget(self, action: #selector(seeAllMedia), for: .touchUpInside)
         contentView.addSubview(seeAllButton)
 
         let mediaLayout = UICollectionViewFlowLayout()
@@ -39,24 +44,61 @@ class ListTableViewCell: UITableViewCell {
         mediaLayout.scrollDirection = .horizontal
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
+        mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
-        mediaCollectionView.isScrollEnabled = true
         mediaCollectionView.backgroundColor = .none
-        mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
+        mediaCollectionView.isScrollEnabled = true
+        mediaCollectionView.showsHorizontalScrollIndicator = false
         contentView.addSubview(mediaCollectionView)
 
         setupConstraints()
     }
 
-    @objc private func seeAllMedia() {
+    func setUpCollaborators(collaborators: [String]) {
 
+        let collaboratorsPreviewView = UsersPreviewView(friends: collaborators, cellSpacing: collaboratorsCellSpacing)
+        addSubview(collaboratorsPreviewView)
+
+        // Calculate width of friends preview based on number of friends and spacing between cells
+        let numCollaborators = collaborators.count
+        let fullCollaboratorsWidth = numCollaborators * 20
+        let overlapCollaboratorsWidth = (numCollaborators-1) * collaboratorsCellSpacing * -1
+        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+
+        collaboratorsPreviewView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
+            make.height.equalTo(20)
+            make.width.equalTo(collaboratorsPreviewWidth)
+            make.bottom.equalTo(titleLabel)
+        }
+
+    }
+
+    func setUpPrivateIcon() {
+
+        let lockImageView = UIImageView(image: UIImage(named: "lock"))
+        addSubview(lockImageView)
+
+        lockImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
+            make.height.equalTo(13)
+            make.width.equalTo(10)
+            make.centerY.equalTo(titleLabel)
+        }
+
+    }
+
+    @objc private func seeAllMedia() {
+        // TODO: Implement see all media action
     }
 
     private func setupConstraints() {
 
+        let padding = 12
+
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(padding)
             make.leading.equalToSuperview().offset(34)
             make.height.equalTo(17)
         }
@@ -68,17 +110,23 @@ class ListTableViewCell: UITableViewCell {
         }
 
         mediaCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(padding)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(padding)
         }
 
     }
 
-    func configure(for list: MediaList) {
+    func configure(for list: MediaList, collaboratorsCellSpacing: Int) {
         self.list = list
+        self.media = list.media
+        self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.listName
-        media = list.media
+        if list.collaborators.count > 0 {
+            setUpCollaborators(collaborators: list.collaborators)
+        } else if list.isPrivate {
+            setUpPrivateIcon()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -91,6 +139,7 @@ class ListTableViewCell: UITableViewCell {
 extension ListTableViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // TODO: Implement select movie action
     }
 
 }
@@ -101,8 +150,9 @@ extension ListTableViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // TODO: Add media background as cell backgroundview
+        // TODO: Add left padding to first cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath)
-//        cell.backgroundView = UIImageView(image: UIImage(named: media[indexPath.item].posterPic))
         cell.backgroundColor = .darkBlue2
         cell.layer.cornerRadius = 8
         return cell

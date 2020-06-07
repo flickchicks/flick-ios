@@ -25,8 +25,7 @@ class DiscoverViewController: UIViewController {
 
         titleLabel.snp.makeConstraints{ make in
             make.top.equalToSuperview().offset(10)
-            make.centerX.equalToSuperview()
-//            make.leading.trailing.equalToSuperview().offset(24)
+            make.leading.trailing.equalToSuperview().offset(24)
             make.height.equalTo(50)
         }
 

@@ -8,12 +8,14 @@
 
 import UIKit
 
+enum FriendsLayoutMode { case expanded, condensed }
+
 class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var activitySummaryCollectionView: UICollectionView!
     private let addListButton = UIButton()
-    private var friendsPreviewView: FriendsPreviewView!
+    private var friendsPreviewView: UsersPreviewView!
     private let listsContainerView = RoundTopView(hasShadow: true)
     private var listsTableView: UITableView!
     private let nameLabel = UILabel()
@@ -24,16 +26,18 @@ class ProfileViewController: UIViewController {
     private let usernameLabel = UILabel()
 
     // MARK: - Private Data Vars
+    private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
+    private let addListButtonSize = CGSize(width: 44, height: 44)
+    private var condensedCellSpacing = -8
+    private var expandedCellSpacing = -5
+    private let listCellReuseIdentifier = "ListCellReuseIdentifier"
     private let profileImageSize = CGSize(width: 70, height: 70)
     private let sideButtonsSize = CGSize(width: 24, height: 24)
-    private let addListButtonSize = CGSize(width: 44, height: 44)
-    private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
-    private let listCellReuseIdentifier = "ListCellReuseIdentifier"
 
     // TODO: Update with backend values
     private let name = "Alanna Zhou"
     private let username = "alannaz"
-    private let friends = ["A", "B", "C", "D"]
+    private let friends = ["A", "B", "C", "D", "E", "F", "G"]
     private let activitySummary = [
         ActivitySummary(count: 6, title: "Lists"),
         ActivitySummary(count: 8, title: "Thoughts")
@@ -61,7 +65,7 @@ class ProfileViewController: UIViewController {
     private var mediaLists: [MediaList] = [
         MediaList(
             listId: "id",
-            collaborators: ["collab"],
+            collaborators: ["A", "B", "C"],
             isPrivate: false,
             isFavorite: false,
             timestamp: "time",
@@ -72,8 +76,8 @@ class ProfileViewController: UIViewController {
         ),
         MediaList(
             listId: "id",
-            collaborators: ["collab"],
-            isPrivate: false,
+            collaborators: [],
+            isPrivate: true,
             isFavorite: false,
             timestamp: "time",
             listName: "Watchlist",
@@ -83,7 +87,7 @@ class ProfileViewController: UIViewController {
         ),
         MediaList(
             listId: "id",
-            collaborators: ["collab"],
+            collaborators: ["A", "B", "C", "D"],
             isPrivate: false,
             isFavorite: false,
             timestamp: "time",
@@ -118,7 +122,7 @@ class ProfileViewController: UIViewController {
         usernameLabel.textColor = .mediumGray
         userInfoView.addSubview(usernameLabel)
 
-        friendsPreviewView = FriendsPreviewView(friends: friends, layoutMode: .condensed)
+        friendsPreviewView = UsersPreviewView(friends: friends, cellSpacing: condensedCellSpacing)
         userInfoView.addSubview(friendsPreviewView)
 
         view.addSubview(userInfoView)
@@ -133,7 +137,7 @@ class ProfileViewController: UIViewController {
         activitySummaryLayout.minimumInteritemSpacing = 6
 
         activitySummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: activitySummaryLayout)
-        activitySummaryCollectionView.backgroundColor = .clear
+        activitySummaryCollectionView.backgroundColor = .none
         activitySummaryCollectionView.delegate = self
         activitySummaryCollectionView.dataSource = self
         activitySummaryCollectionView.register(SummaryCollectionViewCell.self, forCellWithReuseIdentifier: activitySummaryCellReuseIdentifier)
@@ -157,10 +161,17 @@ class ProfileViewController: UIViewController {
 
     private func setupConstraints() {
 
+        // Calculate width of friends preview based on number of friends and spacing between cells
         let numFriendsInPreview = min(friends.count, 7) + 1
         let fullFriendsWidth = numFriendsInPreview * 20
-        let overlapFriendsWidth = (numFriendsInPreview-1) * 8
+        let overlapFriendsWidth = (numFriendsInPreview-1) * condensedCellSpacing * -1
         let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
+
+        let padding = 20
+
+        usernameLabel.sizeToFit()
+        let userNameLabelWidth = Int(usernameLabel.frame.size.width)
+        let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
@@ -180,17 +191,17 @@ class ProfileViewController: UIViewController {
         }
 
         friendsPreviewView.snp.makeConstraints { make in
-            make.leading.equalTo(usernameLabel.snp.trailing).offset(20)
+            make.leading.equalTo(usernameLabel.snp.trailing).offset(padding)
             make.top.bottom.height.equalToSuperview()
             make.width.equalTo(friendsPreviewWidth)
             make.height.equalTo(20)
-            make.trailing.equalToSuperview()
         }
 
         userInfoView.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(6)
             make.centerX.equalToSuperview()
             make.height.equalTo(20)
+            make.width.equalTo(userInfoViewWidth)
         }
 
         activitySummaryCollectionView.snp.makeConstraints { make in
@@ -203,7 +214,7 @@ class ProfileViewController: UIViewController {
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(sideButtonsSize)
             make.top.equalTo(view.snp.top).offset(28)
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(padding)
         }
 
         notificationButton.snp.makeConstraints { make in
@@ -266,7 +277,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
-        cell.configure(for: mediaLists[indexPath.item])
+        cell.configure(for: mediaLists[indexPath.item], collaboratorsCellSpacing: expandedCellSpacing)
         return cell
     }
 

@@ -1,5 +1,5 @@
 //
-//  FriendsPreviewView.swift
+//  UsersPreviewView.swift
 //  Flick
 //
 //  Created by Lucy Xu on 5/31/20.
@@ -9,29 +9,23 @@
 import UIKit
 import SnapKit
 
-enum FriendsLayoutMode { case expanded, condensed }
-
-class FriendsPreviewView: UIView {
+class UsersPreviewView: UIView {
 
     // MARK: - Private View Vars
     private var friendsCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
+    // TODO: Replace friends with User array after networking is done
 //    private var friends: [User] = []
+    private var cellSpacing: CGFloat!
     private var friends: [String] = []
     private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
-    private let numMaxFriends = 7
-    private var cellSpacing: CGFloat!
     private var friendsPreview: [String] = []
+    private let numMaxFriends = 7
 
-    init(friends: [String], layoutMode: FriendsLayoutMode) {
+    init(friends: [String], cellSpacing: Int) {
         self.friends = friends
-        switch layoutMode {
-        case .condensed:
-            self.cellSpacing = -8
-        case .expanded:
-            self.cellSpacing = -5
-        }
+        self.cellSpacing = CGFloat(cellSpacing)
         super.init(frame: .zero)
         getFriendsPreview()
         setupViews()
@@ -57,7 +51,7 @@ class FriendsPreviewView: UIView {
         friendsCollectionView.delegate = self
         friendsCollectionView.dataSource = self
         friendsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: friendsCellReuseIdentifier)
-        friendsCollectionView.backgroundColor = .white
+        friendsCollectionView.backgroundColor = .none
         addSubview(friendsCollectionView)
         
     }
@@ -70,29 +64,22 @@ class FriendsPreviewView: UIView {
 
 }
 
-extension FriendsPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return friendsPreview.count + 1 // Add one more cell for last detail cell
+        return cellSpacing == -8 ? friendsPreview.count + 1 : friendsPreview.count // Add one more cell for last detail cell
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == friendsPreview.count {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsCellReuseIdentifier, for: indexPath)
-            cell.layer.borderColor = UIColor.white.cgColor
-            cell.layer.borderWidth = 0.625
-            cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis")) // Note: Image seems low quality
-            cell.layer.cornerRadius = 10
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsCellReuseIdentifier, for: indexPath)
-            cell.backgroundColor = .deepPurple
-            cell.layer.borderColor = UIColor.white.cgColor
-            cell.layer.borderWidth = 0.625
-            cell.backgroundView = UIImageView(image: UIImage(named: "temp"))
-            cell.layer.cornerRadius = 10
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: friendsCellReuseIdentifier, for: indexPath)
+        cell.backgroundColor = .deepPurple
+        cell.layer.borderColor = UIColor.white.cgColor
+        cell.layer.borderWidth = 0.625
+        cell.layer.cornerRadius = 10
+        let cellImage = indexPath.item == friendsPreview.count ? "ellipsis" : "temp"
+        // Note: Ellipsis image seems low quality
+        cell.backgroundView = UIImageView(image: UIImage(named: cellImage))
+        return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
