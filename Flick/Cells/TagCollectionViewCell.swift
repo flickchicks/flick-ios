@@ -8,19 +8,24 @@
 
 import UIKit
 
+enum TagType { case tag, more }
+
 class TagCollectionViewCell: UICollectionViewCell {
     
     private let tagLabel = UILabel()
+    var type: TagType!
     
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                backgroundColor = .lightPurple
-                layer.borderWidth = 1
-                layer.borderColor = UIColor.darkPurple.cgColor
-            } else {
-                backgroundColor = .white
-                layer.borderWidth = 0
+            if self.type == .tag {
+                if isSelected {
+                    backgroundColor = .lightPurple
+                    layer.borderWidth = 1
+                    layer.borderColor = UIColor.darkPurple.cgColor
+                } else {
+                    backgroundColor = .white
+                    layer.borderWidth = 0
+                }
             }
         }
     }
@@ -32,12 +37,12 @@ class TagCollectionViewCell: UICollectionViewCell {
         clipsToBounds = false
         layer.cornerRadius = 12
         
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowOpacity = 0.1
-        layer.shadowRadius = 4
+//        layer.shadowColor = UIColor.black.cgColor
+//        layer.shadowOffset = CGSize(width: 0, height: 2)
+//        layer.shadowOpacity = 0.1
+//        layer.shadowRadius = 4
         
-        tagLabel.textColor = .darkPurple
+//        tagLabel.textColor = .darkPurple
         tagLabel.textAlignment = .center
         tagLabel.font = .systemFont(ofSize: 12)
         tagLabel.preferredMaxLayoutWidth = 120
@@ -49,8 +54,27 @@ class TagCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(for tag: String) {
-        tagLabel.text = tag
+    func configure(for text: String, type: TagType) {
+        self.type = type
+        switch type {
+        case .tag:
+            backgroundColor = .white
+//            tagLabel.text = text
+            tagLabel.textColor = .darkPurple
+            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowOffset = CGSize(width: 0, height: 2)
+            layer.shadowOpacity = 0.1
+            layer.shadowRadius = 4
+        case .more:
+            backgroundColor = .clear
+            tagLabel.textColor = .mediumGray
+            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowOffset = .zero
+            layer.shadowOpacity = 0
+            layer.shadowRadius = 0
+        }
+        tagLabel.text = text
+//        tagLabel.textColor = .darkPurple
     }
 
     required init?(coder: NSCoder) {
