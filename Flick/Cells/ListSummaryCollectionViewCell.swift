@@ -8,6 +8,8 @@
 
 import UIKit
 
+enum tagDisplay { case condensed, expanded }
+
 // To center collection view cells
 // Reference: https://stackoverflow.com/a/49709185
 class TagFlowLayout: UICollectionViewFlowLayout {
@@ -66,13 +68,22 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let privacyView = UIView()
     private var tagCollectionView: UICollectionView!
     
-    private let cellSpacing: CGFloat = 8
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
-    private let tags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
+    private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
+    private var allTagSizes = [CGSize]()
+    private var condensedTags = [String]()
+
+    private var totalWidthPerRow: CGFloat = 0
+    private var rowCounts = 1
+    private let cellSpacing: CGFloat = 8
+    private var numInFirstTwoRows = 0
+    private var tagDisplay: tagDisplay = .expanded
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .offWhite
+        
+        getAllTagSizes()
         
         // Temp
         let numCollaborator = 1
@@ -120,7 +131,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-
         collaborateLabel.snp.makeConstraints { make in
             make.edges.equalTo(collaborateView)
         }
@@ -154,6 +164,38 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
         
     }
+    
+    private func getAllTagSizes() {
+        allTags.forEach { tag in
+            let tagSize = tag.size(withAttributes: [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)
+            ])
+            let width = tagSize.width + 24
+            let height = tagSize.height + 12
+
+            // To increment number of rows
+            let collectionViewWidth = UIScreen.main.bounds.width - 60
+            let cellWidth = width
+            totalWidthPerRow += cellWidth + cellSpacing
+
+            if (totalWidthPerRow > collectionViewWidth) {
+                rowCounts += 1
+                totalWidthPerRow = cellWidth + cellSpacing
+             }
+
+            if rowCounts <= 2 {
+                numInFirstTwoRows += 1
+            }
+            
+            allTagSizes.append(CGSize(width: width, height: height))
+
+        }
+
+        tagDisplay = numInFirstTwoRows != 0 && allTags.count > numInFirstTwoRows ? .condensed : .expanded
+        if tagDisplay == .condensed {
+            condensedTags = Array(allTags.prefix(numInFirstTwoRows - 1))
+        }
+    }
 
 
     required init?(coder: NSCoder) {
@@ -164,30 +206,44 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
 extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        tags.count
+        switch tagDisplay {
+        case .condensed:
+            return condensedTags.count
+        case .expanded:
+            return allTags.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let tag = tags[indexPath.item]
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(for: tag)
-        return cell
+        if indexPath.item == numInFirstTwoRows - 2 && tagDisplay == .condensed {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(for: "+ \(allTags.count - numInFirstTwoRows + 2) more", type: .more)
+                return cell
+        } else {
+            let tag = tagDisplay == .condensed ? condensedTags[indexPath.item] : allTags[indexPath.item]
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(for: tag, type: .tag)
+            return cell
+        }
     }
     
 }
 
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if tagDisplay == .condensed && indexPath.item == condensedTags.count - 1 {
+            tagDisplay = .expanded
+            collectionView.reloadData()
+        }
+    }
+    
 }
 
 extension ListSummaryCollectionViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let tag = tags[indexPath.item]
-        let tagSize = tag.size(withAttributes: [
-            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)
-        ])
-        return CGSize(width: tagSize.width + 24, height: tagSize.height + 12)
+        return allTagSizes[indexPath.item]
     }
 
 }
