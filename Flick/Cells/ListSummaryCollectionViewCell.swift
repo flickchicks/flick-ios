@@ -68,11 +68,11 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     
     private let cellSpacing: CGFloat = 8
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
-    private let tags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "Action", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
+    private let tags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .lightPurple
+        backgroundColor = .offWhite
         
         // Temp
         let numCollaborator = 1
@@ -81,13 +81,13 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         let tagCollectionViewLayout = TagFlowLayout(
             minimumInteritemSpacing: cellSpacing,
             minimumLineSpacing: cellSpacing,
-            sectionInset: UIEdgeInsets(top: 2, left: 36, bottom: 5, right: 36)
+            sectionInset: UIEdgeInsets(top: 2, left: 30, bottom: 5, right: 30)
         )
         tagCollectionViewLayout.scrollDirection = .vertical
         tagCollectionViewLayout.sectionHeadersPinToVisibleBounds = true
 
         tagCollectionView = UICollectionView(frame: .zero, collectionViewLayout: tagCollectionViewLayout)
-        tagCollectionView.backgroundColor = .lightPurple
+        tagCollectionView.backgroundColor = .offWhite
         tagCollectionView.register(TagCollectionViewCell.self, forCellWithReuseIdentifier: tagCellReuseIdentifier)
         tagCollectionView.dataSource = self
         tagCollectionView.delegate = self
@@ -95,6 +95,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         tagCollectionView.showsHorizontalScrollIndicator = false
         tagCollectionView.bounces = false
         tagCollectionView.contentInsetAdjustmentBehavior = .always
+        tagCollectionView.allowsSelection = true
         contentView.addSubview(tagCollectionView)
         
         let collaborateLabelText = numCollaborator == 1 ? "Only I" : "\(numCollaborator)"

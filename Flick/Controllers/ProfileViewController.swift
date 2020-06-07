@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        view.backgroundColor = .lightPurple
+        view.backgroundColor = .offWhite
 
         titleLabel.text = "Profile"
         titleLabel.font = .systemFont(ofSize: 32)

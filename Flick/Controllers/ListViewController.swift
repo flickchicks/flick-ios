@@ -21,21 +21,11 @@ class ListViewController: UIViewController {
         case listSummary
         case mediaList
     }
-//
-//    private enum ItemType {
-//        case summary
-//        case media(String) //TODO: Change String to Media
-//    }
 
     // MARK: - Private View Vars
-//    private let addButton = UIButton()
-//    private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
-//    private let mediaContainerView = RoundTopView(hasShadow: true)
-//    private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
-//    private let buttonSize = CGSize(width: 44, height: 44)
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
@@ -49,13 +39,9 @@ class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightPurple
+        view.backgroundColor = .offWhite
 
         setupNavigationBar()
-
-//        listNameLabel.text = listName
-//        listNameLabel.font = .boldSystemFont(ofSize: 20)
-//        view.addSubview(listNameLabel)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
         mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
@@ -72,16 +58,7 @@ class ListViewController: UIViewController {
         mediaCollectionView.delegate = self
         mediaCollectionView.showsVerticalScrollIndicator = false
         mediaCollectionView.bounces = false
-//        view.addSubview(mediaContainerView)
         view.addSubview(mediaCollectionView)
-
-//        addButton.setImage(UIImage(named: "addButton"), for: .normal)
-//        addButton.layer.cornerRadius = buttonSize.width / 2
-//        view.addSubview(addButton)
-//
-//        sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
-//        sortButton.layer.cornerRadius = buttonSize.width / 2
-//        view.addSubview(sortButton)
 
         setupSections()
         setupConstraints()
@@ -89,7 +66,7 @@ class ListViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.barTintColor = .lightPurple
+        navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
         let backButton = UIButton()
@@ -103,32 +80,10 @@ class ListViewController: UIViewController {
     }
 
     private func setupConstraints() {
-//        addButton.snp.makeConstraints { make in
-//            make.centerY.equalTo(mediaContainerView.snp.top)
-//            make.trailing.equalTo(mediaContainerView.snp.trailing).inset(40)
-//            make.size.equalTo(buttonSize)
-//        }
-//
-//        listNameLabel.snp.makeConstraints { make in
-//            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
-//            make.leading.equalToSuperview().offset(36)
-//        }
-
         mediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
-
-//        mediaContainerView.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(200) //200 is temp
-//            make.leading.trailing.bottom.equalToSuperview()
-//        }
-
-//        sortButton.snp.makeConstraints { make in
-//            make.centerY.equalTo(mediaContainerView.snp.top)
-//            make.trailing.equalTo(addButton.snp.leading).offset(-20)
-//            make.size.equalTo(buttonSize)
-//        }
     }
     
     private func setupSections() {
@@ -201,7 +156,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            return CGSize(width: collectionView.frame.width, height: 200)
+            return CGSize(width: collectionView.frame.width, height: 250)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
             let height = width * 3 / 2
@@ -215,7 +170,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         case .listSummary:
             return CGSize(width: 0, height: 0)
         case .mediaList:
-            return CGSize(width: collectionView.frame.width, height: 90)
+            return CGSize(width: collectionView.frame.width, height: 80)
         }
     }
     
@@ -225,7 +180,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         case .listSummary:
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         case .mediaList:
-            return UIEdgeInsets(top: 0, left: edgeInsets, bottom: 0, right: edgeInsets)
+            return UIEdgeInsets(top: 0, left: edgeInsets, bottom: 10, right: edgeInsets)
         }
     }
 
