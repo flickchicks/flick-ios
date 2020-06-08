@@ -70,9 +70,7 @@ class MediaListHeaderView: UICollectionReusableView {
         }
         
         containerView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
 
     }
