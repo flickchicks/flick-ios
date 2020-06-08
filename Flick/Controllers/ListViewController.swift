@@ -30,6 +30,7 @@ class ListViewController: UIViewController {
     private let edgeInsets: CGFloat = 28
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
+    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
     // TODO: Replace with data from backend
     private let listName = "Foreign Films"
