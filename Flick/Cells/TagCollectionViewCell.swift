@@ -32,17 +32,9 @@ class TagCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = .white
         clipsToBounds = false
         layer.cornerRadius = 12
-        
-//        layer.shadowColor = UIColor.black.cgColor
-//        layer.shadowOffset = CGSize(width: 0, height: 2)
-//        layer.shadowOpacity = 0.1
-//        layer.shadowRadius = 4
-        
-//        tagLabel.textColor = .darkPurple
+
         tagLabel.textAlignment = .center
         tagLabel.font = .systemFont(ofSize: 12)
         tagLabel.preferredMaxLayoutWidth = 120
@@ -59,7 +51,6 @@ class TagCollectionViewCell: UICollectionViewCell {
         switch type {
         case .tag:
             backgroundColor = .white
-//            tagLabel.text = text
             tagLabel.textColor = .darkPurple
             layer.shadowColor = UIColor.black.cgColor
             layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -74,7 +65,6 @@ class TagCollectionViewCell: UICollectionViewCell {
             layer.shadowRadius = 0
         }
         tagLabel.text = text
-//        tagLabel.textColor = .darkPurple
     }
 
     required init?(coder: NSCoder) {

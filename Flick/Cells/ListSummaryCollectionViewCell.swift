@@ -17,8 +17,6 @@ class TagFlowLayout: UICollectionViewFlowLayout {
     required init(minimumInteritemSpacing: CGFloat = 0, minimumLineSpacing: CGFloat = 0, sectionInset: UIEdgeInsets = .zero) {
         super.init()
 
-//        let tagSize = UICollectionViewFlowLayout.automaticSize
-//        estimatedItemSize = CGSize(width: tagSize.width + 24, height: tagSize.height + 12)
         self.minimumInteritemSpacing = minimumInteritemSpacing
         self.minimumLineSpacing = minimumLineSpacing
         self.sectionInset = sectionInset
@@ -60,34 +58,55 @@ class TagFlowLayout: UICollectionViewFlowLayout {
 }
 
 class ListSummaryCollectionViewCell: UICollectionViewCell {
-    
-    private let listNameLabel = UILabel()
-    private let collaborateView = UIView()
+
+    // MARK: - Private View Vars
     private let collaborateLabel = UILabel()
+    private let collaborateView = UIView()
+    private let listNameLabel = UILabel()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
     private var tagCollectionView: UICollectionView!
-    
-    private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
+
+    // MARK: - Private Data Vars
+    // TODO: Replace with data from backend
     private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     private var allTagSizes = [CGSize]()
     private var condensedTags = [String]()
 
-    private var totalWidthPerRow: CGFloat = 0
-    private var rowCounts = 1
     private let cellSpacing: CGFloat = 8
     private var numInFirstTwoRows = 0
+    private var tagRowCount = 1
+    private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
     private var tagDisplay: tagDisplay = .expanded
-    
+    private var totalWidthPerRow: CGFloat = 0
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .offWhite
-        
+
         getAllTagSizes()
-        
+
         // Temp
         let numCollaborator = 1
         let isPrivate = true
+
+        let collaborateLabelText = numCollaborator == 1 ? "Only I" : "\(numCollaborator)"
+        collaborateLabel.text = "\(collaborateLabelText) can edit"
+        collaborateLabel.textColor = .mediumGray
+        collaborateLabel.font = .systemFont(ofSize: 12)
+        contentView.addSubview(collaborateView)
+        collaborateView.addSubview(collaborateLabel)
+
+        privacyLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+        privacyLabel.textColor = .mediumGray
+        privacyLabel.font = .systemFont(ofSize: 12)
+        contentView.addSubview(privacyView)
+        privacyView.addSubview(privacyLabel)
+
+        listNameLabel.text = "Foreign Films" // Temp
+        listNameLabel.textAlignment = .center
+        listNameLabel.font = .boldSystemFont(ofSize: 20)
+        contentView.addSubview(listNameLabel)
 
         let tagCollectionViewLayout = TagFlowLayout(
             minimumInteritemSpacing: cellSpacing,
@@ -108,24 +127,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         tagCollectionView.contentInsetAdjustmentBehavior = .always
         tagCollectionView.allowsSelection = true
         contentView.addSubview(tagCollectionView)
-        
-        let collaborateLabelText = numCollaborator == 1 ? "Only I" : "\(numCollaborator)"
-        collaborateLabel.text = "\(collaborateLabelText) can edit"
-        collaborateLabel.textColor = .mediumGray
-        collaborateLabel.font = .systemFont(ofSize: 12)
-        contentView.addSubview(collaborateView)
-        collaborateView.addSubview(collaborateLabel)
-        
-        privacyLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
-        privacyLabel.textColor = .mediumGray
-        privacyLabel.font = .systemFont(ofSize: 12)
-        contentView.addSubview(privacyView)
-        privacyView.addSubview(privacyLabel)
-        
-        listNameLabel.text = "Foreign Films" // Temp
-        listNameLabel.textAlignment = .center
-        listNameLabel.font = .boldSystemFont(ofSize: 20)
-        contentView.addSubview(listNameLabel)
 
         setupConstraints()
     }
@@ -140,31 +141,30 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
             make.height.equalTo(20)
         }
-        
+
         privacyLabel.snp.makeConstraints { make in
             make.edges.equalTo(privacyView)
         }
-        
+
         privacyView.snp.makeConstraints { make in
             make.top.equalTo(collaborateView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
             make.height.equalTo(20)
         }
-        
+
         listNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(5)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(22)
         }
-        
+
         tagCollectionView.snp.makeConstraints { make in
             make.top.equalTo(privacyView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(10)
         }
-        
     }
-    
+
     private func getAllTagSizes() {
         allTags.forEach { tag in
             let tagSize = tag.size(withAttributes: [
@@ -177,18 +177,15 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             let collectionViewWidth = UIScreen.main.bounds.width - 60
             let cellWidth = width
             totalWidthPerRow += cellWidth + cellSpacing
-
             if (totalWidthPerRow > collectionViewWidth) {
-                rowCounts += 1
+                tagRowCount += 1
                 totalWidthPerRow = cellWidth + cellSpacing
              }
 
-            if rowCounts <= 2 {
+            if tagRowCount <= 2 {
                 numInFirstTwoRows += 1
             }
-            
             allTagSizes.append(CGSize(width: width, height: height))
-
         }
 
         tagDisplay = numInFirstTwoRows != 0 && allTags.count > numInFirstTwoRows ? .condensed : .expanded
@@ -197,14 +194,14 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
     }
 
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }
 
 extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch tagDisplay {
         case .condensed:
@@ -213,9 +210,9 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
             return allTags.count
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == numInFirstTwoRows - 2 && tagDisplay == .condensed {
+        if tagDisplay == .condensed && indexPath.item == numInFirstTwoRows - 2 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: "+ \(allTags.count - numInFirstTwoRows + 2) more", type: .more)
                 return cell
@@ -226,22 +223,22 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
             return cell
         }
     }
-    
+
 }
 
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if tagDisplay == .condensed && indexPath.item == condensedTags.count - 1 {
             tagDisplay = .expanded
             collectionView.reloadData()
         }
     }
-    
+
 }
 
 extension ListSummaryCollectionViewCell: UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return allTagSizes[indexPath.item]
     }
