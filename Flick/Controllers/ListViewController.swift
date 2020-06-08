@@ -28,11 +28,11 @@ class ListViewController: UIViewController {
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
-    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
-    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
+    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
+    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
-    // Temp values
+    // TODO: Replace with data from backend
     private let listName = "Foreign Films"
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var sections = [Section]()
@@ -98,7 +98,6 @@ class ListViewController: UIViewController {
     
      func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
-        print(offset)
         if offset > 40 {
             title = listName
         } else {
@@ -145,7 +144,6 @@ extension ListViewController: UICollectionViewDataSource {
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath)
             return headerView
         }
-
     }
 
 }
