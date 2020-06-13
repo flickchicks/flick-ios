@@ -105,7 +105,7 @@ class ProfileViewController: UIViewController {
         mediaLists[2].media = [media,media,media,media,media,media,media,media]
 
         super.viewDidLoad()
-        view.backgroundColor = .lightPurple
+        view.backgroundColor = .offWhite
 
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2

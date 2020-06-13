@@ -10,61 +10,67 @@ import SnapKit
 import UIKit
 
 class ListViewController: UIViewController {
+    
+    // MARK: - Collection View Sections
+    private struct Section {
+        let type: SectionType
+        var items: [String] //TODO: Change String to Media
+    }
+
+    private enum SectionType {
+        case listSummary
+        case mediaList
+    }
 
     // MARK: - Private View Vars
-    private let addButton = UIButton()
-    private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
-    private let mediaContainerView = RoundTopView(hasShadow: true)
-    private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
-    private let buttonSize = CGSize(width: 44, height: 44)
     private let cellPadding: CGFloat = 20
+    private let edgeInsets: CGFloat = 28
+    private let headerReuseIdentifier = "HeaderReuseIdentifier"
+    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
-    // Temp values
-    private let listName = "Saved"
+    // TODO: Replace with data from backend
+    private let listName = "Foreign Films"
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
-
+    private var sections = [Section]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightPurple
+        view.backgroundColor = .offWhite
 
         setupNavigationBar()
-
-        listNameLabel.text = listName
-        listNameLabel.font = .boldSystemFont(ofSize: 20)
-        view.addSubview(listNameLabel)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
         mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
         mediaCollectionViewLayout.minimumLineSpacing = cellPadding
         mediaCollectionViewLayout.scrollDirection = .vertical
+        mediaCollectionViewLayout.sectionHeadersPinToVisibleBounds = true
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaCollectionViewLayout)
         mediaCollectionView.backgroundColor = .white
+        mediaCollectionView.register(ListSummaryCollectionViewCell.self, forCellWithReuseIdentifier: listSummaryCellReuseIdentifier)
         mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifiter)
+        mediaCollectionView.register(MediaListHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier)
         mediaCollectionView.dataSource = self
         mediaCollectionView.delegate = self
         mediaCollectionView.showsVerticalScrollIndicator = false
-        view.addSubview(mediaContainerView)
+        mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
-        addButton.setImage(UIImage(named: "addButton"), for: .normal)
-        addButton.layer.cornerRadius = buttonSize.width / 2
-        view.addSubview(addButton)
+        mediaCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
 
-        sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
-        sortButton.layer.cornerRadius = buttonSize.width / 2
-        view.addSubview(sortButton)
-
-        setupConstraints()
+        setupSections()
     }
 
     private func setupNavigationBar() {
         navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.barTintColor = .lightPurple
+        navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
         let backButton = UIButton()
@@ -76,52 +82,65 @@ class ListViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
     }
-
-    private func setupConstraints() {
-        addButton.snp.makeConstraints { make in
-            make.centerY.equalTo(mediaContainerView.snp.top)
-            make.trailing.equalTo(mediaContainerView.snp.trailing).inset(40)
-            make.size.equalTo(buttonSize)
-        }
-
-        listNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
-            make.leading.equalToSuperview().offset(36)
-        }
-
-        mediaCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(mediaContainerView.snp.top).offset(46)
-            make.leading.trailing.equalToSuperview().inset(28)
-            make.bottom.equalTo(mediaContainerView.snp.bottom)
-        }
-
-        mediaContainerView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(200) //200 is temp
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-
-        sortButton.snp.makeConstraints { make in
-            make.centerY.equalTo(mediaContainerView.snp.top)
-            make.trailing.equalTo(addButton.snp.leading).offset(-20)
-            make.size.equalTo(buttonSize)
-        }
+    
+    private func setupSections() {
+        let listSummary = Section(type: SectionType.listSummary, items: [])
+        let mediaList = Section(type: SectionType.mediaList, items: media)
+        sections = [listSummary, mediaList]
     }
 
     @objc private func backButtonPressed() {
         print("Back button pressed")
     }
+    
+     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        if offset > 40 {
+            title = listName
+        } else {
+            title = nil
+        }
+    }
 
 }
 
 extension ListViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return sections.count
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        media.count
+        let section = sections[section]
+        switch section.type {
+        case .listSummary:
+            return 1
+        case .mediaList:
+            return section.items.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
-        return cell
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .listSummary:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listSummaryCellReuseIdentifier, for: indexPath) as? ListSummaryCollectionViewCell else { return UICollectionViewCell() }
+            return cell
+        case .mediaList:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
+            return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .listSummary:
+            return UICollectionReusableView()
+        case .mediaList:
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath)
+            return headerView
+        }
     }
 
 }
@@ -129,9 +148,35 @@ extension ListViewController: UICollectionViewDataSource {
 extension ListViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (mediaCollectionView.frame.width - 2 * cellPadding) / 3.0
-        let height = width * 3 / 2
-        return CGSize(width: width, height: height)
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .listSummary:
+            return CGSize(width: collectionView.frame.width, height: 192)
+        case .mediaList:
+            let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
+            let height = width * 3 / 2
+            return CGSize(width: width, height: height)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let section = sections[section]
+        switch section.type {
+        case .listSummary:
+            return CGSize(width: 0, height: 0)
+        case .mediaList:
+            return CGSize(width: collectionView.frame.width, height: 80)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let section = sections[section]
+        switch section.type {
+        case .listSummary:
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        case .mediaList:
+            return UIEdgeInsets(top: 0, left: edgeInsets, bottom: 10, right: edgeInsets)
+        }
     }
 
 }
