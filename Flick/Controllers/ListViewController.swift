@@ -60,12 +60,17 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
+<<<<<<< HEAD
         mediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
 
         setupSections()
+=======
+        setupSections()
+        setupConstraints()
+>>>>>>> ac137f20d57c2152f60461b4e48e806d08df3039
     }
 
     private func setupNavigationBar() {
@@ -82,6 +87,16 @@ class ListViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
     }
+<<<<<<< HEAD
+=======
+
+    private func setupConstraints() {
+        mediaCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+>>>>>>> ac137f20d57c2152f60461b4e48e806d08df3039
     
     private func setupSections() {
         let listSummary = Section(type: SectionType.listSummary, items: [])
