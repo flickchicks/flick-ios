@@ -55,12 +55,11 @@ class ListTableViewCell: UITableViewCell {
     }
 
     func setupCollaborators(collaborators: [String]) {
-
         let collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
         addSubview(collaboratorsPreviewView)
 
         // Calculate width of friends preview based on number of friends and spacing between cells
-        let numCollaborators = collaborators.count
+        let numCollaborators = min(collaborators.count + 1, 7)
         let fullCollaboratorsWidth = numCollaborators * 20
         let overlapCollaboratorsWidth = (numCollaborators-1) * collaboratorsCellSpacing * -1
         let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
@@ -71,11 +70,9 @@ class ListTableViewCell: UITableViewCell {
             make.width.equalTo(collaboratorsPreviewWidth)
             make.bottom.equalTo(titleLabel)
         }
-
     }
 
     func setupPrivateIcon() {
-
         let lockImageView = UIImageView(image: UIImage(named: "lock"))
         addSubview(lockImageView)
 
@@ -85,7 +82,6 @@ class ListTableViewCell: UITableViewCell {
             make.width.equalTo(10)
             make.centerY.equalTo(titleLabel)
         }
-
     }
 
     @objc private func seeAllMedia() {
@@ -93,7 +89,6 @@ class ListTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-
         let padding = 12
 
         titleLabel.snp.makeConstraints { make in
@@ -113,7 +108,6 @@ class ListTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(padding)
         }
-
     }
 
     func configure(for list: MediaList, collaboratorsCellSpacing: Int) {

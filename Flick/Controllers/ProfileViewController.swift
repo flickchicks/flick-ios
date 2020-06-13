@@ -27,7 +27,7 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
-    private let addListButtonSize = CGSize(width: 44, height: 44)
+    private let addListButtonSize = CGSize(width: 72, height: 72)
     private var condensedCellSpacing = -8
     private var expandedCellSpacing = -5
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
@@ -99,7 +99,6 @@ class ProfileViewController: UIViewController {
     ]
 
     override func viewDidLoad() {
-
         // TODO: Update with backend values
         mediaLists[0].media = [media,media,media,media,media,media,media,media]
         mediaLists[1].media = [media,media,media]
@@ -120,6 +119,7 @@ class ProfileViewController: UIViewController {
         usernameLabel.text = "@\(username)"
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
+        usernameLabel.sizeToFit()
         userInfoView.addSubview(usernameLabel)
 
         friendsPreviewView = UsersPreviewView(users: friends, usersLayoutMode: .friends)
@@ -152,12 +152,11 @@ class ProfileViewController: UIViewController {
         view.addSubview(listsContainerView)
 
         // TODO: Replace button image
-        addListButton.setImage(UIImage(named: "addButton"), for: .normal)
+        addListButton.setImage(UIImage(named: "newList"), for: .normal)
         addListButton.layer.cornerRadius = addListButtonSize.width / 2
         view.addSubview(addListButton)
 
         setupConstraints()
-
     }
 
     private func setupConstraints() {
@@ -169,8 +168,6 @@ class ProfileViewController: UIViewController {
         let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
 
         let padding = 20
-
-        usernameLabel.sizeToFit()
         let userNameLabelWidth = Int(usernameLabel.frame.size.width)
         let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
 

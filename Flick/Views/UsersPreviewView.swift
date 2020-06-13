@@ -22,7 +22,7 @@ class UsersPreviewView: UIView {
         .friends : -8,
         .collaborators : -5
     ]
-    private let numMaxusers = 7
+    private let numMaxUsers = 7
     // TODO: Replace users with User array after networking is done
 //    private var users: [User] = []
     private var users: [String] = []
@@ -37,7 +37,6 @@ class UsersPreviewView: UIView {
         super.init(frame: .zero)
         getUsersPreview()
         setupViews()
-        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -47,7 +46,7 @@ class UsersPreviewView: UIView {
     /// Sets usersPreview to first numMaxusers users in array if number of users in array exceeds
     /// numMaxusers, otherwise sets usersPreview to users
     func getUsersPreview() {
-        usersPreview = Array(users.prefix(numMaxusers))
+        usersPreview = Array(users.prefix(numMaxUsers))
     }
 
     func setupViews() {
@@ -61,10 +60,7 @@ class UsersPreviewView: UIView {
         usersCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: usersCellReuseIdentifier)
         usersCollectionView.backgroundColor = .none
         addSubview(usersCollectionView)
-        
-    }
 
-    func setupConstraints() {
         usersCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -75,14 +71,7 @@ class UsersPreviewView: UIView {
 extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch usersLayoutMode {
-        case .collaborators:
-            return usersPreview.count
-        case .friends:
-            return usersPreview.count + 1 // Add one more cell for last detail cell
-        case .none:
-            return usersPreview.count
-        }
+        return usersPreview.count + 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
