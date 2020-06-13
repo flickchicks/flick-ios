@@ -50,7 +50,6 @@ class UsersPreviewView: UIView {
     }
 
     func setupViews() {
-
         let usersLayout = UICollectionViewFlowLayout()
         usersLayout.minimumInteritemSpacing = cellSpacing
 
@@ -65,7 +64,6 @@ class UsersPreviewView: UIView {
             make.edges.equalToSuperview()
         }
     }
-
 }
 
 extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
