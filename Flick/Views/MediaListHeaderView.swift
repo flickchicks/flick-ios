@@ -14,7 +14,7 @@ class MediaListHeaderView: UICollectionReusableView {
     private let addButton = UIButton()
     private let containerView = UIView()
     private let editButton = UIButton()
-    private let roundView = RoundTopView(hasShadow: true)
+    private let roundTopView = RoundTopView(hasShadow: true)
     private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -24,7 +24,7 @@ class MediaListHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         backgroundColor = .offWhite
 
-        containerView.addSubview(roundView)
+        containerView.addSubview(roundTopView)
         containerView.clipsToBounds = true
         addSubview(containerView)
 
@@ -45,25 +45,25 @@ class MediaListHeaderView: UICollectionReusableView {
 
     func setupConstraints() {
         addButton.snp.makeConstraints { make in
-            make.centerY.equalTo(roundView.snp.top)
-            make.trailing.equalTo(roundView.snp.trailing).inset(40)
+            make.centerY.equalTo(roundTopView.snp.top)
+            make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
             make.size.equalTo(buttonSize)
             
         }
 
         sortButton.snp.makeConstraints { make in
-            make.centerY.equalTo(roundView.snp.top)
+            make.centerY.equalTo(roundTopView.snp.top)
             make.trailing.equalTo(addButton.snp.leading).offset(-16)
             make.size.equalTo(buttonSize)
         }
 
         editButton.snp.makeConstraints { make in
-            make.centerY.equalTo(roundView.snp.top)
+            make.centerY.equalTo(roundTopView.snp.top)
             make.trailing.equalTo(sortButton.snp.leading).offset(-16)
             make.size.equalTo(buttonSize)
         }
 
-        roundView.snp.makeConstraints { make in
+        roundTopView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(buttonSize.height / 2)
             make.height.equalTo(90)
             make.leading.trailing.equalToSuperview()

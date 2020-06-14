@@ -142,6 +142,8 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
+        let listInfoHeight = 20
+        let lockButtonSize = CGSize(width: 12, height: 16)
         let numCollaborators = min(collaborators.count, 8)
         let fullCollaboratorsWidth = numCollaborators * 20
         let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
@@ -154,14 +156,14 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaboratorsPreviewView.snp.makeConstraints { make in
             make.centerY.leading.equalToSuperview()
             make.trailing.equalTo(collaborateLabel.snp.leading).offset(-8)
-            make.height.equalTo(20)
+            make.height.equalTo(listInfoHeight)
             make.width.equalTo(collaboratorsPreviewWidth)
         }
 
         collaborateView.snp.makeConstraints { make in
             make.top.equalTo(listNameLabel.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
-            make.height.equalTo(20)
+            make.height.equalTo(listInfoHeight)
         }
 
         privacyLabel.snp.makeConstraints { make in
@@ -171,13 +173,13 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         lockView.snp.makeConstraints { make in
             make.centerY.leading.equalToSuperview()
             make.trailing.equalTo(privacyLabel.snp.leading).offset(-8)
-            make.size.equalTo(CGSize(width: 12, height: 16))
+            make.size.equalTo(lockButtonSize)
         }
 
         privacyView.snp.makeConstraints { make in
             make.top.equalTo(collaborateView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
-            make.height.equalTo(20)
+            make.height.equalTo(listInfoHeight)
         }
 
         listNameLabel.snp.makeConstraints { make in

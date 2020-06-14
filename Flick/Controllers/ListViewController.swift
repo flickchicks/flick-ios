@@ -68,6 +68,9 @@ class ListViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
+        let backButtonSize = CGSize(width: 22, height: 18)
+        let settingsButtonSize = CGSize(width: 22, height: 22)
+            
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -75,13 +78,13 @@ class ListViewController: UIViewController {
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
         backButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 22, height: 18))
+            make.size.equalTo(backButtonSize)
         }
 
         let settingsButton = UIButton()
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 22, height: 22))
+            make.size.equalTo(settingsButtonSize)
         }
 
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -104,11 +107,7 @@ class ListViewController: UIViewController {
     
      func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
-        if offset > 40 {
-            title = listName
-        } else {
-            title = nil
-        }
+        title = offset > 40 ? listName : nil
     }
 
 }
