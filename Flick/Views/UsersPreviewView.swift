@@ -69,7 +69,7 @@ class UsersPreviewView: UIView {
 extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return usersPreview.count + 1
+        return numMaxUsers < users.count ? usersPreview.count + 1 : usersPreview.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

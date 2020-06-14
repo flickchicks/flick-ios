@@ -62,7 +62,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     // MARK: - Private View Vars
     private let collaborateLabel = UILabel()
     private let collaborateView = UIView()
+    private var collaboratorsPreviewView = UIView()
     private let listNameLabel = UILabel()
+    private let lockView = UIImageView()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
     private var tagCollectionView: UICollectionView!
@@ -72,6 +74,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     private var allTagSizes = [CGSize]()
     private var condensedTags = [String]()
+    // TODO: Replace with data from backend, make sure to include current user
+    private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    private let collaboratorsCellSpacing = -5
 
     private let cellSpacing: CGFloat = 8
     private var numInFirstTwoRows = 0
@@ -87,21 +92,27 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         getAllTagSizes()
 
         // Temp
-        let numCollaborator = 1
-        let isPrivate = true
+        let numCollaborator = collaborators.count
+        let isPrivate = false
 
         let collaborateLabelText = numCollaborator == 1 ? "Only I" : "\(numCollaborator)"
         collaborateLabel.text = "\(collaborateLabelText) can edit"
         collaborateLabel.textColor = .mediumGray
-        collaborateLabel.font = .systemFont(ofSize: 12)
+        collaborateLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(collaborateView)
         collaborateView.addSubview(collaborateLabel)
 
+        collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
+        collaborateView.addSubview(collaboratorsPreviewView)
+
         privacyLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
         privacyLabel.textColor = .mediumGray
-        privacyLabel.font = .systemFont(ofSize: 12)
+        privacyLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(privacyView)
         privacyView.addSubview(privacyLabel)
+
+        lockView.image = UIImage(named: isPrivate ? "lock" : "unlock")
+        privacyView.addSubview(lockView)
 
         listNameLabel.text = "Foreign Films" // Temp
         listNameLabel.textAlignment = .center
@@ -132,8 +143,20 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
+        let numCollaborators = min(collaborators.count, 8)
+        let fullCollaboratorsWidth = numCollaborators * 20
+        let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
+        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+
         collaborateLabel.snp.makeConstraints { make in
-            make.edges.equalTo(collaborateView)
+            make.centerY.trailing.equalToSuperview()
+        }
+        
+        collaboratorsPreviewView.snp.makeConstraints { make in
+            make.centerY.leading.equalToSuperview()
+            make.trailing.equalTo(collaborateLabel.snp.leading).offset(-8)
+            make.height.equalTo(20)
+            make.width.equalTo(collaboratorsPreviewWidth)
         }
 
         collaborateView.snp.makeConstraints { make in
@@ -143,11 +166,17 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
 
         privacyLabel.snp.makeConstraints { make in
-            make.edges.equalTo(privacyView)
+            make.centerY.trailing.equalToSuperview()
+        }
+        
+        lockView.snp.makeConstraints { make in
+            make.centerY.leading.equalToSuperview()
+            make.trailing.equalTo(privacyLabel.snp.leading).offset(-8)
+            make.size.equalTo(CGSize(width: 12, height: 16))
         }
 
         privacyView.snp.makeConstraints { make in
-            make.top.equalTo(collaborateView.snp.bottom).offset(10)
+            make.top.equalTo(collaborateView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.height.equalTo(20)
         }
