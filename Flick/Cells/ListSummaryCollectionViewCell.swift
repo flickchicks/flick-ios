@@ -77,12 +77,11 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     // TODO: Replace with data from backend, make sure to include current user
     private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
     private let collaboratorsCellSpacing = -5
-
-    private let cellSpacing: CGFloat = 8
     private var numInFirstTwoRows = 0
-    private var tagRowCount = 1
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
+    private let tagCellSpacing: CGFloat = 8
     private var tagDisplay: tagDisplay = .expanded
+    private var tagRowCount = 1
     private var totalWidthPerRow: CGFloat = 0
 
     override init(frame: CGRect) {
@@ -91,8 +90,8 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
         getAllTagSizes()
 
-        // Temp
         let numCollaborator = collaborators.count
+        // TODO: Replace with data from backend
         let isPrivate = false
 
         let collaborateLabelText = numCollaborator == 1 ? "Only I" : "\(numCollaborator)"
@@ -120,8 +119,8 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(listNameLabel)
 
         let tagCollectionViewLayout = TagFlowLayout(
-            minimumInteritemSpacing: cellSpacing,
-            minimumLineSpacing: cellSpacing,
+            minimumInteritemSpacing: tagCellSpacing,
+            minimumLineSpacing: tagCellSpacing,
             sectionInset: UIEdgeInsets(top: 2, left: 30, bottom: 5, right: 30)
         )
         tagCollectionViewLayout.scrollDirection = .vertical
@@ -205,10 +204,10 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             // To increment number of rows
             let collectionViewWidth = UIScreen.main.bounds.width - 60
             let cellWidth = width
-            totalWidthPerRow += cellWidth + cellSpacing
+            totalWidthPerRow += cellWidth + tagCellSpacing
             if (totalWidthPerRow > collectionViewWidth) {
                 tagRowCount += 1
-                totalWidthPerRow = cellWidth + cellSpacing
+                totalWidthPerRow = cellWidth + tagCellSpacing
              }
 
             if tagRowCount <= 2 {

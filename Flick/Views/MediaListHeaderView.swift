@@ -19,7 +19,7 @@ class MediaListHeaderView: UICollectionReusableView {
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .offWhite
@@ -27,7 +27,7 @@ class MediaListHeaderView: UICollectionReusableView {
         containerView.addSubview(roundView)
         containerView.clipsToBounds = true
         addSubview(containerView)
-        
+
         addButton.setImage(UIImage(named: "addButton"), for: .normal)
         addButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(addButton)
@@ -39,10 +39,10 @@ class MediaListHeaderView: UICollectionReusableView {
         sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
         sortButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(sortButton)
-        
+
         setupConstraints()
     }
-    
+
     func setupConstraints() {
         addButton.snp.makeConstraints { make in
             make.centerY.equalTo(roundView.snp.top)
@@ -56,19 +56,19 @@ class MediaListHeaderView: UICollectionReusableView {
             make.trailing.equalTo(addButton.snp.leading).offset(-16)
             make.size.equalTo(buttonSize)
         }
-        
+
         editButton.snp.makeConstraints { make in
             make.centerY.equalTo(roundView.snp.top)
             make.trailing.equalTo(sortButton.snp.leading).offset(-16)
             make.size.equalTo(buttonSize)
         }
-        
+
         roundView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(buttonSize.height / 2)
             make.height.equalTo(90)
             make.leading.trailing.equalToSuperview()
         }
-        
+
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

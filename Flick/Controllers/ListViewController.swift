@@ -29,12 +29,11 @@ class ListViewController: UIViewController {
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
-    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
-    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
-
-    // TODO: Replace with data from backend
     private let listName = "Foreign Films"
+    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
+    // TODO: Replace with data from backend
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
+    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
     private var sections = [Section]()
     
     override func viewDidLoad() {
@@ -78,9 +77,19 @@ class ListViewController: UIViewController {
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 22, height: 18))
         }
+
+        let settingsButton = UIButton()
+        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 22, height: 22))
+        }
+
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
+
+        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
     
     private func setupSections() {
@@ -105,7 +114,7 @@ class ListViewController: UIViewController {
 }
 
 extension ListViewController: UICollectionViewDataSource {
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return sections.count
     }
@@ -119,7 +128,7 @@ extension ListViewController: UICollectionViewDataSource {
             return section.items.count
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let section = sections[indexPath.section]
         switch section.type {
@@ -131,7 +140,7 @@ extension ListViewController: UICollectionViewDataSource {
             return cell
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let section = sections[indexPath.section]
         switch section.type {
@@ -168,7 +177,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.frame.width, height: 80)
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let section = sections[section]
         switch section.type {

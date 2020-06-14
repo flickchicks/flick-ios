@@ -34,6 +34,7 @@ class TagCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         clipsToBounds = false
         layer.cornerRadius = 12
+        layer.shadowColor = UIColor.black.cgColor
 
         tagLabel.textAlignment = .center
         tagLabel.font = .systemFont(ofSize: 12)
@@ -52,14 +53,12 @@ class TagCollectionViewCell: UICollectionViewCell {
         case .tag:
             backgroundColor = .white
             tagLabel.textColor = .darkPurple
-            layer.shadowColor = UIColor.black.cgColor
             layer.shadowOffset = CGSize(width: 0, height: 2)
             layer.shadowOpacity = 0.1
             layer.shadowRadius = 4
         case .more:
             backgroundColor = .clear
             tagLabel.textColor = .mediumGray
-            layer.shadowColor = UIColor.black.cgColor
             layer.shadowOffset = .zero
             layer.shadowOpacity = 0
             layer.shadowRadius = 0
