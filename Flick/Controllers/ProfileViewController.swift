@@ -13,7 +13,6 @@ enum FriendsLayoutMode { case expanded, condensed }
 class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var activitySummaryCollectionView: UICollectionView!
     private let addListButton = UIButton()
     private var friendsPreviewView: UsersPreviewView!
     private let listsContainerView = RoundTopView(hasShadow: true)
@@ -26,7 +25,6 @@ class ProfileViewController: UIViewController {
     private let usernameLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private let activitySummaryCellReuseIdentifier = "ActivitySummaryCellReuseIdentifier"
     private let addListButtonSize = CGSize(width: 72, height: 72)
     private var condensedCellSpacing = -8
     private var expandedCellSpacing = -5
@@ -38,10 +36,7 @@ class ProfileViewController: UIViewController {
     private let name = "Alanna Zhou"
     private let username = "alannaz"
     private let friends = ["A", "B", "C", "D", "E", "F", "G"]
-    private let activitySummary = [
-        ActivitySummary(count: 6, title: "Lists"),
-        ActivitySummary(count: 8, title: "Thoughts")
-    ]
+
     private let media = Media(
         mediaId: "123",
         title: "Title",
@@ -133,16 +128,6 @@ class ProfileViewController: UIViewController {
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         view.addSubview(settingsButton)
 
-        let activitySummaryLayout = UICollectionViewFlowLayout()
-        activitySummaryLayout.minimumInteritemSpacing = 6
-
-        activitySummaryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: activitySummaryLayout)
-        activitySummaryCollectionView.backgroundColor = .none
-        activitySummaryCollectionView.delegate = self
-        activitySummaryCollectionView.dataSource = self
-        activitySummaryCollectionView.register(SummaryCollectionViewCell.self, forCellWithReuseIdentifier: activitySummaryCellReuseIdentifier)
-        view.addSubview(activitySummaryCollectionView)
-
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self
@@ -202,13 +187,6 @@ class ProfileViewController: UIViewController {
             make.width.equalTo(userInfoViewWidth)
         }
 
-        activitySummaryCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(userInfoView.snp.bottom).offset(18)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(146) // Temp
-            make.height.equalTo(40)
-        }
-
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(sideButtonsSize)
             make.top.equalTo(view.snp.top).offset(28)
@@ -222,7 +200,7 @@ class ProfileViewController: UIViewController {
         }
 
         listsContainerView.snp.makeConstraints { make in
-            make.top.equalTo(activitySummaryCollectionView.snp.bottom).offset(22) //200 is temp
+            make.top.equalTo(userInfoView.snp.bottom).offset(30) //200 is temp
             make.leading.trailing.bottom.equalToSuperview()
         }
 
@@ -241,33 +219,6 @@ class ProfileViewController: UIViewController {
 
 }
 
-extension ProfileViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    }
-
-}
-
-extension ProfileViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return activitySummary.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: activitySummaryCellReuseIdentifier, for: indexPath) as? SummaryCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(with: activitySummary[indexPath.item])
-        return cell
-    }
-}
-
-extension ProfileViewController: UICollectionViewDelegateFlowLayout {
-    
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 70, height: 40)
-    }
-}
-
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         mediaLists.count
@@ -281,6 +232,12 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 174
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: Update with selected list data
+        let listViewController = ListViewController()
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 }
 

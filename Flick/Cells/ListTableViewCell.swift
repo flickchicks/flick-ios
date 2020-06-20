@@ -86,6 +86,9 @@ class ListTableViewCell: UITableViewCell {
 
     @objc private func seeAllMedia() {
         // TODO: Implement see all media action
+//        let listViewController = ListViewController()
+//        self.navigationController?.pushViewController(listViewController, animated: true)
+
     }
 
     private func setupConstraints() {
