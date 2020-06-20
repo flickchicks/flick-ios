@@ -37,8 +37,6 @@
 		D47866A1247C57F8009E42FE /* MediaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A0247C57F8009E42FE /* MediaList.swift */; };
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
 		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
-		D4F64D372483016D00A5A2E5 /* SummaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */; };
-		D4F64D39248303C700A5A2E5 /* ActivitySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */; };
 		D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */; };
 		D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */; };
 /* End PBXBuildFile section */
@@ -100,8 +98,6 @@
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
-		D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCollectionViewCell.swift; sourceTree = "<group>"; };
-		D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySummary.swift; sourceTree = "<group>"; };
 		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPreviewView.swift; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -258,7 +254,6 @@
 			children = (
 				D478668C24797CA2009E42FE /* TabOptionCollectionViewCell.swift */,
 				3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */,
-				D4F64D362483016D00A5A2E5 /* SummaryCollectionViewCell.swift */,
 				D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */,
 				309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */,
 				309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */,
@@ -280,7 +275,6 @@
 				D478669E247C57D2009E42FE /* Media.swift */,
 				D47866A0247C57F8009E42FE /* MediaList.swift */,
 				D47866A2247C5805009E42FE /* User.swift */,
-				D4F64D38248303C700A5A2E5 /* ActivitySummary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -531,7 +525,6 @@
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
-				D4F64D39248303C700A5A2E5 /* ActivitySummary.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
@@ -545,7 +538,6 @@
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* ModalView.swift in Sources */,
-				D4F64D372483016D00A5A2E5 /* SummaryCollectionViewCell.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,

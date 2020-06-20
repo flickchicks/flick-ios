@@ -71,7 +71,7 @@ class ListViewController: UIViewController {
         let backButtonSize = CGSize(width: 22, height: 18)
         let settingsButtonSize = CGSize(width: 22, height: 22)
             
-        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -102,13 +102,18 @@ class ListViewController: UIViewController {
     }
 
     @objc private func backButtonPressed() {
-        print("Back button pressed")
+        navigationController?.popViewController(animated: true)
     }
     
      func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
         title = offset > 40 ? listName : nil
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+   }
 
 }
 
