@@ -32,7 +32,7 @@ class ListTableViewCell: UITableViewCell {
         contentView.addSubview(titleLabel)
 
         seeAllButton.setTitle("See all", for: .normal)
-        seeAllButton.setTitleColor(.darkBlue2, for: .normal)
+        seeAllButton.setTitleColor(.darkBlueGray2, for: .normal)
         seeAllButton.titleLabel?.font = .boldSystemFont(ofSize: 12)
         seeAllButton.addTarget(self, action: #selector(seeAllMedia), for: .touchUpInside)
         contentView.addSubview(seeAllButton)
@@ -150,7 +150,7 @@ extension ListTableViewCell: UICollectionViewDataSource {
         // TODO: Add media background as cell backgroundview
         // TODO: Add left padding to first cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath)
-        cell.backgroundColor = .darkBlue2
+        cell.backgroundColor = .darkBlueGray2
         cell.layer.cornerRadius = 8
         return cell
     }
