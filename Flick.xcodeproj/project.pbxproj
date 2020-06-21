@@ -280,7 +280,7 @@
 				D478669E247C57D2009E42FE /* Media.swift */,
 				D47866A0247C57F8009E42FE /* MediaList.swift */,
 				D47866A2247C5805009E42FE /* User.swift */,
-				D46B3F72249EF279008D5484 /* SortSelection.swift */,
+				D46B3F72249EF279008D5484 /* SortSelection.swift */
 			);
 			path = Models;
 			sourceTree = "<group>";
