@@ -35,6 +35,7 @@ class ListViewController: UIViewController {
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
     private var sections = [Section]()
+    private var sortListModalView: SortListModalView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,7 +152,8 @@ extension ListViewController: UICollectionViewDataSource {
         case .listSummary:
             return UICollectionReusableView()
         case .mediaList:
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath)
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as! MediaListHeaderView
+            headerView.delegate = self
             return headerView
         }
     }
@@ -190,6 +192,30 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         case .mediaList:
             return UIEdgeInsets(top: 0, left: edgeInsets, bottom: 10, right: edgeInsets)
         }
+    }
+
+}
+
+extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
+    func addMedia() {
+        print("Add media")
+    }
+
+    func editMedia() {
+        print("Edit media")
+    }
+
+    func sortMedia() {
+        sortListModalView = SortListModalView()
+        sortListModalView.delegate = self
+        // TODO: Sends navigation bar to the back, but gets covered by the main view
+        navigationController?.navigationBar.layer.zPosition = -1
+        view.addSubview(sortListModalView)
+    }
+
+    func dismissModal() {
+        navigationController?.navigationBar.layer.zPosition = 1
+        sortListModalView.removeFromSuperview()
     }
 
 }
