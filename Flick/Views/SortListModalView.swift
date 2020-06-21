@@ -64,7 +64,6 @@ class SortListModalView: UIView {
         addSubview(containerView)
 
         setupViews()
-
     }
 
     required init?(coder: NSCoder) {
