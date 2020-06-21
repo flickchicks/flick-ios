@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 protocol ModalDelegate: class {
-    func dismissModal()
+    func dismissModal(modalView: UIView)
 }
 
 class SortListModalView: UIView {
@@ -63,7 +63,7 @@ class SortListModalView: UIView {
         containerView.layer.cornerRadius = 24
         addSubview(containerView)
 
-        setupViews()
+        setupConstraints()
 
     }
 
@@ -71,7 +71,7 @@ class SortListModalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViews() {
+    private func setupConstraints() {
         let containerViewSize = CGSize(width: 325, height: 263)
         let dismissButtonSize = CGSize(width: 60, height: 25)
         let horizontalPadding = 24
@@ -117,7 +117,7 @@ class SortListModalView: UIView {
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
-            self.delegate?.dismissModal()
+            self.delegate?.dismissModal(modalView: self)
         }
     }
 

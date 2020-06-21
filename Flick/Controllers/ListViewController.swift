@@ -23,7 +23,9 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
+    private var addCollaboratorModalView: AddCollaboratorModalView!
     private var mediaCollectionView: UICollectionView!
+    private var sortListModalView: SortListModalView!
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
@@ -35,7 +37,6 @@ class ListViewController: UIViewController {
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
     private var sections = [Section]()
-    private var sortListModalView: SortListModalView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -198,7 +199,12 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     func addMedia() {
-        print("Add media")
+        // TODO: Remove show collaborator view later
+        addCollaboratorModalView = AddCollaboratorModalView()
+        addCollaboratorModalView.delegate = self
+        // TODO: Sends navigation bar to the back, but gets covered by the main view
+        navigationController?.navigationBar.layer.zPosition = -1
+        view.addSubview(addCollaboratorModalView)
     }
 
     func editMedia() {
@@ -213,9 +219,9 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
         view.addSubview(sortListModalView)
     }
 
-    func dismissModal() {
+    func dismissModal(modalView: UIView) {
         navigationController?.navigationBar.layer.zPosition = 1
-        sortListModalView.removeFromSuperview()
+        modalView.removeFromSuperview()
     }
 
 }
