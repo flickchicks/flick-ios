@@ -196,24 +196,25 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-extension ListViewController: MediaListHeaderDelegate, SortListModalDelegate {
+extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     func addMedia() {
-        print("add media")
+        print("Add media")
     }
 
     func editMedia() {
-        print("edit media")
+        print("Edit media")
     }
 
     func sortMedia() {
         sortListModalView = SortListModalView()
         sortListModalView.delegate = self
-        navigationController?.navigationBar.layer.zPosition = -1;
+        // TODO: Sends navigation bar to the back, but gets covered by the main view
+        navigationController?.navigationBar.layer.zPosition = -1
         view.addSubview(sortListModalView)
     }
 
-    func dismissSortMedia() {
-        navigationController?.navigationBar.layer.zPosition = 1;
+    func dismissModal() {
+        navigationController?.navigationBar.layer.zPosition = 1
         sortListModalView.removeFromSuperview()
     }
 

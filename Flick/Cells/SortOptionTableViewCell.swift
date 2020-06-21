@@ -15,12 +15,13 @@ protocol SortOptionDelegate: class {
 class SortOptionTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let sortLabel = UILabel()
     private let ascendButton = UIButton()
-    private var descendButton = UIButton()
+    private let descendButton = UIButton()
+    private let sortLabel = UILabel()
 
     // MARK: - Private Data Vars
     weak var delegate: SortOptionDelegate?
+    // Keep track of which sort option to modify in array
     private var index: Int!
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -31,13 +32,13 @@ class SortOptionTableViewCell: UITableViewCell {
         sortLabel.font = .systemFont(ofSize: 16)
         addSubview(sortLabel)
 
-        ascendButton.imageView?.contentMode = .scaleAspectFit
-        ascendButton.addTarget(self, action: #selector(setAscendingSort), for: .touchUpInside)
-        addSubview(ascendButton)
-
         descendButton.imageView?.contentMode = .scaleAspectFit
         descendButton.addTarget(self, action: #selector(setDescendingSort), for: .touchUpInside)
         addSubview(descendButton)
+
+        ascendButton.imageView?.contentMode = .scaleAspectFit
+        ascendButton.addTarget(self, action: #selector(setAscendingSort), for: .touchUpInside)
+        addSubview(ascendButton)
 
         setupConstraints()
     }
@@ -46,17 +47,7 @@ class SortOptionTableViewCell: UITableViewCell {
         self.delegate = delegate
         self.index = index
         sortLabel.text = sortSelection.description
-        sortLabel.textColor = sortSelection.sortDirection == .unselected ? .darkBlueGray2 : .gradientPurple
-        if (sortSelection.sortDirection == .ascending) {
-            ascendButton.setImage(UIImage(named: "filledUpArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
-        } else if (sortSelection.sortDirection == .descending) {
-            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "filledDownArrow"), for: .normal)
-        } else {
-            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
-        }
+        setColors(sortDirection: sortSelection.sortDirection)
     }
 
     required init?(coder: NSCoder) {
@@ -70,18 +61,32 @@ class SortOptionTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
         }
 
-        descendButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(buttonHeight)
-        }
-
         ascendButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(descendButton.snp.leading).offset(-4)
+            make.centerY.trailing.equalToSuperview()
             make.height.equalTo(buttonHeight)
         }
 
+        descendButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(ascendButton.snp.leading).offset(-4)
+            make.height.equalTo(buttonHeight)
+        }
+
+    }
+
+    private func setColors(sortDirection: SortDirection) {
+        sortLabel.textColor = sortDirection == .unselected ? .darkBlueGray2 : .gradientPurple
+        switch sortDirection {
+        case .ascending:
+            ascendButton.setImage(UIImage(named: "filledUpArrow"), for: .normal)
+            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
+        case .descending:
+            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
+            descendButton.setImage(UIImage(named: "filledDownArrow"), for: .normal)
+        case .unselected:
+            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
+            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
+        }
     }
 
     @objc func setAscendingSort() {

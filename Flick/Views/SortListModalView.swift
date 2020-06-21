@@ -9,8 +9,8 @@
 import UIKit
 import SnapKit
 
-protocol SortListModalDelegate: class {
-    func dismissSortMedia()
+protocol ModalDelegate: class {
+    func dismissModal()
 }
 
 class SortListModalView: UIView {
@@ -22,7 +22,7 @@ class SortListModalView: UIView {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    weak var delegate: SortListModalDelegate?
+    weak var delegate: ModalDelegate?
     private let sortOptionCellReuseIdentifier = "SortOptionCellReuseIdentifier"
     // TODO: Get selected sort order from backend
     private var sortSelections: [SortSelection] = [
@@ -36,7 +36,7 @@ class SortListModalView: UIView {
         super.init(frame: frame)
 
         self.frame = UIScreen.main.bounds
-        self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0.7)
+        self.backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
 
         titleLabel.text = "Sort list"
         titleLabel.textColor = .black
@@ -74,7 +74,9 @@ class SortListModalView: UIView {
     private func setupViews() {
         let containerViewSize = CGSize(width: 325, height: 263)
         let dismissButtonSize = CGSize(width: 60, height: 25)
+        let horizontalPadding = 24
         let titleLabelSize = CGSize(width: 67, height: 22)
+        let verticalPadding = 36
 
         containerView.snp.makeConstraints { make in
             make.size.equalTo(containerViewSize)
@@ -84,20 +86,20 @@ class SortListModalView: UIView {
         dismissButton.snp.makeConstraints { make in
             make.size.equalTo(dismissButtonSize)
             make.top.equalTo(containerView).offset(33)
-            make.trailing.equalTo(containerView).inset(24)
+            make.trailing.equalTo(containerView).inset(horizontalPadding)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(36)
-            make.leading.equalTo(containerView).offset(24)
+            make.top.equalTo(containerView).offset(verticalPadding)
+            make.leading.equalTo(containerView).offset(horizontalPadding)
             make.size.equalTo(titleLabelSize)
         }
 
         sortOptionsTableView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
             make.trailing.equalTo(dismissButton)
-            make.top.equalTo(titleLabel).offset(36)
-            make.bottom.equalToSuperview().inset(36)
+            make.top.equalTo(titleLabel).offset(verticalPadding)
+            make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
         // Animate the pop up of error alert view in 0.25 seconds
@@ -115,7 +117,7 @@ class SortListModalView: UIView {
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
-            self.delegate?.dismissSortMedia()
+            self.delegate?.dismissModal()
         }
     }
 
