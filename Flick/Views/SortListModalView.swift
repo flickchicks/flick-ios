@@ -100,11 +100,23 @@ class SortListModalView: UIView {
             make.bottom.equalToSuperview().inset(36)
         }
 
+        // Animate the pop up of error alert view in 0.25 seconds
+        UIView.animate(withDuration: 0.25, animations: {
+            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
+            self.containerView.alpha = 1
+            self.containerView.transform = .identity
+        })
+
     }
 
     @objc func dismiss() {
-        print("dissmis")
-        delegate?.dismissSortMedia()
+        UIView.animate(withDuration: 0.15, animations: {
+            self.containerView.alpha = 0
+            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
+        }) { (_) in
+            self.delegate?.dismissSortMedia()
+        }
     }
 
 }

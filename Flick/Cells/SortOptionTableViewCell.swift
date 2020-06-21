@@ -33,12 +33,10 @@ class SortOptionTableViewCell: UITableViewCell {
 
         ascendButton.imageView?.contentMode = .scaleAspectFit
         ascendButton.addTarget(self, action: #selector(setAscendingSort), for: .touchUpInside)
-        ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
         addSubview(ascendButton)
 
         descendButton.imageView?.contentMode = .scaleAspectFit
         descendButton.addTarget(self, action: #selector(setDescendingSort), for: .touchUpInside)
-        descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
         addSubview(descendButton)
 
         setupConstraints()
@@ -46,12 +44,18 @@ class SortOptionTableViewCell: UITableViewCell {
 
     func configure(for sortSelection: SortSelection, at index: Int, delegate: SortOptionDelegate) {
         self.delegate = delegate
+        self.index = index
         sortLabel.text = sortSelection.description
         sortLabel.textColor = sortSelection.sortDirection == .unselected ? .darkBlueGray2 : .gradientPurple
         if (sortSelection.sortDirection == .ascending) {
             ascendButton.setImage(UIImage(named: "filledUpArrow"), for: .normal)
+            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
         } else if (sortSelection.sortDirection == .descending) {
+            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
             descendButton.setImage(UIImage(named: "filledDownArrow"), for: .normal)
+        } else {
+            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
+            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
         }
     }
 
@@ -81,14 +85,11 @@ class SortOptionTableViewCell: UITableViewCell {
     }
 
     @objc func setAscendingSort() {
-        if let delegate = delegate {
-            print(delegate)
-        }
-//        delegate?.setSortSelection(at: index, for: .ascending)
+        delegate?.setSortSelection(at: index, for: .ascending)
     }
 
     @objc func setDescendingSort() {
-//        delegate?.setSortSelection(at: index, for: .descending)
+        delegate?.setSortSelection(at: index, for: .descending)
     }
 
 }

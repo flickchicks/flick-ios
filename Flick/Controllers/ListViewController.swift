@@ -213,7 +213,6 @@ extension ListViewController: MediaListHeaderDelegate, SortListModalDelegate {
     }
 
     func dismissSortMedia() {
-        print("here")
         navigationController?.navigationBar.layer.zPosition = 1;
         sortListModalView.removeFromSuperview()
     }
