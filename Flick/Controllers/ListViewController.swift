@@ -37,7 +37,7 @@ class ListViewController: UIViewController {
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
     private var sections = [Section]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite

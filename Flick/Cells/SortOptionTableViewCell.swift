@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SortOptionDelegate: class {
-    func setSortSelection(at index: Int, for sortDirection: SortDirection )
+    func setSortSelection(at index: Int, for sortDirection: SortDirection)
 }
 
 class SortOptionTableViewCell: UITableViewCell {
@@ -76,17 +76,10 @@ class SortOptionTableViewCell: UITableViewCell {
 
     private func setColors(sortDirection: SortDirection) {
         sortLabel.textColor = sortDirection == .unselected ? .darkBlueGray2 : .gradientPurple
-        switch sortDirection {
-        case .ascending:
-            ascendButton.setImage(UIImage(named: "filledUpArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
-        case .descending:
-            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "filledDownArrow"), for: .normal)
-        case .unselected:
-            ascendButton.setImage(UIImage(named: "upArrow"), for: .normal)
-            descendButton.setImage(UIImage(named: "downArrow"), for: .normal)
-        }
+        let ascentImageName = sortDirection == .ascending ? "filledUpArrow" : "upArrow"
+        let descendImageName = sortDirection == .descending ? "filledDownArrow" : "downArrow"
+        ascendButton.setImage(UIImage(named: ascentImageName), for: .normal)
+        descendButton.setImage(UIImage(named: descendImageName), for: .normal)
     }
 
     @objc func setAscendingSort() {
