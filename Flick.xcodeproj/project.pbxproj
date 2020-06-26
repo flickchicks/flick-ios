@@ -267,7 +267,10 @@
 				D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */,
 				309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */,
 				309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */,
+<<<<<<< HEAD
 				D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */,
+=======
+>>>>>>> fb8569160ca1f9577f8ae1250648afff18149335
 				80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */,
 			);
 			path = Cells;
