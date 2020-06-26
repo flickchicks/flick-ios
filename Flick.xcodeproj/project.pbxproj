@@ -16,6 +16,8 @@
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
+		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
+		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
 		D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B12477C7A40048900F /* AppDelegate.swift */; };
 		D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B32477C7A40048900F /* SceneDelegate.swift */; };
 		D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B52477C7A40048900F /* LoginViewController.swift */; };
@@ -69,6 +71,8 @@
 		309F287024956FB400A670B0 /* MediaListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListHeaderView.swift; sourceTree = "<group>"; };
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
+		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
+		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		BB53720A824B4207A2982A0A /* Pods_Flick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.release.xcconfig"; sourceTree = "<group>"; };
 		D41FE8AE2477C7A40048900F /* Flick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flick.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +157,7 @@
 				D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */,
 				309F287024956FB400A670B0 /* MediaListHeaderView.swift */,
 				D46B3F6E249E7727008D5484 /* ModalView.swift */,
+				80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */,
 				309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */,
 				309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */,
+				80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -533,9 +539,11 @@
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
+				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
+				80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* ModalView.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,

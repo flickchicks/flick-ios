@@ -31,8 +31,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // User is logged out.
             rootViewController = loginViewController
         }
-        let navigationController = UINavigationController(rootViewController: rootViewController)
+//        let navigationController = UINavigationController(rootViewController: rootViewController)
 
+        let navigationController = UINavigationController(rootViewController: HomeViewController())
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
