@@ -106,6 +106,7 @@ class ProfileViewController: UIViewController {
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
         listsTableView.separatorStyle = .none
+        listsTableView.showsVerticalScrollIndicator = false
         listsTableView.bounces = false
         view.addSubview(listsTableView)
 
