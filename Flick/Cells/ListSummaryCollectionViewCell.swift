@@ -12,7 +12,7 @@ protocol ListSummaryDelegate: class {
     func changeListSummaryHeight(height: Int)
 }
 
-enum tagDisplay { case condensed, expanded }
+enum tagDisplay { case collapsed, expanded }
 
 // To center collection view cells
 // Reference: https://stackoverflow.com/a/49709185
@@ -78,7 +78,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     // TODO: Replace with data from backend
     private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     private var allTagSizes = [CGSize]()
-    private var condensedTags = [String]()
+    private var collapsedTags = [String]()
     weak var delegate: ListSummaryDelegate?
     // TODO: Replace with data from backend, make sure to include current user
     private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
@@ -237,14 +237,14 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             allTagSizes.append(CGSize(width: width, height: height))
         }
 
-        tagDisplay = numInFirstTwoRows != 0 && allTags.count > numInFirstTwoRows ? .condensed : .expanded
-        if tagDisplay == .condensed {
-            condensedTags = Array(allTags.prefix(numInFirstTwoRows - 1))
+        tagDisplay = numInFirstTwoRows != 0 && allTags.count > numInFirstTwoRows ? .collapsed : .expanded
+        if tagDisplay == .collapsed {
+            collapsedTags = Array(allTags.prefix(numInFirstTwoRows - 1))
         }
     }
 
     @objc private func tappedShowLess() {
-        tagDisplay = .condensed
+        tagDisplay = .collapsed
         showLessButton.isHidden = true
         tagCollectionView.snp.updateConstraints { update in
             update.bottom.equalToSuperview().inset(10)
@@ -264,20 +264,20 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch tagDisplay {
-        case .condensed:
-            return condensedTags.count
+        case .collapsed:
+            return collapsedTags.count
         case .expanded:
             return allTags.count
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if tagDisplay == .condensed && indexPath.item == numInFirstTwoRows - 2 {
+        if tagDisplay == .collapsed && indexPath.item == numInFirstTwoRows - 2 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: "+ \(allTags.count - numInFirstTwoRows + 2) more", type: .more)
             return cell
         } else {
-            let tag = tagDisplay == .condensed ? condensedTags[indexPath.item] : allTags[indexPath.item]
+            let tag = tagDisplay == .collapsed ? collapsedTags[indexPath.item] : allTags[indexPath.item]
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: tag, type: .tag)
             // Select cell if it was previously selected
@@ -294,11 +294,11 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if tagDisplay == .condensed && indexPath.item != condensedTags.count - 1 || tagDisplay == .expanded {
+        if tagDisplay == .collapsed && indexPath.item != collapsedTags.count - 1 || tagDisplay == .expanded {
             selectedTagIndex = indexPath
         }
         // If tapped to show more tags
-        if tagDisplay == .condensed && indexPath.item == condensedTags.count - 1 {
+        if tagDisplay == .collapsed && indexPath.item == collapsedTags.count - 1 {
             tagDisplay = .expanded
             showLessButton.isHidden = false
             collectionView.snp.updateConstraints { update in
