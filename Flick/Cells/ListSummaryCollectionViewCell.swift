@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListSummaryDelegate: class {
+    func changeListSummaryHeight(height: Int)
+}
+
 enum tagDisplay { case condensed, expanded }
 
 // To center collection view cells
@@ -67,6 +71,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let lockView = UIImageView()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
+    private let showLessButton = UIButton()
     private var tagCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
@@ -74,10 +79,12 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     private var allTagSizes = [CGSize]()
     private var condensedTags = [String]()
+    weak var delegate: ListSummaryDelegate?
     // TODO: Replace with data from backend, make sure to include current user
     private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
     private let collaboratorsCellSpacing = -5
     private var numInFirstTwoRows = 0
+    private var selectedTagIndex: IndexPath?
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
     private let tagCellSpacing: CGFloat = 8
     private var tagDisplay: tagDisplay = .expanded
@@ -117,6 +124,13 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         contentView.addSubview(listNameLabel)
+
+        showLessButton.setTitle("Show less", for: .normal)
+        showLessButton.setTitleColor(.mediumGray, for: .normal)
+        showLessButton.titleLabel?.font = .systemFont(ofSize: 12)
+        showLessButton.isHidden = true
+        showLessButton.addTarget(self, action: #selector(tappedShowLess), for: .touchUpInside)
+        contentView.addSubview(showLessButton)
 
         let tagCollectionViewLayout = TagFlowLayout(
             minimumInteritemSpacing: tagCellSpacing,
@@ -188,6 +202,11 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(22)
         }
 
+        showLessButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(tagCollectionView.snp.bottom).offset(10)
+        }
+
         tagCollectionView.snp.makeConstraints { make in
             make.top.equalTo(privacyView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
@@ -201,7 +220,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)
             ])
             let width = tagSize.width + 24
-            let height = tagSize.height + 12
+            let height = tagSize.height + 10
 
             // To increment number of rows
             let collectionViewWidth = UIScreen.main.bounds.width - 60
@@ -222,6 +241,17 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         if tagDisplay == .condensed {
             condensedTags = Array(allTags.prefix(numInFirstTwoRows - 1))
         }
+    }
+
+    @objc private func tappedShowLess() {
+        tagDisplay = .condensed
+        showLessButton.isHidden = true
+        tagCollectionView.snp.updateConstraints { update in
+            update.bottom.equalToSuperview().inset(10)
+        }
+        tagCollectionView.reloadData()
+
+        delegate?.changeListSummaryHeight(height: 195)
     }
 
     required init?(coder: NSCoder) {
@@ -245,11 +275,16 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
         if tagDisplay == .condensed && indexPath.item == numInFirstTwoRows - 2 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: "+ \(allTags.count - numInFirstTwoRows + 2) more", type: .more)
-                return cell
+            return cell
         } else {
             let tag = tagDisplay == .condensed ? condensedTags[indexPath.item] : allTags[indexPath.item]
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: tag, type: .tag)
+            // Select cell if it was previously selected
+            if let selectedIndexPath = selectedTagIndex, indexPath == selectedIndexPath {
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+                cell.isSelected = true
+            }
             return cell
         }
     }
@@ -259,9 +294,20 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if tagDisplay == .condensed && indexPath.item != condensedTags.count - 1 || tagDisplay == .expanded {
+            selectedTagIndex = indexPath
+        }
+        // If tapped to show more tags
         if tagDisplay == .condensed && indexPath.item == condensedTags.count - 1 {
             tagDisplay = .expanded
+            showLessButton.isHidden = false
+            collectionView.snp.updateConstraints { update in
+                update.bottom.equalToSuperview().inset(50)
+            }
             collectionView.reloadData()
+
+            let collectionViewHeight = tagRowCount * (Int(tagCellSpacing) + 25)
+            delegate?.changeListSummaryHeight(height: collectionViewHeight + 165)
         }
     }
 
