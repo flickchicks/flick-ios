@@ -257,6 +257,11 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? CollaboratorTableViewCell else { return }
+        cell.isSelected.toggle()
+    }
+
 }
 
 extension AddCollaboratorModalView: UISearchBarDelegate {
