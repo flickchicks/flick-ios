@@ -25,25 +25,25 @@ class AddCollaboratorModalView: UIView {
 
 
     // MARK: - Private Data Vars
-    weak var delegate: ModalDelegate?
-    private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
-    private var collaborators: [Collaborator] = [
-        Collaborator(name: "Cindy Huang", isOwner: true, image: "", isAdded: true),
-        Collaborator(name: "Lucy Xu", isOwner: false, image: "", isAdded: true)
-    ]
     private var allFriends: [Collaborator] = [
         Collaborator(name: "Olivia Li", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Vivi Ye", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Aaastha Shah", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Haiying Weng", isOwner: false, image: "", isAdded: false)
     ]
+    private var collaborators: [Collaborator] = [
+        Collaborator(name: "Cindy Huang", isOwner: true, image: "", isAdded: true),
+        Collaborator(name: "Lucy Xu", isOwner: false, image: "", isAdded: true)
+    ]
+    private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
+    weak var delegate: ModalDelegate?
     private var friends: [Collaborator] = [
         Collaborator(name: "Olivia Li", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Vivi Ye", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Aaastha Shah", isOwner: false, image: "", isAdded: false),
         Collaborator(name: "Haiying Weng", isOwner: false, image: "", isAdded: false)
     ]
-
+    // TODO: Replace with backend values and maybe rethink object model
     private let inviteCollaboratorCellReuseIdentifier = "InviteCollaboratorCellReuseIdentifier"
 
     override init(frame: CGRect) {
@@ -110,56 +110,24 @@ class AddCollaboratorModalView: UIView {
         addSubview(containerView)
 
         setupConstraints()
-
-        if friends.count > 0 {
-            inviteCollaboratorsTableView = UITableView(frame: .zero, style: .plain)
-            inviteCollaboratorsTableView.dataSource = self
-            inviteCollaboratorsTableView.delegate = self
-            inviteCollaboratorsTableView.isScrollEnabled = true
-            inviteCollaboratorsTableView.alwaysBounceVertical = false
-            inviteCollaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
-            inviteCollaboratorsTableView.separatorStyle = .none
-            containerView.addSubview(inviteCollaboratorsTableView)
-
-            let inviteCollaboratorsTableViewHeight = min(4, friends.count) * 57
-
-            inviteCollaboratorsTableView.snp.makeConstraints { make in
-                make.leading.equalTo(collaboratorsTitleLabel)
-                make.trailing.equalTo(dismissButton)
-                make.height.equalTo(inviteCollaboratorsTableViewHeight)
-                make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
-            }
-
-        } else {
-
-            noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... Tell them to join Flick!"
-            noFriendsLabel.textColor = .mediumGray
-            noFriendsLabel.font = .systemFont(ofSize: 12)
-            noFriendsLabel.textAlignment = .center
-            containerView.addSubview(noFriendsLabel)
-
-            noFriendsLabel.snp.makeConstraints { make in
-                make.leading.equalTo(collaboratorsTitleLabel)
-                make.trailing.equalTo(dismissButton)
-                make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
-                make.height.equalTo(193)
-            }
-        }
-
+        setupFriendsView()
     }
 
     private func setupConstraints() {
+        let collaboratorCellHeight = 57
+        let collaboratorsTitleLabelSize = CGSize(width: 117, height: 22)
         let copyLinkButtonSize = CGSize(width: 48, height: 12)
         let dismissButtonSize = CGSize(width: 60, height: 25)
         let horizontalPadding = 24
-        let collaboratorsTitleLabelSize = CGSize(width: 117, height: 22)
         let inviteTitleLabelSize = CGSize(width: 48, height: 22)
+        let noFriendsSectionViewHeight = 193
         let verticalPadding = 36
 
-        let collaboratorsTableViewHeight = min(collaborators.count, 4) * 57
-        let friendsTableViewHeight = min(friends.count, 4) * 57
+        let collaboratorsTableViewHeight = min(collaborators.count, 4) * collaboratorCellHeight
+        let friendsTableViewHeight = min(friends.count, 4) * collaboratorCellHeight
 
-        let inviteSectionHeight = friends.count > 0 ? friendsTableViewHeight : 193
+        let inviteSectionHeight = friends.count > 0 ? friendsTableViewHeight : noFriendsSectionViewHeight
+        // 227 is manually calculated height for container
         let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + 277
 
         let containerViewSize = CGSize(width: 325, height: containerHeight)
@@ -221,6 +189,41 @@ class AddCollaboratorModalView: UIView {
 
     }
 
+    private func setupFriendsView() {
+        if friends.count > 0 {
+            inviteCollaboratorsTableView = UITableView(frame: .zero, style: .plain)
+            inviteCollaboratorsTableView.dataSource = self
+            inviteCollaboratorsTableView.delegate = self
+            inviteCollaboratorsTableView.isScrollEnabled = true
+            inviteCollaboratorsTableView.alwaysBounceVertical = false
+            inviteCollaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
+            inviteCollaboratorsTableView.separatorStyle = .none
+            containerView.addSubview(inviteCollaboratorsTableView)
+
+            let inviteCollaboratorsTableViewHeight = min(4, friends.count) * 57
+            inviteCollaboratorsTableView.snp.makeConstraints { make in
+                make.leading.equalTo(collaboratorsTitleLabel)
+                make.trailing.equalTo(dismissButton)
+                make.height.equalTo(inviteCollaboratorsTableViewHeight)
+                make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
+            }
+        } else {
+            noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... Tell them to join Flick!"
+            noFriendsLabel.textColor = .mediumGray
+            noFriendsLabel.numberOfLines = 0
+            noFriendsLabel.font = .systemFont(ofSize: 12)
+            noFriendsLabel.textAlignment = .center
+            containerView.addSubview(noFriendsLabel)
+
+            noFriendsLabel.snp.makeConstraints { make in
+                make.leading.equalTo(collaboratorsTitleLabel)
+                make.trailing.equalTo(dismissButton)
+                make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
+                make.height.equalTo(193)
+            }
+        }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -258,8 +261,10 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? CollaboratorTableViewCell else { return }
-        cell.isSelected.toggle()
+        if tableView == inviteCollaboratorsTableView {
+            friends[indexPath.row].isAdded.toggle()
+        }
+        tableView.reloadData()
     }
 
 }
@@ -275,6 +280,5 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
             }
             inviteCollaboratorsTableView.reloadData()
         }
-        print(searchText)
     }
 }

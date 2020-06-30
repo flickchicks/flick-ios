@@ -27,16 +27,13 @@ class CollaboratorTableViewCell: UITableViewCell {
         addSubview(nameLabel)
 
         ownerLabel.text = "Owner"
-        ownerLabel.isHidden = true
         ownerLabel.font = .systemFont(ofSize: 16)
         ownerLabel.textColor = .mediumGray
-        addSubview(ownerLabel)
 
         userImageView.layer.cornerRadius = 20
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         addSubview(userImageView)
 
-//        selectIndicatorImageView.image = UIImage(named: "selectIndicator")
         addSubview(selectIndicatorImageView)
 
         isSelectedIndicatorImageView.image = UIImage(named: "isSelectedIndicator")
@@ -48,16 +45,16 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     func configure(for collaborator: Collaborator) {
         nameLabel.text = collaborator.name
-        userImageView.image = UIImage(named: collaborator.image)
+//        userImageView.image = UIImage(named: collaborator.image)
         if collaborator.isOwner {
-            ownerLabel.isHidden = false
+            addSubview(ownerLabel)
+            setupOwnerConstraints()
         }
-        else if collaborator.isAdded {
-            selectIndicatorImageView.image = UIImage(named: "filledSelectIndicator")
-            isSelectedIndicatorImageView.isHidden = false
-        } else {
-            selectIndicatorImageView.image = UIImage(named: "selectIndicator")
-            isSelectedIndicatorImageView.isHidden = true
+        else {
+            setupNonOwnerConstraints()
+            isSelectedIndicatorImageView.isHidden = !collaborator.isAdded
+            let selectIndicatorImageName = collaborator.isAdded ? "filledSelectIndicator" : "selectIndicator"
+            selectIndicatorImageView.image = UIImage(named: selectIndicatorImageName)
         }
     }
 
@@ -69,16 +66,6 @@ class CollaboratorTableViewCell: UITableViewCell {
         let isSelectedIndicatorSize = CGSize(width: 10, height: 8)
         let selectIndicatorSize = CGSize(width: 20, height: 20)
         let userImageSize = CGSize(width: 40, height: 40)
-
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userImageView.snp.trailing).offset(16)
-            make.top.equalTo(userImageView)
-        }
-
-        ownerLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
-        }
 
         userImageView.snp.makeConstraints { make in
             make.size.equalTo(userImageSize)
@@ -94,7 +81,24 @@ class CollaboratorTableViewCell: UITableViewCell {
             make.center.equalTo(selectIndicatorImageView)
             make.size.equalTo(isSelectedIndicatorSize)
         }
+    }
 
+    private func setupOwnerConstraints() {
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(userImageView.snp.trailing).offset(16)
+            make.top.equalTo(userImageView)
+        }
+        ownerLabel.snp.makeConstraints { make in
+            make.leading.equalTo(nameLabel)
+            make.top.equalTo(nameLabel.snp.bottom).offset(4)
+        }
+    }
+
+    private func setupNonOwnerConstraints() {
+        nameLabel.snp.makeConstraints { make in
+            make.leading.equalTo(userImageView.snp.trailing).offset(16)
+            make.centerY.equalToSuperview()
+        }
     }
 
 }
