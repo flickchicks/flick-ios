@@ -203,6 +203,9 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
+        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height) - 45.0)
+        addToListVC.modalPresentationStyle = .overCurrentContext
+        present(addToListVC, animated: true, completion: nil)
     }
 
     func editMedia() {
