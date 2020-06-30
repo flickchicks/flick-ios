@@ -245,6 +245,7 @@
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
 				D4786695247A0A03009E42FE /* DiscoverViewController.swift */,
 				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
+				80F00F5B24A79CA90051B8FF /* AddToListViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -532,6 +533,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
+				80F00F5C24A79CA90051B8FF /* AddToListViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* TabOptionCollectionViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
