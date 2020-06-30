@@ -10,7 +10,7 @@ import SnapKit
 import UIKit
 
 class ListViewController: UIViewController {
-    
+
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
@@ -30,13 +30,15 @@ class ListViewController: UIViewController {
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
-    private let headerReuseIdentifier = "HeaderReuseIdentifier"
-    private let listName = "Foreign Films"
-    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
+    private var listSummaryHeight: CGFloat = 195
     // TODO: Replace with data from backend
+    private let listName = "Foreign Films"
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
-    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
     private var sections = [Section]()
+
+    private let headerReuseIdentifier = "HeaderReuseIdentifier"
+    private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
+    private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,7 +98,7 @@ class ListViewController: UIViewController {
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
-    
+
     private func setupSections() {
         let listSummary = Section(type: SectionType.listSummary, items: [])
         let mediaList = Section(type: SectionType.mediaList, items: media)
@@ -106,7 +108,7 @@ class ListViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
-    
+
      func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
         title = offset > 40 ? listName : nil
@@ -140,6 +142,7 @@ extension ListViewController: UICollectionViewDataSource {
         switch section.type {
         case .listSummary:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listSummaryCellReuseIdentifier, for: indexPath) as? ListSummaryCollectionViewCell else { return UICollectionViewCell() }
+            cell.delegate = self
             return cell
         case .mediaList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
@@ -167,7 +170,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            return CGSize(width: collectionView.frame.width, height: 195)
+            return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
             let height = width * 3 / 2
@@ -198,6 +201,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
+
     func addMedia() {
         // TODO: Remove show collaborator view later
         addCollaboratorModalView = AddCollaboratorModalView()
@@ -222,6 +226,15 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     func dismissModal(modalView: UIView) {
         navigationController?.navigationBar.layer.zPosition = 1
         modalView.removeFromSuperview()
+    }
+
+}
+
+extension ListViewController: ListSummaryDelegate {
+
+    func changeListSummaryHeight(height: Int) {
+        listSummaryHeight = CGFloat(height)
+        mediaCollectionView.reloadData()
     }
 
 }
