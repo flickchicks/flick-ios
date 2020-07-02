@@ -23,6 +23,7 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
+    private var addCollaboratorModalView: AddCollaboratorModalView!
     private var mediaCollectionView: UICollectionView!
     private var sortListModalView: SortListModalView!
 
@@ -202,7 +203,6 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
-        print("Add media")
     }
 
     func editMedia() {
@@ -217,9 +217,9 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
         view.addSubview(sortListModalView)
     }
 
-    func dismissModal() {
+    func dismissModal(modalView: UIView) {
         navigationController?.navigationBar.layer.zPosition = 1
-        sortListModalView.removeFromSuperview()
+        modalView.removeFromSuperview()
     }
 
 }
