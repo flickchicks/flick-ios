@@ -12,19 +12,19 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
 
     private let overlayView = UIView()
     private let posterImageView = UIImageView()
-    private let selectView = UIView()
+    private let selectView = SelectIndicatorView(width: 20)
 
     private let selectSize = CGSize(width: 20, height: 20)
 
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                selectView.layer.borderColor = UIColor.gradientPurple.cgColor
+                selectView.select()
                 layer.borderWidth = 2
                 layer.borderColor = UIColor.gradientPurple.cgColor
                 overlayView.isHidden = false
             } else {
-                selectView.layer.borderColor = UIColor.lightGray.cgColor
+                selectView.deselect()
                 layer.borderWidth = 0
                 overlayView.isHidden = true
             }
@@ -45,9 +45,6 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(overlayView)
 
         selectView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        selectView.layer.cornerRadius = selectSize.width / 2
-        selectView.layer.borderWidth = 2
-        selectView.layer.borderColor = UIColor.lightGray.cgColor
         contentView.addSubview(selectView)
 
         setupConstraints()

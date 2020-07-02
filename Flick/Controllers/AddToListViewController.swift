@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: need to be able to pull down to dismiss
 class AddToListViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -30,8 +31,8 @@ class AddToListViewController: UIViewController {
     private var numSelected = 0
     // TODO: Get result from backend. Media are string for now
     private var selectedMedia = [String]()
-    private var searchResultMedia = ["", "", "", ""]
-    private var suggestedMedia = ["", "", "", ""]
+    private var searchResultMedia = ["", "", "", "", "", "", "", "", "", "", "", ""]
+    private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
 
     init(height: Float) {
         super.init(nibName: nil, bundle: nil)
@@ -76,6 +77,7 @@ class AddToListViewController: UIViewController {
         resultMediaTableView.separatorStyle = .none
         resultMediaTableView.allowsMultipleSelection = true
         resultMediaTableView.bounces = false
+        resultMediaTableView.showsVerticalScrollIndicator = false
         view.addSubview(resultMediaTableView)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
@@ -159,9 +161,19 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
         return 78
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        numSelected += 1
+        selectedLabel.text = "\(numSelected) Selected"
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        numSelected -= 1
+        selectedLabel.text = "\(numSelected) Selected"
+    }
+
 }
 
-extension AddToListViewController: UICollectionViewDataSource {
+extension AddToListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return suggestedMedia.count
@@ -170,6 +182,16 @@ extension AddToListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaSelectableCellReuseIdentifier, for: indexPath) as? MediaSelectableCollectionViewCell else { return UICollectionViewCell() }
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        numSelected += 1
+        selectedLabel.text = "\(numSelected) Selected"
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        numSelected -= 1
+        selectedLabel.text = "\(numSelected) Selected"
     }
 
 }

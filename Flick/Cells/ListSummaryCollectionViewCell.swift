@@ -67,7 +67,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let collaborateLabel = UILabel()
     private let collaborateView = UIView()
     private var collaboratorsPreviewView = UIView()
-    private let listNameLabel = UILabel()
     private let lockView = UIImageView()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
@@ -120,11 +119,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         lockView.image = UIImage(named: isPrivate ? "lock" : "unlock")
         privacyView.addSubview(lockView)
 
-        listNameLabel.text = "Foreign Films" // Temp
-        listNameLabel.textAlignment = .center
-        listNameLabel.font = .boldSystemFont(ofSize: 20)
-        contentView.addSubview(listNameLabel)
-
         showLessButton.setTitle("Show less", for: .normal)
         showLessButton.setTitleColor(.mediumGray, for: .normal)
         showLessButton.titleLabel?.font = .systemFont(ofSize: 12)
@@ -175,7 +169,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
 
         collaborateView.snp.makeConstraints { make in
-            make.top.equalTo(listNameLabel.snp.bottom).offset(20)
+            make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(listInfoHeight)
         }
@@ -194,12 +188,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(collaborateView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.height.equalTo(listInfoHeight)
-        }
-
-        listNameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(5)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(22)
         }
 
         showLessButton.snp.makeConstraints { make in
@@ -251,7 +239,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
         tagCollectionView.reloadData()
 
-        delegate?.changeListSummaryHeight(height: 195)
+        delegate?.changeListSummaryHeight(height: 145)
     }
 
     required init?(coder: NSCoder) {
@@ -307,7 +295,7 @@ extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
             collectionView.reloadData()
 
             let collectionViewHeight = tagRowCount * (Int(tagCellSpacing) + 25)
-            delegate?.changeListSummaryHeight(height: collectionViewHeight + 165)
+            delegate?.changeListSummaryHeight(height: collectionViewHeight + 120)
         }
     }
 

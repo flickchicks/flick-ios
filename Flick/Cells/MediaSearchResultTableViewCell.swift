@@ -14,7 +14,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let posterImageView = UIImageView()
     private let nameLabel = UILabel()
-    private let selectView = UIView()
+    private let selectView = SelectIndicatorView(width: 20)
     private let checkImageView = UIImageView()
 
     // MARK: - Private Data Vars
@@ -34,14 +34,10 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         // TODO: name is temp
         nameLabel.text = "Slime anime"
-        nameLabel.textColor = .darkBlueGray2
+        nameLabel.textColor = .darkBlue
         nameLabel.font = .systemFont(ofSize: 16)
         containerView.addSubview(nameLabel)
 
-        selectView.backgroundColor = .clear
-        selectView.layer.cornerRadius = selectSize.width / 2
-        selectView.layer.borderWidth = 2
-        selectView.layer.borderColor = UIColor.lightGray.cgColor
         containerView.addSubview(selectView)
 
         setupConstraints()
@@ -79,8 +75,13 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        containerView.backgroundColor = selected ? .lightGray2 : .white
-        selectView.layer.borderColor = selected ? UIColor.gradientPurple.cgColor : UIColor.lightGray.cgColor
+        if selected {
+            containerView.backgroundColor = .lightGray2
+            selectView.select()
+        } else {
+            containerView.backgroundColor = .white
+            selectView.deselect()
+        }
     }
 
 }

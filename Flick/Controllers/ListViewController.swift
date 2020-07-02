@@ -24,13 +24,14 @@ class ListViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var addCollaboratorModalView: AddCollaboratorModalView!
+    private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
     private var sortListModalView: SortListModalView!
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
-    private var listSummaryHeight: CGFloat = 195
+    private var listSummaryHeight: CGFloat = 145
     // TODO: Replace with data from backend
     private let listName = "Foreign Films"
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
@@ -45,6 +46,11 @@ class ListViewController: UIViewController {
         view.backgroundColor = .offWhite
 
         setupNavigationBar()
+
+        listNameLabel.text = "Foreign Films" // Temp
+        listNameLabel.textAlignment = .center
+        listNameLabel.font = .boldSystemFont(ofSize: 20)
+        view.addSubview(listNameLabel)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
         mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
@@ -63,12 +69,21 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
-        mediaCollectionView.snp.makeConstraints { make in
+        setupSections()
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        listNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(22)
         }
 
-        setupSections()
+        mediaCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(listNameLabel.snp.bottom).offset(20)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
 
     private func setupNavigationBar() {
@@ -107,11 +122,6 @@ class ListViewController: UIViewController {
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
-    }
-
-     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.y
-        title = offset > 40 ? listName : nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -203,7 +213,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
-        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height) - 45.0)
+        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height))
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
     }
