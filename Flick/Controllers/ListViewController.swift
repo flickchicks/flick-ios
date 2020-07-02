@@ -203,12 +203,6 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
-        // TODO: Remove show collaborator view later
-        addCollaboratorModalView = AddCollaboratorModalView()
-        addCollaboratorModalView.delegate = self
-        // TODO: Sends navigation bar to the back, but gets covered by the main view
-        navigationController?.navigationBar.layer.zPosition = -1
-        view.addSubview(addCollaboratorModalView)
     }
 
     func editMedia() {

@@ -14,7 +14,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     private let isSelectedIndicatorImageView = UIImageView()
     private let nameLabel = UILabel()
     private let ownerLabel = UILabel()
-    private let selectIndicatorImageView = UIImageView()
+    private let selectIndicatorView = UIView()
     private let userImageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -34,7 +34,11 @@ class CollaboratorTableViewCell: UITableViewCell {
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         addSubview(userImageView)
 
-        addSubview(selectIndicatorImageView)
+        selectIndicatorView.layer.cornerRadius = 10
+        selectIndicatorView.layer.borderWidth = 2
+        selectIndicatorView.layer.backgroundColor = UIColor.white.cgColor
+        selectIndicatorView.isHidden = true
+        addSubview(selectIndicatorView)
 
         isSelectedIndicatorImageView.image = UIImage(named: "isSelectedIndicator")
         isSelectedIndicatorImageView.isHidden = true
@@ -49,12 +53,11 @@ class CollaboratorTableViewCell: UITableViewCell {
         if collaborator.isOwner {
             addSubview(ownerLabel)
             setupOwnerConstraints()
-        }
-        else {
+        } else {
             setupNonOwnerConstraints()
             isSelectedIndicatorImageView.isHidden = !collaborator.isAdded
-            let selectIndicatorImageName = collaborator.isAdded ? "filledSelectIndicator" : "selectIndicator"
-            selectIndicatorImageView.image = UIImage(named: selectIndicatorImageName)
+            selectIndicatorView.layer.borderColor = collaborator.isAdded ? UIColor.gradientPurple.cgColor : UIColor.lightGray.cgColor
+            selectIndicatorView.isHidden = false
         }
     }
 
@@ -72,13 +75,13 @@ class CollaboratorTableViewCell: UITableViewCell {
             make.centerY.leading.equalToSuperview()
         }
 
-        selectIndicatorImageView.snp.makeConstraints { make in
+        selectIndicatorView.snp.makeConstraints { make in
             make.size.equalTo(selectIndicatorSize)
             make.centerY.trailing.equalToSuperview()
         }
 
         isSelectedIndicatorImageView.snp.makeConstraints { make in
-            make.center.equalTo(selectIndicatorImageView)
+            make.center.equalTo(selectIndicatorView)
             make.size.equalTo(isSelectedIndicatorSize)
         }
     }

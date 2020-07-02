@@ -23,7 +23,6 @@ class AddCollaboratorModalView: UIView {
     private let subtitleLabel = UILabel()
     private let noFriendsLabel = UILabel()
 
-
     // MARK: - Private Data Vars
     private var allFriends: [Collaborator] = [
         Collaborator(name: "Olivia Li", isOwner: false, image: "", isAdded: false),
@@ -209,7 +208,7 @@ class AddCollaboratorModalView: UIView {
             }
         } else {
             noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... Tell them to join Flick!"
-            noFriendsLabel.textColor = .mediumGray
+            noFriendsLabel.textColor = .darkBlue
             noFriendsLabel.numberOfLines = 0
             noFriendsLabel.font = .systemFont(ofSize: 12)
             noFriendsLabel.textAlignment = .center
