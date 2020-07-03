@@ -16,7 +16,7 @@ class NetworkManager {
     private static let hostEndpoint = "http://localhost:8000"
 
     /// [POST] Register new user [updated as of 7/3/20]
-    static func createUser(user: User) {
+    static func registerUser(user: User, completion: @escaping (User) -> Void) {
         let parameters: [String: Any] = [
             "username": user.username,
             "first_name": user.firstName,

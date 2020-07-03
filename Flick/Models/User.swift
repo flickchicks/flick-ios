@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct User: Codable {
+class User: NSObject, Codable {
 
     var username: String
     var firstName: String
@@ -16,5 +16,14 @@ struct User: Codable {
     var profilePic: String
     var socialIdToken: String
     var socialIdTokenType: String
+
+    init(username: String, firstName: String, lastName: String, profilePic: String, socialIdToken: String, socialIdTokenType: String) {
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.profilePic = profilePic
+        self.socialIdToken = socialIdToken
+        self.socialIdTokenType = socialIdTokenType
+    }
 
 }

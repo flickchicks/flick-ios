@@ -13,6 +13,7 @@ import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    private let userDefaults = UserDefaults.standard
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -32,11 +33,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let token = AccessToken.current, !token.isExpired {
             // User is logged in.
             rootViewController = homeViewController
+            let decoder = JSONDecoder()
+            if let storedUser = userDefaults.data(forKey: "user") {
+                if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
+                    decodedUser.socialIdToken = token.tokenString
+                    let encoder = JSONEncoder()
+                    if let encodedUser = try? encoder.encode(decodedUser) {
+                        self.userDefaults.set(encodedUser, forKey: "user")
+                    }
+                }
+            }
         } else {
             // User is logged out.
             rootViewController = loginViewController
         }
-        let navigationController = UINavigationController(rootViewController: loginViewController)
+        let navigationController = UINavigationController(rootViewController: rootViewController)
 
         window.rootViewController = navigationController
         self.window = window
