@@ -14,20 +14,21 @@ class AddToListViewController: UIViewController {
     // MARK: - Private View Vars
     private let addToListLabel = UILabel()
     private let doneButton = UIButton()
+    private let searchBar = SearchBar()
     private let selectedLabel = UILabel()
-    private let resultLabel = UILabel()
     private var suggestedMediaCollectionView: UICollectionView!
+    private let resultLabel = UILabel()
     private var resultMediaTableView = UITableView()
     private let roundTopView = RoundTopView(hasShadow: true)
 
     // MARK: - Private Data Vars
     private var height: Float!
-    private let suggestedMediaCellPadding: CGFloat = 20
     private let doneButtonSize = CGSize(width: 44, height: 44)
+    private let suggestedMediaCellPadding: CGFloat = 20
+
     private let mediaSearchCellReuseIdentifier = "MediaSearchResultCellReuseIdentifier"
     private let mediaSelectableCellReuseIdentifier = "MediaSelectableCellReuseIdentifier"
 
-    private var numSearchResultMedia = 0
     private var numSelected = 0
     // TODO: Get result from backend. Media are string for now
     private var selectedMedia = [String]()
@@ -95,6 +96,10 @@ class AddToListViewController: UIViewController {
         suggestedMediaCollectionView.allowsMultipleSelection = true
         view.addSubview(suggestedMediaCollectionView)
 
+        searchBar.placeholder = "Search movies and shows"
+        searchBar.delegate = self
+        view.addSubview(searchBar)
+
         setupConstraints()
     }
 
@@ -118,7 +123,7 @@ class AddToListViewController: UIViewController {
         }
 
         selectedLabel.snp.makeConstraints { make in
-            make.top.equalTo(addToListLabel.snp.bottom).offset(24)
+            make.top.equalTo(searchBar.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(36)
         }
 
@@ -137,6 +142,12 @@ class AddToListViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(24)
             make.top.equalTo(resultLabel.snp.bottom).offset(14)
             make.bottom.equalToSuperview()
+        }
+
+        searchBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(36)
+            make.top.equalTo(addToListLabel.snp.bottom).offset(12)
+            make.height.equalTo(36)
         }
     }
 
@@ -202,6 +213,22 @@ extension AddToListViewController: UICollectionViewDelegateFlowLayout {
         let width = suggestedMediaCollectionView.frame.width / 3.0 - suggestedMediaCellPadding
         let height = width * 3 / 2
         return CGSize(width: width, height: height)
+    }
+
+}
+
+extension AddToListViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == "" {
+            resultLabel.text = "Suggested"
+            resultMediaTableView.isHidden = true
+            suggestedMediaCollectionView.isHidden = false
+        } else {
+            resultLabel.text = "\(searchResultMedia.count) Results"
+            resultMediaTableView.isHidden = false
+            suggestedMediaCollectionView.isHidden = true
+        }
     }
 
 }

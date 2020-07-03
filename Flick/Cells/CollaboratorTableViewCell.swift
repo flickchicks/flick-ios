@@ -11,10 +11,9 @@ import UIKit
 class CollaboratorTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let isSelectedIndicatorImageView = UIImageView()
     private let nameLabel = UILabel()
     private let ownerLabel = UILabel()
-    private let selectIndicatorView = UIView()
+    private let selectIndicatorView = SelectIndicatorView(width: 20)
     private let userImageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -34,15 +33,9 @@ class CollaboratorTableViewCell: UITableViewCell {
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         addSubview(userImageView)
 
-        selectIndicatorView.layer.cornerRadius = 10
-        selectIndicatorView.layer.borderWidth = 2
         selectIndicatorView.layer.backgroundColor = UIColor.white.cgColor
         selectIndicatorView.isHidden = true
         addSubview(selectIndicatorView)
-
-        isSelectedIndicatorImageView.image = UIImage(named: "isSelectedIndicator")
-        isSelectedIndicatorImageView.isHidden = true
-        addSubview(isSelectedIndicatorImageView)
 
         setupConstraints()
     }
@@ -55,8 +48,7 @@ class CollaboratorTableViewCell: UITableViewCell {
             setupOwnerConstraints()
         } else {
             setupNonOwnerConstraints()
-            isSelectedIndicatorImageView.isHidden = !collaborator.isAdded
-            selectIndicatorView.layer.borderColor = collaborator.isAdded ? UIColor.gradientPurple.cgColor : UIColor.lightGray.cgColor
+            collaborator.isAdded ? selectIndicatorView.select() : selectIndicatorView.deselect()
             selectIndicatorView.isHidden = false
         }
     }
@@ -66,7 +58,6 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        let isSelectedIndicatorSize = CGSize(width: 10, height: 8)
         let selectIndicatorSize = CGSize(width: 20, height: 20)
         let userImageSize = CGSize(width: 40, height: 40)
 
@@ -78,11 +69,6 @@ class CollaboratorTableViewCell: UITableViewCell {
         selectIndicatorView.snp.makeConstraints { make in
             make.size.equalTo(selectIndicatorSize)
             make.centerY.trailing.equalToSuperview()
-        }
-
-        isSelectedIndicatorImageView.snp.makeConstraints { make in
-            make.center.equalTo(selectIndicatorView)
-            make.size.equalTo(isSelectedIndicatorSize)
         }
     }
 

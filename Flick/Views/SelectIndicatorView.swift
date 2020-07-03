@@ -10,6 +10,8 @@ import UIKit
 
 class SelectIndicatorView: UIView {
 
+    private let checkImageView = UIImageView()
+
     init(width: CGFloat) {
         super.init(frame: .zero)
 
@@ -17,14 +19,26 @@ class SelectIndicatorView: UIView {
         layer.cornerRadius = width / 2
         layer.borderWidth = 2
         layer.borderColor = UIColor.lightGray.cgColor
+
+        checkImageView.image = UIImage(named: "check")
+        checkImageView.isHidden = true
+        addSubview(checkImageView)
+        
+        let checkImageSize = CGSize(width: 10, height: 8)
+        checkImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(checkImageSize)
+        }
     }
 
     func select() {
         layer.borderColor = UIColor.gradientPurple.cgColor
+        checkImageView.isHidden = false
     }
 
     func deselect() {
         layer.borderColor = UIColor.lightGray.cgColor
+        checkImageView.isHidden = true
     }
 
     required init?(coder: NSCoder) {
