@@ -12,27 +12,29 @@ import Alamofire
 class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
+//    private let userDefaults = UserDefaults()
 
     // TODO: Replace endpoints
-    private static let hostEndpoint = "http://localhost:3000"
+    private static let hostEndpoint = "http://localhost:8000"
 
-    /// [POST] Create new or update existing user
-    static func createUser(user: User, completion: @escaping (String) -> Void) {
+    /// [POST] Register new user [updated as of 7/3/20]
+    static func createUser(user: User, accessToken: String) {
         let parameters: [String: Any] = [
             "username": user.username,
-            "id": user.id,
-            "name": user.name,
-            "facebook_id": user.facebookId,
-            "profile_pic": user.profilePic
+            "first_name": user.firstName,
+            "last_name": user.lastName,
+            "social_id_token_type": "facebook",
+            "social_id_token": accessToken,
+            "profile_pic": "data:image/png;base64,\(user.profilePic)"
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        Alamofire.request("\(hostEndpoint)/api/auth/register/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let userIdData = try? jsonDecoder.decode(Response<IdResponse>.self, from: data) {
-                    let userId = userIdData.data.id
-                    completion(userId)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let userData = try? jsonDecoder.decode(User.self, from: data) {
+                    print(userData)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
