@@ -14,27 +14,7 @@ struct User: Codable {
     var firstName: String
     var lastName: String
     var profilePic: String
-    var socialIdToken: String?
-    var socialIdTokenType: String?
+    var socialIdToken: String
+    var socialIdTokenType: String
 
-}
-
-struct FacebookUser: Codable {
-
-    var email: String
-    var firstName: String
-    var lastName: String
-    var picture: FacebookUserPicture
-
-}
-
-struct FacebookUserPicture: Codable {
-    var data: FacebookPicture
-}
-
-struct FacebookPicture: Codable {
-    var height: Int
-    var isSilhouette: Int
-    var url: URL
-    var width: Int
 }

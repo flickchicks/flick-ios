@@ -28,37 +28,34 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: LoginButtonDelegate {
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        print("here")
-        let token = result?.token?.tokenString
-        let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                 parameters: ["fields": "email, first_name, last_name, picture"],
-                                                 tokenString: token,
-                                                 version: nil,
-                                                 httpMethod: .get)
-        request.start(completionHandler: { connection, result, error in
-            if let result = result {
-                guard let user = result as? [String: Any] else { return }
-                if let firstName = user["first_name"] as? String,
-                    let lastName = user["last_name"] as? String,
-                    let userId = user["id"] as? String,
-                    let pictureObject = user["picture"] as? [String: Any],
-                    let pictureData = pictureObject["data"] as? [String: Any],
-                    let pictureUrlString = pictureData["url"] as? String
-                   {
-                        let url = URL(string: pictureUrlString)
-                        let data = try? Data(contentsOf: url!)
-                        if let imageData = data {
-                            let imageObject = UIImage(data: imageData)
-                            let strBase64 = imageObject!.pngData()?.base64EncodedString()
-                            self.userDefaults.set(firstName, forKey: "firstName")
-                            self.userDefaults.set(lastName, forKey: "lastName")
-                            self.userDefaults.set(userId, forKey: "userId")
-                            let user = User(username: userId, firstName: firstName, lastName: lastName, profilePic: strBase64!)
-                            NetworkManager.createUser(user: user, accessToken: token!)
-                        }
-                   }
-            }
-        })
+        if let accessToken = result?.token?.tokenString {
+            let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
+                                                     parameters: ["fields": "email, first_name, last_name, picture"],
+                                                     tokenString: accessToken,
+                                                     version: nil,
+                                                     httpMethod: .get)
+            request.start(completionHandler: { connection, result, error in
+                if let result = result {
+                    guard let user = result as? [String: Any] else { return }
+                    if let firstName = user["first_name"] as? String,
+                        let lastName = user["last_name"] as? String,
+                        let userId = user["id"] as? String,
+                        let pictureObject = user["picture"] as? [String: Any],
+                        let pictureContent = pictureObject["data"] as? [String: Any],
+                        let pictureUrlString = pictureContent["url"] as? String
+                       {
+                            let pictureUrl = URL(string: pictureUrlString)
+                            let pictureData = try? Data(contentsOf: pictureUrl!)
+                            if let pictureData = pictureData {
+                                let pictureObject = UIImage(data: pictureData)
+                                let strBase64 = pictureObject!.pngData()?.base64EncodedString()
+                                let user = User(username: userId, firstName: firstName, lastName: lastName, profilePic: strBase64!, socialIdToken: accessToken, socialIdTokenType: "facebook")
+                                NetworkManager.createUser(user: user)
+                            }
+                       }
+                }
+            })
+        }
     }
 
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {

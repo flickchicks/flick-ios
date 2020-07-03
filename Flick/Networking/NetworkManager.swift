@@ -12,19 +12,17 @@ import Alamofire
 class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
-//    private let userDefaults = UserDefaults()
 
-    // TODO: Replace endpoints
     private static let hostEndpoint = "http://localhost:8000"
 
     /// [POST] Register new user [updated as of 7/3/20]
-    static func createUser(user: User, accessToken: String) {
+    static func createUser(user: User) {
         let parameters: [String: Any] = [
             "username": user.username,
             "first_name": user.firstName,
             "last_name": user.lastName,
-            "social_id_token_type": "facebook",
-            "social_id_token": accessToken,
+            "social_id_token_type": user.socialIdTokenType,
+            "social_id_token": user.socialIdToken,
             "profile_pic": "data:image/png;base64,\(user.profilePic)"
         ]
 
