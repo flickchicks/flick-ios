@@ -47,12 +47,14 @@ extension LoginViewController: LoginButtonDelegate {
                             let pictureUrl = URL(string: pictureUrlString)
                             let pictureData = try? Data(contentsOf: pictureUrl!)
                             if let pictureData = pictureData {
+                                // Convert image to base64 string
                                 let pictureObject = UIImage(data: pictureData)
                                 let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
                                 let user = User(username: userId, firstName: firstName, lastName: lastName, profilePic: base64PictureString!, socialIdToken: accessToken, socialIdTokenType: "facebook")
                                 NetworkManager.registerUser(user: user) { (registeredUser) in
                                     let encoder = JSONEncoder()
                                     if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
+                                        // Upon successful registration of user, save user to user defaults
                                         self.userDefaults.set(encodedRegisteredUser, forKey: "user")
                                     }
                                 }
