@@ -62,6 +62,7 @@ extension LoginViewController: LoginButtonDelegate {
                                         if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
                                             let username = decodedUser.username
                                             let socialIdToken = decodedUser.socialIdToken
+                                            // Upon successful registration, log user into application and save authorization token
                                             NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { (authorizationToken) in
                                                 self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
                                                 let homeViewController = HomeViewController()
