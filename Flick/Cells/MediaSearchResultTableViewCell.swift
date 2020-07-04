@@ -11,14 +11,11 @@ import UIKit
 class MediaSearchResultTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let containerView = UIView()
-    private let posterImageView = UIImageView()
-    private let nameLabel = UILabel()
-    private let selectView = SelectIndicatorView(width: 20)
     private let checkImageView = UIImageView()
-
-    // MARK: - Private Data Vars
-    private let selectSize = CGSize(width: 20, height: 20)
+    private let containerView = UIView()
+    private let nameLabel = UILabel()
+    private let posterImageView = UIImageView()
+    private let selectView = SelectIndicatorView(width: 20)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,6 +42,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
     
     private func setupConstraints() {
         let posterSize = CGSize(width: 36, height: 54)
+        let selectSize = CGSize(width: 20, height: 20)
 
         containerView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(4)

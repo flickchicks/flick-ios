@@ -104,16 +104,20 @@ class AddToListViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        let labelLeadingOffset = 36
+        let labelVerticalOffset = 24
+        let tableHorizontalOffset = 24
+        let tableVerticalOffset = 24
+
         addToListLabel.snp.makeConstraints { make in
             make.top.equalTo(roundTopView).offset(30)
-            make.leading.equalToSuperview().offset(36)
+            make.leading.equalToSuperview().offset(labelLeadingOffset)
             make.trailing.equalToSuperview()
         }
 
         roundTopView.snp.makeConstraints { make in
             make.height.equalTo(height)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
         }
 
         doneButton.snp.makeConstraints { make in
@@ -123,29 +127,29 @@ class AddToListViewController: UIViewController {
         }
 
         selectedLabel.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(36)
+            make.top.equalTo(searchBar.snp.bottom).offset(labelVerticalOffset)
+            make.leading.equalToSuperview().offset(labelLeadingOffset)
         }
 
         resultLabel.snp.makeConstraints { make in
-            make.top.equalTo(selectedLabel.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(36)
+            make.top.equalTo(selectedLabel.snp.bottom).offset(labelVerticalOffset)
+            make.leading.equalToSuperview().offset(labelLeadingOffset)
         }
 
         resultMediaTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.top.equalTo(resultLabel.snp.bottom).offset(14)
+            make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
+            make.top.equalTo(resultLabel.snp.bottom).offset(tableVerticalOffset)
             make.bottom.equalToSuperview()
         }
 
         suggestedMediaCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.top.equalTo(resultLabel.snp.bottom).offset(14)
+            make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
+            make.top.equalTo(resultLabel.snp.bottom).offset(tableVerticalOffset)
             make.bottom.equalToSuperview()
         }
 
         searchBar.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(36)
+            make.leading.trailing.equalToSuperview().inset(labelLeadingOffset)
             make.top.equalTo(addToListLabel.snp.bottom).offset(12)
             make.height.equalTo(36)
         }
