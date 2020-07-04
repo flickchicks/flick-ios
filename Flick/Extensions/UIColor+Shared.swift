@@ -19,7 +19,9 @@ extension UIColor {
     static let lightPurple = colorFromCode(0xE8E2FF)
     static let mediumGray = colorFromCode(0x6E6E87)
     static let lightGray = colorFromCode(0xBABACA)
+    static let lightGray2 = colorFromCode(0xE9EAF1)
     static let offWhite = colorFromCode(0xF7F5FE)
+    static let purpleOverlay = UIColor(red: 0.054, green: 0.041, blue: 0.308, alpha: 0.3)
 
     public static func colorFromCode(_ code: Int) -> UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
