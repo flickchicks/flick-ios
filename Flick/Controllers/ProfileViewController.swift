@@ -130,7 +130,8 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .profileSummary:
             return UIView()
         case .lists:
-            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
+            headerView.delegate = self
             return headerView
         }
     }
@@ -153,4 +154,20 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
+extension ProfileViewController: ProfileDelegate, ModalDelegate {
+
+    func createList() {
+        let createListModalView = CreateListModalView()
+        createListModalView.modalDelegate = self
+        // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
+        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
+            // Add modal view to the window to also cover tab bar
+            window.addSubview(createListModalView)
+        }
+    }
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+}
 
