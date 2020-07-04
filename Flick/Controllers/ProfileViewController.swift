@@ -34,6 +34,7 @@ class ProfileViewController: UIViewController {
     private var sections = [Section]()
 
     private let userDefaults = UserDefaults()
+    // TODO: Update media lists with backend lists
     private var mediaLists: [MediaList] = []
     private var name: String = ""
     private var username: String = ""
@@ -41,18 +42,9 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
 
-        if let authToken = userDefaults.string(forKey: "authorizationToken") {
-            print("value exists")
-            NetworkManager.getUserProfile(authToken: authToken) { userProfile in
-                print("completion")
-                self.name = "\(userProfile.firstName) \(userProfile.lastName)"
-                self.username = userProfile.username
-                self.profilePicUrl = userProfile.profilePic.assetUrls.original
-                self.listsTableView.reloadData()
-            }
-        }
-
         super.viewDidLoad()
+        getUserProfile()
+
         view.backgroundColor = .offWhite
 
         listsTableView = UITableView(frame: .zero, style: .plain)
@@ -78,6 +70,17 @@ class ProfileViewController: UIViewController {
         let profileSummary = Section(type: SectionType.profileSummary, items: [])
         let lists = Section(type: SectionType.lists, items: mediaLists)
         sections = [profileSummary, lists]
+    }
+
+    private func getUserProfile() {
+        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
+            NetworkManager.getUserProfile(authToken: authToken) { userProfile in
+                self.name = "\(userProfile.firstName) \(userProfile.lastName)"
+                self.username = userProfile.username
+                self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                self.listsTableView.reloadData()
+            }
+        }
     }
 }
 

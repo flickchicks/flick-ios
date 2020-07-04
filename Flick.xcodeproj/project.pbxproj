@@ -47,6 +47,7 @@
 		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
 		D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */; };
 		D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */; };
+		D4FB449224B11CB7003CA71A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4FB449124B11CB7003CA71A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPreviewView.swift; sourceTree = "<group>"; };
+		D4FB449124B11CB7003CA71A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick_FlickUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,6 +212,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				D4FB449024B11C9A003CA71A /* Supporting */,
 				D478669D247C57C3009E42FE /* Models */,
 				3095FF06247B939A00F08C60 /* Views */,
 				D478668E24798ABF009E42FE /* Extensions */,
@@ -301,6 +304,14 @@
 				D4E858A124B0182400062D9C /* UserProfile.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D4FB449024B11C9A003CA71A /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				D4FB449124B11CB7003CA71A /* Constants.swift */,
+			);
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -565,6 +576,7 @@
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
+				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
 				80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,

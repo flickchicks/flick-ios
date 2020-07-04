@@ -56,14 +56,14 @@ extension LoginViewController: LoginButtonDelegate {
                                     let decoder = JSONDecoder()
                                     if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
                                         // Upon successful registration of user, save user to user defaults
-                                        self.userDefaults.set(encodedRegisteredUser, forKey: "user")
+                                        self.userDefaults.set(encodedRegisteredUser, forKey: Constants.UserDefaults.authorizationToken)
                                     }
-                                    if let storedUser = self.userDefaults.data(forKey: "user") {
+                                    if let storedUser = self.userDefaults.data(forKey: Constants.UserDefaults.authorizationToken) {
                                         if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
                                             let username = decodedUser.username
                                             let socialIdToken = decodedUser.socialIdToken
                                             NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { (authorizationToken) in
-                                                self.userDefaults.set(authorizationToken, forKey: "authorizationToken")
+                                                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
                                                 let homeViewController = HomeViewController()
                                                 self.navigationController?.pushViewController(homeViewController, animated: true)
                                             }

@@ -22,7 +22,7 @@ class UsersPreviewView: UIView {
         .friends : -8,
         .collaborators : -5
     ]
-    private let numMaxUsers = 7
+    private let numMaxUsers = 6
     // TODO: Replace users with User array after networking is done
 //    private var users: [User] = []
     private var users: [String] = []
@@ -69,7 +69,13 @@ class UsersPreviewView: UIView {
 extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numMaxUsers < users.count ? usersPreview.count + 1 : usersPreview.count
+        // Always want to render the ellipsis for friends view but only do it for collaborators view if user count exceeds max
+        if users.count == 0 {
+            return 0
+        }
+        else {
+            return (usersLayoutMode == .collaborators && users.count < numMaxUsers) ? users.count : numMaxUsers + 1
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

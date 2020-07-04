@@ -13,11 +13,12 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private var condensedCellSpacing = -8
+    private let maxFriendsPreview = 6
     private let profileImageSize = CGSize(width: 70, height: 70)
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     // TODO: Update with backend values
-    private let friends = ["A", "B", "C", "D", "E", "F", "G"]
+    private let friends: [String] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,17 +52,29 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         setupConstraints()
     }
-    
-    private func setupConstraints() {
+
+    private func calculateFriendsPreviewWidth() -> Int {
         // Calculate width of friends preview based on number of friends and spacing between cells
-        let numFriendsInPreview = min(friends.count, 7) + 1
+        if friends.count == 0 { return 0 }
+        let numFriendsInPreview = min(friends.count, maxFriendsPreview) + 1
         let fullFriendsWidth = numFriendsInPreview * 20
         let overlapFriendsWidth = (numFriendsInPreview-1) * condensedCellSpacing * -1
         let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
+        return friendsPreviewWidth
+    }
 
-        let padding = 20
+    private func calculateUserInfoViewWidth(friendsPreviewWidth: Int) -> Int {
+        let padding = friends.count == 0 ? 0 : 20
         let userNameLabelWidth = Int(usernameLabel.frame.size.width)
         let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
+        return userInfoViewWidth
+    }
+    
+    private func setupConstraints() {
+
+        let padding = 20
+        let friendsPreviewWidth = calculateFriendsPreviewWidth()
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -107,27 +120,24 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
+    private func updateUserInfoViewConstraints() {
+        let friendsPreviewWidth = calculateFriendsPreviewWidth()
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
+
+        userInfoView.snp.updateConstraints { update in
+            update.width.equalTo(userInfoViewWidth)
+        }
+    }
+
     func configure(name: String, username: String, profilePicUrl: String) {
         nameLabel.text = name
         usernameLabel.text = "@\(username)"
+        usernameLabel.sizeToFit()
         if let pictureUrl = URL(string: profilePicUrl), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             profileImageView.image = pictureObject
         }
-        let numFriendsInPreview = min(friends.count, 7) + 1
-        let fullFriendsWidth = numFriendsInPreview * 20
-        let overlapFriendsWidth = (numFriendsInPreview-1) * condensedCellSpacing * -1
-        let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
-        let padding = 20
-        usernameLabel.sizeToFit()
-        let userNameLabelWidth = Int(usernameLabel.frame.size.width)
-        let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
-        print(userNameLabelWidth)
-        print(userInfoViewWidth)
-        userInfoView.snp.updateConstraints { update in
-            update.width.equalTo(userInfoViewWidth)
-        }
-
+        updateUserInfoViewConstraints()
     }
     
     required init?(coder: NSCoder) {

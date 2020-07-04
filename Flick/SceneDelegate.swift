@@ -23,26 +23,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200 // TODO: Double check with design
+        // TODO: Double check with design and test on actual device
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         let loginViewController = LoginViewController()
         let homeViewController = HomeViewController()
         var rootViewController: UIViewController
-        if let token = AccessToken.current, !token.isExpired {
-            // User is logged in.
+        if let token = AccessToken.current,
+            !token.isExpired,
+            let _ = userDefaults.data(forKey: Constants.UserDefaults.user),
+            let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken)  {
+            // User is logged in and we have the necessary authorization token to make backend requets for user.
             rootViewController = homeViewController
-            let decoder = JSONDecoder()
-            if let storedUser = userDefaults.data(forKey: "user") {
-                if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
-                    decodedUser.socialIdToken = token.tokenString
-                    let encoder = JSONEncoder()
-                    if let encodedUser = try? encoder.encode(decodedUser) {
-                        self.userDefaults.set(encodedUser, forKey: "user")
-                    }
-                }
-            }
         } else {
             // User is logged out.
             rootViewController = loginViewController
