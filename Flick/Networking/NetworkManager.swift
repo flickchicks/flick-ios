@@ -32,7 +32,29 @@ class NetworkManager {
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(User.self, from: data) {
-                    print(userData)
+                    completion(userData)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Login user [updated as of 7/3/20]
+    static func loginUser(username: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+        let parameters: [String: Any] = [
+            "username": username,
+            "social_id_token": socialIdToken,
+        ]
+
+        Alamofire.request("\(hostEndpoint)/api/auth/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let authorizationData = try? jsonDecoder.decode(Response<Authorization>.self, from: data) {
+                    let authToken = authorizationData.data.authToken
+                    completion(authToken)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -41,16 +63,22 @@ class NetworkManager {
     }
 
     /// [GET] Get a user by id
-    static func getUser(userId: String, completion: @escaping (User) -> Void) {
+    static func getUserProfile(authToken: String, completion: @escaping (UserProfile) -> Void) {
         // TODO: Check if we want to use GET parameters
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)", method: .get).validate().responseData { response in
+        let headers: HTTPHeaders = [
+            "Authorization": "Token \(authToken)",
+            "Accept": "application/json"
+        ]
+        print(authToken)
+        Alamofire.request("\(hostEndpoint)/api/auth/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let userData = try? jsonDecoder.decode(Response<User>.self, from: data) {
+                if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
                     completion(user)
+                    print(user)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

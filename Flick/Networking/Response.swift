@@ -15,6 +15,11 @@ struct Response<T: Codable>: Codable {
 
 }
 
+struct Authorization: Codable {
+
+    var authToken: String
+}
+
 struct UsernamesDataResponse: Codable {
 
     var usernames: [String]

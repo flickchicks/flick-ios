@@ -33,6 +33,8 @@ class ProfileViewController: UIViewController {
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
     private var sections = [Section]()
 
+    private let userDefaults = UserDefaults()
+
     private let media = Media(
         mediaId: "123",
         title: "Title",
@@ -55,46 +57,54 @@ class ProfileViewController: UIViewController {
     )
 
     private var mediaLists: [MediaList] = [
-        MediaList(
-            listId: "id",
-            collaborators: ["A", "B", "C"],
-            isPrivate: false,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "Saved",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        ),
-        MediaList(
-            listId: "id",
-            collaborators: [],
-            isPrivate: true,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "Watchlist",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        ),
-        MediaList(
-            listId: "id",
-            collaborators: ["A", "B", "C", "D"],
-            isPrivate: false,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "K Drama",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        )
+//        MediaList(
+//            listId: "id",
+//            collaborators: ["A", "B", "C"],
+//            isPrivate: false,
+//            isFavorite: false,
+//            timestamp: "time",
+//            listName: "Saved",
+//            listPic: "null",
+//            tags: ["tag"],
+//            media: []
+//        ),
+//        MediaList(
+//            listId: "id",
+//            collaborators: [],
+//            isPrivate: true,
+//            isFavorite: false,
+//            timestamp: "time",
+//            listName: "Watchlist",
+//            listPic: "null",
+//            tags: ["tag"],
+//            media: []
+//        ),
+//        MediaList(
+//            listId: "id",
+//            collaborators: ["A", "B", "C", "D"],
+//            isPrivate: false,
+//            isFavorite: false,
+//            timestamp: "time",
+//            listName: "K Drama",
+//            listPic: "null",
+//            tags: ["tag"],
+//            media: []
+//        )
     ]
 
     override func viewDidLoad() {
         // TODO: Update with backend values
-        mediaLists[0].media = [media,media,media,media,media,media,media,media]
-        mediaLists[1].media = [media,media,media]
-        mediaLists[2].media = [media,media,media,media,media,media,media,media]
+//        mediaLists[0].media = [media,media,media,media,media,media,media,media]
+//        mediaLists[1].media = [media,media,media]
+//        mediaLists[2].media = [media,media,media,media,media,media,media,media]
+
+
+        if let authToken = userDefaults.string(forKey: "authorizationToken") {
+            print("value exists")
+            NetworkManager.getUserProfile(authToken: authToken) { userProfile in
+                print("completion")
+            }
+        }
 
         super.viewDidLoad()
         view.backgroundColor = .offWhite
