@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ProfileDelegate: class {
-    func createList()
+    func showCreateListModal()
 }
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
@@ -26,7 +26,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
         createListButton.setImage(UIImage(named: "newList"), for: .normal)
         createListButton.layer.cornerRadius = buttonSize.width / 2
-        createListButton.addTarget(self, action: #selector(createList), for: .touchUpInside)
+        createListButton.addTarget(self, action: #selector(showCreateListModal), for: .touchUpInside)
         contentView.addSubview(createListButton)
 
         setupConstraints()
@@ -50,8 +50,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    @objc func createList() {
-        delegate?.createList()
+    @objc func showCreateListModal() {
+        delegate?.showCreateListModal()
     }
 
     required init?(coder aDecoder: NSCoder) {

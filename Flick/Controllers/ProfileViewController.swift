@@ -154,16 +154,22 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension ProfileViewController: ProfileDelegate, ModalDelegate {
+extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
 
-    func createList() {
+    func showCreateListModal() {
         let createListModalView = CreateListModalView()
         createListModalView.modalDelegate = self
+        createListModalView.listDelegate = self
         // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
         if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
             // Add modal view to the window to also cover tab bar
             window.addSubview(createListModalView)
         }
+    }
+
+    func createList(title: String) {
+        let listViewController = ListViewController()
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 
     func dismissModal(modalView: UIView) {
