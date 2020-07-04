@@ -17,8 +17,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     // TODO: Update with backend values
-    private let name = "Alanna Zhou"
-    private let username = "alannaz"
     private let friends = ["A", "B", "C", "D", "E", "F", "G"]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -29,14 +27,13 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
+        profileImageView.layer.masksToBounds = true
         contentView.addSubview(profileImageView)
 
-        nameLabel.text = name
         nameLabel.font = .boldSystemFont(ofSize: 20)
         nameLabel.textColor = .darkBlue
         contentView.addSubview(nameLabel)
 
-        usernameLabel.text = "@\(username)"
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
         usernameLabel.sizeToFit()
@@ -108,6 +105,15 @@ class ProfileSummaryTableViewCell: UITableViewCell {
             make.size.equalTo(sideButtonsSize)
             make.top.equalTo(settingsButton)
             make.trailing.equalTo(settingsButton.snp.leading).offset(-7)
+        }
+    }
+
+    func configure(name: String, username: String, profilePicUrl: String) {
+        nameLabel.text = name
+        usernameLabel.text = "@\(username)"
+        if let pictureUrl = URL(string: profilePicUrl), let pictureData = try? Data(contentsOf: pictureUrl) {
+            let pictureObject = UIImage(data: pictureData)
+            profileImageView.image = pictureObject
         }
     }
     
