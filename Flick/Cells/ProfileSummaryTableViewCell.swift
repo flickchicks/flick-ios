@@ -36,7 +36,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
-        usernameLabel.sizeToFit()
         userInfoView.addSubview(usernameLabel)
 
         friendsPreviewView = UsersPreviewView(users: friends, usersLayoutMode: .friends)
@@ -115,6 +114,20 @@ class ProfileSummaryTableViewCell: UITableViewCell {
             let pictureObject = UIImage(data: pictureData)
             profileImageView.image = pictureObject
         }
+        let numFriendsInPreview = min(friends.count, 7) + 1
+        let fullFriendsWidth = numFriendsInPreview * 20
+        let overlapFriendsWidth = (numFriendsInPreview-1) * condensedCellSpacing * -1
+        let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
+        let padding = 20
+        usernameLabel.sizeToFit()
+        let userNameLabelWidth = Int(usernameLabel.frame.size.width)
+        let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
+        print(userNameLabelWidth)
+        print(userInfoViewWidth)
+        userInfoView.snp.updateConstraints { update in
+            update.width.equalTo(userInfoViewWidth)
+        }
+
     }
     
     required init?(coder: NSCoder) {
