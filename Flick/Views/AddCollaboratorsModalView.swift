@@ -18,7 +18,7 @@ class AddCollaboratorModalView: UIView {
     private let copyLinkButton = UIButton()
     private let dismissButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
-    private let inviteSearchBar = UISearchBar()
+    private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
     private let subtitleLabel = UILabel()
     private let noFriendsLabel = UILabel()
@@ -92,16 +92,6 @@ class AddCollaboratorModalView: UIView {
 
         inviteSearchBar.placeholder = "Search friends"
         inviteSearchBar.delegate = self
-        inviteSearchBar.backgroundImage = UIImage()
-        inviteSearchBar.searchTextField.backgroundColor = .clear
-        inviteSearchBar.searchTextField.textColor = .mediumGray
-        inviteSearchBar.searchTextField.font = .systemFont(ofSize: 12)
-        inviteSearchBar.searchTextField.clearButtonMode = .never
-        inviteSearchBar.layer.cornerRadius = 18
-        inviteSearchBar.layer.borderWidth = 1
-        inviteSearchBar.layer.borderColor = UIColor.mediumGray.cgColor
-        inviteSearchBar.searchTextPositionAdjustment = UIOffset(horizontal: 12, vertical: 0)
-        inviteSearchBar.showsCancelButton = false
         containerView.addSubview(inviteSearchBar)
 
         containerView.backgroundColor = .white
@@ -244,6 +234,7 @@ class AddCollaboratorModalView: UIView {
 }
 
 extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableView == collaboratorsTableView ? collaborators.count : friends.count
     }
