@@ -156,6 +156,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Update with selected list data
         let listViewController = ListViewController()
+        listViewController.initializeList(list: mediaLists[indexPath.row])
         navigationController?.pushViewController(listViewController, animated: true)
     }
 
