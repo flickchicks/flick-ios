@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
-        var items: [MediaList]
+        var items: [UserMediaList]
     }
 
     private enum SectionType {
@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
 
     private let userDefaults = UserDefaults()
     // TODO: Update media lists with backend lists
-    private var mediaLists: [MediaList] = []
+    private var mediaLists: [UserMediaList] = []
     private var name: String = ""
     private var username: String = ""
     private var profilePicUrl: String = ""
@@ -78,6 +78,10 @@ class ProfileViewController: UIViewController {
                 self.name = "\(userProfile.firstName) \(userProfile.lastName)"
                 self.username = userProfile.username
                 self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                if let ownerLsts = userProfile.ownerLsts {
+                    self.mediaLists = ownerLsts
+                    print(self.mediaLists)
+                }
                 self.listsTableView.reloadData()
             }
         }
@@ -96,7 +100,10 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .profileSummary:
             return 1
         case .lists:
-            return section.items.count
+            print("count")
+//            print(section.items.count)
+//            return section.items.count
+            return mediaLists.count
         }
     }
 

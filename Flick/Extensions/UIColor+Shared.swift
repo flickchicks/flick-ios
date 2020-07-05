@@ -20,6 +20,8 @@ extension UIColor {
     static let mediumGray = colorFromCode(0x6E6E87)
     static let lightGray = colorFromCode(0xBABACA)
     static let lightGray2 = colorFromCode(0xE9EAF1)
+    // TODO: Update lightGray3 name
+    static let lightGray3 = colorFromCode(0xF0F1F8)
     static let offWhite = colorFromCode(0xF7F5FE)
     static let purpleOverlay = UIColor(red: 0.054, green: 0.041, blue: 0.308, alpha: 0.3)
 
