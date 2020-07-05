@@ -120,7 +120,7 @@ class ListTableViewCell: UITableViewCell {
         titleLabel.text = list.lstName
         // TODO: Are these inclusive or exclusive?
         if list.collaborators.count > 0 {
-            setupCollaborators(collaborators: list.collaborators)
+            setupCollaborators(collaborators: [])
         } else if list.isPrivate {
             setupPrivateIcon()
         }

@@ -168,8 +168,14 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
     }
 
     func createList(title: String) {
-        let listViewController = ListViewController()
-        navigationController?.pushViewController(listViewController, animated: true)
+        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
+            NetworkManager.createNewMediaList(authToken: authToken, listName: title) { mediaList in
+                print("created new list")
+                print(mediaList)
+                let listViewController = ListViewController()
+                self.navigationController?.pushViewController(listViewController, animated: true)
+            }
+        }
     }
 
     func dismissModal(modalView: UIView) {

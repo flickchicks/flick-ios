@@ -17,10 +17,23 @@ struct MediaList: Codable {
     var isFavorite: Bool
     var isWatched: Bool
     var shows: [Media]?
-    var collaborators: [String]
+    var collaborators: [UserProfile]
     var timestamp: String
     var tags: [String]
     var media: [Media]
+    var owner: UserProfile
+
+}
+
+struct UserMediaList: Codable {
+
+    var lstId: String
+    var lstName: String
+    var lstPic: String?
+    var isFavorite: Bool
+    var isPrivate: Bool
+    var isWatched: Bool
+    var shows: [Media]
 
 }
 
