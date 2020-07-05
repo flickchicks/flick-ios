@@ -23,14 +23,18 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private var addCollaboratorModalView: AddCollaboratorModalView!
-    private let listNameLabel = UILabel()
+    private let bottomLine = CALayer()
+    private let listNameTextField = UITextField()
     private var mediaCollectionView: UICollectionView!
+    private var settingsModalView = ListSettingsModalView()
     private var sortListModalView: SortListModalView!
 
     // MARK: - Private Data Vars
+    private var addCollaboratorModalView: AddCollaboratorModalView!
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
+    private let listNameHeight: CGFloat = 30
+    private let listNameWidth: CGFloat = 250
     private var listSummaryHeight: CGFloat = 145
     // TODO: Replace with data from backend
     private let listName = "Foreign Films"
@@ -45,12 +49,20 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        setupNavigationBar()
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barTintColor = .offWhite
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.shadowImage = UIImage()
+        setupNavigationBarForList()
 
-        listNameLabel.text = "Foreign Films" // Temp
-        listNameLabel.textAlignment = .center
-        listNameLabel.font = .boldSystemFont(ofSize: 20)
-        view.addSubview(listNameLabel)
+        listNameTextField.text = listName
+        listNameTextField.textAlignment = .center
+        listNameTextField.font = .boldSystemFont(ofSize: 20)
+        listNameTextField.isUserInteractionEnabled = false
+        listNameTextField.clearButtonMode = .whileEditing
+        listNameTextField.adjustsFontSizeToFitWidth = true
+        listNameTextField.minimumFontSize = 12
+        view.addSubview(listNameTextField)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
         mediaCollectionViewLayout.minimumInteritemSpacing = cellPadding
@@ -71,28 +83,30 @@ class ListViewController: UIViewController {
 
         setupSections()
         setupConstraints()
+
+        // Add bottom border to text field
+        bottomLine.frame = CGRect(x: 0.0, y: listNameHeight - 1, width: listNameWidth, height: 1.0)
+        bottomLine.backgroundColor = UIColor.mediumGray.cgColor
+        listNameTextField.borderStyle = .none
     }
 
     private func setupConstraints() {
-        listNameLabel.snp.makeConstraints { make in
+        listNameTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(22)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(listNameHeight)
+            make.width.equalTo(listNameWidth)
         }
 
         mediaCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(listNameLabel.snp.bottom).offset(20)
+            make.top.equalTo(listNameTextField.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
 
-    private func setupNavigationBar() {
+    private func setupNavigationBarForList() {
         let backButtonSize = CGSize(width: 22, height: 18)
         let settingsButtonSize = CGSize(width: 22, height: 22)
-            
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.barTintColor = .offWhite
-        navigationController?.navigationBar.shadowImage = UIImage()
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -110,8 +124,17 @@ class ListViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         navigationItem.rightBarButtonItem = settingsBarButtonItem
+    }
+    
+    private func setupNavigationBarForSettings() {
+        let cancelBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonPressed))
+        navigationItem.leftBarButtonItem = cancelBarButtonItem
+        
+        let doneBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneButtonPressed))
+        navigationItem.rightBarButtonItem = doneBarButtonItem
     }
 
     private func setupSections() {
@@ -124,10 +147,54 @@ class ListViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    @objc private func cancelButtonPressed() {
+        dismissSettings()
+        // TODO: set name back to initial
+    }
+
+    @objc private func doneButtonPressed() {
+        dismissSettings()
+        // TODO: send changes to backend
+    }
+
+    @objc private func settingsButtonPressed() {
+        setupNavigationBarForSettings()
+        showSettings()
+        listNameTextField.isUserInteractionEnabled = true
+        listNameTextField.layer.addSublayer(bottomLine)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
    }
+    
+    private func showSettings() {
+        let collectionViewHeight = mediaCollectionView.frame.height
+        let collectionViewWidth = mediaCollectionView.frame.width
+
+        settingsModalView.delegate = self
+        settingsModalView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: collectionViewWidth, height: collectionViewHeight)
+        view.addSubview(settingsModalView)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.settingsModalView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - collectionViewHeight, width: collectionViewWidth, height: collectionViewHeight)
+        }, completion: nil)
+    }
+
+    private func dismissSettings() {
+        let collectionViewHeight = mediaCollectionView.frame.height
+        let collectionViewWidth = mediaCollectionView.frame.width
+
+        setupNavigationBarForList()
+        listNameTextField.isUserInteractionEnabled = false
+        bottomLine.removeFromSuperlayer()
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.settingsModalView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: collectionViewWidth, height: collectionViewHeight)
+        }) { (completed) in
+            self.settingsModalView.removeFromSuperview()
+        }
+    }
 
 }
 
@@ -233,6 +300,17 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     func dismissModal(modalView: UIView) {
         navigationController?.navigationBar.layer.zPosition = 1
         modalView.removeFromSuperview()
+    }
+
+}
+
+extension ListViewController: ListSettingsDelegate {
+
+    func showAddCollaboratorsModal() {
+        addCollaboratorModalView = AddCollaboratorModalView()
+        addCollaboratorModalView.delegate = self
+        navigationController?.navigationBar.layer.zPosition = -1
+        view.addSubview(addCollaboratorModalView)
     }
 
 }
