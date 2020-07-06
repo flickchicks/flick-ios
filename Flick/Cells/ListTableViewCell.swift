@@ -115,7 +115,7 @@ class ListTableViewCell: UITableViewCell {
 
     func configure(for list: MediaList, collaboratorsCellSpacing: Int) {
         self.list = list
-        self.media = list.media
+        self.media = list.shows
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
         // TODO: Are these inclusive or exclusive?

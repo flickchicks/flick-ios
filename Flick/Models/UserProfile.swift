@@ -18,10 +18,10 @@ struct UserProfile: Codable {
     var profilePic: ProfilePicture
     var bio: String?
     var phoneNumber: String?
-    var socialIdToken: String
-    var socialIdTokenType: String
-    var ownerLsts: [MediaList]
-    var collabLsts: [MediaList]
+    var socialIdToken: String?
+    var socialIdTokenType: String?
+    var ownerLsts: [MediaList]?
+    var collabLsts: [MediaList]?
 }
 
 struct ProfilePicture: Codable {

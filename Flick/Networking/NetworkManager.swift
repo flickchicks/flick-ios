@@ -73,6 +73,9 @@ class NetworkManager {
         Alamofire.request("\(hostEndpoint)/api/auth/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                if let string = String(data: data, encoding: .utf8) {
+                    print(string)
+                }
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
