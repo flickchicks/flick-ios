@@ -43,7 +43,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        getUserProfile()
 
         view.backgroundColor = .offWhite
 
@@ -66,6 +65,11 @@ class ProfileViewController: UIViewController {
         setupSections()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        getUserProfile()
+    }
+
     private func setupSections() {
         let profileSummary = Section(type: SectionType.profileSummary, items: [])
         let lists = Section(type: SectionType.lists, items: mediaLists)
@@ -78,9 +82,9 @@ class ProfileViewController: UIViewController {
                 self.name = "\(userProfile.firstName) \(userProfile.lastName)"
                 self.username = userProfile.username
                 self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
                 if let ownerLsts = userProfile.ownerLsts {
                     self.mediaLists = ownerLsts
-                    print(self.mediaLists)
                 }
                 self.listsTableView.reloadData()
             }
@@ -100,9 +104,6 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .profileSummary:
             return 1
         case .lists:
-            print("count")
-//            print(section.items.count)
-//            return section.items.count
             return mediaLists.count
         }
     }
@@ -178,8 +179,6 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
     func createList(title: String) {
         if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
             NetworkManager.createNewMediaList(authToken: authToken, listName: title) { mediaList in
-                print("created new list")
-                print(mediaList)
                 let listViewController = ListViewController()
                 self.navigationController?.pushViewController(listViewController, animated: true)
             }

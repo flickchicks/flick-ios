@@ -120,12 +120,10 @@ class ListTableViewCell: UITableViewCell {
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
         // TODO: Are these inclusive or exclusive?
-//        if list.collaborators.count > 0 {
-//            setupCollaborators(collaborators: [])
-//        } else if list.isPrivate {
-//            setupPrivateIcon()
-//        }
-        if list.isPrivate {
+        let listCollaborators = list.collaborators
+        if listCollaborators.count > 0 {
+            setupCollaborators(collaborators: listCollaborators)
+        } else if list.isPrivate {
             setupPrivateIcon()
         }
     }
@@ -147,6 +145,7 @@ extension ListTableViewCell: UICollectionViewDelegate {
 
 extension ListTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // If list is empty, show 4 filler cells
         return media.count == 0 ? 4 : media.count
     }
 

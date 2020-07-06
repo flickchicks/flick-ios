@@ -78,7 +78,6 @@ class NetworkManager {
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
                     completion(user)
-                    print(user)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -86,7 +85,7 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Create new list for a user with default settings
+    /// [POST] Create new list for a user with default/empty settings [updated as of 7/6/20]
     static func createNewMediaList(authToken: String, listName: String, completion: @escaping (MediaList) -> Void) {
         let headers: HTTPHeaders = [
             "Authorization": "Token \(authToken)",
@@ -107,7 +106,7 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                print(data)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
                     completion(mediaList)

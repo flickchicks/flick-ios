@@ -79,7 +79,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private var allTagSizes = [CGSize]()
     private var collapsedTags = [String]()
     weak var delegate: ListSummaryDelegate?
-    // TODO: Replace with data from backend, make sure to include current user
+    /* TODO: Replace with data from backend, make sure to include current user
+        Note: Backend doesn't seem to include the owner in the array of collaborators.
+     */
     private let collaborators: [String] = ["Me"]
     private let collaboratorsCellSpacing = -5
     private var numInFirstTwoRows = 0
