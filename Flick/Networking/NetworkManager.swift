@@ -13,26 +13,48 @@ class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
 
-    // TODO: Replace endpoints
-    private static let hostEndpoint = "http://localhost:3000"
+    private static let hostEndpoint = "http://localhost:8000"
 
-    /// [POST] Create new or update existing user
-    static func createUser(user: User, completion: @escaping (String) -> Void) {
+    /// [POST] Register new user [updated as of 7/3/20]
+    static func registerUser(user: User, completion: @escaping (User) -> Void) {
         let parameters: [String: Any] = [
             "username": user.username,
-            "id": user.id,
-            "name": user.name,
-            "facebook_id": user.facebookId,
-            "profile_pic": user.profilePic
+            "first_name": user.firstName,
+            "last_name": user.lastName,
+            "social_id_token_type": user.socialIdTokenType,
+            "social_id_token": user.socialIdToken,
+            "profile_pic": "data:image/png;base64,\(user.profilePic)"
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/auth/register/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let userIdData = try? jsonDecoder.decode(Response<IdResponse>.self, from: data) {
-                    let userId = userIdData.data.id
-                    completion(userId)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let userData = try? jsonDecoder.decode(User.self, from: data) {
+                    completion(userData)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Login user [updated as of 7/3/20]
+    static func loginUser(username: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+        let parameters: [String: Any] = [
+            "username": username,
+            "social_id_token": socialIdToken,
+        ]
+
+        AF.request("\(hostEndpoint)/api/auth/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let authorizationData = try? jsonDecoder.decode(Response<Authorization>.self, from: data) {
+                    let authToken = authorizationData.data.authToken
+                    completion(authToken)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -41,16 +63,25 @@ class NetworkManager {
     }
 
     /// [GET] Get a user by id
-    static func getUser(userId: String, completion: @escaping (User) -> Void) {
+    static func getUserProfile(authToken: String, completion: @escaping (UserProfile) -> Void) {
         // TODO: Check if we want to use GET parameters
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)", method: .get).validate().responseData { response in
+        let headers: HTTPHeaders = [
+            "Authorization": "Token \(authToken)",
+            "Accept": "application/json"
+        ]
+        print(authToken)
+        AF.request("\(hostEndpoint)/api/auth/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                if let string = String(data: data, encoding: .utf8) {
+                    print(string)
+                }
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let userData = try? jsonDecoder.decode(Response<User>.self, from: data) {
+                if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
                     completion(user)
+                    print(user)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -68,7 +99,7 @@ class NetworkManager {
             "list_name": list.listName
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/list", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -84,7 +115,7 @@ class NetworkManager {
 
     /// [GET] Get all lists of a user
     static func getAllMediaLists(userId: String, completion: @escaping ([MediaList]) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/lists", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/lists", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -101,7 +132,7 @@ class NetworkManager {
 
     /// [GET] Get list of a user by id
     static func getMediaList(userId: String, listId: String, completion: @escaping (MediaList) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -128,7 +159,7 @@ class NetworkManager {
             "list_pic": list.listPic
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -145,7 +176,7 @@ class NetworkManager {
 
     /// [DELETE] Delete list of a user by id
     static func getMediaList(userId: String, listId: String, completion: @escaping (String) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .delete, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .delete, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -165,7 +196,7 @@ class NetworkManager {
             "usernames": usernames
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/friends/invite", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/invite", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -185,7 +216,7 @@ class NetworkManager {
             "usernames": usernames
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/friends/accept", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/accept", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -206,7 +237,7 @@ class NetworkManager {
             "usernames": usernames
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/friends/cancel", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/cancel", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -222,7 +253,7 @@ class NetworkManager {
 
     /// [GET] Get all friends of a user
     static func getFriends(userId: String, completion: @escaping ([User]) -> Void) {
-        Alamofire.request("\(hostEndpoint)/api/user/\(userId)/friends)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -243,7 +274,7 @@ class NetworkManager {
             "media_id": mediaId
         ]
 
-        Alamofire.request("\(hostEndpoint)/api/media", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/media", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

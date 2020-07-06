@@ -13,6 +13,7 @@ import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    private let userDefaults = UserDefaults.standard
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -22,15 +23,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200 // TODO: Double check with design
+        // TODO: Double check with design and test on actual device
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         let loginViewController = LoginViewController()
         let homeViewController = HomeViewController()
         var rootViewController: UIViewController
-        if let token = AccessToken.current, !token.isExpired {
-            // User is logged in.
+        if let token = AccessToken.current,
+            !token.isExpired,
+            let _ = userDefaults.data(forKey: Constants.UserDefaults.user),
+            let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken)  {
+            // User is logged in and we have the necessary authorization token to make backend requets for user.
             rootViewController = homeViewController
         } else {
             // User is logged out.

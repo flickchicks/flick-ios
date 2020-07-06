@@ -33,70 +33,18 @@ class ProfileViewController: UIViewController {
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
     private var sections = [Section]()
 
-    private let media = Media(
-        mediaId: "123",
-        title: "Title",
-        tags: ["tag"],
-        posterPic: "null",
-        director: "Director",
-        isTV: false,
-        dateReleased: "1/1/2020",
-        status: "status",
-        language: "language",
-        duration: "duration",
-        plot: "plot",
-        keywords: ["keyword"],
-        seasons: "4",
-        audienceLevel: "audience",
-        imbdRating: "4",
-        friendsRating: "4",
-        tomatoRating: "4",
-        platforms: ["Netflix"]
-    )
-
-    private var mediaLists: [MediaList] = [
-        MediaList(
-            listId: "id",
-            collaborators: ["A", "B", "C"],
-            isPrivate: false,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "Saved",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        ),
-        MediaList(
-            listId: "id",
-            collaborators: [],
-            isPrivate: true,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "Watchlist",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        ),
-        MediaList(
-            listId: "id",
-            collaborators: ["A", "B", "C", "D"],
-            isPrivate: false,
-            isFavorite: false,
-            timestamp: "time",
-            listName: "K Drama",
-            listPic: "null",
-            tags: ["tag"],
-            media: []
-        )
-    ]
+    private let userDefaults = UserDefaults()
+    // TODO: Update media lists with backend lists
+    private var mediaLists: [MediaList] = []
+    private var name: String = ""
+    private var username: String = ""
+    private var profilePicUrl: String = ""
 
     override func viewDidLoad() {
-        // TODO: Update with backend values
-        mediaLists[0].media = [media,media,media,media,media,media,media,media]
-        mediaLists[1].media = [media,media,media]
-        mediaLists[2].media = [media,media,media,media,media,media,media,media]
 
         super.viewDidLoad()
+        getUserProfile()
+
         view.backgroundColor = .offWhite
 
         listsTableView = UITableView(frame: .zero, style: .plain)
@@ -123,6 +71,17 @@ class ProfileViewController: UIViewController {
         let lists = Section(type: SectionType.lists, items: mediaLists)
         sections = [profileSummary, lists]
     }
+
+    private func getUserProfile() {
+        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
+            NetworkManager.getUserProfile(authToken: authToken) { userProfile in
+                self.name = "\(userProfile.firstName) \(userProfile.lastName)"
+                self.username = userProfile.username
+                self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                self.listsTableView.reloadData()
+            }
+        }
+    }
 }
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
@@ -146,6 +105,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         switch section.type {
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
+            cell.configure(name: name, username: username, profilePicUrl: profilePicUrl)
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
