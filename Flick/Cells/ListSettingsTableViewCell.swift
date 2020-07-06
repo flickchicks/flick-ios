@@ -10,10 +10,14 @@ import UIKit
 
 class ListSettingsTableViewCell: UITableViewCell {
 
+    // MARK: - Private View Vars
     private var collaboratorsPreviewView: UsersPreviewView!
     private let nameLabel = UILabel()
+    private let privacyStatusLabel = UILabel()
+    private let privacySwitch = PrivacySwitch()
 
-    private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    // MARK: - Private Data Vars
+    private var collaborators: [String] = []
     private let collaboratorsCellSpacing = -5
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -21,11 +25,14 @@ class ListSettingsTableViewCell: UITableViewCell {
 
         selectionStyle = .none
 
-        collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
-        
         nameLabel.font = .systemFont(ofSize: 16)
         nameLabel.textColor = .darkBlueGray2
         contentView.addSubview(nameLabel)
+
+        privacyStatusLabel.font = .systemFont(ofSize: 12)
+        privacyStatusLabel.textColor = .mediumGray
+
+        privacySwitch.delegate = self
 
         nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(36)
@@ -34,19 +41,25 @@ class ListSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for setting: ListSetting) {
+    func configure(for setting: ListSetting, isPrivate: Bool, collaborators: [String]) {
         nameLabel.text = setting.rawValue
         switch setting {
         case.collaboration:
+            self.collaborators = collaborators
+            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
         case .deleteList:
             break
         case .privacy:
-            break
+            privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+            privacySwitch.setPrivate(isPrivate)
+            contentView.addSubview(privacyStatusLabel)
+            contentView.addSubview(privacySwitch)
+            setupPrivacyConstraints()
         }
     }
-    
+
     private func setupCollaboratorsConstraints() {
         let numCollaborators = min(collaborators.count, 8)
         let fullCollaboratorsWidth = numCollaborators * 20
@@ -61,7 +74,30 @@ class ListSettingsTableViewCell: UITableViewCell {
         }
     }
 
+    private func setupPrivacyConstraints() {
+        let switchSize = CGSize(width: 52, height: 28)
+
+        privacyStatusLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(privacySwitch.snp.leading).offset(-8)
+        }
+
+        privacySwitch.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(24)
+            make.size.equalTo(switchSize)
+        }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension ListSettingsTableViewCell: PrivacySwitchDelegate {
+
+    func privacyChanged(isPrivate: Bool) {
+        privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+    }
+
 }
