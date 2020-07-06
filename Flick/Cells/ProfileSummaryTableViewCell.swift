@@ -71,7 +71,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     }
     
     private func setupConstraints() {
-
         let padding = 20
         let friendsPreviewWidth = calculateFriendsPreviewWidth()
         let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)

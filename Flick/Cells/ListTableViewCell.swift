@@ -18,7 +18,7 @@ class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private var collaboratorsCellSpacing: Int!
-    private var list: UserMediaList!
+    private var list: MediaList!
     private var media: [Media]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
@@ -112,7 +112,7 @@ class ListTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for list: UserMediaList, collaboratorsCellSpacing: Int) {
+    func configure(for list: MediaList, collaboratorsCellSpacing: Int) {
         self.list = list
         self.media = list.shows
         // If there are no shows added, show empty state but no scroll

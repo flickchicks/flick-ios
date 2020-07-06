@@ -20,8 +20,8 @@ struct UserProfile: Codable {
     var phoneNumber: String?
     var socialIdToken: String?
     var socialIdTokenType: String?
-    var ownerLsts: [UserMediaList]?
-    var collabLsts: [UserMediaList]?
+    var ownerLsts: [MediaList]?
+    var collabLsts: [MediaList]?
 }
 
 struct ProfilePicture: Codable {

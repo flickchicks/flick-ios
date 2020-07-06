@@ -33,7 +33,7 @@ class ListViewController: UIViewController {
     private let edgeInsets: CGFloat = 28
     private var listSummaryHeight: CGFloat = 145
     // TODO: Replace with data from backend
-    private var list: UserMediaList!
+    private var list: MediaList!
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var sections = [Section]()
 
@@ -72,7 +72,7 @@ class ListViewController: UIViewController {
         setupConstraints()
     }
 
-    func initializeList(list: UserMediaList) {
+    func initializeList(list: MediaList) {
         self.list = list
         listNameLabel.text = list.lstName
     }

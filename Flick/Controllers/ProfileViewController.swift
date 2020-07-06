@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
-        var items: [UserMediaList]
+        var items: [MediaList]
     }
 
     private enum SectionType {
@@ -35,7 +35,7 @@ class ProfileViewController: UIViewController {
 
     private let userDefaults = UserDefaults()
     // TODO: Update media lists with backend lists
-    private var mediaLists: [UserMediaList] = []
+    private var mediaLists: [MediaList] = []
     private var name: String = ""
     private var username: String = ""
     private var profilePicUrl: String = ""
