@@ -25,6 +25,7 @@ class ListSettingsModalView: UIView {
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
+    private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
     weak var delegate: ListSettingsDelegate?
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
     private let settings: [ListSetting] = [.collaboration, .privacy, .deleteList]
@@ -68,7 +69,7 @@ extension ListSettingsModalView: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listSettingsCellReuseIdentifier, for: indexPath) as? ListSettingsTableViewCell else { return UITableViewCell() }
-        cell.configure(for: settings[indexPath.row])
+        cell.configure(for: settings[indexPath.row], isPrivate: true, collaborators: collaborators) // TODO: pass in the list instead of isPrivate and collaborators
         return cell
     }
 
