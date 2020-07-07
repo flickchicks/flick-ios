@@ -149,12 +149,12 @@ class ListViewController: UIViewController {
 
     @objc private func cancelButtonPressed() {
         dismissSettings()
-        // TODO: set name back to initial
+        // TODO: show confirmation popup and perform cancel behavior
     }
 
     @objc private func doneButtonPressed() {
         dismissSettings()
-        // TODO: send changes to backend
+        // TODO: show confirmation popup send changes to backend
     }
 
     @objc private func settingsButtonPressed() {
@@ -191,11 +191,10 @@ class ListViewController: UIViewController {
 
         UIView.animate(withDuration: 0.2, animations: {
             self.settingsModalView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: collectionViewWidth, height: collectionViewHeight)
-        }) { (completed) in
+        }) { (_) in
             self.settingsModalView.removeFromSuperview()
         }
     }
-
 }
 
 extension ListViewController: UICollectionViewDataSource {

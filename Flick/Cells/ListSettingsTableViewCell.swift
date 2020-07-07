@@ -46,7 +46,7 @@ class ListSettingsTableViewCell: UITableViewCell {
         switch setting {
         case.collaboration:
             self.collaborators = collaborators
-            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
+            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators, isEdit: true)
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
         case .deleteList:
@@ -61,10 +61,10 @@ class ListSettingsTableViewCell: UITableViewCell {
     }
 
     private func setupCollaboratorsConstraints() {
-        let numCollaborators = min(collaborators.count, 8)
+        let numCollaborators = min(collaborators.count, 7)
         let fullCollaboratorsWidth = numCollaborators * 20
-        let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
-        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+        let overlapCollaboratorsWidth = numCollaborators * collaboratorsCellSpacing * -1
+        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth + 35 // +40 to show "Edit"
     
         collaboratorsPreviewView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

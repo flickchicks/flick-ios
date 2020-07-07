@@ -28,6 +28,7 @@ class ListSettingsModalView: UIView {
     private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
     weak var delegate: ListSettingsDelegate?
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
+    // TODO: Only show privacy/delete list if user is the owner of list
     private let settings: [ListSetting] = [.collaboration, .privacy, .deleteList]
 
     init() {
@@ -74,18 +75,13 @@ extension ListSettingsModalView: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 45
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let setting = settings[indexPath.row]
-        switch setting {
-        case .collaboration:
+        if setting == .collaboration {
             delegate?.showAddCollaboratorsModal()
-        case .deleteList:
-            break // Delete list on backend
-        case .privacy:
-            break
         }
     }
 

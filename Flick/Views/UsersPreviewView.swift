@@ -14,10 +14,12 @@ enum UsersLayoutMode { case friends, collaborators }
 class UsersPreviewView: UIView {
 
     // MARK: - Private View Vars
+    private let editLabel = UILabel()
     private var usersCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
     private var cellSpacing: CGFloat!
+    private var isEdit: Bool = false
     private var modeCellSpacing: [UsersLayoutMode : CGFloat] = [
         .friends : -8,
         .collaborators : -5
@@ -30,10 +32,11 @@ class UsersPreviewView: UIView {
     private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
     private var usersPreview: [String] = []
 
-    init(users: [String], usersLayoutMode : UsersLayoutMode) {
+    init(users: [String], usersLayoutMode : UsersLayoutMode, isEdit: Bool = false) {
         self.users = users
         self.cellSpacing = modeCellSpacing[usersLayoutMode]
         self.usersLayoutMode = usersLayoutMode
+        self.isEdit = isEdit
         super.init(frame: .zero)
         getUsersPreview()
         setupViews()
@@ -50,6 +53,16 @@ class UsersPreviewView: UIView {
     }
 
     func setupViews() {
+        editLabel.text = "Edit"
+        editLabel.textColor = .white
+        editLabel.textAlignment = .center
+        editLabel.font = .systemFont(ofSize: 12)
+        editLabel.backgroundColor = .darkBlueGray2
+        editLabel.layer.cornerRadius = 10
+        editLabel.layer.borderColor = UIColor.white.cgColor
+        editLabel.layer.borderWidth = 1
+        editLabel.layer.masksToBounds = true
+
         let usersLayout = UICollectionViewFlowLayout()
         usersLayout.minimumInteritemSpacing = cellSpacing
 
@@ -60,8 +73,29 @@ class UsersPreviewView: UIView {
         usersCollectionView.backgroundColor = .none
         addSubview(usersCollectionView)
 
+        if isEdit{
+            addSubview(editLabel)
+        }
+
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
+        let editLabelSize = CGSize(width: 35, height: 20)
+
         usersCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            if isEdit {
+                make.top.bottom.leading.equalToSuperview()
+                make.trailing.equalTo(editLabel.snp.leading).offset(-cellSpacing)
+            } else {
+                make.edges.equalToSuperview()
+            }
+        }
+        if isEdit {
+            editLabel.snp.makeConstraints { make in
+                make.top.bottom.trailing.equalToSuperview()
+                make.size.equalTo(editLabelSize)
+            }
         }
     }
 }

@@ -152,7 +152,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private func setupConstraints() {
         let listInfoHeight = 20
         let lockButtonSize = CGSize(width: 12, height: 16)
-        let numCollaborators = min(collaborators.count, 8)
+        let numCollaborators = min(collaborators.count, 7)
         let fullCollaboratorsWidth = numCollaborators * 20
         let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
         let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
