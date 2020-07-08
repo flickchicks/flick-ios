@@ -16,9 +16,11 @@ class MediaViewController: UIViewController {
     private var mediaCardViewController: MediaCardViewController!
     private var visualEffectView: UIVisualEffectView!
     private let mediaImageView = UIImageView()
+    private let saveMediaButton = UIButton()
+    private let buttonSize = CGSize(width: 44, height: 44)
 
-    private let cardHeight: CGFloat = 600
-    private let cardHandleAreaHeight: CGFloat = 65
+    private let cardHeight: CGFloat = 757
+    private let cardHandleAreaHeight: CGFloat = 283
 
     private var cardVisible = false
     private var nextState: CardState {
@@ -41,8 +43,14 @@ class MediaViewController: UIViewController {
         mediaImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaInsets.top)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(700)
+            make.height.equalTo(563)
         }
+
+//        saveMediaButton.snp.makeConstraints { make in
+//            make.centerY.equalTo(mediaCardViewController.top)
+//            make.trailing.equalToSuperview().inset(40)
+//            make.size.equalTo(buttonSize)
+//        }
 
         setupCard()
     }
@@ -51,13 +59,18 @@ class MediaViewController: UIViewController {
         let backButtonSize = CGSize(width: 22, height: 18)
 //        let settingsButtonSize = CGSize(width: 22, height: 22)
 
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.backgroundColor = .clear
+//        navigationController?.navigationBar.isHidden = false
+//        navigationController?.navigationBar.isTranslucent = true
+//        navigationController?.navigationBar.backgroundColor = .clear
+//        navigationController?.navigationBar.shadowImage = UIImage()
+
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.tintColor = .white
 
         let backButton = UIButton()
-        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -85,12 +98,25 @@ class MediaViewController: UIViewController {
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
-        mediaCardViewController.view.frame = CGRect(x: 9, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
+        saveMediaButton.setImage(UIImage(named: "newList"), for: .normal)
+        saveMediaButton.layer.cornerRadius = buttonSize.width / 2
+//        saveMediaButton.addTarget(self, action: #selector(showCreateListModal), for: .touchUpInside)
+        view.addSubview(saveMediaButton)
+
+        saveMediaButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(500)
+            make.width.equalTo(44)
+            make.height.equalTo(44)
+            make.trailing.equalToSuperview().inset(40)
+        }
+
+        mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
         mediaCardViewController.view.clipsToBounds = true
+
+//        saveMediaButton.frame = CGRect(x: self.view.frame.height - 40, y: self.view.frame.height - cardHandleAreaHeight, width: 44, height: 44)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCardTap))
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan))
-
 
         mediaCardViewController.handleArea.addGestureRecognizer(tapGestureRecognizer)
         mediaCardViewController.handleArea.addGestureRecognizer(panGestureRecognizer)
@@ -124,8 +150,10 @@ class MediaViewController: UIViewController {
                 switch state {
                 case .expanded:
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
+                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - 22
                 case .collapsed:
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.cardHandleAreaHeight
+                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - 22
                 }
             }
 

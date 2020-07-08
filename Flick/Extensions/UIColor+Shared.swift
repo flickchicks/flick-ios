@@ -22,7 +22,10 @@ extension UIColor {
     static let lightGray2 = colorFromCode(0xE9EAF1)
     // TODO: Update lightGray3 name
     static let lightGray3 = colorFromCode(0xF0F1F8)
+    static let lightGray4 = colorFromCode(0xD5D5DF)
     static let offWhite = colorFromCode(0xF7F5FE)
+    // TODO: Update movieWhite name
+    static let movieWhite = colorFromCode(0xFBFBFF)
     static let purpleOverlay = UIColor(red: 0.054, green: 0.041, blue: 0.308, alpha: 0.3)
 
     public static func colorFromCode(_ code: Int) -> UIColor {
