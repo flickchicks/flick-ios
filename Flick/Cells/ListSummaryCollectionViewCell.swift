@@ -75,6 +75,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private Data Vars
     // TODO: Replace with data from backend
+//    private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
     private let allTags: [String] = []
     private var allTagSizes = [CGSize]()
     private var collapsedTags = [String]()

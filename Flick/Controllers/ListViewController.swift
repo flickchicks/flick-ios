@@ -24,6 +24,9 @@ class ListViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var addCollaboratorModalView: AddCollaboratorModalView!
+    private let addMediaMessageLabel = UILabel()
+    private let arrowToAddButtonView = UIImageView()
+    private let emptyListImageView = UIImageView()
     private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
     private var sortListModalView: SortListModalView!
@@ -31,7 +34,7 @@ class ListViewController: UIViewController {
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
-    private var listSummaryHeight: CGFloat = 145
+    private var listSummaryHeight: CGFloat = 80 //145   80 if no tags
     // TODO: Replace with data from backend
     private var list: MediaList!
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
@@ -68,6 +71,22 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
+        addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
+        addMediaMessageLabel.textColor = .darkBlue
+        addMediaMessageLabel.textAlignment = .center
+        addMediaMessageLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        addMediaMessageLabel.numberOfLines = 0
+
+        arrowToAddButtonView.image = UIImage(named: "arrowToButton")
+
+        emptyListImageView.image = UIImage(named: "emptyList")
+
+        if media.count == 0 {
+            view.addSubview(emptyListImageView)
+            view.addSubview(addMediaMessageLabel)
+            view.addSubview(arrowToAddButtonView)
+        }
+
         setupSections()
         setupConstraints()
     }
@@ -82,8 +101,22 @@ class ListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//
+//        if media.count != 0 {
+//            addMediaMessageLabel.isHidden = true
+//            arrowToAddButtonView.isHidden = true
+//            emptyListImageView.isHidden = true
+//        }
+//    }
 
     private func setupConstraints() {
+        let arrowSize = CGSize(width: 30, height: 80)
+        let emptyListWidth = UIScreen.main.bounds.width - 2 * edgeInsets
+        let emptyListHeight = 1.8 * emptyListWidth
+        let emptyListSize = CGSize(width: emptyListWidth, height: emptyListHeight)
+
         listNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
@@ -93,6 +126,25 @@ class ListViewController: UIViewController {
         mediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(listNameLabel.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        if media.count == 0 {
+            addMediaMessageLabel.snp.makeConstraints { make in
+                make.top.equalTo(arrowToAddButtonView.snp.bottom)
+                make.trailing.equalTo(arrowToAddButtonView.snp.leading)
+            }
+
+            arrowToAddButtonView.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(260) // need better calculation
+                make.trailing.equalToSuperview().inset(40)
+                make.size.equalTo(arrowSize)
+            }
+
+            emptyListImageView.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.top.equalToSuperview().offset(280)
+                make.size.equalTo(emptyListSize)
+            }
         }
     }
 
@@ -176,8 +228,9 @@ extension ListViewController: UICollectionViewDataSource {
         case .listSummary:
             return UICollectionReusableView()
         case .mediaList:
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as! MediaListHeaderView
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
             headerView.delegate = self
+            headerView.configure(isEmptyList: media.count == 0)
             return headerView
         }
     }
