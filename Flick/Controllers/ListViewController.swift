@@ -73,7 +73,7 @@ class ListViewController: UIViewController {
     }
 
     init(list: MediaList) {
-        super.init(nibName: .none, bundle: .none)
+        super.init(nibName: nil, bundle: nil)
         self.list = list
         listNameLabel.text = list.lstName
     }
