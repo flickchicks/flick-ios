@@ -9,20 +9,27 @@
 import Foundation
 import UIKit
 
+enum CardState { case expanded, collapsed}
+
 class MediaCardViewController: UIViewController {
 
+    // MARK: - Private View Vars
     let handleArea = UIView()
     let handleIndicatorView = UIView()
-//    private let saveMediaButton = UIButton()
 
+    // MARK: - Private Data Vars
     let handleIndicatorViewSize = CGSize(width: 64, height: 5)
-//    private let buttonSize = CGSize(width: 44, height: 44)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .movieWhite
         view.layer.cornerRadius = 36
 
+        setupHandleArea()
+        
+    }
+
+    private func setupHandleArea() {
         view.addSubview(handleArea)
 
         handleIndicatorView.layer.backgroundColor = UIColor.lightGray4.cgColor
@@ -39,7 +46,6 @@ class MediaCardViewController: UIViewController {
             make.size.equalTo(handleIndicatorViewSize)
             make.top.equalToSuperview().offset(12)
         }
-
     }
 
 }
