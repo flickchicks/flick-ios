@@ -19,7 +19,7 @@ class MediaViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
-    private let buttonSize = CGSize(width: 44, height: 44)
+    private let buttonSize = CGSize(width: 72, height: 72)
     private var cardExpanded = false
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
@@ -32,7 +32,7 @@ class MediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        expandedCardHeight = 0.75 * view.frame.height
+        expandedCardHeight = 0.9 * view.frame.height
         collapsedCardHeight = 0.4 * view.frame.height
         mediaImageHeight = 0.6 * view.frame.height
 
@@ -78,8 +78,10 @@ class MediaViewController: UIViewController {
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
-        saveMediaButton.frame = CGRect(x: self.view.frame.width - 80, y: self.view.frame.height - collapsedCardHeight - 22, width: 44, height: 44)
-        saveMediaButton.setImage(UIImage(named: "newList"), for: .normal)
+        saveMediaButton.frame = CGRect(x: self.view.frame.width - 68 - buttonSize.width/2,
+                                       y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
+                                       width: buttonSize.width, height: buttonSize.height)
+        saveMediaButton.setImage(UIImage(named: "saveButton"), for: .normal)
         saveMediaButton.layer.cornerRadius = buttonSize.width / 2
         saveMediaButton.addTarget(self, action: #selector(saveMedia), for: .touchUpInside)
         view.addSubview(saveMediaButton)
@@ -122,10 +124,10 @@ class MediaViewController: UIViewController {
                 switch state {
                 case .expanded:
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
-                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - 22
+                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 case .collapsed:
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
-                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - 22
+                    self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
             }
 
