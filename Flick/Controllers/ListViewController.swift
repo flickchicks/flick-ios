@@ -72,10 +72,16 @@ class ListViewController: UIViewController {
         setupConstraints()
     }
 
-    func initializeList(list: MediaList) {
+    init(list: MediaList) {
+        super.init(nibName: .none, bundle: .none)
         self.list = list
         listNameLabel.text = list.lstName
     }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 
     private func setupConstraints() {
         listNameLabel.snp.makeConstraints { make in

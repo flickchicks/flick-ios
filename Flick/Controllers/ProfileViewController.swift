@@ -156,8 +156,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Update with selected list data
-        let listViewController = ListViewController()
-        listViewController.initializeList(list: mediaLists[indexPath.row])
+        let listViewController = ListViewController(list: mediaLists[indexPath.row])
         navigationController?.pushViewController(listViewController, animated: true)
     }
 
@@ -179,7 +178,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
     func createList(title: String) {
         if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
             NetworkManager.createNewMediaList(authToken: authToken, listName: title) { mediaList in
-                let listViewController = ListViewController()
+                let listViewController = ListViewController(list: mediaList)
                 self.navigationController?.pushViewController(listViewController, animated: true)
             }
         }
