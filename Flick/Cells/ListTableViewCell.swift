@@ -47,7 +47,6 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 0)
         mediaCollectionView.backgroundColor = .none
-        mediaCollectionView.isScrollEnabled = true
         mediaCollectionView.showsHorizontalScrollIndicator = false
         contentView.addSubview(mediaCollectionView)
 
@@ -116,11 +115,14 @@ class ListTableViewCell: UITableViewCell {
     func configure(for list: MediaList, collaboratorsCellSpacing: Int) {
         self.list = list
         self.media = list.shows
+        // If there are no shows added, show empty state but no scroll
+        mediaCollectionView.isScrollEnabled = self.media.count != 0
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
         // TODO: Are these inclusive or exclusive?
-        if list.collaborators.count > 0 {
-            setupCollaborators(collaborators: list.collaborators)
+        let listCollaborators = list.collaborators
+        if listCollaborators.count > 0 {
+            setupCollaborators(collaborators: listCollaborators)
         } else if list.isPrivate {
             setupPrivateIcon()
         }
@@ -143,14 +145,15 @@ extension ListTableViewCell: UICollectionViewDelegate {
 
 extension ListTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return media.count
+        // If list is empty, show 4 filler cells
+        return media.count == 0 ? 4 : media.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // TODO: Add media background as cell backgroundview
         // TODO: Add left padding to first cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath)
-        cell.backgroundColor = .darkBlueGray2
+        cell.backgroundColor = .lightGray3
         cell.layer.cornerRadius = 8
         return cell
     }

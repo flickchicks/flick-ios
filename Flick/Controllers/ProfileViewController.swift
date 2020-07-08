@@ -43,7 +43,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        getUserProfile()
 
         view.backgroundColor = .offWhite
 
@@ -66,6 +65,11 @@ class ProfileViewController: UIViewController {
         setupSections()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        getUserProfile()
+    }
+
     private func setupSections() {
         let profileSummary = Section(type: SectionType.profileSummary, items: [])
         let lists = Section(type: SectionType.lists, items: mediaLists)
@@ -78,6 +82,10 @@ class ProfileViewController: UIViewController {
                 self.name = "\(userProfile.firstName) \(userProfile.lastName)"
                 self.username = userProfile.username
                 self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
+                if let ownerLsts = userProfile.ownerLsts {
+                    self.mediaLists = ownerLsts
+                }
                 self.listsTableView.reloadData()
             }
         }
@@ -96,7 +104,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .profileSummary:
             return 1
         case .lists:
-            return section.items.count
+            return mediaLists.count
         }
     }
 
@@ -130,7 +138,8 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .profileSummary:
             return UIView()
         case .lists:
-            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
+            headerView.delegate = self
             return headerView
         }
     }
@@ -147,10 +156,36 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Update with selected list data
-        let listViewController = ListViewController()
+        let listViewController = ListViewController(list: mediaLists[indexPath.row])
         navigationController?.pushViewController(listViewController, animated: true)
     }
 
 }
 
+extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
+
+    func showCreateListModal() {
+        let createListModalView = CreateListModalView()
+        createListModalView.modalDelegate = self
+        createListModalView.listDelegate = self
+        // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
+        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
+            // Add modal view to the window to also cover tab bar
+            window.addSubview(createListModalView)
+        }
+    }
+
+    func createList(title: String) {
+        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
+            NetworkManager.createNewMediaList(authToken: authToken, listName: title) { mediaList in
+                let listViewController = ListViewController(list: mediaList)
+                self.navigationController?.pushViewController(listViewController, animated: true)
+            }
+        }
+    }
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+}
 

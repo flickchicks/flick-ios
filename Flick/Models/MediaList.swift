@@ -25,4 +25,3 @@ struct MediaList: Codable {
     var tags: [String]?
     
 }
-

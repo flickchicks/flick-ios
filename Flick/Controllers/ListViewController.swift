@@ -33,7 +33,7 @@ class ListViewController: UIViewController {
     private let edgeInsets: CGFloat = 28
     private var listSummaryHeight: CGFloat = 145
     // TODO: Replace with data from backend
-    private let listName = "Foreign Films"
+    private var list: MediaList!
     private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var sections = [Section]()
 
@@ -47,7 +47,6 @@ class ListViewController: UIViewController {
 
         setupNavigationBar()
 
-        listNameLabel.text = "Foreign Films" // Temp
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         view.addSubview(listNameLabel)
@@ -72,6 +71,17 @@ class ListViewController: UIViewController {
         setupSections()
         setupConstraints()
     }
+
+    init(list: MediaList) {
+        super.init(nibName: .none, bundle: .none)
+        self.list = list
+        listNameLabel.text = list.lstName
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
 
     private func setupConstraints() {
         listNameLabel.snp.makeConstraints { make in

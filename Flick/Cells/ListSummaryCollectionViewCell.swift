@@ -75,12 +75,14 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private Data Vars
     // TODO: Replace with data from backend
-    private let allTags = ["Movie", "TV", "Drama", "Comedy", "RomanceRomance", "ActionAction", "Movie", "TV", "Drama", "Comedy", "Romance", "Action"]
+    private let allTags: [String] = []
     private var allTagSizes = [CGSize]()
     private var collapsedTags = [String]()
     weak var delegate: ListSummaryDelegate?
-    // TODO: Replace with data from backend, make sure to include current user
-    private let collaborators = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    /* TODO: Replace with data from backend, make sure to include current user
+        Note: Backend doesn't seem to include the owner in the array of collaborators.
+     */
+    private let collaborators: [String] = ["Me"]
     private let collaboratorsCellSpacing = -5
     private var numInFirstTwoRows = 0
     private var selectedTagIndex: IndexPath?

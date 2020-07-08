@@ -1,14 +1,20 @@
 import UIKit
 
+protocol ProfileDelegate: class {
+    func showCreateListModal()
+}
+
 class ProfileHeaderView: UITableViewHeaderFooterView {
 
     // MARK: - Private View Vars
-    private let addListButton = UIButton()
+    private let createListButton = UIButton()
     private let containerView = UIView()
     private let roundTopView = RoundTopView(hasShadow: true)
+    private var createListModalView: CreateListModalView!
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
+    weak var delegate: ProfileDelegate?
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -18,15 +24,16 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         containerView.clipsToBounds = true
         contentView.addSubview(containerView)
 
-        addListButton.setImage(UIImage(named: "newList"), for: .normal)
-        addListButton.layer.cornerRadius = buttonSize.width / 2
-        contentView.addSubview(addListButton)
+        createListButton.setImage(UIImage(named: "newList"), for: .normal)
+        createListButton.layer.cornerRadius = buttonSize.width / 2
+        createListButton.addTarget(self, action: #selector(showCreateListModal), for: .touchUpInside)
+        contentView.addSubview(createListButton)
 
         setupConstraints()
     }
 
     func setupConstraints() {
-        addListButton.snp.makeConstraints { make in
+        createListButton.snp.makeConstraints { make in
             make.centerY.equalTo(roundTopView.snp.top)
             make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
             make.size.equalTo(buttonSize)
@@ -41,6 +48,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+
+    @objc func showCreateListModal() {
+        delegate?.showCreateListModal()
     }
 
     required init?(coder aDecoder: NSCoder) {

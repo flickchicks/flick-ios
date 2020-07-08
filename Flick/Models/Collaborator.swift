@@ -23,3 +23,12 @@ class Collaborator {
     }
 
 }
+
+//struct BackendCollaborator: Codable {
+//    var userId: String
+//    var username: String
+//    var firstName: String
+//    var lastName: String
+//    var profileId: String
+//    var profilePic: ProfilePicture
+//}

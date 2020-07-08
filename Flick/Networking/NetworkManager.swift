@@ -62,7 +62,7 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get a user by id
+    /// [GET] Get a user with token [updated as of 7/3/20]
     static func getUserProfile(authToken: String, completion: @escaping (UserProfile) -> Void) {
         // TODO: Check if we want to use GET parameters
         let headers: HTTPHeaders = [
@@ -73,15 +73,11 @@ class NetworkManager {
         AF.request("\(hostEndpoint)/api/auth/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                if let string = String(data: data, encoding: .utf8) {
-                    print(string)
-                }
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
                     completion(user)
-                    print(user)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -89,23 +85,31 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Create new list for a user
-    static func createMediaList(userId: String, list: MediaListBody, completion: @escaping (String) -> Void) {
+    /// [POST] Create new list for a user with default/empty settings [updated as of 7/6/20]
+    static func createNewMediaList(authToken: String, listName: String, completion: @escaping (MediaList) -> Void) {
+        let headers: HTTPHeaders = [
+            "Authorization": "Token \(authToken)",
+            "Accept": "application/json"
+        ]
         let parameters: [String: Any] = [
-            "movie_ids": list.movieIds,
-            "collaborators": list.collaborators,
-            "is_private": list.isPrivate,
-            "timestamp": list.timestamp,
-            "list_name": list.listName
+            "lst_name": listName,
+            "is_favorite": true,
+            "is_watched": true,
+            "collaborators": [],
+            "shows": [],
         ]
 
-        AF.request("\(hostEndpoint)/api/user/\(userId)/list", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/lsts/", method: .post,
+                          parameters: parameters,
+                          encoding: JSONEncoding.default,
+                          headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let listIdData = try? jsonDecoder.decode(Response<IdResponse>.self, from: data) {
-                    let listId = listIdData.data.id
-                    completion(listId)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
+                    let mediaList = mediaListData.data
+                    completion(mediaList)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
