@@ -10,5 +10,20 @@ import Foundation
 import UIKit
 
 class MediaCardViewController: UIViewController {
-    
+
+    let handleArea = UIView()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .yellow
+
+        view.addSubview(handleArea)
+
+        handleArea.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(50)
+        }
+
+    }
+
 }
