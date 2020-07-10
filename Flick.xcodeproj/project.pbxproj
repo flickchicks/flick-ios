@@ -31,6 +31,8 @@
 		D41FE8BE2477C7A80048900F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41FE8BC2477C7A80048900F /* LaunchScreen.storyboard */; };
 		D41FE8C92477C7A80048900F /* FlickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8C82477C7A80048900F /* FlickTests.swift */; };
 		D41FE8D42477C7A80048900F /* FlickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8D32477C7A80048900F /* FlickUITests.swift */; };
+		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
+		D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444975024B566F700D72FED /* MediaCardViewController.swift */; };
 		D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F6E249E7727008D5484 /* SortListModalView.swift */; };
 		D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F72249EF279008D5484 /* SortSelection.swift */; };
 		D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */; };
@@ -107,6 +109,8 @@
 		D41FE8CF2477C7A80048900F /* FlickUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D41FE8D32477C7A80048900F /* FlickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickUITests.swift; sourceTree = "<group>"; };
 		D41FE8D52477C7A80048900F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
+		D444975024B566F700D72FED /* MediaCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardViewController.swift; sourceTree = "<group>"; };
 		D46B3F6E249E7727008D5484 /* SortListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListModalView.swift; sourceTree = "<group>"; };
 		D46B3F72249EF279008D5484 /* SortSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelection.swift; sourceTree = "<group>"; };
 		D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -272,6 +276,8 @@
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
 				D4786695247A0A03009E42FE /* DiscoverViewController.swift */,
 				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
+				D444974E24B566C700D72FED /* MediaViewController.swift */,
+				D444975024B566F700D72FED /* MediaCardViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -577,11 +583,13 @@
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
+				D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
+				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				80F00F6524AAFE9D0051B8FF /* MediaSeletableCollectionViewCell.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
