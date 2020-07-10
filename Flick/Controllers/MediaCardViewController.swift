@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum CardState { case expanded, collapsed}
+enum CardState { case expanded, collapsed }
 
 class MediaCardViewController: UIViewController {
 
