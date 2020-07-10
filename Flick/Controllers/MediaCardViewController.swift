@@ -24,6 +24,8 @@ class MediaCardViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .movieWhite
         view.layer.cornerRadius = 36
+        // Apply corner radius only to top left and bottom right corners
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
         setupHandleArea()
         
@@ -38,7 +40,7 @@ class MediaCardViewController: UIViewController {
 
         handleArea.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
+            make.height.equalTo(75)
         }
 
         handleIndicatorView.snp.makeConstraints { make in
