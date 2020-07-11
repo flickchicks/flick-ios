@@ -159,7 +159,6 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         if sections[indexPath.section].type == .lists {
             let listViewController = ListViewController(list: mediaLists[indexPath.row])
             navigationController?.pushViewController(listViewController, animated: true)
-            
         }
     }
 

@@ -66,7 +66,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     // MARK: - Private View Vars
     private let collaborateLabel = UILabel()
     private let collaborateView = UIView()
-    private var collaboratorsPreviewView: UsersPreviewView!
+    private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
     private let lockView = UIImageView()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
@@ -101,6 +101,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaborateLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(collaborateView)
         collaborateView.addSubview(collaborateLabel)
+        collaborateView.addSubview(collaboratorsPreviewView)
 
         privacyLabel.textColor = .mediumGray
         privacyLabel.font = .systemFont(ofSize: 14)
@@ -172,8 +173,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
     private func setupCollaborators(collaborators: [UserProfile]) {
         collaborateLabel.text = collaborators.count <= 1 ? Constants.Collaboration.onlyICanEdit : Constants.Collaboration.numCanEdit(num: collaborators.count)
-        collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
-        collaborateView.addSubview(collaboratorsPreviewView)
+        collaboratorsPreviewView.users = collaborators
 
         let listInfoHeight = 20
         let numCollaborators = min(collaborators.count, 7)
@@ -205,7 +205,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaborators = list.collaborators
         collaborators.insert(list.owner, at: 0)
         setupCollaborators(collaborators: collaborators)
-    
+
         privacyLabel.text = list.isPrivate ? Constants.Privacy.onlyICanView : Constants.Privacy.anyoneCanView
         lockView.image = UIImage(named: list.isPrivate ? "lock" : "unlock")
     }
