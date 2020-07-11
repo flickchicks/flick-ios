@@ -33,6 +33,9 @@
 		D41FE8D42477C7A80048900F /* FlickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8D32477C7A80048900F /* FlickUITests.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444975024B566F700D72FED /* MediaCardViewController.swift */; };
+		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
+		D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */; };
+		D45DC63324B9371500838DBF /* MediaSummaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63224B9371500838DBF /* MediaSummaryCollectionViewCell.swift */; };
 		D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F6E249E7727008D5484 /* SortListModalView.swift */; };
 		D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F72249EF279008D5484 /* SortSelection.swift */; };
 		D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */; };
@@ -111,6 +114,9 @@
 		D41FE8D52477C7A80048900F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D444975024B566F700D72FED /* MediaCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardViewController.swift; sourceTree = "<group>"; };
+		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
+		D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTagCollectionViewCell.swift; sourceTree = "<group>"; };
+		D45DC63224B9371500838DBF /* MediaSummaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		D46B3F6E249E7727008D5484 /* SortListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListModalView.swift; sourceTree = "<group>"; };
 		D46B3F72249EF279008D5484 /* SortSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelection.swift; sourceTree = "<group>"; };
 		D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -305,6 +311,8 @@
 				D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */,
 				D46B3F7A249F82AE008D5484 /* CollaboratorTableViewCell.swift */,
 				80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */,
+				D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */,
+				D45DC63224B9371500838DBF /* MediaSummaryCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -326,6 +334,7 @@
 				D46B3F72249EF279008D5484 /* SortSelection.swift */,
 				D46B3F7C249F843C008D5484 /* Collaborator.swift */,
 				D4E858A124B0182400062D9C /* UserProfile.swift */,
+				D45DC62E24B933B000838DBF /* MediaSummary.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -586,6 +595,7 @@
 				D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
+				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
@@ -602,7 +612,9 @@
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
+				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
+				D45DC63324B9371500838DBF /* MediaSummaryCollectionViewCell.swift in Sources */,
 				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
