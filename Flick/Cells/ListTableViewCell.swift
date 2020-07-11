@@ -123,10 +123,9 @@ class ListTableViewCell: UITableViewCell {
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
         var listCollaborators = list.collaborators
-        listCollaborators.insert(list.owner, at: 0)
         if list.isPrivate {
             setupPrivateIcon()
-        } else {
+        } else if listCollaborators.count > 0 {
             setupCollaborators(collaborators: listCollaborators)
         }
         mediaCollectionView.reloadData()
