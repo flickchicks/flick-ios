@@ -17,8 +17,10 @@ class ListTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
     private var collaboratorsCellSpacing: Int!
     private var list: MediaList!
+    private let lockImageView = UIImageView()
     private var media: [Media]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
@@ -50,12 +52,14 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.showsHorizontalScrollIndicator = false
         contentView.addSubview(mediaCollectionView)
 
+        contentView.addSubview(lockImageView)
+        contentView.addSubview(collaboratorsPreviewView)
+
         setupConstraints()
     }
 
     func setupCollaborators(collaborators: [UserProfile]) {
-        let collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
-        addSubview(collaboratorsPreviewView)
+        collaboratorsPreviewView.users = collaborators
 
         // Calculate width of friends preview based on number of friends and spacing between cells
         let numCollaborators = min(collaborators.count + 1, 7)
@@ -72,8 +76,7 @@ class ListTableViewCell: UITableViewCell {
     }
 
     func setupPrivateIcon() {
-        let lockImageView = UIImageView(image: UIImage(named: "lock"))
-        addSubview(lockImageView)
+        lockImageView.image = UIImage(named: "lock")
 
         lockImageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(10)
@@ -126,6 +129,7 @@ class ListTableViewCell: UITableViewCell {
         } else {
             setupCollaborators(collaborators: listCollaborators)
         }
+        mediaCollectionView.reloadData()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -154,7 +158,7 @@ extension ListTableViewCell: UICollectionViewDataSource {
         // TODO: Add left padding to first cell
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
         if media.count != 0 {
-            let media = list.shows[indexPath.row]
+            let media = self.media[indexPath.row]
             cell.configure(media: media)
         }
         return cell

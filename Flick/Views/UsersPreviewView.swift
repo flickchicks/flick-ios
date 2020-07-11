@@ -23,28 +23,25 @@ class UsersPreviewView: UIView {
         .collaborators : -5
     ]
     private let numMaxUsers = 6
-    private var users: [UserProfile] = []
     private var usersLayoutMode: UsersLayoutMode!
     private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
-    private var usersPreview: [UserProfile] = []
+
+    var users: [UserProfile] = [] {
+        didSet {
+            usersCollectionView.reloadData()
+        }
+    }
 
     init(users: [UserProfile], usersLayoutMode : UsersLayoutMode) {
         self.users = users
         self.cellSpacing = modeCellSpacing[usersLayoutMode]
         self.usersLayoutMode = usersLayoutMode
         super.init(frame: .zero)
-        getUsersPreview()
         setupViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    /// Sets usersPreview to first numMaxusers users in array if number of users in array exceeds
-    /// numMaxusers, otherwise sets usersPreview to users
-    func getUsersPreview() {
-        usersPreview = Array(users.prefix(numMaxUsers))
     }
 
     func setupViews() {
@@ -88,7 +85,7 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
             let pictureObject = UIImage(data: pictureData)
             cell.backgroundView = UIImageView(image: pictureObject)
         }
-        if indexPath.item == usersPreview.count {
+        if indexPath.item == numMaxUsers {
             cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
         }
         return cell
