@@ -122,7 +122,7 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.isScrollEnabled = self.media.count != 0
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
-        var listCollaborators = list.collaborators
+        let listCollaborators = list.collaborators
         if list.isPrivate {
             setupPrivateIcon()
         } else if listCollaborators.count > 0 {
