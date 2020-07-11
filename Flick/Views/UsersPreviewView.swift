@@ -23,14 +23,12 @@ class UsersPreviewView: UIView {
         .collaborators : -5
     ]
     private let numMaxUsers = 6
-    // TODO: Replace users with User array after networking is done
-//    private var users: [User] = []
-    private var users: [String] = []
+    private var users: [UserProfile] = []
     private var usersLayoutMode: UsersLayoutMode!
     private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
-    private var usersPreview: [String] = []
+    private var usersPreview: [UserProfile] = []
 
-    init(users: [String], usersLayoutMode : UsersLayoutMode) {
+    init(users: [UserProfile], usersLayoutMode : UsersLayoutMode) {
         self.users = users
         self.cellSpacing = modeCellSpacing[usersLayoutMode]
         self.usersLayoutMode = usersLayoutMode
@@ -80,13 +78,19 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellReuseIdentifier, for: indexPath)
+        let user = users[indexPath.item]
         cell.backgroundColor = .deepPurple
+        cell.clipsToBounds = true
         cell.layer.borderColor = UIColor.white.cgColor
-        cell.layer.borderWidth = 0.625
+        cell.layer.borderWidth = 0.5
         cell.layer.cornerRadius = 10
-        let cellImage = indexPath.item == usersPreview.count ? "ellipsis" : "temp"
-        // Note: Ellipsis image seems low quality
-        cell.backgroundView = UIImageView(image: UIImage(named: cellImage))
+        if let pictureUrl = URL(string: user.profilePic.assetUrls.small), let pictureData = try? Data(contentsOf: pictureUrl) {
+            let pictureObject = UIImage(data: pictureData)
+            cell.backgroundView = UIImageView(image: pictureObject)
+        }
+        if indexPath.item == usersPreview.count {
+            cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
+        }
         return cell
     }
 

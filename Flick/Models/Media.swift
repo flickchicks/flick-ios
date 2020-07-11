@@ -15,7 +15,7 @@ struct Media: Codable {
     var directors: String
     var isTv: Bool
     var dateReleased: String
-    var status: String
+    var status: String?
     var language: String
     var duration: String
     var plot: String

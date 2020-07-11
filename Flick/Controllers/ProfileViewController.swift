@@ -156,8 +156,11 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Update with selected list data
-        let listViewController = ListViewController(list: mediaLists[indexPath.row])
-        navigationController?.pushViewController(listViewController, animated: true)
+        if sections[indexPath.section].type == .lists {
+            let listViewController = ListViewController(list: mediaLists[indexPath.row])
+            navigationController?.pushViewController(listViewController, animated: true)
+            
+        }
     }
 
 }
@@ -188,4 +191,3 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
         modalView.removeFromSuperview()
     }
 }
-
