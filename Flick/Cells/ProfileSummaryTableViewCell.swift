@@ -18,7 +18,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     // TODO: Update with backend values
-    private let friends: [String] = []
+    private let friends: [UserProfile] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

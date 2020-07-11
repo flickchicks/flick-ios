@@ -10,6 +10,18 @@ import Foundation
 
 struct Constants {
 
+    struct Collaboration {
+        static let onlyICanEdit = "Only I Can Edit"
+        static func numCanEdit(num: Int) -> String {
+            return "\(num) can edit"
+        }
+    }
+
+    struct Privacy {
+        static let anyoneCanView = "Anyone can view"
+        static let onlyICanView = "Only I can view"
+    }
+
     struct UserDefaults {
         static let authorizationToken = "authorizationToken"
         static let user = "user"

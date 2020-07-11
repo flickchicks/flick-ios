@@ -33,7 +33,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var rootViewController: UIViewController
         if let token = AccessToken.current,
             !token.isExpired,
-            let _ = userDefaults.data(forKey: Constants.UserDefaults.user),
             let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken)  {
             // User is logged in and we have the necessary authorization token to make backend requets for user.
             rootViewController = homeViewController

@@ -14,7 +14,7 @@ class ListViewController: UIViewController {
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
-        var items: [String] //TODO: Change String to Media
+        var items: [Media]
     }
 
     private enum SectionType {
@@ -34,10 +34,8 @@ class ListViewController: UIViewController {
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
-    private var listSummaryHeight: CGFloat = 80 //145   80 if no tags
-    // TODO: Replace with data from backend
+    private var listSummaryHeight: CGFloat = 80
     private var list: MediaList!
-    private let media = ["", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var sections = [Section]()
 
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
@@ -50,6 +48,7 @@ class ListViewController: UIViewController {
 
         setupNavigationBar()
 
+        listNameLabel.text = list.lstName
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         view.addSubview(listNameLabel)
@@ -71,6 +70,7 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
+        // Empty list
         addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
         addMediaMessageLabel.textColor = .darkBlue
         addMediaMessageLabel.textAlignment = .center
@@ -78,10 +78,9 @@ class ListViewController: UIViewController {
         addMediaMessageLabel.numberOfLines = 0
 
         arrowToAddButtonView.image = UIImage(named: "arrowToButton")
-
         emptyListImageView.image = UIImage(named: "emptyList")
 
-        if media.count == 0 {
+        if list.shows.count == 0 {
             view.addSubview(emptyListImageView)
             view.addSubview(addMediaMessageLabel)
             view.addSubview(arrowToAddButtonView)
@@ -94,22 +93,21 @@ class ListViewController: UIViewController {
     init(list: MediaList) {
         super.init(nibName: nil, bundle: nil)
         self.list = list
-        listNameLabel.text = list.lstName
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        if media.count != 0 {
-//            addMediaMessageLabel.isHidden = true
-//            arrowToAddButtonView.isHidden = true
-//            emptyListImageView.isHidden = true
-//        }
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if list.shows.count != 0 {
+            addMediaMessageLabel.isHidden = true
+            arrowToAddButtonView.isHidden = true
+            emptyListImageView.isHidden = true
+        }
+    }
 
     private func setupConstraints() {
         let arrowSize = CGSize(width: 30, height: 80)
@@ -127,15 +125,16 @@ class ListViewController: UIViewController {
             make.top.equalTo(listNameLabel.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
-        if media.count == 0 {
+
+        // Empty list
+        if list.shows.count == 0 {
             addMediaMessageLabel.snp.makeConstraints { make in
                 make.top.equalTo(arrowToAddButtonView.snp.bottom)
                 make.trailing.equalTo(arrowToAddButtonView.snp.leading)
             }
 
             arrowToAddButtonView.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(260) // need better calculation
+                make.top.equalToSuperview().offset(260)
                 make.trailing.equalToSuperview().inset(40)
                 make.size.equalTo(arrowSize)
             }
@@ -151,7 +150,7 @@ class ListViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
         let settingsButtonSize = CGSize(width: 22, height: 22)
-            
+
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -178,7 +177,7 @@ class ListViewController: UIViewController {
 
     private func setupSections() {
         let listSummary = Section(type: SectionType.listSummary, items: [])
-        let mediaList = Section(type: SectionType.mediaList, items: media)
+        let mediaList = Section(type: SectionType.mediaList, items: list.shows)
         sections = [listSummary, mediaList]
     }
 
@@ -214,10 +213,13 @@ extension ListViewController: UICollectionViewDataSource {
         switch section.type {
         case .listSummary:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listSummaryCellReuseIdentifier, for: indexPath) as? ListSummaryCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(list: list)
             cell.delegate = self
             return cell
         case .mediaList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
+            let media = list.shows[indexPath.row]
+            cell.configure(media: media)
             return cell
         }
     }
@@ -229,8 +231,8 @@ extension ListViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         case .mediaList:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
+            headerView.configure(isEmptyList: list.shows.count == 0)
             headerView.delegate = self
-            headerView.configure(isEmptyList: media.count == 0)
             return headerView
         }
     }
@@ -243,6 +245,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
+            listSummaryHeight = (list.tags?.isEmpty ?? true) ? 80 : 145
             return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
