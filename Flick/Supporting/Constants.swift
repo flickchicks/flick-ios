@@ -11,7 +11,7 @@ import Foundation
 struct Constants {
 
     struct Collaboration {
-        static let onlyICanEdit = "Only I Can Edit"
+        static let onlyICanEdit = "Only I can edit"
         static func numCanEdit(num: Int) -> String {
             return "\(num) can edit"
         }
