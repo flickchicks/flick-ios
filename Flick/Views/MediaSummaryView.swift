@@ -11,10 +11,10 @@ import UIKit
 class MediaSummaryView: UIView {
 
     // MARK: - Private View Vars
-    private var platformCollectionView: SelfSizeCollectionView!
-    private var summaryItemsCollectionView: SelfSizeCollectionView!
+    private var platformCollectionView: SelfSizingCollectionView!
+    private var summaryItemsCollectionView: SelfSizingCollectionView!
     private let summaryLabel = UILabel()
-    private var tagsCollectionView: SelfSizeCollectionView!
+    private var tagsCollectionView: SelfSizingCollectionView!
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -38,7 +38,7 @@ class MediaSummaryView: UIView {
         MediaSummary(type: .spacer),
         MediaSummary(text: "Quentin Tarantino", type: .director)
     ]
-    private let tags = ["A", "Supefdsfrheros", "A", "Abc", "Actifasfsafon", "Supesfasfsdfrheros"]
+    private let tags = ["Comedy", "Romance", "Superhero", "FBI", "Romantic Comedy", "Crime", "Sad"]
     private let platforms = ["Netflix", "Hulu"]
 
     override init(frame: CGRect) {
@@ -52,13 +52,12 @@ class MediaSummaryView: UIView {
         addSubview(titleLabel)
 
         let summaryItemsCollectionViewLayout = LeftAlignedFlowLayout()
-        summaryItemsCollectionView = SelfSizeCollectionView(frame: .zero, collectionViewLayout: summaryItemsCollectionViewLayout)
+        summaryItemsCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: summaryItemsCollectionViewLayout)
         summaryItemsCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
         summaryItemsCollectionView.backgroundColor = .clear
         summaryItemsCollectionView.register(MediaSummaryInfoCollectionViewCell.self, forCellWithReuseIdentifier: summaryInfoCellReuseIdentifier)
         summaryItemsCollectionView.dataSource = self
         summaryItemsCollectionView.delegate = self
-        summaryItemsCollectionView.contentInsetAdjustmentBehavior = .always
         summaryItemsCollectionView.layoutIfNeeded()
         addSubview(summaryItemsCollectionView)
 
@@ -70,26 +69,23 @@ class MediaSummaryView: UIView {
         addSubview(summaryLabel)
 
         let tagsCollectionViewLayout = LeftAlignedFlowLayout()
-        tagsCollectionView = SelfSizeCollectionView(frame: .zero, collectionViewLayout: tagsCollectionViewLayout)
+        tagsCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: tagsCollectionViewLayout)
         tagsCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
         tagsCollectionView.backgroundColor = .clear
         tagsCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: tagCellReuseIdentifier)
         tagsCollectionView.dataSource = self
         tagsCollectionView.delegate = self
-        tagsCollectionView.allowsSelection = true
         tagsCollectionView.layoutIfNeeded()
         addSubview(tagsCollectionView)
 
         let platformFlowLayout = UICollectionViewFlowLayout()
         platformFlowLayout.minimumInteritemSpacing = 12
-
-        platformCollectionView = SelfSizeCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
+        platformCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
         platformCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
         platformCollectionView.backgroundColor = .clear
         platformCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: platformCellReuseIdentifier)
         platformCollectionView.dataSource = self
         platformCollectionView.delegate = self
-        platformCollectionView.allowsSelection = true
         platformCollectionView.layoutIfNeeded()
         addSubview(platformCollectionView)
 
@@ -107,7 +103,7 @@ class MediaSummaryView: UIView {
         let horizontalPadding = 10
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(horizontalPadding*2)
         }
 
@@ -164,7 +160,6 @@ extension MediaSummaryView: UICollectionViewDataSource, UICollectionViewDelegate
             return cell
         }
     }
-
 }
 
 extension MediaSummaryView: UICollectionViewDelegateFlowLayout {
@@ -180,20 +175,22 @@ extension MediaSummaryView: UICollectionViewDelegateFlowLayout {
         if collectionView == summaryItemsCollectionView {
             let textWidth = calculateNecessaryWidth(text: summaryInfo[indexPath.item].text)
             let height: CGFloat = 15
+            let iconSpacerWidth: CGFloat = 19
             switch summaryInfo[indexPath.item].type {
             case .spacer:
                 return CGSize(width: 10, height: height)
             case .director:
-                return CGSize(width: textWidth + 19, height: height)
+                return CGSize(width: textWidth + iconSpacerWidth, height: height)
             case .duration:
-                return CGSize(width: textWidth + 19, height: height)
+                return CGSize(width: textWidth + iconSpacerWidth, height: height)
             case .rating:
-                return CGSize(width: textWidth + 8, height: 19)
+                return CGSize(width: textWidth + 8, height: height + 4)
             default:
-                return CGSize(width: textWidth, height: 15)
+                return CGSize(width: textWidth, height: height)
             }
         } else if collectionView == tagsCollectionView {
-            return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item]) + 32, height: 27)
+            let totalHorizontalPadding: CGFloat = 32
+            return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item]) + totalHorizontalPadding, height: 27)
         } else {
             return CGSize(width: 26, height: 26)
         }

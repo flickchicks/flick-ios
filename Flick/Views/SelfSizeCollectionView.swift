@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SelfSizeCollectionView: UICollectionView {
+class SelfSizingCollectionView: UICollectionView {
     override func reloadData() {
         super.reloadData()
         self.invalidateIntrinsicContentSize()

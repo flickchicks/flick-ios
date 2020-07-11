@@ -21,11 +21,9 @@ class MediaSummaryInfoCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 0
         label.textColor = .mediumGray
-
     }
 
     func configure(with mediaSummary: MediaSummary) {
-
         switch mediaSummary.type {
         case .spacer:
             setupSpacerView()
@@ -73,15 +71,10 @@ class MediaSummaryInfoCollectionViewCell: UICollectionViewCell {
     }
 
     func setupLabelWithOutline(text: String) {
-
         setupLabel(text: text)
         label.layer.borderWidth = 1
         label.layer.cornerRadius = 2
         label.layer.borderColor = UIColor.mediumGray.cgColor
-        label.frame.size.width = label.intrinsicContentSize.width + 8
-        label.frame.size.height = label.intrinsicContentSize.height + 4
-        label.textAlignment = .center
-
     }
 
     func setupLabel(text: String) {

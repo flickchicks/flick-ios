@@ -37,7 +37,8 @@ class MediaCardViewController: UIViewController {
         view.addSubview(summaryView)
 
         summaryView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(40)
+            make.leading.trailing.equalToSuperview()
         }
         
     }
