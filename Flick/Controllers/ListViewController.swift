@@ -120,6 +120,7 @@ class ListViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
@@ -132,6 +133,10 @@ class ListViewController: UIViewController {
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc private func settingsButtonPressed() {
+        navigationController?.pushViewController(ListSettingsViewController(), animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {

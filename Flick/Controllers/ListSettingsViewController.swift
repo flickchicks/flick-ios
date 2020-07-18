@@ -18,26 +18,31 @@ enum ListSetting: String {
 class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private let addCollaboratorModalView = AddCollaboratorModalView()
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
     private var list: MediaList!
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
-     // TODO: Only show privacy/delete list if user is the owner of list
+     // TODO: Only show privacy/delete list if user is the owner of list. basically no settings for default lists
     private let settings: [ListSetting] = [.collaboration, .privacy, .rename, .deleteList]
 
-    init(list: MediaList) {
-        self.list = list
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    init(list: MediaList) {
+//        self.list = list
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .offWhite
+
+        setupNavigationBar()
 
         settingsTableView.separatorStyle = .none
+        settingsTableView.backgroundColor = .offWhite
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
         settingsTableView.register(ListSettingsTableViewCell.self, forCellReuseIdentifier: listSettingsCellReuseIdentifier)
@@ -50,6 +55,53 @@ class ListSettingsViewController: UIViewController {
         }
     }
 
+    private func setupNavigationBar() {
+        let backButtonSize = CGSize(width: 22, height: 18)
+            
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barTintColor = .offWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
+
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+    
+    @objc private func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    private func showModalPopup(view: UIView) {
+        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
+            window.addSubview(view)
+        }
+    }
+
+    private func showAddCollaboratorsModal() {
+        let addCollaboratorModalView = AddCollaboratorModalView()
+        addCollaboratorModalView.delegate = self
+        showModalPopup(view: addCollaboratorModalView)
+    }
+
+    private func showDeleteConfirmationModal() {
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?")
+        deleteConfirmationModalView.modalDelegate = self
+        showModalPopup(view: deleteConfirmationModalView)
+    }
+
+    private func showRenameListModal() {
+        let renameListModalView = EnterListNameModalView(type: .renameList)
+        renameListModalView.modalDelegate = self
+        renameListModalView.listSettingsDelegate = self
+        showModalPopup(view: renameListModalView)
+    }
+
 }
 
 extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -60,7 +112,7 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listSettingsCellReuseIdentifier, for: indexPath) as? ListSettingsTableViewCell else { return UITableViewCell() }
-        cell.configure(for: settings[indexPath.row], list: list) // TODO: pass in the list instead of isPrivate and collaborators
+        cell.configure(for: settings[indexPath.row]) // TODO: pass in the list instead of isPrivate and collaborators
         return cell
     }
 
@@ -71,11 +123,31 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let setting = settings[indexPath.row]
         switch setting {
-        case <#pattern#>:
-            <#code#>
+        case .collaboration:
+            showAddCollaboratorsModal()
+        case .deleteList:
+            showDeleteConfirmationModal()
+        case .rename:
+            showRenameListModal()
         default:
-            <#code#>
+            break
         }
+    }
+
+}
+
+extension ListSettingsViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+}
+
+extension ListSettingsViewController: ListSettingsDelegate {
+
+    func renameList(title: String) {
+        print("shoul rename list to \(title)")
     }
 
 }

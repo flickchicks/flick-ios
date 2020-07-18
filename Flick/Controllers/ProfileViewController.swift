@@ -165,7 +165,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
 
     func showCreateListModal() {
-        let createListModalView = CreateListModalView()
+        let createListModalView = EnterListNameModalView(type: .createList)
         createListModalView.modalDelegate = self
         createListModalView.listDelegate = self
         // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)

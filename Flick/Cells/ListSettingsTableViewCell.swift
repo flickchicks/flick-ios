@@ -22,6 +22,7 @@ class ListSettingsTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .offWhite
 
         selectionStyle = .none
 
@@ -41,19 +42,21 @@ class ListSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for setting: ListSetting, list: MediaList) {
+    func configure(for setting: ListSetting) {
         nameLabel.text = setting.rawValue
         switch setting {
         case.collaboration:
 //            self.collaborators = collaborators
-//            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators, isEdit: true)
+            collaborators = ["", "", ""]
+            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
         case .deleteList:
             break
         case .privacy:
-//            privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
-//            privacySwitch.setPrivate(isPrivate)
+            let isPrivate = true
+            privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+            privacySwitch.setPrivate(isPrivate)
             contentView.addSubview(privacyStatusLabel)
             contentView.addSubview(privacySwitch)
             setupPrivacyConstraints()
