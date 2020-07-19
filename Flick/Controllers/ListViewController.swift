@@ -70,20 +70,8 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
-        // Empty list
-        addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
-        addMediaMessageLabel.textColor = .darkBlue
-        addMediaMessageLabel.textAlignment = .center
-        addMediaMessageLabel.font = .systemFont(ofSize: 18, weight: .medium)
-        addMediaMessageLabel.numberOfLines = 0
-
-        arrowToAddButtonView.image = UIImage(named: "arrowToButton")
-        emptyListImageView.image = UIImage(named: "emptyList")
-
         if list.shows.count == 0 {
-            view.addSubview(emptyListImageView)
-            view.addSubview(addMediaMessageLabel)
-            view.addSubview(arrowToAddButtonView)
+            setupEmptyStateViews()
         }
 
         setupSections()
@@ -99,22 +87,24 @@ class ListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    private func setupEmptyStateViews() {
+        addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
+        addMediaMessageLabel.textColor = .darkBlue
+        addMediaMessageLabel.textAlignment = .center
+        addMediaMessageLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        addMediaMessageLabel.numberOfLines = 0
+        view.addSubview(addMediaMessageLabel)
 
-        if list.shows.count != 0 {
-            addMediaMessageLabel.isHidden = true
-            arrowToAddButtonView.isHidden = true
-            emptyListImageView.isHidden = true
-        }
+        arrowToAddButtonView.image = UIImage(named: "arrowToButton")
+        view.addSubview(arrowToAddButtonView)
+
+        emptyListImageView.image = UIImage(named: "emptyList")
+        view.addSubview(emptyListImageView)
+
+        setupEmptyStateConstraints()
     }
 
     private func setupConstraints() {
-        let arrowSize = CGSize(width: 30, height: 80)
-        let emptyListWidth = UIScreen.main.bounds.width - 2 * edgeInsets
-        let emptyListHeight = 1.8 * emptyListWidth
-        let emptyListSize = CGSize(width: emptyListWidth, height: emptyListHeight)
-
         listNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
@@ -125,25 +115,29 @@ class ListViewController: UIViewController {
             make.top.equalTo(listNameLabel.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    private func setupEmptyStateConstraints() {
+        let arrowSize = CGSize(width: 30, height: 80)
+        let emptyListWidth = UIScreen.main.bounds.width - 2 * edgeInsets
+        let emptyListHeight = 1.8 * emptyListWidth
+        let emptyListSize = CGSize(width: emptyListWidth, height: emptyListHeight)
 
-        // Empty list
-        if list.shows.count == 0 {
-            addMediaMessageLabel.snp.makeConstraints { make in
-                make.top.equalTo(arrowToAddButtonView.snp.bottom)
-                make.trailing.equalTo(arrowToAddButtonView.snp.leading)
-            }
+        addMediaMessageLabel.snp.makeConstraints { make in
+            make.top.equalTo(arrowToAddButtonView.snp.bottom)
+            make.trailing.equalTo(arrowToAddButtonView.snp.leading)
+        }
 
-            arrowToAddButtonView.snp.makeConstraints { make in
-                make.top.equalToSuperview().offset(260)
-                make.trailing.equalToSuperview().inset(40)
-                make.size.equalTo(arrowSize)
-            }
+        arrowToAddButtonView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(260)
+            make.trailing.equalToSuperview().inset(40)
+            make.size.equalTo(arrowSize)
+        }
 
-            emptyListImageView.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.top.equalToSuperview().offset(280)
-                make.size.equalTo(emptyListSize)
-            }
+        emptyListImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(280)
+            make.size.equalTo(emptyListSize)
         }
     }
 
@@ -213,8 +207,7 @@ extension ListViewController: UICollectionViewDataSource {
         switch section.type {
         case .listSummary:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: listSummaryCellReuseIdentifier, for: indexPath) as? ListSummaryCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(list: list)
-            cell.delegate = self
+            cell.configure(list: list, delegate: self)
             return cell
         case .mediaList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }

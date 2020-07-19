@@ -89,7 +89,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private var totalWidthPerRow: CGFloat = 0
     private var list: MediaList!
 
-    weak var delegate: ListSummaryDelegate?
+    private weak var delegate: ListSummaryDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -199,8 +199,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(list: MediaList) {
+    func configure(list: MediaList, delegate: ListSummaryDelegate) {
         self.list = list
+        self.delegate = delegate
 
         collaborators = list.collaborators
         collaborators.insert(list.owner, at: 0)
