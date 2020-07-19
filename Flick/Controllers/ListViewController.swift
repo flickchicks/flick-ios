@@ -229,7 +229,8 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     }
 
     func editMedia() {
-        print("Edit media")
+        let editVC = EditListViewController()
+        navigationController?.pushViewController(editVC, animated: true)
     }
 
     func sortMedia() {

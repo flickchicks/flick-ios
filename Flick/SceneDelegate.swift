@@ -41,8 +41,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // User is logged out.
             rootViewController = loginViewController
         }
-        let navigationController = UINavigationController(rootViewController: rootViewController)
+//        let navigationController = UINavigationController(rootViewController: rootViewController)
 
+//        let navigationController = UINavigationController(rootViewController: ListViewController(list: MediaList(lstId: "1", lstName: "some name", lstPic: "", isFavorite: true, isPrivate: true, isWatched: true, collaborators: [], owner: UserProfile(userId: "", username: "", firstName: "", lastName: "", profileId: "", profilePic: ProfilePicture(id: 1, salt: "", kind: "", baseUrl: "", assetUrls: AssetUrls(original: "", large: "", small: ""), createdAt: "", updatedAt: ""), bio: nil, phoneNumber: nil, socialIdToken: nil, socialIdTokenType: nil, ownerLsts: nil, collabLsts: nil), shows: nil, tags: nil)))
+        let navigationController = UINavigationController(rootViewController: EditListViewController())
         window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()

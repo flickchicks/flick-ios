@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "backArrow.png",
+      "filename" : "moveActive1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "moveActive2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "moveActive3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -17,8 +19,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }
