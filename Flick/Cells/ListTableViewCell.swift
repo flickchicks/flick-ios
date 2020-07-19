@@ -17,8 +17,10 @@ class ListTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
     private var collaboratorsCellSpacing: Int!
     private var list: MediaList!
+    private let lockImageView = UIImageView()
     private var media: [Media]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
@@ -42,7 +44,7 @@ class ListTableViewCell: UITableViewCell {
         mediaLayout.scrollDirection = .horizontal
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
-        mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
+        mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 0)
@@ -50,12 +52,14 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.showsHorizontalScrollIndicator = false
         contentView.addSubview(mediaCollectionView)
 
+        contentView.addSubview(lockImageView)
+        contentView.addSubview(collaboratorsPreviewView)
+
         setupConstraints()
     }
 
-    func setupCollaborators(collaborators: [String]) {
-        let collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
-        addSubview(collaboratorsPreviewView)
+    func setupCollaborators(collaborators: [UserProfile]) {
+        collaboratorsPreviewView.users = collaborators
 
         // Calculate width of friends preview based on number of friends and spacing between cells
         let numCollaborators = min(collaborators.count + 1, 7)
@@ -72,8 +76,7 @@ class ListTableViewCell: UITableViewCell {
     }
 
     func setupPrivateIcon() {
-        let lockImageView = UIImageView(image: UIImage(named: "lock"))
-        addSubview(lockImageView)
+        lockImageView.image = UIImage(named: "lock")
 
         lockImageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(10)
@@ -119,13 +122,13 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.isScrollEnabled = self.media.count != 0
         self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
-        // TODO: Are these inclusive or exclusive?
         let listCollaborators = list.collaborators
-        if listCollaborators.count > 0 {
-            setupCollaborators(collaborators: listCollaborators)
-        } else if list.isPrivate {
+        if list.isPrivate {
             setupPrivateIcon()
+        } else if listCollaborators.count > 0 {
+            setupCollaborators(collaborators: listCollaborators)
         }
+        mediaCollectionView.reloadData()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -144,19 +147,22 @@ extension ListTableViewCell: UICollectionViewDelegate {
 }
 
 extension ListTableViewCell: UICollectionViewDataSource {
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // If list is empty, show 4 filler cells
         return media.count == 0 ? 4 : media.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // TODO: Add media background as cell backgroundview
         // TODO: Add left padding to first cell
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath)
-        cell.backgroundColor = .lightGray3
-        cell.layer.cornerRadius = 8
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
+        if media.count != 0 {
+            let media = self.media[indexPath.row]
+            cell.configure(media: media)
+        }
         return cell
     }
+
 }
 
 extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
@@ -164,4 +170,5 @@ extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 120)
     }
+
 }
