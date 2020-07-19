@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// LeftAlignedFlowLayout aligns all collection items to the leftmost position
 class LeftAlignedFlowLayout: UICollectionViewFlowLayout {
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {

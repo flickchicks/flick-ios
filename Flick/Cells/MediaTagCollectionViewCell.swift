@@ -11,6 +11,7 @@ import UIKit
 
 class MediaTagCollectionViewCell: UICollectionViewCell {
 
+    // MARK: - Private View Vars
     private let tagLabel = UILabel()
 
     override init(frame: CGRect) {

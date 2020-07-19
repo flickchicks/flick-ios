@@ -98,7 +98,6 @@ class MediaSummaryView: UIView {
     }
 
     private func setupConstraints() {
-
         let verticalPadding = 12
         let horizontalPadding = 10
 
@@ -130,7 +129,6 @@ class MediaSummaryView: UIView {
             make.height.equalTo(platformCollectionView.contentSize.height)
         }
     }
-
 }
 
 extension MediaSummaryView: UICollectionViewDataSource, UICollectionViewDelegate {

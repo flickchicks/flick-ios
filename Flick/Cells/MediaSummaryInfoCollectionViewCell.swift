@@ -10,8 +10,9 @@ import UIKit
 
 class MediaSummaryInfoCollectionViewCell: UICollectionViewCell {
 
-    private let label = UILabel()
+    // MARK: - Private View Vars
     private let iconImageView = UIImageView()
+    private let label = UILabel()
     private let spacerView = UIView()
 
     override init(frame: CGRect) {

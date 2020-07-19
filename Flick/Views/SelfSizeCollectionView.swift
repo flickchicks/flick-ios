@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// SelfSizingCollectionView is a collection view that calculates its own height and does not require height constraints
 class SelfSizingCollectionView: UICollectionView {
     override func reloadData() {
         super.reloadData()
