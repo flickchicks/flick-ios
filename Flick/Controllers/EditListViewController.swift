@@ -185,11 +185,23 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func selectAllTapped() {
-        
+        for item in 0 ..< media.count {
+            let indexPath = IndexPath(item: item, section: 0)
+            let cell = mediaCollectionView.cellForItem(at: indexPath)
+            mediaCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+            cell?.isSelected = true
+        }
+        setActionsActive(true)
     }
 
     @objc private func deselectTapped() {
-        
+        guard let selectedIndexPaths = mediaCollectionView.indexPathsForSelectedItems else { return }
+        for indexPath in selectedIndexPaths {
+            let cell = mediaCollectionView.cellForItem(at: indexPath)
+            mediaCollectionView.deselectItem(at: indexPath, animated: true)
+            cell?.isSelected = false
+        }
+        setActionsActive(false)
     }
 
     @objc private func removeTapped() {
