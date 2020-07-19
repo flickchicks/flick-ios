@@ -24,8 +24,10 @@ class MediaListHeaderView: UICollectionReusableView {
     private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
-    weak var delegate: MediaListHeaderDelegate?
     private let buttonSize = CGSize(width: 44, height: 44)
+    var isEmptyList = true
+
+    weak var delegate: MediaListHeaderDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,12 +42,10 @@ class MediaListHeaderView: UICollectionReusableView {
         addButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(addButton)
 
-        editButton.setImage(UIImage(named: "editButton"), for: .normal)
         editButton.addTarget(self, action: #selector(editMedia), for: .touchUpInside)
         editButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(editButton)
 
-        sortButton.setImage(UIImage(named: "sortButton"), for: .normal)
         sortButton.addTarget(self, action: #selector(sortMedia), for: .touchUpInside)
         sortButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(sortButton)
@@ -85,16 +85,26 @@ class MediaListHeaderView: UICollectionReusableView {
 
     }
 
+    func configure(isEmptyList: Bool) {
+        self.isEmptyList = isEmptyList
+        editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
+        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)
+    }
+
     @objc func addMedia() {
         delegate?.addMedia()
     }
 
     @objc func editMedia() {
-        delegate?.editMedia()
+        if !isEmptyList {
+            delegate?.editMedia()
+        }
     }
 
     @objc func sortMedia() {
-        delegate?.sortMedia()
+        if !isEmptyList {
+            delegate?.sortMedia()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
