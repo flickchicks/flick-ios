@@ -77,6 +77,7 @@ class CollaboratorTableViewCell: UITableViewCell {
             make.leading.equalTo(userImageView.snp.trailing).offset(16)
             make.top.equalTo(userImageView)
         }
+
         ownerLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp.bottom).offset(4)
@@ -91,4 +92,3 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
 }
-

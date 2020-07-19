@@ -12,16 +12,14 @@ struct MediaList: Codable {
 
     var lstId: String
     var lstName: String
-    // Note: Unimplemented for now in backend
     var lstPic: String?
     var isFavorite: Bool
     var isPrivate: Bool
     var isWatched: Bool
-    // Note: Change string to user profile later
-    var collaborators: [String]
+    var collaborators: [UserProfile]
     var owner: UserProfile
-    var shows: [Media]?
+    var shows: [Media]
 //    var timestamp: String?
-    var tags: [String]?
+    var tags: [Tag]? //TODO: Should not be optional after backend implement list tags
     
 }
