@@ -17,7 +17,7 @@ class ListSettingsTableViewCell: UITableViewCell {
     private let privacySwitch = PrivacySwitch()
 
     // MARK: - Private Data Vars
-    private var collaborators: [String] = []
+    private var collaborators: [UserProfile] = []
     private let collaboratorsCellSpacing = -5
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -45,9 +45,7 @@ class ListSettingsTableViewCell: UITableViewCell {
     func configure(for setting: ListSetting) {
         nameLabel.text = setting.rawValue
         switch setting {
-        case.collaboration:
-//            self.collaborators = collaborators
-            collaborators = ["", "", ""]
+        case .collaboration:
             collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()

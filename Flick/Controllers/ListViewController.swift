@@ -88,6 +88,9 @@ class ListViewController: UIViewController {
     }
 
     private func setupEmptyStateViews() {
+        emptyListImageView.image = UIImage(named: "emptyList")
+        view.addSubview(emptyListImageView)
+
         addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
         addMediaMessageLabel.textColor = .darkBlue
         addMediaMessageLabel.textAlignment = .center
@@ -97,9 +100,6 @@ class ListViewController: UIViewController {
 
         arrowToAddButtonView.image = UIImage(named: "arrowToButton")
         view.addSubview(arrowToAddButtonView)
-
-        emptyListImageView.image = UIImage(named: "emptyList")
-        view.addSubview(emptyListImageView)
 
         setupEmptyStateConstraints()
     }
@@ -187,7 +187,7 @@ class ListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-   }
+    }
 
 }
 
