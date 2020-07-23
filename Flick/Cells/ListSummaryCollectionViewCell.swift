@@ -173,10 +173,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaboratorsPreviewView.users = collaborators
 
         let listInfoHeight = 20
-        let numCollaborators = min(collaborators.count, 7)
-        let fullCollaboratorsWidth = numCollaborators * 20
-        let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
-        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
 
         collaborateLabel.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview()

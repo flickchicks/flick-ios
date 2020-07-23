@@ -61,11 +61,7 @@ class ListTableViewCell: UITableViewCell {
     func setupCollaborators(collaborators: [UserProfile]) {
         collaboratorsPreviewView.users = collaborators
 
-        // Calculate width of friends preview based on number of friends and spacing between cells
-        let numCollaborators = min(collaborators.count + 1, 7)
-        let fullCollaboratorsWidth = numCollaborators * 20
-        let overlapCollaboratorsWidth = (numCollaborators-1) * collaboratorsCellSpacing * -1
-        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
 
         collaboratorsPreviewView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(10)

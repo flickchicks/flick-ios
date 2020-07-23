@@ -18,7 +18,6 @@ class ConfirmationModalView: UIView {
 
     // MARK: - Private Data Vars
     weak var modalDelegate: ModalDelegate?
-    weak var listDelegate: ListDelegate?
 
     init(message: String) {
         super.init(frame: .zero)
@@ -102,7 +101,6 @@ class ConfirmationModalView: UIView {
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
             self.modalDelegate?.dismissModal(modalView: self)
-//            self.listDelegate?.createList(title: nameText)
         }
     }
 

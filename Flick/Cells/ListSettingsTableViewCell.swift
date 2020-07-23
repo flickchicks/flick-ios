@@ -11,7 +11,7 @@ import UIKit
 class ListSettingsTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private var collaboratorsPreviewView: UsersPreviewView!
+    private var collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators, hasEdit: true)
     private let nameLabel = UILabel()
     private let privacyStatusLabel = UILabel()
     private let privacySwitch = PrivacySwitch()
@@ -47,7 +47,7 @@ class ListSettingsTableViewCell: UITableViewCell {
         switch setting {
         case .collaboration:
             collaborators = list.collaborators
-            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators, hasEdit: true)
+            collaboratorsPreviewView.users = collaborators
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
         case .deleteList:
@@ -65,11 +65,8 @@ class ListSettingsTableViewCell: UITableViewCell {
     }
 
     private func setupCollaboratorsConstraints() {
-        let numCollaborators = min(collaborators.count, 7)
-        let fullCollaboratorsWidth = numCollaborators * 20
-        let overlapCollaboratorsWidth = numCollaborators * collaboratorsCellSpacing * -1
-        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth + 35 // +40 to show "Edit"
-    
+        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
+
         collaboratorsPreviewView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(24)

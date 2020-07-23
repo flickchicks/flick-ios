@@ -53,27 +53,17 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    private func calculateFriendsPreviewWidth() -> Int {
-        // Calculate width of friends preview based on number of friends and spacing between cells
-        if friends.count == 0 { return 0 }
-        let numFriendsInPreview = min(friends.count, maxFriendsPreview) + 1
-        let fullFriendsWidth = numFriendsInPreview * 20
-        let overlapFriendsWidth = (numFriendsInPreview-1) * condensedCellSpacing * -1
-        let friendsPreviewWidth = fullFriendsWidth - overlapFriendsWidth
-        return friendsPreviewWidth
-    }
-
     private func calculateUserInfoViewWidth(friendsPreviewWidth: Int) -> Int {
         let padding = friends.count == 0 ? 0 : 20
         let userNameLabelWidth = Int(usernameLabel.frame.size.width)
         let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
         return userInfoViewWidth
     }
-    
+
     private func setupConstraints() {
         let padding = 20
-        let friendsPreviewWidth = calculateFriendsPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
+        let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: Int(friendsPreviewWidth))
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -120,8 +110,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     }
 
     private func updateUserInfoViewConstraints() {
-        let friendsPreviewWidth = calculateFriendsPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
+        let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: Int(friendsPreviewWidth))
 
         userInfoView.snp.updateConstraints { update in
             update.width.equalTo(userInfoViewWidth)
