@@ -15,10 +15,13 @@ class MediaCardViewController: UIViewController {
 
     // MARK: - Private View Vars
     let handleArea = UIView()
-    let handleIndicatorView = UIView()
+    private let handleIndicatorView = UIView()
+
+    // TODO: Initialize with media summary information
+    private var summaryView: MediaSummaryView!
 
     // MARK: - Private Data Vars
-    let handleIndicatorViewSize = CGSize(width: 64, height: 5)
+    private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +31,15 @@ class MediaCardViewController: UIViewController {
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 
         setupHandleArea()
+
+        summaryView = MediaSummaryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0))
+        summaryView.sizeToFit()
+        view.addSubview(summaryView)
+
+        summaryView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.leading.trailing.equalToSuperview()
+        }
         
     }
 

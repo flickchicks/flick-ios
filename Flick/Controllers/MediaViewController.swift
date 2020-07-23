@@ -74,6 +74,7 @@ class MediaViewController: UIViewController {
         visualEffectView.frame = self.view.frame
         view.addSubview(visualEffectView)
 
+        // TODO: Initialize MediaCardViewController with the media object
         mediaCardViewController = MediaCardViewController()
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
