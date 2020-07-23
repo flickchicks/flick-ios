@@ -24,16 +24,22 @@ class ListSettingsViewController: UIViewController {
     // MARK: - Private Data Vars
     private var list: MediaList!
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
-     // TODO: Only show privacy/delete list if user is the owner of list. basically no settings for default lists
-    private let settings: [ListSetting] = [.collaboration, .privacy, .rename, .deleteList]
+    private var settings = [ListSetting]()
 
-//    init(list: MediaList) {
-//        self.list = list
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    init(list: MediaList) {
+        super.init(nibName: nil, bundle: nil)
+        self.list = list
+
+        if list.isSaved || list.isWatchLater {
+            settings = [.privacy]
+        } else {
+            settings = [.collaboration, .privacy, .rename, .deleteList] // TODO: Only show collaboration if user is not owner
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,7 +118,7 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listSettingsCellReuseIdentifier, for: indexPath) as? ListSettingsTableViewCell else { return UITableViewCell() }
-        cell.configure(for: settings[indexPath.row]) // TODO: pass in the list instead of isPrivate and collaborators
+        cell.configure(for: settings[indexPath.row], list: list)
         return cell
     }
 
@@ -147,7 +153,6 @@ extension ListSettingsViewController: ModalDelegate {
 extension ListSettingsViewController: ListSettingsDelegate {
 
     func renameList(title: String) {
-        print("shoul rename list to \(title)")
     }
 
 }

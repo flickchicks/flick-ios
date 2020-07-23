@@ -81,6 +81,7 @@ class ListViewController: UIViewController {
     init(list: MediaList) {
         super.init(nibName: nil, bundle: nil)
         self.list = list
+        self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
     }
 
     required init?(coder: NSCoder) {
@@ -181,7 +182,8 @@ class ListViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-        navigationController?.pushViewController(ListSettingsViewController(), animated: true)
+        let listSettingsVC = ListSettingsViewController(list: list)
+        navigationController?.pushViewController(listSettingsVC, animated: true)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -243,7 +245,6 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            listSummaryHeight = (list.tags?.isEmpty ?? true) ? 80 : 145
             return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0

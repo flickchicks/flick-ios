@@ -42,17 +42,18 @@ class ListSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for setting: ListSetting) {
+    func configure(for setting: ListSetting, list: MediaList) {
         nameLabel.text = setting.rawValue
         switch setting {
         case .collaboration:
-            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators)
+            collaborators = list.collaborators
+            collaboratorsPreviewView = UsersPreviewView(users: collaborators, usersLayoutMode: .collaborators, hasEdit: true)
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
         case .deleteList:
             break
         case .privacy:
-            let isPrivate = true
+            let isPrivate = list.isPrivate
             privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
             privacySwitch.setPrivate(isPrivate)
             contentView.addSubview(privacyStatusLabel)
