@@ -18,7 +18,6 @@ class ListSettingsTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private var collaborators: [UserProfile] = []
-    private let collaboratorsCellSpacing = -5
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,8 +49,6 @@ class ListSettingsTableViewCell: UITableViewCell {
             collaboratorsPreviewView.users = collaborators
             contentView.addSubview(collaboratorsPreviewView)
             setupCollaboratorsConstraints()
-        case .deleteList:
-            break
         case .privacy:
             let isPrivate = list.isPrivate
             privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
@@ -59,7 +56,7 @@ class ListSettingsTableViewCell: UITableViewCell {
             contentView.addSubview(privacyStatusLabel)
             contentView.addSubview(privacySwitch)
             setupPrivacyConstraints()
-        case .rename:
+        default:
             break
         }
     }

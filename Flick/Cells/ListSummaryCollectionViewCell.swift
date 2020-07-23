@@ -78,7 +78,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private var allTagSizes = [CGSize]()
     private var collapsedTags = [String]()
     private var collaborators: [UserProfile]!
-    private let collaboratorsCellSpacing = -5
     private var numInFirstTwoRows = 0
     private var selectedTagIndex: IndexPath?
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"

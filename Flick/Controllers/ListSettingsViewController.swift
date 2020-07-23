@@ -18,7 +18,6 @@ enum ListSetting: String {
 class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let addCollaboratorModalView = AddCollaboratorModalView()
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars

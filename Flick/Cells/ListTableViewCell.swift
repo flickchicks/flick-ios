@@ -18,7 +18,6 @@ class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
-    private var collaboratorsCellSpacing: Int!
     private var list: MediaList!
     private let lockImageView = UIImageView()
     private var media: [Media]!
@@ -111,12 +110,11 @@ class ListTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for list: MediaList, collaboratorsCellSpacing: Int) {
+    func configure(for list: MediaList) {
         self.list = list
         self.media = list.shows
         // If there are no shows added, show empty state but no scroll
         mediaCollectionView.isScrollEnabled = self.media.count != 0
-        self.collaboratorsCellSpacing = collaboratorsCellSpacing
         titleLabel.text = list.lstName
         let listCollaborators = list.collaborators
         if list.isPrivate {

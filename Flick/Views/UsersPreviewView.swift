@@ -129,7 +129,16 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
         cell.layer.borderWidth = 0.5
         cell.layer.cornerRadius = 10
 
-        if indexPath.item == getNumUsers() - 1 {
+        var shouldShowEllipsis: Bool {
+            switch usersLayoutMode {
+            case .collaborators:
+                return indexPath.item == numMaxUsers
+            case .friends:
+                return indexPath.item == getNumUsers() - 1
+            }
+        }
+
+        if shouldShowEllipsis {
             cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
         } else if let pictureUrl = URL(string: user.profilePic.assetUrls.small), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
