@@ -15,12 +15,20 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        clipsToBounds = true
         layer.cornerRadius = 8
-        backgroundColor = .lightGray
+        backgroundColor = .lightGray3
 
         contentView.addSubview(mediaImageView)
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+
+    func configure(media: Media) {
+        if let pictureUrl = URL(string: media.posterPic), let pictureData = try? Data(contentsOf: pictureUrl) {
+            let pictureObject = UIImage(data: pictureData)
+            mediaImageView.image = pictureObject
         }
     }
 
