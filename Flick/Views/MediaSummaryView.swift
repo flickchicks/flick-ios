@@ -42,7 +42,7 @@ class MediaSummaryView: UIView {
     private let platforms = ["Netflix", "Hulu"]
 
     override init(frame: CGRect) {
-        super.init(frame: .zero)
+        super.init(frame: frame)
 
         print(self.bounds.height)
 

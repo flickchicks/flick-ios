@@ -8,10 +8,26 @@
 
 import UIKit
 
+class UILabelPadding: UILabel {
+
+    let padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: padding))
+    }
+
+    override var intrinsicContentSize : CGSize {
+        let superContentSize = super.intrinsicContentSize
+        let width = superContentSize.width + padding.left + padding.right
+        let heigth = superContentSize.height + padding.top + padding.bottom
+        return CGSize(width: width, height: heigth)
+    }
+
+}
+
 class CommentTableViewCell: UITableViewCell {
 
     private let profileImageView = UIImageView()
-    private let commentLabel = UILabel()
+    private let commentLabel = UILabelPadding()
     private let nameLabel = UILabel()
     private let dateLabel = UILabel()
 
@@ -26,6 +42,8 @@ class CommentTableViewCell: UITableViewCell {
         addSubview(profileImageView)
 
         commentLabel.layer.backgroundColor = UIColor.lightGray2.cgColor
+//        commentLabel.intrinsicContentSize.height = commentLabel.intrinsicContentSize.height + 20
+//        commentLabel.intrinsicContentSize.width = commentLabel.intrinsicContentSize.width + 20
         commentLabel.font = .systemFont(ofSize: 12)
         commentLabel.textColor = .black
         commentLabel.numberOfLines = 0
@@ -73,7 +91,7 @@ class CommentTableViewCell: UITableViewCell {
         commentLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView)
 //            make.height.equalTo(12)
-            make.trailing.equalTo(dateLabel.snp.leading).inset(38)
+            make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
 //            make.width.equalTo(20)
         }

@@ -38,7 +38,7 @@ class MediaCardViewController: UIViewController {
     private var commentsTableView: UITableView!
 
     private let comments = [
-        Comment(name: "Haiying W", comment: "OMG best movie ever!!! I luv all the characters hehehe", date: "1d"),
+        Comment(name: "Haiying W", comment: "OMG best movie ever!!! I luv all the characters hehehe OMG best movie ever!!! I luv all the characters hehehe", date: "1d"),
         Comment(name: "Aastha S", comment: "Test comment", date: "3d"),
         Comment(name: "Haiying W", comment: "testfdsafasdfdsfadsf", date: "4d")
     ]
@@ -73,8 +73,6 @@ class MediaCardViewController: UIViewController {
         friendRatingLabel.numberOfLines = 0
         view.addSubview(friendRatingLabel)
 
-
-
         summaryView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(40)
             make.leading.trailing.equalToSuperview()
@@ -92,6 +90,7 @@ class MediaCardViewController: UIViewController {
         commentSeparatorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 2)
         commentSeparatorView.backgroundColor = .lightGray2
         commentView.addSubview(commentSeparatorView)
+        commentView.layer.zPosition = 1
         view.addSubview(commentView)
 
         commentTextField.backgroundColor = .lightGray2
@@ -103,24 +102,24 @@ class MediaCardViewController: UIViewController {
         sendCommentButton.setImage(UIImage(named: "send"), for: .normal)
         commentView.addSubview(sendCommentButton)
 
-        commentView.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(71)
-        }
-
-        commentTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(28)
-            make.trailing.equalToSuperview().inset(60)
-            make.bottom.equalToSuperview().inset(16)
-        }
-
-        sendCommentButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(commentTextField.snp.trailing).offset(14)
-            make.centerY.equalTo(commentTextField)
-        }
+//        commentView.snp.makeConstraints { make in
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+//            make.leading.trailing.equalToSuperview()
+//            make.height.equalTo(71)
+//        }
+//
+//        commentTextField.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(16)
+//            make.leading.equalToSuperview().offset(28)
+//            make.trailing.equalToSuperview().inset(60)
+//            make.bottom.equalToSuperview().inset(16)
+//        }
+//
+//        sendCommentButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(24)
+//            make.leading.equalTo(commentTextField.snp.trailing).offset(14)
+//            make.centerY.equalTo(commentTextField)
+//        }
 
         commentsTableView = UITableView(frame: .zero, style: .plain)
         commentsTableView.backgroundColor = .none
@@ -128,6 +127,9 @@ class MediaCardViewController: UIViewController {
         commentsTableView.delegate = self
         commentsTableView.isScrollEnabled = true
         commentsTableView.alwaysBounceVertical = false
+        commentsTableView.rowHeight = UITableView.automaticDimension
+        commentsTableView.estimatedRowHeight = 140
+        commentsTableView.layer.zPosition = -1
         commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "commentsTableCell")
         commentsTableView.separatorStyle = .none
         view.addSubview(commentsTableView)
@@ -205,7 +207,7 @@ class MediaCardViewController: UIViewController {
             make.leading.equalTo(rangeSlider)
             make.trailing.equalTo(criticRatingLabel)
             make.top.equalTo(rangeSlider2.snp.bottom).offset(42)
-            make.height.equalTo(400)
+            make.height.equalTo(100)
         }
     }
 
@@ -221,10 +223,6 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 57
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
