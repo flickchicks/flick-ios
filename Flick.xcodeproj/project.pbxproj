@@ -57,7 +57,13 @@
 		D478669F247C57D2009E42FE /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669E247C57D2009E42FE /* Media.swift */; };
 		D47866A1247C57F8009E42FE /* MediaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A0247C57F8009E42FE /* MediaList.swift */; };
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
+		D4B54F6C24C519BC00965A91 /* MediaReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B54F6B24C519BC00965A91 /* MediaReviewView.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
+		D4F0FB4924CC378300DEF826 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4824CC378300DEF826 /* RangeSlider.swift */; };
+		D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4A24CC544800DEF826 /* UILabel.swift */; };
+		D4F0FB4D24CC629300DEF826 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */; };
+		D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */; };
+		D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB5224CC72EB00DEF826 /* Comment.swift */; };
 		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
 		D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */; };
 		D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */; };
@@ -141,7 +147,13 @@
 		D478669E247C57D2009E42FE /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D4B54F6B24C519BC00965A91 /* MediaReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaReviewView.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		D4F0FB4824CC378300DEF826 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		D4F0FB4A24CC544800DEF826 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
+		D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		D4F0FB5224CC72EB00DEF826 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPreviewView.swift; sourceTree = "<group>"; };
@@ -206,6 +218,7 @@
 				D474D17124B132A7006795F6 /* CreateListModalView.swift */,
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D45DC63924B9563E00838DBF /* MediaSummaryView.swift */,
+				D4B54F6B24C519BC00965A91 /* MediaReviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -245,6 +258,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				D4F0FB4724CC376D00DEF826 /* Controls */,
 				D45DC63624B9551C00838DBF /* Layouts */,
 				D4FB449024B11C9A003CA71A /* Supporting */,
 				D478669D247C57C3009E42FE /* Models */,
@@ -330,6 +344,7 @@
 				80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */,
 				D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */,
 				D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */,
+				D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -338,6 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				D478668F24798ADA009E42FE /* UIColor+Shared.swift */,
+				D4F0FB4A24CC544800DEF826 /* UILabel.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -352,8 +368,18 @@
 				D46B3F7C249F843C008D5484 /* Collaborator.swift */,
 				D4E858A124B0182400062D9C /* UserProfile.swift */,
 				D45DC62E24B933B000838DBF /* MediaSummary.swift */,
+				D4F0FB5224CC72EB00DEF826 /* Comment.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D4F0FB4724CC376D00DEF826 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				D4F0FB4824CC378300DEF826 /* RangeSlider.swift */,
+				D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */,
+			);
+			path = Controls;
 			sourceTree = "<group>";
 		};
 		D4FB449024B11C9A003CA71A /* Supporting */ = {
@@ -612,10 +638,13 @@
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
 				D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
+				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
+				D4F0FB4924CC378300DEF826 /* RangeSlider.swift in Sources */,
 				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
+				D4B54F6C24C519BC00965A91 /* MediaReviewView.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
@@ -631,6 +660,7 @@
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
+				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
@@ -646,6 +676,8 @@
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
+				D4F0FB4D24CC629300DEF826 /* RangeSliderTrackLayer.swift in Sources */,
+				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,

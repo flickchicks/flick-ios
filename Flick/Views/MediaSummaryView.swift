@@ -44,16 +44,21 @@ class MediaSummaryView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
+        print(self.bounds.height)
+
         titleLabel.text = mediaTitle
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
         titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.sizeToFit()
         addSubview(titleLabel)
 
         let summaryItemsCollectionViewLayout = LeftAlignedFlowLayout()
-        summaryItemsCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: summaryItemsCollectionViewLayout)
-        summaryItemsCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
+        summaryItemsCollectionView = SelfSizingCollectionView(
+            frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
+            collectionViewLayout: summaryItemsCollectionViewLayout
+        )
         summaryItemsCollectionView.backgroundColor = .clear
         summaryItemsCollectionView.register(MediaSummaryInfoCollectionViewCell.self, forCellWithReuseIdentifier: summaryInfoCellReuseIdentifier)
         summaryItemsCollectionView.dataSource = self
@@ -63,14 +68,16 @@ class MediaSummaryView: UIView {
 
         summaryLabel.text = mediaSummary
         summaryLabel.font = .systemFont(ofSize: 14)
+        summaryLabel.frame = CGRect(x: 0, y: 0, width: frame.width - 20, height: .greatestFiniteMagnitude)
         summaryLabel.textColor = .darkBlue
         summaryLabel.numberOfLines = 0
         summaryLabel.sizeToFit()
         addSubview(summaryLabel)
 
         let tagsCollectionViewLayout = LeftAlignedFlowLayout()
-        tagsCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: tagsCollectionViewLayout)
-        tagsCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
+        tagsCollectionView = SelfSizingCollectionView(
+            frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
+            collectionViewLayout: tagsCollectionViewLayout)
         tagsCollectionView.backgroundColor = .clear
         tagsCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: tagCellReuseIdentifier)
         tagsCollectionView.dataSource = self
@@ -109,7 +116,6 @@ class MediaSummaryView: UIView {
         summaryItemsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.trailing.equalTo(titleLabel)
-            make.height.equalTo(summaryItemsCollectionView.contentSize.height)
         }
 
         summaryLabel.snp.makeConstraints { make in
@@ -120,14 +126,26 @@ class MediaSummaryView: UIView {
         tagsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(summaryLabel.snp.bottom).offset(verticalPadding)
             make.leading.trailing.equalTo(titleLabel)
-            make.height.equalTo(tagsCollectionView.contentSize.height)
         }
 
         platformCollectionView.snp.makeConstraints { make in
             make.top.equalTo(tagsCollectionView.snp.bottom).offset(verticalPadding)
             make.leading.trailing.equalTo(titleLabel)
-            make.height.equalTo(platformCollectionView.contentSize.height)
         }
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let width = frame.size.width
+        let titleLabelHeight = titleLabel.frame.height
+        let summaryItemsCollectionViewHeight = summaryItemsCollectionView.contentSize.height
+        let summaryLabelHeight = summaryLabel.frame.height
+        let tagsCollectionViewHeight = tagsCollectionView.contentSize.height
+        let platformCollectionViewHeight = platformCollectionView.contentSize.height
+        let totalLabelHeight = titleLabelHeight + summaryLabelHeight
+        let totalCollectionViewHeight = summaryItemsCollectionViewHeight + tagsCollectionViewHeight + platformCollectionViewHeight
+        let totalVerticalPadding: CGFloat = 56
+        let height = totalVerticalPadding + totalLabelHeight + totalCollectionViewHeight
+        return CGSize(width: width, height: height)
     }
 }
 
