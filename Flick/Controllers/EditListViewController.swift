@@ -27,8 +27,19 @@ class EditListViewController: UIViewController {
     // MARK: - Private View Data
     private let actionButtonSize = CGSize(width: 36, height: 36)
     private let cellPadding: CGFloat = 20
+    private var numSelected = 0
+    private var media = [Media]()
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
-    private let media = ["", "", "", "", "", "", "" , "", "", "", "", "", "", "", "", "", "", "" , "", "", "", "", ""]
+
+    init(media: [Media]) {
+        super.init(nibName: nil, bundle: nil)
+
+        self.media = media
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,6 +203,7 @@ class EditListViewController: UIViewController {
             cell?.isSelected = true
         }
         setActionsActive(true)
+        numSelected = media.count
     }
 
     @objc private func deselectTapped() {
@@ -202,14 +214,13 @@ class EditListViewController: UIViewController {
             cell?.isSelected = false
         }
         setActionsActive(false)
+        numSelected = 0
     }
 
     @objc private func removeTapped() {
-        
     }
 
     @objc private func moveTapped() {
-        
     }
 
     private func setActionsActive(_ isActive: Bool) {
@@ -232,10 +243,14 @@ extension EditListViewController: UICollectionViewDataSource, UICollectionViewDe
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setActionsActive(true)
+        numSelected += 1
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        setActionsActive(false)
+        numSelected -= 1
+        if numSelected == 0 {
+            setActionsActive(false)
+        }
     }
 }
 
