@@ -53,17 +53,17 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    private func calculateUserInfoViewWidth(friendsPreviewWidth: Int) -> Int {
+    private func calculateUserInfoViewWidth(friendsPreviewWidth: CGFloat) -> CGFloat {
         let padding = friends.count == 0 ? 0 : 20
-        let userNameLabelWidth = Int(usernameLabel.frame.size.width)
-        let userInfoViewWidth = userNameLabelWidth + padding + friendsPreviewWidth
+        let userNameLabelWidth = usernameLabel.frame.size.width
+        let userInfoViewWidth = userNameLabelWidth + CGFloat(padding) + friendsPreviewWidth
         return userInfoViewWidth
     }
 
     private func setupConstraints() {
         let padding = 20
         let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: Int(friendsPreviewWidth))
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -111,7 +111,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     private func updateUserInfoViewConstraints() {
         let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: Int(friendsPreviewWidth))
+        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
 
         userInfoView.snp.updateConstraints { update in
             update.width.equalTo(userInfoViewWidth)
