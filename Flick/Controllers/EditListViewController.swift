@@ -45,7 +45,7 @@ class EditListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.isNavigationBarHidden = true
 
         backgroundView.backgroundColor = .white
         backgroundView.layer.backgroundColor = UIColor.backgroundOverlay.cgColor
@@ -119,8 +119,14 @@ class EditListViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        navigationController?.isNavigationBarHidden = false
+    }
+
     private func setupConstraints() {
-        let backButtonSize = CGSize(width: 19, height: 15)
+        let backButtonSize = CGSize(width: 22, height: 18)
         let buttonToButtonSpacing = 24
         let buttonToLabelSpacing = 2
         let topSpacing = 40

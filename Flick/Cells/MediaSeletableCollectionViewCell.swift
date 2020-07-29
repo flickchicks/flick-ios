@@ -33,6 +33,7 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 10
+        layer.masksToBounds = true
 
         posterImageView.backgroundColor = .lightGray2
         posterImageView.layer.cornerRadius = 10
