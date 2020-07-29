@@ -81,6 +81,7 @@ class ListViewController: UIViewController {
     init(list: MediaList) {
         super.init(nibName: nil, bundle: nil)
         self.list = list
+        self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
     }
 
     required init?(coder: NSCoder) {
@@ -88,6 +89,9 @@ class ListViewController: UIViewController {
     }
 
     private func setupEmptyStateViews() {
+        emptyListImageView.image = UIImage(named: "emptyList")
+        view.addSubview(emptyListImageView)
+
         addMediaMessageLabel.text = "Nothing here yet. Add\nsome movies or shows!"
         addMediaMessageLabel.textColor = .darkBlue
         addMediaMessageLabel.textAlignment = .center
@@ -97,9 +101,6 @@ class ListViewController: UIViewController {
 
         arrowToAddButtonView.image = UIImage(named: "arrowToButton")
         view.addSubview(arrowToAddButtonView)
-
-        emptyListImageView.image = UIImage(named: "emptyList")
-        view.addSubview(emptyListImageView)
 
         setupEmptyStateConstraints()
     }
@@ -165,6 +166,7 @@ class ListViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
@@ -179,10 +181,15 @@ class ListViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    @objc private func settingsButtonPressed() {
+        let listSettingsVC = ListSettingsViewController(list: list)
+        navigationController?.pushViewController(listSettingsVC, animated: true)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-   }
+    }
 
 }
 
@@ -238,7 +245,6 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            listSummaryHeight = (list.tags?.isEmpty ?? true) ? 80 : 145
             return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
         case .mediaList:
             let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0

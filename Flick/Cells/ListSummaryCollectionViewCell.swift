@@ -74,12 +74,10 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private var tagCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
-    // TODO: Replace with data from backend
-    private let allTags: [String] = []
+    private var allTags: [String] = []
     private var allTagSizes = [CGSize]()
     private var collapsedTags = [String]()
     private var collaborators: [UserProfile]!
-    private let collaboratorsCellSpacing = -5
     private var numInFirstTwoRows = 0
     private var selectedTagIndex: IndexPath?
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
@@ -94,8 +92,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .offWhite
-
-        getAllTagSizes()
 
         collaborateLabel.textColor = .mediumGray
         collaborateLabel.font = .systemFont(ofSize: 14)
@@ -176,10 +172,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaboratorsPreviewView.users = collaborators
 
         let listInfoHeight = 20
-        let numCollaborators = min(collaborators.count, 7)
-        let fullCollaboratorsWidth = numCollaborators * 20
-        let overlapCollaboratorsWidth = (numCollaborators - 1) * collaboratorsCellSpacing * -1
-        let collaboratorsPreviewWidth = fullCollaboratorsWidth - overlapCollaboratorsWidth
+        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
 
         collaborateLabel.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview()
@@ -202,6 +195,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     func configure(list: MediaList, delegate: ListSummaryDelegate) {
         self.list = list
         self.delegate = delegate
+        self.allTags = list.tags.map { $0.tag }
+
+        getAllTagSizes()
 
         collaborators = list.collaborators
         collaborators.insert(list.owner, at: 0)
@@ -212,6 +208,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func getAllTagSizes() {
+        tagRowCount = 1
         allTags.forEach { tag in
             let tagSize = tag.size(withAttributes: [
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)
