@@ -20,7 +20,7 @@ class MediaReviewView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
 
-        titleLabel.text = "What people think"
+        titleLabel.text = "Ratings"
         titleLabel.font = .boldSystemFont(ofSize: 18)
         titleLabel.textColor = .black
         addSubview(titleLabel)

@@ -18,8 +18,8 @@ class UILabelPadding: UILabel {
     override var intrinsicContentSize : CGSize {
         let superContentSize = super.intrinsicContentSize
         let width = superContentSize.width + padding.left + padding.right
-        let heigth = superContentSize.height + padding.top + padding.bottom
-        return CGSize(width: width, height: heigth)
+        let height = superContentSize.height + padding.top + padding.bottom
+        return CGSize(width: width, height: height)
     }
 
 }
@@ -42,8 +42,6 @@ class CommentTableViewCell: UITableViewCell {
         addSubview(profileImageView)
 
         commentLabel.layer.backgroundColor = UIColor.lightGray2.cgColor
-//        commentLabel.intrinsicContentSize.height = commentLabel.intrinsicContentSize.height + 20
-//        commentLabel.intrinsicContentSize.width = commentLabel.intrinsicContentSize.width + 20
         commentLabel.font = .systemFont(ofSize: 12)
         commentLabel.textColor = .black
         commentLabel.numberOfLines = 0
@@ -69,13 +67,12 @@ class CommentTableViewCell: UITableViewCell {
 
         profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(40)
-            make.leading.equalToSuperview()
-//            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
             make.top.equalTo(nameLabel.snp.bottom).offset(2)
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(5)
             make.height.equalTo(12)
             make.leading.equalTo(profileImageView.snp.trailing).offset(8)
             make.trailing.equalToSuperview().inset(20)
@@ -90,10 +87,9 @@ class CommentTableViewCell: UITableViewCell {
 
         commentLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView)
-//            make.height.equalTo(12)
             make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
-//            make.width.equalTo(20)
+            make.bottom.equalToSuperview().inset(5)
         }
 
     }
@@ -102,5 +98,8 @@ class CommentTableViewCell: UITableViewCell {
         commentLabel.text = comment.comment
         nameLabel.text = comment.name
         dateLabel.text = comment.date
+        commentLabel.sizeToFit()
+        nameLabel.sizeToFit()
+        dateLabel.sizeToFit()
     }
 }

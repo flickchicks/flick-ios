@@ -91,7 +91,11 @@ class MediaViewController: UIViewController {
         mediaCardViewController.view.clipsToBounds = true
 
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan))
-        mediaCardViewController.handleArea.addGestureRecognizer(panGestureRecognizer)
+        panGestureRecognizer.delegate = self
+        mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
+
+        let handleAreaPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleAreaCardPan))
+        mediaCardViewController.handleArea.addGestureRecognizer(handleAreaPanGestureRecognizer)
         
     }
 
@@ -103,13 +107,30 @@ class MediaViewController: UIViewController {
         print("Save media.")
     }
 
-    @objc func handleCardPan(recognizer: UIPanGestureRecognizer) {
+    @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.7)
+            startInteractiveTransition(state: nextState, duration: 0.3)
         case .changed:
             let translation = recognizer.translation(in: self.mediaCardViewController.handleArea)
             var fractionComplete = translation.y / expandedCardHeight
+            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
+            updateInteractiveTransiton(fractionCompleted: fractionComplete)
+        case .ended:
+            continueInteractiveTransition()
+        default:
+            break
+        }
+    }
+
+
+    @objc func handleCardPan(recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            startInteractiveTransition(state: nextState, duration: 0.3)
+        case .changed:
+            let translation = recognizer.translation(in: self.mediaCardViewController.scrollView)
+            var fractionComplete = (translation.y * 2) / expandedCardHeight
             fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
             updateInteractiveTransiton(fractionCompleted: fractionComplete)
         case .ended:
@@ -165,4 +186,10 @@ class MediaViewController: UIViewController {
         }
     }
 
+}
+
+extension MediaViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 }

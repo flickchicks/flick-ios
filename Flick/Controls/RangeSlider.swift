@@ -8,159 +8,160 @@
 
 import UIKit
 
-class RangeSlider: UIControl {
-  override var frame: CGRect {
-    didSet {
-      updateLayerFrames()
+class RangeSliderTrackLayer: CALayer {
+  weak var rangeSlider: RangeSlider?
+
+  override func draw(in context: CGContext) {
+    guard let slider = rangeSlider else {
+      return
     }
-  }
 
-  var minimumValue: CGFloat = 0 {
-    didSet {
-      updateLayerFrames()
-    }
-  }
+    let path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
+    context.addPath(path.cgPath)
 
-  var maximumValue: CGFloat = 1 {
-    didSet {
-      updateLayerFrames()
-    }
-  }
+    context.setFillColor(slider.trackTintColor.cgColor)
+    context.fillPath()
 
-  var lowerValue: CGFloat = 0 {
-    didSet {
-      updateLayerFrames()
-    }
-  }
+    context.setFillColor(slider.trackHighlightTintColor.cgColor)
 
-    var upperValue: CGFloat = 0.6 {
-    didSet {
-      updateLayerFrames()
-    }
-  }
-
-  var trackTintColor = UIColor(white: 0.9, alpha: 1) {
-    didSet {
-      trackLayer.setNeedsDisplay()
-    }
-  }
-
-  var trackHighlightTintColor = UIColor(red: 0, green: 0.45, blue: 0.94, alpha: 1) {
-    didSet {
-      trackLayer.setNeedsDisplay()
-    }
-  }
-
-    var thumbImage = UIImage(named: "star") {
-    didSet {
-      upperThumbImageView.image = thumbImage
-      lowerThumbImageView.image = thumbImage
-      updateLayerFrames()
-    }
-  }
-
-  var highlightedThumbImage = UIImage(named: "star") {
-    didSet {
-      upperThumbImageView.highlightedImage = highlightedThumbImage
-      lowerThumbImageView.highlightedImage = highlightedThumbImage
-      updateLayerFrames()
-    }
-  }
-
-
-  private let trackLayer = RangeSliderTrackLayer()
-  private let lowerThumbImageView = UIImageView()
-  private let upperThumbImageView = UIImageView()
-  private var previousLocation = CGPoint()
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    trackLayer.rangeSlider = self
-    trackLayer.contentsScale = UIScreen.main.scale
-    layer.addSublayer(trackLayer)
-
-    lowerThumbImageView.image = thumbImage
-    addSubview(lowerThumbImageView)
-
-    upperThumbImageView.image = thumbImage
-    addSubview(upperThumbImageView)
-  }
-
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // 1
-  private func updateLayerFrames() {
-    CATransaction.begin()
-    CATransaction.setDisableActions(true)
-
-    trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
-    trackLayer.setNeedsDisplay()
-    lowerThumbImageView.frame = CGRect(origin: thumbOriginForValue(lowerValue), size: CGSize(width: 14, height: 14))
-    upperThumbImageView.frame = CGRect(origin: thumbOriginForValue(upperValue), size:CGSize(width: 14, height: 14))
-    CATransaction.commit()
-  }
-  // 2
-  func positionForValue(_ value: CGFloat) -> CGFloat {
-    return bounds.width * value
-  }
-  // 3
-  private func thumbOriginForValue(_ value: CGFloat) -> CGPoint {
-    let x = positionForValue(value) - 14 / 2.0
-    return CGPoint(x: x, y: (bounds.height - 14.0) / 2.0)
+    // Fill in color between bar origin and highest rating
+    let personalValuePosition = slider.positionForValue(slider.personalValue)
+    let externalValuePosition = slider.positionForValue(slider.externalValue)
+    let maxValuePosition = max(personalValuePosition, externalValuePosition)
+    let rect = CGRect(x: 0, y: 0, width: maxValuePosition, height: bounds.height)
+    context.fill(rect)
   }
 }
 
-extension RangeSlider {
-  override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-    // 1
-    previousLocation = touch.location(in: self)
+class RangeSlider: UIControl {
 
-    // 2
-    if lowerThumbImageView.frame.contains(previousLocation) {
-      lowerThumbImageView.isHighlighted = true
-    } else if upperThumbImageView.frame.contains(previousLocation) {
-      upperThumbImageView.isHighlighted = true
+    override var frame: CGRect {
+        didSet {
+            updateLayerFrames()
+        }
     }
 
-    // 3
-    return lowerThumbImageView.isHighlighted || upperThumbImageView.isHighlighted
-  }
-
-  override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-    let location = touch.location(in: self)
-
-    // 1
-    let deltaLocation = location.x - previousLocation.x
-    let deltaValue = (maximumValue - minimumValue) * deltaLocation / bounds.width
-
-    previousLocation = location
-
-    // 2
-    if lowerThumbImageView.isHighlighted {
-      lowerValue += deltaValue
-      lowerValue = boundValue(lowerValue, toLowerValue: minimumValue,
-                              upperValue: upperValue)
-    } else if upperThumbImageView.isHighlighted {
-      upperValue += deltaValue
-      upperValue = boundValue(upperValue, toLowerValue: lowerValue,
-                              upperValue: maximumValue)
+    var minimumValue: CGFloat = 0 {
+        didSet {
+            updateLayerFrames()
+        }
     }
 
-    sendActions(for: .valueChanged)
-    return true
+    var maximumValue: CGFloat = 1 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+
+    var personalValue: CGFloat = 0 {
+        didSet {
+            updateLayerFrames()
+        }
+    }
+
+    var externalValue: CGFloat = 0.6 {
+        didSet {
+            updateLayerFrames()
+        }
   }
 
-  override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-    lowerThumbImageView.isHighlighted = false
-    upperThumbImageView.isHighlighted = false
+    var trackTintColor = UIColor(white: 0.9, alpha: 1) {
+        didSet {
+            trackLayer.setNeedsDisplay()
+        }
+    }
+
+    var trackHighlightTintColor = UIColor(red: 0, green: 0.45, blue: 0.94, alpha: 1) {
+        didSet {
+            trackLayer.setNeedsDisplay()
+        }
+    }
+
+    var personalThumbImage = UIImage(named: "movie") {
+        didSet {
+            externalThumbImageView.image = personalThumbImage
+            personalThumbImageView.image = personalThumbImage
+            updateLayerFrames()
+        }
+    }
+
+    private let trackLayer = RangeSliderTrackLayer()
+    private let personalThumbImageView = UIImageView()
+    private let externalThumbImageView = UIImageView()
+    private var previousLocation = CGPoint()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        trackLayer.rangeSlider = self
+        trackLayer.contentsScale = UIScreen.main.scale
+        layer.addSublayer(trackLayer)
+
+        personalThumbImageView.image = personalThumbImage
+        personalThumbImageView.layer.cornerRadius = 6
+        personalThumbImageView.layer.borderColor = UIColor.gradientPurple.cgColor
+        personalThumbImageView.layer.borderWidth = 1
+        addSubview(personalThumbImageView)
+
+        externalThumbImageView.image = UIImage(named: "star")
+        addSubview(externalThumbImageView)
   }
 
-  // 4
-  private func boundValue(_ value: CGFloat, toLowerValue lowerValue: CGFloat, upperValue: CGFloat) -> CGFloat {
-    return min(max(value, lowerValue), upperValue)
-  }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+
+    }
+
+    private func updateLayerFrames() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height / 3)
+        trackLayer.setNeedsDisplay()
+        personalThumbImageView.frame = CGRect(origin: thumbOriginForValue(personalValue), size: CGSize(width: 14, height: 14))
+        externalThumbImageView.frame = CGRect(origin: thumbOriginForValue(externalValue), size:CGSize(width: 14, height: 14))
+        CATransaction.commit()
+    }
+
+    func positionForValue(_ value: CGFloat) -> CGFloat {
+        return bounds.width * value
+    }
+
+    private func thumbOriginForValue(_ value: CGFloat) -> CGPoint {
+        let x = positionForValue(value) - 14 / 2.0
+        return CGPoint(x: x, y: (bounds.height - 14.0) / 2.0)
+    }
+
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+
+        previousLocation = touch.location(in: self)
+
+        if personalThumbImageView.frame.contains(previousLocation) {
+            personalThumbImageView.isHighlighted = true
+        }
+
+        return personalThumbImageView.isHighlighted
+    }
+
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let location = touch.location(in: self)
+        let deltaLocation = location.x - previousLocation.x
+        let deltaValue = (maximumValue - minimumValue) * deltaLocation / bounds.width
+
+        previousLocation = location
+
+        if personalThumbImageView.isHighlighted {
+            personalValue += deltaValue
+            personalValue = boundValue(personalValue, toLowerValue: minimumValue, upperValue: maximumValue)
+        }
+        sendActions(for: .valueChanged)
+        return true
+    }
+
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        personalThumbImageView.isHighlighted = false
+    }
+
+    private func boundValue(_ value: CGFloat, toLowerValue lowerValue: CGFloat, upperValue: CGFloat) -> CGFloat {
+        return min(max(value, lowerValue), upperValue)
+    }
 }

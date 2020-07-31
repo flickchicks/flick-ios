@@ -58,10 +58,10 @@
 		D47866A1247C57F8009E42FE /* MediaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A0247C57F8009E42FE /* MediaList.swift */; };
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
 		D4B54F6C24C519BC00965A91 /* MediaReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B54F6B24C519BC00965A91 /* MediaReviewView.swift */; };
+		D4DB6CC724D3B11200B69DF6 /* MediaCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
 		D4F0FB4924CC378300DEF826 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4824CC378300DEF826 /* RangeSlider.swift */; };
 		D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4A24CC544800DEF826 /* UILabel.swift */; };
-		D4F0FB4D24CC629300DEF826 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */; };
 		D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */; };
 		D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB5224CC72EB00DEF826 /* Comment.swift */; };
 		D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F64D3424824BF200A5A2E5 /* Body.swift */; };
@@ -148,10 +148,10 @@
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D4B54F6B24C519BC00965A91 /* MediaReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaReviewView.swift; sourceTree = "<group>"; };
+		D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		D4F0FB4824CC378300DEF826 /* RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		D4F0FB4A24CC544800DEF826 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
-		D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
 		D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		D4F0FB5224CC72EB00DEF826 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		D4F64D3424824BF200A5A2E5 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
@@ -315,6 +315,7 @@
 				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				D444975024B566F700D72FED /* MediaCardViewController.swift */,
+				D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -377,7 +378,6 @@
 			isa = PBXGroup;
 			children = (
 				D4F0FB4824CC378300DEF826 /* RangeSlider.swift */,
-				D4F0FB4C24CC629300DEF826 /* RangeSliderTrackLayer.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -640,6 +640,7 @@
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
+				D4DB6CC724D3B11200B69DF6 /* MediaCommentsViewController.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				D4F0FB4924CC378300DEF826 /* RangeSlider.swift in Sources */,
 				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
@@ -676,7 +677,6 @@
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
-				D4F0FB4D24CC629300DEF826 /* RangeSliderTrackLayer.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,

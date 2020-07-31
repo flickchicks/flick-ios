@@ -11,12 +11,26 @@ import UIKit
 
 enum CardState { case expanded, collapsed }
 
+class SelfSizingTableView: UITableView {
+
+  override var contentSize:CGSize {
+      didSet {
+          self.invalidateIntrinsicContentSize()
+      }
+  }
+
+  override var intrinsicContentSize: CGSize {
+      self.layoutIfNeeded()
+    return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
+  }
+}
+
 class MediaCardViewController: UIViewController {
 
     // MARK: - Private View Vars
     let handleArea = UIView()
     private let handleIndicatorView = UIView()
-    private let scrollView = UIScrollView()
+    let scrollView = UIScrollView()
     private let contentView = UIView()
     private var summaryView: MediaSummaryView!
     private var reviewView: MediaReviewView!
@@ -28,16 +42,12 @@ class MediaCardViewController: UIViewController {
     private let commentSeparatorView = UIView()
     private let commentTextField = UITextField()
     private let sendCommentButton = UIButton()
-    private var commentsTableView: UITableView!
+    private let ratingsSeparatorView = UIView()
+    private let thoughtsSeparatorView = UIView()
 
 
     // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
-    private let comments = [
-        Comment(name: "Haiying W", comment: "OMG best movie ever!!! I luv all the characters hehehe OMG best movie ever!!! I luv all the characters hehehe", date: "1d"),
-        Comment(name: "Aastha S", comment: "Test comment", date: "3d"),
-        Comment(name: "Haiying W", comment: "testfdsafasdfdsfadsf", date: "4d")
-    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,10 +61,9 @@ class MediaCardViewController: UIViewController {
         handleIndicatorView.layer.cornerRadius = 2
         view.addSubview(handleIndicatorView)
 
-        scrollView.showsVerticalScrollIndicator = true
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.isScrollEnabled = true
-        scrollView.bounces = true
-        scrollView.frame = scrollView.bounds
+        scrollView.bounces = false
         view.addSubview(scrollView)
 
         scrollView.addSubview(contentView)
@@ -64,6 +73,9 @@ class MediaCardViewController: UIViewController {
         summaryView.sizeToFit()
         contentView.addSubview(summaryView)
 
+        ratingsSeparatorView.backgroundColor = .lightGray2
+        view.addSubview(ratingsSeparatorView)
+
         reviewView = MediaReviewView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0))
         contentView.addSubview(reviewView)
 
@@ -71,8 +83,7 @@ class MediaCardViewController: UIViewController {
         let time = DispatchTime.now() + 1
         DispatchQueue.main.asyncAfter(deadline: time) {
             self.rangeSlider.trackHighlightTintColor = .gradientPurple
-            self.rangeSlider.thumbImage = UIImage(named: "star")
-            self.rangeSlider.highlightedThumbImage = UIImage(named: "star")
+            self.rangeSlider.personalThumbImage = UIImage(named: "unlock")
         }
         view.addSubview(rangeSlider)
 
@@ -80,8 +91,7 @@ class MediaCardViewController: UIViewController {
         let time2 = DispatchTime.now() + 1
         DispatchQueue.main.asyncAfter(deadline: time2) {
             self.rangeSlider2.trackHighlightTintColor = .gradientPurple
-            self.rangeSlider2.thumbImage = UIImage(named: "star")
-            self.rangeSlider2.highlightedThumbImage = UIImage(named: "star")
+            self.rangeSlider2.personalThumbImage = UIImage(named: "newList")
         }
         view.addSubview(rangeSlider2)
 
@@ -96,6 +106,9 @@ class MediaCardViewController: UIViewController {
         friendRatingLabel.textColor = .mediumGray
         friendRatingLabel.numberOfLines = 0
         contentView.addSubview(friendRatingLabel)
+
+        thoughtsSeparatorView.backgroundColor = .lightGray2
+        view.addSubview(thoughtsSeparatorView)
 
         commentView.backgroundColor = .movieWhite
 
@@ -114,25 +127,11 @@ class MediaCardViewController: UIViewController {
         sendCommentButton.setImage(UIImage(named: "send"), for: .normal)
         commentView.addSubview(sendCommentButton)
 
-        commentsTableView = UITableView(frame: .zero)
-        commentsTableView.backgroundColor = .none
-        commentsTableView.dataSource = self
-        commentsTableView.delegate = self
-        commentsTableView.isScrollEnabled = false
-        commentsTableView.alwaysBounceVertical = false
-        commentsTableView.rowHeight = UITableView.automaticDimension
-        commentsTableView.estimatedRowHeight = 140
-        commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "commentsTableCell")
-        commentsTableView.separatorStyle = .none
-        view.addSubview(commentsTableView)
-
         setupConstraints()
 
     }
 
     @objc func rangeSliderValueChanged(_ rangeSlider: RangeSlider) {
-        let values = "(\(rangeSlider.lowerValue) \(rangeSlider.upperValue))"
-        print("Range slider value changed: \(values)")
     }
 
     private func setupConstraints() {
@@ -165,8 +164,14 @@ class MediaCardViewController: UIViewController {
             make.height.equalTo(summaryView.intrinsicContentSize.height)
         }
 
+        ratingsSeparatorView.snp.makeConstraints{ make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(2)
+            make.top.equalTo(summaryView.snp.bottom).offset(20)
+        }
+
         reviewView.snp.makeConstraints { make in
-            make.top.equalTo(summaryView.snp.bottom).offset(37)
+            make.top.equalTo(ratingsSeparatorView.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview()
         }
 
@@ -196,6 +201,12 @@ class MediaCardViewController: UIViewController {
             make.trailing.equalToSuperview().inset(20)
         }
 
+        thoughtsSeparatorView.snp.makeConstraints{ make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(2)
+            make.top.equalTo(rangeSlider2.snp.bottom).offset(20)
+        }
+
         commentView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
@@ -215,34 +226,10 @@ class MediaCardViewController: UIViewController {
             make.centerY.equalTo(commentTextField)
         }
 
-        commentsTableView.snp.makeConstraints { make in
-            make.leading.equalTo(rangeSlider)
-            make.trailing.equalTo(criticRatingLabel)
-            make.top.equalTo(rangeSlider2.snp.bottom).offset(42)
-            make.height.equalTo(100)
-        }
-
     }
 
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height * 1.5)
-    }
-
-
-}
-
-extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return comments.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "commentsTableCell", for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
-        let comment = comments[indexPath.row]
-        cell.configure(for: comment)
-        return cell
+        scrollView.contentSize = CGSize(width: view.frame.width, height: 0.9 * view.frame.height)
     }
 
 }
-
