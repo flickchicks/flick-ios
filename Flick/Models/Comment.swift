@@ -12,10 +12,12 @@ struct Comment {
     var name: String
     var comment: String
     var date: String
+    var liked: Bool
 
-    init(name: String, comment: String, date: String) {
-       self.name = name
-       self.comment = comment
+    init(name: String, comment: String, date: String, liked: Bool) {
+        self.name = name
+        self.comment = comment
         self.date = date
+        self.liked = liked
     }
 }

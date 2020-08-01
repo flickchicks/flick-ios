@@ -1,16 +1,15 @@
 {
   "images" : [
     {
+      "filename" : "heart.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Oval@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Oval@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

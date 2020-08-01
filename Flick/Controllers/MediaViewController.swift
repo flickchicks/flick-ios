@@ -189,7 +189,12 @@ class MediaViewController: UIViewController {
 }
 
 extension MediaViewController: UIGestureRecognizerDelegate {
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return mediaCardViewController.scrollView.contentOffset.y == 0
     }
 }

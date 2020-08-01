@@ -16,13 +16,16 @@ class MediaCommentsViewController: UIViewController {
     private let commentTextField = UITextField()
     private let sendCommentButton = UIButton()
     
-    private let comments = [
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment.", date: "1d"),
-        Comment(name: "Aastha S", comment: "This is a test comment. This is a test comment. ", date: "3d"),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. ", date: "4d"),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment.", date: "4d"),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment.", date: "4d")
-    ]
+    private var comments: [Comment]!
+
+    init(comments: [Comment]) {
+        super.init(nibName: nil, bundle: nil)
+        self.comments = comments
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +80,7 @@ class MediaCommentsViewController: UIViewController {
             make.size.equalTo(backButtonSize)
         }
 
-//        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
@@ -92,6 +95,10 @@ class MediaCommentsViewController: UIViewController {
             make.top.bottom.trailing.equalToSuperview()
         }
 
+    }
+
+    @objc func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setupConstraints() {
@@ -131,8 +138,16 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "commentsTableCell", for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
         let comment = comments[indexPath.row]
-        cell.configure(for: comment)
+        cell.configure(for: comment, index: indexPath.row, delegate: self)
         return cell
     }
 
 }
+
+extension MediaCommentsViewController: CommentDelegate {
+    func likeComment(index: Int) {
+        comments[index].liked.toggle()
+        commentsTableView.reloadData()
+    }
+}
+

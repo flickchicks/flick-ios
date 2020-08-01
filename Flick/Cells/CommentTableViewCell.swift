@@ -8,9 +8,15 @@
 
 import UIKit
 
-class UILabelPadding: UILabel {
+protocol CommentDelegate: class {
+    func likeComment(index: Int)
+}
 
-    let padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+// Creates UILabel with padding
+class PaddedLabel: UILabel {
+
+    let padding = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: padding))
     }
@@ -26,10 +32,16 @@ class UILabelPadding: UILabel {
 
 class CommentTableViewCell: UITableViewCell {
 
-    private let profileImageView = UIImageView()
-    private let commentLabel = UILabelPadding()
-    private let nameLabel = UILabel()
+    // MARK: - Private View Vars
+    private let commentLabel = PaddedLabel()
     private let dateLabel = UILabel()
+    private let likeButton = UIButton()
+    private let nameLabel = UILabel()
+    private let profileImageView = UIImageView()
+
+    // MARK: - Private Data Vars
+    private var commentIndex: Int!
+    weak var delegate: CommentDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,7 +68,14 @@ class CommentTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         addSubview(dateLabel)
 
+        likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
+        addSubview(likeButton)
+
         setupConstraints()
+    }
+
+    @objc func likeComment() {
+        delegate?.likeComment(index: commentIndex)
     }
 
     required init?(coder: NSCoder) {
@@ -65,23 +84,29 @@ class CommentTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
 
+        let heartImageSize = CGSize(width: 16, height: 14)
+        let labelHeight: CGFloat = 12
+        let profileImageSize = CGSize(width: 40, height: 40)
+        let horizontalPadding: CGFloat = 20
+        let verticalPadding: CGFloat = 5
+
         profileImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(40)
-            make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(profileImageSize)
+            make.leading.equalToSuperview().offset(horizontalPadding)
             make.top.equalTo(nameLabel.snp.bottom).offset(2)
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(5)
-            make.height.equalTo(12)
+            make.top.equalToSuperview().offset(verticalPadding)
+            make.height.equalTo(labelHeight)
             make.leading.equalTo(profileImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel)
-            make.height.equalTo(12)
-            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(labelHeight)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
             make.width.equalTo(20)
         }
 
@@ -89,17 +114,25 @@ class CommentTableViewCell: UITableViewCell {
             make.top.equalTo(profileImageView)
             make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
-            make.bottom.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().inset(verticalPadding)
+        }
+
+        likeButton.snp.makeConstraints { make in
+            make.size.equalTo(heartImageSize)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
+            make.centerY.equalTo(commentLabel)
+
         }
 
     }
 
-    func configure(for comment: Comment) {
+    func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
+        self.commentIndex = index
+        self.delegate = delegate
         commentLabel.text = comment.comment
         nameLabel.text = comment.name
         dateLabel.text = comment.date
-        commentLabel.sizeToFit()
-        nameLabel.sizeToFit()
-        dateLabel.sizeToFit()
+        let heartImage = comment.liked ? "filledHeart" : "heart"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
 }
