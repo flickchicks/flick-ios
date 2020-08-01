@@ -90,7 +90,7 @@ class MediaViewController: UIViewController {
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
 
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan))
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleScollViewCardPan))
         panGestureRecognizer.delegate = self
         mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
 
@@ -124,7 +124,7 @@ class MediaViewController: UIViewController {
     }
 
 
-    @objc func handleCardPan(recognizer: UIPanGestureRecognizer) {
+    @objc func handleScollViewCardPan(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
             startInteractiveTransition(state: nextState, duration: 0.3)

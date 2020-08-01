@@ -8,15 +8,30 @@
 
 import UIKit
 
+class CommentTextField: UITextField {
+
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return super.textRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
+    }
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return super.editingRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
+    }
+}
+
 class MediaCommentsViewController: UIViewController {
 
-    private var commentsTableView: UITableView!
-    private let commentView = UIView()
+    // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
+    private var commentsTableView: UITableView!
     private let commentTextField = UITextField()
+    private let commentAreaView = CommentAreaView()
     private let sendCommentButton = UIButton()
-    
+    private let thoughtsTitleLabel = UILabel()
+
+    // MARK: - Private Data Vars
     private var comments: [Comment]!
+    private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
 
     init(comments: [Comment]) {
         super.init(nibName: nil, bundle: nil)
@@ -33,23 +48,8 @@ class MediaCommentsViewController: UIViewController {
 
         setupNavigationBar()
 
-        commentView.backgroundColor = .movieWhite
-
-        commentSeparatorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 2)
-        commentSeparatorView.backgroundColor = .lightGray2
-        commentView.addSubview(commentSeparatorView)
-        commentView.layer.zPosition = 1
-        view.addSubview(commentView)
-
-        commentTextField.backgroundColor = .lightGray2
-        commentTextField.layer.cornerRadius = 15
-        commentTextField.placeholder = "Share your thoughts"
-        commentTextField.textColor = .black
-        commentTextField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        commentView.addSubview(commentTextField)
-
-        sendCommentButton.setImage(UIImage(named: "send"), for: .normal)
-        commentView.addSubview(sendCommentButton)
+        commentAreaView.delegate = self
+        view.addSubview(commentAreaView)
 
         commentsTableView = UITableView(frame: .zero)
         commentsTableView.backgroundColor = .none
@@ -57,7 +57,7 @@ class MediaCommentsViewController: UIViewController {
         commentsTableView.delegate = self
         commentsTableView.isScrollEnabled = true
         commentsTableView.alwaysBounceVertical = true
-        commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "commentsTableCell")
+        commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: commentsCellReuseIdentifier)
         commentsTableView.separatorStyle = .none
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
@@ -84,14 +84,13 @@ class MediaCommentsViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        let thoughtsLabel = UILabel()
-        thoughtsLabel.text = "Thoughts"
-        thoughtsLabel.font = .boldSystemFont(ofSize: 24)
-        thoughtsLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(thoughtsLabel)
+        thoughtsTitleLabel.text = "Thoughts"
+        thoughtsTitleLabel.font = .boldSystemFont(ofSize: 18)
+        thoughtsTitleLabel.textColor = .black
+        navigationController?.navigationBar.addSubview(thoughtsTitleLabel)
 
-        thoughtsLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(42)
+        thoughtsTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(59)
             make.top.bottom.trailing.equalToSuperview()
         }
 
@@ -102,29 +101,23 @@ class MediaCommentsViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        commentView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(71 + view.safeAreaInsets.bottom)
-        }
 
-        commentTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.leading.equalToSuperview().offset(28)
-            make.trailing.equalToSuperview().inset(60)
-            make.bottom.equalToSuperview().inset(16)
-        }
+        let bottomSafeAreaInsets = view.safeAreaInsets.bottom
 
-        sendCommentButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(commentTextField.snp.trailing).offset(14)
-            make.centerY.equalTo(commentTextField)
+        commentAreaView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(71 + bottomSafeAreaInsets)
         }
 
         commentsTableView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(commentView.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(commentAreaView.snp.top)
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        thoughtsTitleLabel.removeFromSuperview()
     }
 
 }
@@ -136,7 +129,7 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "commentsTableCell", for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: commentsCellReuseIdentifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
         let comment = comments[indexPath.row]
         cell.configure(for: comment, index: indexPath.row, delegate: self)
         return cell
@@ -147,6 +140,12 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
 extension MediaCommentsViewController: CommentDelegate {
     func likeComment(index: Int) {
         comments[index].liked.toggle()
+        commentsTableView.reloadData()
+    }
+
+    func addComment(commentText: String) {
+        let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
+        comments.insert(comment, at: 0)
         commentsTableView.reloadData()
     }
 }

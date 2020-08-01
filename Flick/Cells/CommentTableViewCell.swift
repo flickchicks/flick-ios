@@ -10,6 +10,7 @@ import UIKit
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
+    func addComment(commentText: String)
 }
 
 // Creates UILabel with padding
@@ -88,7 +89,7 @@ class CommentTableViewCell: UITableViewCell {
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
         let horizontalPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 5
+        let verticalPadding: CGFloat = 8
 
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(profileImageSize)

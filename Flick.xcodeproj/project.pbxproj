@@ -23,6 +23,7 @@
 		80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */; };
 		80F00F6824AD8D080051B8FF /* SelectIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6724AD8D080051B8FF /* SelectIndicatorView.swift */; };
 		80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6924AEA1F70051B8FF /* SearchBar.swift */; };
+		D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414185724D5A621000BA11B /* CommentAreaView.swift */; };
 		D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B12477C7A40048900F /* AppDelegate.swift */; };
 		D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B32477C7A40048900F /* SceneDelegate.swift */; };
 		D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B52477C7A40048900F /* LoginViewController.swift */; };
@@ -106,6 +107,7 @@
 		80F00F6924AEA1F70051B8FF /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		BB53720A824B4207A2982A0A /* Pods_Flick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.release.xcconfig"; sourceTree = "<group>"; };
+		D414185724D5A621000BA11B /* CommentAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
 		D41FE8AE2477C7A40048900F /* Flick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D41FE8B12477C7A40048900F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D41FE8B32477C7A40048900F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				D474D17124B132A7006795F6 /* CreateListModalView.swift */,
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D45DC63924B9563E00838DBF /* MediaSummaryView.swift */,
+				D414185724D5A621000BA11B /* CommentAreaView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
+				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
 				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
