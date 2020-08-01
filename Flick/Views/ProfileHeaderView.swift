@@ -10,7 +10,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     private let createListButton = UIButton()
     private let containerView = UIView()
     private let roundTopView = RoundTopView(hasShadow: true)
-    private var createListModalView: CreateListModalView!
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)

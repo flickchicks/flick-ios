@@ -14,16 +14,19 @@ enum UsersLayoutMode { case friends, collaborators }
 class UsersPreviewView: UIView {
 
     // MARK: - Private View Vars
+    private let editLabel = UILabel()
     private var usersCollectionView: UICollectionView!
 
     // MARK: - Private Data Vars
-    private var cellSpacing: CGFloat!
+    private var cellSpacing: CGFloat
+    private let editLabelSize = CGSize(width: 35, height: 20)
+    private var hasEdit: Bool = false
     private var modeCellSpacing: [UsersLayoutMode : CGFloat] = [
         .friends : -8,
         .collaborators : -5
     ]
     private let numMaxUsers = 6
-    private var usersLayoutMode: UsersLayoutMode!
+    private var usersLayoutMode: UsersLayoutMode
     private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
 
     var users: [UserProfile] = [] {
@@ -32,10 +35,11 @@ class UsersPreviewView: UIView {
         }
     }
 
-    init(users: [UserProfile], usersLayoutMode : UsersLayoutMode) {
+    init(users: [UserProfile], usersLayoutMode : UsersLayoutMode, hasEdit: Bool = false) {
         self.users = users
-        self.cellSpacing = modeCellSpacing[usersLayoutMode]
+        self.cellSpacing = modeCellSpacing[usersLayoutMode] ?? -5
         self.usersLayoutMode = usersLayoutMode
+        self.hasEdit = hasEdit
         super.init(frame: .zero)
         setupViews()
     }
@@ -44,7 +48,7 @@ class UsersPreviewView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupViews() {
+    private func setupViews() {
         let usersLayout = UICollectionViewFlowLayout()
         usersLayout.minimumInteritemSpacing = cellSpacing
 
@@ -55,9 +59,57 @@ class UsersPreviewView: UIView {
         usersCollectionView.backgroundColor = .none
         addSubview(usersCollectionView)
 
-        usersCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        if hasEdit {
+            setupEditMode()
+        } else {
+            usersCollectionView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         }
+    }
+
+    private func setupEditMode() {
+        editLabel.text = "Edit"
+        editLabel.textColor = .white
+        editLabel.textAlignment = .center
+        editLabel.font = .systemFont(ofSize: 12)
+        editLabel.backgroundColor = .darkBlueGray2
+        editLabel.layer.cornerRadius = 10
+        editLabel.layer.borderColor = UIColor.white.cgColor
+        editLabel.layer.borderWidth = 1
+        editLabel.layer.masksToBounds = true
+        addSubview(editLabel)
+
+        editLabel.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalToSuperview()
+            make.size.equalTo(editLabelSize)
+        }
+        
+        usersCollectionView.snp.makeConstraints { make in
+            make.top.bottom.leading.equalToSuperview()
+            make.trailing.equalTo(editLabel.snp.leading).offset(-cellSpacing)
+        }
+    }
+
+    // Get number of users to show including ellipsis
+    private func getNumUsers() -> Int {
+        switch usersLayoutMode {
+        case .collaborators:
+             return min(users.count, numMaxUsers + 1)
+        case .friends:
+            return users.count == 0 ? 0 : min(users.count, numMaxUsers) + 1
+        }
+    }
+
+    func getUsersPreviewWidth() -> CGFloat {
+        let numUsers = getNumUsers()
+        let fullUsersWidth = numUsers * 20
+        let overlapUsersWidth = (numUsers - 1) * Int(cellSpacing) * -1
+        var usersPreviewWidth = CGFloat(fullUsersWidth - overlapUsersWidth)
+        if hasEdit {
+            usersPreviewWidth += editLabelSize.width
+        }
+        return usersPreviewWidth
     }
 }
 
@@ -65,12 +117,7 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Always want to render the ellipsis for friends view but only do it for collaborators view if user count exceeds max
-        if users.count == 0 {
-            return 0
-        }
-        else {
-            return (usersLayoutMode == .collaborators && users.count < numMaxUsers) ? users.count : numMaxUsers + 1
-        }
+        return getNumUsers()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -81,12 +128,21 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
         cell.layer.borderColor = UIColor.white.cgColor
         cell.layer.borderWidth = 0.5
         cell.layer.cornerRadius = 10
-        if let pictureUrl = URL(string: user.profilePic.assetUrls.small), let pictureData = try? Data(contentsOf: pictureUrl) {
+
+        var shouldShowEllipsis: Bool {
+            switch usersLayoutMode {
+            case .collaborators:
+                return indexPath.item == numMaxUsers
+            case .friends:
+                return indexPath.item == getNumUsers() - 1
+            }
+        }
+
+        if shouldShowEllipsis {
+            cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
+        } else if let pictureUrl = URL(string: user.profilePic.assetUrls.small), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             cell.backgroundView = UIImageView(image: pictureObject)
-        }
-        if indexPath.item == numMaxUsers {
-            cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
         }
         return cell
     }

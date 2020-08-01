@@ -39,7 +39,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         setupConstraints()
     }
-    
+
     private func setupConstraints() {
         let posterSize = CGSize(width: 36, height: 54)
         let selectSize = CGSize(width: 20, height: 20)

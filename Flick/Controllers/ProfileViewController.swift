@@ -27,7 +27,6 @@ class ProfileViewController: UIViewController {
     private var listsTableView: UITableView!
 
     // MARK: - Private Data Vars
-    private var expandedCellSpacing = -5
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
@@ -117,7 +116,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
-            cell.configure(for: mediaLists[indexPath.item], collaboratorsCellSpacing: expandedCellSpacing)
+            cell.configure(for: mediaLists[indexPath.item])
             return cell
         }
     }
@@ -167,7 +166,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
 
     func showCreateListModal() {
-        let createListModalView = CreateListModalView()
+        let createListModalView = EnterListNameModalView(type: .createList)
         createListModalView.modalDelegate = self
         createListModalView.listDelegate = self
         // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)

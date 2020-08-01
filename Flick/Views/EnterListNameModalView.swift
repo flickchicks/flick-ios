@@ -13,7 +13,13 @@ protocol ListDelegate: class {
     func createList(title: String)
 }
 
-class CreateListModalView: UIView {
+protocol ListSettingsDelegate: class {
+    func renameList(title: String)
+}
+
+enum EnterListNameModalType { case createList, renameList }
+
+class EnterListNameModalView: UIView {
 
     // MARK: - Private View Vars
     private let cancelButton = UIButton()
@@ -25,14 +31,23 @@ class CreateListModalView: UIView {
     // MARK: - Private Data Vars
     weak var modalDelegate: ModalDelegate?
     weak var listDelegate: ListDelegate?
+    weak var listSettingsDelegate: ListSettingsDelegate?
+    private var type: EnterListNameModalType!
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(type: EnterListNameModalType) {
+        super.init(frame: .zero)
 
-        self.frame = UIScreen.main.bounds
-        self.backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
+        frame = UIScreen.main.bounds
+        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
 
-        titleLabel.text = "Create a new list"
+        self.type = type
+        switch type {
+        case .createList:
+            titleLabel.text  = "Create new list"
+        case .renameList:
+            titleLabel.text = "Rename list"
+        }
+
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(titleLabel)
@@ -71,6 +86,13 @@ class CreateListModalView: UIView {
         addSubview(containerView)
 
         setupConstraints()
+
+        // Animate the pop up of error alert view in 0.25 seconds
+        UIView.animate(withDuration: 0.25, animations: {
+            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
+            self.containerView.alpha = 1
+            self.containerView.transform = .identity
+        })
     }
 
     func setupConstraints() {
@@ -122,7 +144,14 @@ class CreateListModalView: UIView {
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
             self.modalDelegate?.dismissModal(modalView: self)
-            self.listDelegate?.createList(title: nameText)
+            switch self.type {
+            case .createList:
+                self.listDelegate?.createList(title: nameText)
+            case .renameList:
+                self.listSettingsDelegate?.renameList(title: nameText)
+            case .none:
+                break
+            }
         }
     }
 
@@ -141,6 +170,6 @@ class CreateListModalView: UIView {
     }
 }
 
-extension CreateListModalView: UITextFieldDelegate {
+extension EnterListNameModalView: UITextFieldDelegate {
 
 }
