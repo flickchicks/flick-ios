@@ -23,6 +23,7 @@
 		80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */; };
 		80F00F6824AD8D080051B8FF /* SelectIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6724AD8D080051B8FF /* SelectIndicatorView.swift */; };
 		80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6924AEA1F70051B8FF /* SearchBar.swift */; };
+		80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7924C296460051B8FF /* EditListViewController.swift */; };
 		80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7124B96CDB0051B8FF /* ListSettingsTableViewCell.swift */; };
 		80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7324B96D410051B8FF /* PrivacySwitch.swift */; };
 		80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */; };
@@ -103,6 +104,7 @@
 		80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		80F00F6724AD8D080051B8FF /* SelectIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectIndicatorView.swift; sourceTree = "<group>"; };
 		80F00F6924AEA1F70051B8FF /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		80F00F7924C296460051B8FF /* EditListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewController.swift; sourceTree = "<group>"; };
 		80F00F7124B96CDB0051B8FF /* ListSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		80F00F7324B96D410051B8FF /* PrivacySwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySwitch.swift; sourceTree = "<group>"; };
 		80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsViewController.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				D444975024B566F700D72FED /* MediaCardViewController.swift */,
+				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
 			);
 			path = Controllers;
@@ -665,6 +668,7 @@
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
+				80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */,
 				80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */,
 				D47866A1247C57F8009E42FE /* MediaList.swift in Sources */,
 			);

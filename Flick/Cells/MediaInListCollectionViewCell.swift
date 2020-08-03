@@ -10,9 +10,9 @@ import SnapKit
 import UIKit
 
 class MediaInListCollectionViewCell: UICollectionViewCell {
-    
+
     let mediaImageView = UIImageView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true

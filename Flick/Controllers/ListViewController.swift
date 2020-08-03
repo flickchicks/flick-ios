@@ -152,6 +152,7 @@ class ListViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -284,7 +285,8 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     }
 
     func editMedia() {
-        print("Edit media")
+        let editVC = EditListViewController(media: list.shows)
+        navigationController?.pushViewController(editVC, animated: true)
     }
 
     func sortMedia() {
