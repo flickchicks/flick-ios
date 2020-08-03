@@ -255,9 +255,7 @@ extension EditListViewController: UICollectionViewDataSource, UICollectionViewDe
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         numSelected -= 1
-        if numSelected == 0 {
-            setActionsActive(false)
-        }
+        setActionsActive(numSelected != 0)
     }
 }
 
