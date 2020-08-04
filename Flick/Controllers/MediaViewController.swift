@@ -60,6 +60,7 @@ class MediaViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
+        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }

@@ -15,7 +15,7 @@ class SelectIndicatorView: UIView {
     init(width: CGFloat) {
         super.init(frame: .zero)
 
-        backgroundColor = .clear
+        backgroundColor = UIColor.white.withAlphaComponent(0.3)
         layer.cornerRadius = width / 2
         layer.borderWidth = 2
         layer.borderColor = UIColor.lightGray.cgColor
@@ -32,11 +32,13 @@ class SelectIndicatorView: UIView {
     }
 
     func select() {
+        backgroundColor = .white
         layer.borderColor = UIColor.gradientPurple.cgColor
         checkImageView.isHidden = false
     }
 
     func deselect() {
+        backgroundColor = UIColor.white.withAlphaComponent(0.3)
         layer.borderColor = UIColor.lightGray.cgColor
         checkImageView.isHidden = true
     }

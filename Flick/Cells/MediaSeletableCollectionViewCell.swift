@@ -33,6 +33,7 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 10
+        layer.masksToBounds = true
 
         posterImageView.backgroundColor = .lightGray2
         posterImageView.layer.cornerRadius = 10
@@ -63,6 +64,13 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
         selectView.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview().inset(8)
             make.size.equalTo(selectSize)
+        }
+    }
+
+    func configure(media: Media) {
+        if let pictureUrl = URL(string: media.posterPic), let pictureData = try? Data(contentsOf: pictureUrl) {
+            let pictureObject = UIImage(data: pictureData)
+            posterImageView.image = pictureObject
         }
     }
 
