@@ -9,28 +9,28 @@
 import UIKit
 
 class SliderControlTrackLayer: CALayer {
-  weak var ratingsSliderControl: RatingSliderControl?
+    weak var ratingsSliderControl: RatingSliderControl?
 
-  override func draw(in context: CGContext) {
-    guard let slider = ratingsSliderControl else {
-      return
+    override func draw(in context: CGContext) {
+        guard let slider = ratingsSliderControl else {
+            return
+        }
+
+        let path = UIBezierPath(roundedRect: bounds, cornerRadius: 4)
+        context.addPath(path.cgPath)
+
+        // Fill in color for the entire bar
+        context.setFillColor(slider.trackTintColor.cgColor)
+        context.fillPath()
+
+        // Fill in color between bar origin and highest rating
+        context.setFillColor(slider.trackHighlightTintColor.cgColor)
+        let personalValuePosition = slider.positionForValue(slider.personalValue)
+        let externalValuePosition = slider.positionForValue(slider.externalValue)
+        let maxValuePosition = max(personalValuePosition, externalValuePosition)
+        let rect = CGRect(x: 0, y: 0, width: maxValuePosition, height: bounds.height)
+        context.fill(rect)
     }
-
-    let path = UIBezierPath(roundedRect: bounds, cornerRadius: 4)
-    context.addPath(path.cgPath)
-
-    // Fill in color for the entire bar
-    context.setFillColor(slider.trackTintColor.cgColor)
-    context.fillPath()
-
-    // Fill in color between bar origin and highest rating
-    context.setFillColor(slider.trackHighlightTintColor.cgColor)
-    let personalValuePosition = slider.positionForValue(slider.personalValue)
-    let externalValuePosition = slider.positionForValue(slider.externalValue)
-    let maxValuePosition = max(personalValuePosition, externalValuePosition)
-    let rect = CGRect(x: 0, y: 0, width: maxValuePosition, height: bounds.height)
-    context.fill(rect)
-  }
 }
 
 enum RatingsSliderType { case friends, reviewers }
@@ -50,7 +50,7 @@ class RatingSliderControl: UIControl {
     private var previousLocation = CGPoint()
     private let personalIconSize = CGSize(width: 20, height: 20)
 
-    // MARK: - Publc Data Vars
+    // MARK: - Public Data Vars
 
     override var frame: CGRect {
         // Property observer to update layer frame when frame changes

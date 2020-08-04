@@ -11,24 +11,10 @@ import UIKit
 
 enum CardState { case expanded, collapsed }
 
-class SelfSizingTableView: UITableView {
-
-  override var contentSize:CGSize {
-      didSet {
-          self.invalidateIntrinsicContentSize()
-      }
-  }
-
-  override var intrinsicContentSize: CGSize {
-      self.layoutIfNeeded()
-    return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
-  }
-}
-
 class MediaCardViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let contentView = UIView()
+    private let scollContentView = UIView()
     private let commentAreaView = CommentAreaView()
     private var commentsTableView: UITableView!
     private let criticRatingLabel = UILabel()
@@ -76,26 +62,26 @@ class MediaCardViewController: UIViewController {
         scrollView.bounces = false
         view.addSubview(scrollView)
 
-        scrollView.addSubview(contentView)
-        contentView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        scrollView.addSubview(scollContentView)
+        scollContentView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
 
         summaryView = MediaSummaryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0))
         summaryView.sizeToFit()
-        contentView.addSubview(summaryView)
+        scollContentView.addSubview(summaryView)
 
         ratingsSeparatorView.backgroundColor = .lightGray2
-        contentView.addSubview(ratingsSeparatorView)
+        scollContentView.addSubview(ratingsSeparatorView)
 
         reviewTitleLabel.text = "Ratings"
         reviewTitleLabel.font = .boldSystemFont(ofSize: 18)
         reviewTitleLabel.textColor = .black
-        contentView.addSubview(reviewTitleLabel)
+        scollContentView.addSubview(reviewTitleLabel)
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
              // Dispatch triggers the slider layers to be drawn
             self.reviewerRatingSliderControl.externalValue = 0.8
         }
-        // Add to view instead of contentView because scrollView interferes with interactions
+        // Add to view instead of scollContentView because scrollView interferes with interactions
         view.addSubview(reviewerRatingSliderControl)
 
         friendRatingSliderControl.addTarget(self, action: #selector(ratingSliderValueChanged(_:)), for: .valueChanged)
@@ -103,35 +89,35 @@ class MediaCardViewController: UIViewController {
             // Dispatch triggers the slider layers to be drawn
             self.friendRatingSliderControl.externalValue = 0.3
         }
-        // Add to view instead of contentView because scrollView interferes with interactions
+        // Add to view instead of scollContentView because scrollView interferes with interactions
         view.addSubview(friendRatingSliderControl)
 
         criticRatingLabel.text = "from Rotten Tomatoes and IMDb"
         criticRatingLabel.font = .systemFont(ofSize: 12)
         criticRatingLabel.textColor = .mediumGray
         criticRatingLabel.numberOfLines = 0
-        contentView.addSubview(criticRatingLabel)
+        scollContentView.addSubview(criticRatingLabel)
 
         friendRatingLabel.text = "Me, Lucy, and 4 others"
         friendRatingLabel.font = .systemFont(ofSize: 12)
         friendRatingLabel.textColor = .mediumGray
         friendRatingLabel.numberOfLines = 0
-        contentView.addSubview(friendRatingLabel)
+        scollContentView.addSubview(friendRatingLabel)
 
         thoughtsSeparatorView.backgroundColor = .lightGray2
-        contentView.addSubview(thoughtsSeparatorView)
+        scollContentView.addSubview(thoughtsSeparatorView)
 
         thoughtsTitleLabel.text = "Thoughts"
         thoughtsTitleLabel.font = .boldSystemFont(ofSize: 18)
         thoughtsTitleLabel.textColor = .black
-        contentView.addSubview(thoughtsTitleLabel)
+        scollContentView.addSubview(thoughtsTitleLabel)
 
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         seeAllCommentsButton.contentHorizontalAlignment = .right
         seeAllCommentsButton.addTarget(self, action: #selector(seeAllComments), for: .touchUpInside)
         seeAllCommentsButton.setTitleColor(.darkBlueGray2, for: .normal)
         seeAllCommentsButton.titleLabel?.font = .systemFont(ofSize: 12)
-        contentView.addSubview(seeAllCommentsButton)
+        scollContentView.addSubview(seeAllCommentsButton)
 
         commentsTableView = UITableView(frame: .zero)
         commentsTableView.dataSource = self
@@ -144,7 +130,7 @@ class MediaCardViewController: UIViewController {
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
         commentsTableView.sizeToFit()
-        // Add to view instead of contentView because scrollView interferes with interactions
+        // Add to view instead of scollContentView because scrollView interferes with interactions
         view.addSubview(commentsTableView)
 
         commentAreaView.delegate = self
@@ -187,7 +173,7 @@ class MediaCardViewController: UIViewController {
             make.bottom.equalTo(commentAreaView.snp.top)
         }
 
-        contentView.snp.makeConstraints { make in
+        scollContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalTo(scrollView)
         }
