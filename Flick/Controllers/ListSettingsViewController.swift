@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol ListSettingsDelegate: class {
+    func renameList(to name: String)
+    func deleteList()
+    func updatePrivacy(to isPrivate: Bool)
+}
+
 enum ListSetting: String {
     case collaboration = "Collaboration"
     case deleteList = "Delete list"
@@ -97,6 +103,7 @@ class ListSettingsViewController: UIViewController {
     private func showDeleteConfirmationModal() {
         let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?")
         deleteConfirmationModalView.modalDelegate = self
+        deleteConfirmationModalView.settingsDelegate = self
         showModalPopup(view: deleteConfirmationModalView)
     }
 
@@ -117,7 +124,7 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listSettingsCellReuseIdentifier, for: indexPath) as? ListSettingsTableViewCell else { return UITableViewCell() }
-        cell.configure(for: settings[indexPath.row], list: list)
+        cell.configure(for: settings[indexPath.row], list: list, delegate: self)
         return cell
     }
 
@@ -151,7 +158,34 @@ extension ListSettingsViewController: ModalDelegate {
 
 extension ListSettingsViewController: ListSettingsDelegate {
 
-    func renameList(title: String) {
+    func deleteList() {
+        NetworkManager.deleteMediaList(listId: list.lstId) { _ in
+            let alert = UIAlertController(title: nil, message: "Deleted \(self.list.lstName)", preferredStyle: .alert)
+            self.present(alert, animated: true)
+            alert.dismiss(animated: true, completion: nil)
+
+            //TODO: should navigate user back to profile screen
+        }
+    }
+
+    func renameList(to name: String) {
+        list.lstName = name
+        NetworkManager.updateMediaList(listId: list.lstId, list: list) { list in
+            let alert = UIAlertController(title: nil, message: "Renamed to \(list.lstName)", preferredStyle: .alert)
+            self.present(alert, animated: true)
+            alert.dismiss(animated: true, completion: nil)
+
+            //TODO: should go back to list
+        }
+    }
+
+    func updatePrivacy(to isPrivate: Bool) {
+        list.isPrivate = isPrivate
+        NetworkManager.updateMediaList(listId: list.lstId, list: list) { list in
+            let alert = UIAlertController(title: nil, message: "Updated to \(list.isPrivate ? "private" : "public")", preferredStyle: .alert)
+            self.present(alert, animated: true)
+            alert.dismiss(animated: true, completion: nil)
+        }
     }
 
 }

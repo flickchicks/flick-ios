@@ -13,10 +13,6 @@ protocol ListDelegate: class {
     func createList(title: String)
 }
 
-protocol ListSettingsDelegate: class {
-    func renameList(title: String)
-}
-
 enum EnterListNameModalType { case createList, renameList }
 
 class EnterListNameModalView: UIView {
@@ -148,7 +144,7 @@ class EnterListNameModalView: UIView {
             case .createList:
                 self.listDelegate?.createList(title: nameText)
             case .renameList:
-                self.listSettingsDelegate?.renameList(title: nameText)
+                self.listSettingsDelegate?.renameList(to: nameText)
             case .none:
                 break
             }
