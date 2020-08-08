@@ -70,6 +70,7 @@
 		D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */; };
 		D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728324DE5B8B00FA5F2A /* Notification.swift */; };
 		D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */; };
+		D492728824DED27600FA5F2A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728724DED27600FA5F2A /* String.swift */; };
 		D4DB6CC724D3B11200B69DF6 /* MediaCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
 		D4F0FB4924CC378300DEF826 /* RatingsSliderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4824CC378300DEF826 /* RatingsSliderControl.swift */; };
@@ -172,6 +173,7 @@
 		D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D492728324DE5B8B00FA5F2A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		D492728724DED27600FA5F2A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		D4F0FB4824CC378300DEF826 /* RatingsSliderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsSliderControl.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 			children = (
 				D478668F24798ADA009E42FE /* UIColor+Shared.swift */,
 				D4F0FB4A24CC544800DEF826 /* UILabel.swift */,
+				D492728724DED27600FA5F2A /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -677,6 +680,7 @@
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */,
+				D492728824DED27600FA5F2A /* String.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D492727E24DE50A100FA5F2A /* NotificationsViewController.swift in Sources */,
 				D4DB6CC724D3B11200B69DF6 /* MediaCommentsViewController.swift in Sources */,

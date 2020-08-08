@@ -12,8 +12,14 @@ class NotificationsViewController: UIViewController {
 
     private let notificationsTableView = UITableView(frame: .zero)
     private let notifications: [Notification] = [
-        .FriendRequest(fromUser: "Lucy Xu", type: .received),
+//        .FriendRequest(fromUser: "Lucy Xu", type: .received),
         .FriendRequest(fromUser: "Cindy Huang", type: .sent),
+        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
+        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
+        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
+        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies"),
+        .FriendRequest(fromUser: "Lucy Xu", type: .received),
+//        .FriendRequest(fromUser: "Cindy Huang", type: .sent),
         .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
@@ -22,13 +28,18 @@ class NotificationsViewController: UIViewController {
     private let notificationCellReuseIdentifier = "NotificationCellReuseIdentifier"
 
     override func viewDidLoad() {
-        view.backgroundColor = .yellow
+
+        view.backgroundColor = .offWhite
         
         notificationsTableView.delegate = self
         notificationsTableView.dataSource = self
-        notificationsTableView.isScrollEnabled = false
+        notificationsTableView.isScrollEnabled = true
+        notificationsTableView.backgroundColor = .offWhite
         notificationsTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: notificationCellReuseIdentifier)
         notificationsTableView.separatorStyle = .none
+        notificationsTableView.rowHeight = UITableView.automaticDimension
+        notificationsTableView.estimatedRowHeight = 140
+        notificationsTableView.sizeToFit()
         view.addSubview(notificationsTableView)
 
         notificationsTableView.snp.makeConstraints { make in
@@ -41,12 +52,13 @@ class NotificationsViewController: UIViewController {
 
 extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return notifications.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-//        return notifications[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: notificationCellReuseIdentifier, for: indexPath) as? NotificationTableViewCell else { return UITableViewCell() }
+        cell.configure(with: notifications[indexPath.row])
+        return cell
     }
 
 
