@@ -159,9 +159,14 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.deleteMediaList(listId: list.lstId) { _ in
             let alert = UIAlertController(title: nil, message: "Deleted \(self.list.lstName)", preferredStyle: .alert)
             self.present(alert, animated: true)
-            alert.dismiss(animated: true, completion: nil)
-
-            //TODO: should navigate user back to profile screen
+            alert.dismiss(animated: true) {
+                let controllers = self.navigationController?.viewControllers
+                for controller in controllers ?? [] {
+                    if controller is HomeViewController {
+                        self.navigationController?.popToViewController(controller, animated: true)
+                    }
+                }
+            }
         }
     }
 
@@ -172,8 +177,6 @@ extension ListSettingsViewController: ListSettingsDelegate {
             let alert = UIAlertController(title: nil, message: "Renamed to \(list.lstName)", preferredStyle: .alert)
             self.present(alert, animated: true)
             alert.dismiss(animated: true, completion: nil)
-
-            //TODO: should go back to list
         }
     }
 
