@@ -89,12 +89,6 @@ class ListSettingsViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
-    
-    private func showModalPopup(view: UIView) {
-        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
-            window.addSubview(view)
-        }
-    }
 
     private func showAddCollaboratorsModal() {
         let addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
@@ -104,7 +98,7 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showDeleteConfirmationModal() {
-        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?")
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?", type: .deleteList)
         deleteConfirmationModalView.modalDelegate = self
         deleteConfirmationModalView.listSettingsDelegate = self
         showModalPopup(view: deleteConfirmationModalView)

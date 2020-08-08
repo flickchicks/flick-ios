@@ -8,6 +8,8 @@
 
 import UIKit
 
+enum ConfirmationType { case deleteList, removeMedia }
+
 class ConfirmationModalView: UIView {
 
     // MARK: - Private View Vars
@@ -16,11 +18,14 @@ class ConfirmationModalView: UIView {
     private let noButton = UIButton()
     private let yesButton = UIButton()
 
-    // MARK: - Private Data Vars
-    weak var modalDelegate: ModalDelegate?
+    // MARK: - Private Data Var
+    weak var editListDelegate: EditListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
+    weak var modalDelegate: ModalDelegate?
+    private var type: ConfirmationType
 
-    init(message: String) {
+    init(message: String, type: ConfirmationType) {
+        self.type = type
         super.init(frame: .zero)
 
         messageLabel.text = message
@@ -113,8 +118,12 @@ class ConfirmationModalView: UIView {
         }) { (_) in
             self.modalDelegate?.dismissModal(modalView: self)
         }
-
-        listSettingsDelegate?.deleteList()
+        switch type {
+        case .deleteList:
+            listSettingsDelegate?.deleteList()
+        case .removeMedia:
+            editListDelegate?.removeMediaFromList()
+        }
     }
 
     required init?(coder: NSCoder) {
