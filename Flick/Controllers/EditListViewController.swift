@@ -304,8 +304,10 @@ extension EditListViewController: EditListDelegate {
             !selectedMedia.contains { media.id == $0.id }
         }
         updatedList.shows = updatedMedia
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { list in
-            self.createInfoAlert(message: "Removed \(self.selectedMedia.count) items")
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)
             self.list = list
             self.media = list.shows
             self.mediaCollectionView.reloadData()

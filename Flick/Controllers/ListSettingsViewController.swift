@@ -156,10 +156,10 @@ extension ListSettingsViewController: ModalDelegate {
 extension ListSettingsViewController: ListSettingsDelegate {
 
     func deleteList() {
-        NetworkManager.deleteMediaList(listId: list.lstId) { _ in
-            let alert = UIAlertController(title: nil, message: "Deleted \(self.list.lstName)", preferredStyle: .alert)
-            self.present(alert, animated: true)
-            alert.dismiss(animated: true) {
+        NetworkManager.deleteMediaList(listId: list.lstId) { [weak self] _ in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Renamed to \(self.list.lstName)") {
                 let controllers = self.navigationController?.viewControllers
                 for controller in controllers ?? [] {
                     if controller is HomeViewController {
@@ -173,30 +173,30 @@ extension ListSettingsViewController: ListSettingsDelegate {
     func renameList(to name: String) {
         var updatedList = list
         updatedList.lstName = name
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { list in
-            let alert = UIAlertController(title: nil, message: "Renamed to \(list.lstName)", preferredStyle: .alert)
-            self.present(alert, animated: true)
-            alert.dismiss(animated: true, completion: nil)
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Renamed to \(list.lstName)", completion: nil)
         }
     }
 
     func updateCollaborators(to collaborators: [UserProfile]) {
         var updatedList = list
         updatedList.collaborators = collaborators
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { list in
-            let alert = UIAlertController(title: nil, message: "Invite sent!", preferredStyle: .alert)
-            self.present(alert, animated: true)
-            alert.dismiss(animated: true, completion: nil)
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Updated collaborators", completion: nil)
         }
     }
 
     func updatePrivacy(to isPrivate: Bool) {
         var updatedList = list
         updatedList.isPrivate = isPrivate
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { list in
-            let alert = UIAlertController(title: nil, message: "Updated to \(list.isPrivate ? "private" : "public")", preferredStyle: .alert)
-            self.present(alert, animated: true)
-            alert.dismiss(animated: true, completion: nil)
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
         }
     }
 
