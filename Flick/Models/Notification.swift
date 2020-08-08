@@ -46,3 +46,12 @@ struct ActivityLike {
     let likedContent: ActivityLikeType
     let media: String
 }
+
+struct Suggestion {
+
+    let fromUser: String
+    let message: String
+    let media: Media
+    let liked: Bool
+
+}
