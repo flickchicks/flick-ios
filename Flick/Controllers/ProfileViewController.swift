@@ -80,7 +80,7 @@ class ProfileViewController: UIViewController {
             NetworkManager.getUserProfile(authToken: authToken) { userProfile in
                 self.name = "\(userProfile.firstName) \(userProfile.lastName)"
                 self.username = userProfile.username
-                self.profilePicUrl = userProfile.profilePic.assetUrls.original
+                self.profilePicUrl = userProfile.profilePic?.assetUrls.original ?? ""
                 // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
                 if let ownerLsts = userProfile.ownerLsts {
                     self.mediaLists = ownerLsts

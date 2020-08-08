@@ -140,7 +140,7 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
 
         if shouldShowEllipsis {
             cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
-        } else if let pictureUrl = URL(string: user.profilePic.assetUrls.small), let pictureData = try? Data(contentsOf: pictureUrl) {
+        } else if let pictureUrl = URL(string: user.profilePic?.assetUrls.small ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             cell.backgroundView = UIImageView(image: pictureObject)
         }

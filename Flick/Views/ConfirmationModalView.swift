@@ -18,7 +18,7 @@ class ConfirmationModalView: UIView {
 
     // MARK: - Private Data Vars
     weak var modalDelegate: ModalDelegate?
-    weak var settingsDelegate: ListSettingsDelegate?
+    weak var listSettingsDelegate: ListSettingsDelegate?
 
     init(message: String) {
         super.init(frame: .zero)
@@ -114,7 +114,7 @@ class ConfirmationModalView: UIView {
             self.modalDelegate?.dismissModal(modalView: self)
         }
 
-        settingsDelegate?.deleteList()
+        listSettingsDelegate?.deleteList()
     }
 
     required init?(coder: NSCoder) {

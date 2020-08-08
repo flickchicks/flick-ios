@@ -199,6 +199,23 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get all friends of a user [updated as of 8/7/20]
+    static func getFriends(completion: @escaping ([UserProfile]) -> Void) {
+        AF.request("\(hostEndpoint)/api/friends/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendsData = try? jsonDecoder.decode(Response<[UserProfile]>.self, from: data) {
+                    let friendsList = friendsData.data
+                    completion(friendsList)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     /// [POST] Send invites to friends by usernames
     static func sendFriendInvites(userId: String, usernames: [String], completion: @escaping ([String]) -> Void) {
         let parameters: [String: Any] = [
@@ -253,23 +270,6 @@ class NetworkManager {
                 if let friendsData = try? jsonDecoder.decode(Response<UsernamesDataResponse>.self, from: data) {
                     let friendsUsernames = friendsData.data.usernames
                     completion(friendsUsernames)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    /// [GET] Get all friends of a user
-    static func getFriends(userId: String, completion: @escaping ([User]) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/friends)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let friendsData = try? jsonDecoder.decode(Response<FriendsDataResponse>.self, from: data) {
-                    let friendsList = friendsData.data.friends
-                    completion(friendsList)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
