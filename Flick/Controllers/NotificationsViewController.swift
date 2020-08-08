@@ -12,14 +12,14 @@ class NotificationsViewController: UIViewController {
 
     private let notificationsTableView = UITableView(frame: .zero)
     private let notifications: [Notification] = [
-//        .FriendRequest(fromUser: "Lucy Xu", type: .received),
+        .FriendRequest(fromUser: "Lucy Xu", type: .received),
         .FriendRequest(fromUser: "Cindy Huang", type: .sent),
         .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
         .ListActivity(fromUser: "Haiying Weng", list: "Love Movies"),
         .FriendRequest(fromUser: "Lucy Xu", type: .received),
-//        .FriendRequest(fromUser: "Cindy Huang", type: .sent),
+        .FriendRequest(fromUser: "Cindy Huang", type: .sent),
         .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
         .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
@@ -43,7 +43,8 @@ class NotificationsViewController: UIViewController {
         view.addSubview(notificationsTableView)
 
         notificationsTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview().offset(8)
+            make.leading.trailing.bottom.equalToSuperview()
         }
 
     }

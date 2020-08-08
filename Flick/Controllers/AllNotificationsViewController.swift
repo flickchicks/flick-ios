@@ -47,7 +47,7 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
         tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
-        tabCollectionView.backgroundColor = .white
+        tabCollectionView.backgroundColor = .movieWhite
         // TODO: Fix tab bar shadows
         tabCollectionView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
         tabCollectionView.layer.shadowOffset = CGSize(width: 4.0, height: 8.0)
@@ -60,10 +60,8 @@ class AllNotificationsViewController: UIViewController {
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
-        let settingsButtonSize = CGSize(width: 22, height: 22)
 
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.barTintColor = .offWhite
+        navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
         let backButton = UIButton()
@@ -73,19 +71,10 @@ class AllNotificationsViewController: UIViewController {
             make.size.equalTo(backButtonSize)
         }
 
-        let settingsButton = UIButton()
-        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
-        settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(settingsButtonSize)
-        }
-
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-//        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
-        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
 
     @objc func backButtonPressed() {
@@ -97,7 +86,7 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
+            make.height.equalTo(28)
         }
 
         backgroundView.snp.makeConstraints { make in
@@ -110,10 +99,10 @@ class AllNotificationsViewController: UIViewController {
         }
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: true)
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
 
 }
 
@@ -144,7 +133,7 @@ extension AllNotificationsViewController: UICollectionViewDataSource {
 
 extension AllNotificationsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width/2, height: 60)
+        return CGSize(width: UIScreen.main.bounds.width/2, height: 28)
     }
 }
 

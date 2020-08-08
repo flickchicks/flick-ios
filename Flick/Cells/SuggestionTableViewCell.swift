@@ -20,12 +20,16 @@ class SuggestionTableViewCell: UITableViewCell {
     private let mediaDurationImageView = UIImageView()
     private let mediaYearLabel = UILabel()
     private let heartImageView = UIImageView()
-    private var summaryItemsCollectionView: SelfSizingCollectionView!
-    private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
-    private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
-    private let tags = ["Comedy", "Romance", "K Drama"]
-    private var tagsCollectionView: SelfSizingCollectionView!
+    private let synopsisLabel = UILabel()
+    private let createdYearLabel = UILabel()
+    private let movieIconImageView = UIImageView()
+    private let tagsLabel = UILabel()
+    private let spacerView = UIView()
 
+
+    private let tags = ["Comedy", "Romance", "K Drama"]
+    private let createdYear = "2019"
+    private let synopsis = "In May 1940, Germany advanced into France, trapping Allied troops on the beaches of Dunkirk. Under air and ground cover from British and French forces, troops were slowly and methodically evacuated from the beach using every serviceable naval and civilian vessel that could be found. At the end of this heroic mission, 330,000 French, British, Belgian and Dutch soldiers were safely evacuated. 12345678"
     private let summaryInfo = [
         MediaSummary(text: "1h 30", type: .duration),
         MediaSummary(type: .spacer),
@@ -78,82 +82,103 @@ class SuggestionTableViewCell: UITableViewCell {
         mediaTitleLabel.numberOfLines = 0
         contentView.addSubview(mediaTitleLabel)
 
-        let summaryItemsCollectionViewLayout = LeftAlignedFlowLayout()
-        summaryItemsCollectionView = SelfSizingCollectionView(
-            frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
-            collectionViewLayout: summaryItemsCollectionViewLayout
-        )
-        summaryItemsCollectionView.backgroundColor = .clear
-        summaryItemsCollectionView.register(MediaSummaryInfoCollectionViewCell.self, forCellWithReuseIdentifier: summaryInfoCellReuseIdentifier)
-        summaryItemsCollectionView.dataSource = self
-        summaryItemsCollectionView.delegate = self
-        summaryItemsCollectionView.layoutIfNeeded()
-        contentView.addSubview(summaryItemsCollectionView)
+        movieIconImageView.image = UIImage(named: "film")
+        contentView.addSubview(movieIconImageView)
 
-        let tagsCollectionViewLayout = LeftAlignedFlowLayout()
-        tagsCollectionView = SelfSizingCollectionView(
-            frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
-            collectionViewLayout: tagsCollectionViewLayout)
-        tagsCollectionView.backgroundColor = .clear
-        tagsCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: tagCellReuseIdentifier)
-        tagsCollectionView.dataSource = self
-        tagsCollectionView.delegate = self
-        tagsCollectionView.layoutIfNeeded()
-        contentView.addSubview(tagsCollectionView)
+        createdYearLabel.text = createdYear
+        createdYearLabel.textColor = .mediumGray
+        createdYearLabel.font = .systemFont(ofSize: 12)
+        contentView.addSubview(createdYearLabel)
 
+        spacerView.layer.cornerRadius = 1
+        spacerView.layer.backgroundColor = UIColor.lightGray.cgColor
+        contentView.addSubview(spacerView)
+
+        tagsLabel.text = tags.joined(separator: ", ")
+        tagsLabel.textColor = .mediumGray
+        tagsLabel.font = .systemFont(ofSize: 12)
+        contentView.addSubview(tagsLabel)
+
+        synopsisLabel.text = synopsis
+        synopsisLabel.font = .systemFont(ofSize: 10)
+        synopsisLabel.textColor = .darkBlue
+        synopsisLabel.numberOfLines = 0
+        contentView.addSubview(synopsisLabel)
+
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
         let mediaImageSize = CGSize(width: 60, height: 90)
 
         containerView.snp.makeConstraints { make in
-            make.top.equalTo(contentView).inset(12)
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(20)
+           make.top.equalTo(contentView).inset(12)
+           make.bottom.equalToSuperview()
+           make.leading.trailing.equalToSuperview().inset(20)
         }
 
         profileImageView.snp.makeConstraints { make in
-            make.top.leading.equalTo(containerView).inset(12)
-            make.height.width.equalTo(40)
+           make.top.leading.equalTo(containerView).inset(12)
+           make.height.width.equalTo(40)
         }
 
         notificationLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.trailing.equalToSuperview().inset(12)
+           make.centerY.equalTo(profileImageView)
+           make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+           make.trailing.equalToSuperview().inset(12)
         }
 
         messageLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(notificationLabel)
-            make.top.equalTo(notificationLabel.snp.bottom).offset(11.5)
+           make.leading.trailing.equalTo(notificationLabel)
+           make.top.equalTo(notificationLabel.snp.bottom).offset(11.5)
         }
 
         mediaImageView.snp.makeConstraints { make in
-            make.leading.equalTo(notificationLabel)
-            make.size.equalTo(mediaImageSize)
-            make.top.equalTo(messageLabel.snp.bottom).offset(16)
-            make.bottom.equalTo(contentView).inset(12)
+           make.leading.equalTo(notificationLabel)
+           make.size.equalTo(mediaImageSize)
+           make.top.equalTo(messageLabel.snp.bottom).offset(16)
+           make.bottom.equalTo(contentView).inset(12)
         }
 
         heartImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(mediaImageView)
-            make.centerX.equalTo(profileImageView)
+           make.centerY.equalTo(mediaImageView)
+           make.centerX.equalTo(profileImageView)
         }
 
         mediaTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(mediaImageView).offset(8)
-            make.leading.equalTo(mediaImageView.snp.trailing).offset(12)
-            make.trailing.equalTo(containerView).inset(12)
+           make.top.equalTo(mediaImageView)
+           make.leading.equalTo(mediaImageView.snp.trailing).offset(12)
+           make.trailing.equalTo(containerView).inset(12)
         }
 
-        summaryItemsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(mediaTitleLabel)
+        spacerView.snp.makeConstraints { make in
+           make.centerY.equalTo(movieIconImageView)
+           make.leading.equalTo(createdYearLabel.snp.trailing).offset(6)
+           make.width.height.equalTo(2)
+        }
+
+        movieIconImageView.snp.makeConstraints { make in
+            make.leading.equalTo(mediaTitleLabel)
             make.top.equalTo(mediaTitleLabel.snp.bottom).offset(10)
-//            make.height.equalTo(summaryItemsCollectionView.contentSize.height)
+            make.height.width.equalTo(15)
         }
 
-        tagsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(summaryItemsCollectionView.snp.bottom).offset(11)
-            make.leading.trailing.equalTo(mediaTitleLabel)
+        createdYearLabel.snp.makeConstraints { make in
+            make.leading.equalTo(movieIconImageView.snp.trailing).offset(5)
+            make.centerY.equalTo(movieIconImageView)
         }
 
+        tagsLabel.snp.makeConstraints { make in
+           make.leading.equalTo(spacerView.snp.trailing).offset(6)
+           make.centerY.equalTo(movieIconImageView)
+           make.trailing.equalTo(containerView).inset(12)
+        }
+
+        synopsisLabel.snp.makeConstraints { make in
+           make.leading.trailing.equalTo(mediaTitleLabel)
+           make.top.equalTo(movieIconImageView.snp.bottom).offset(10)
+           make.bottom.equalTo(mediaImageView)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -161,54 +186,3 @@ class SuggestionTableViewCell: UITableViewCell {
     }
 }
 
-extension SuggestionTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == summaryItemsCollectionView {
-            return summaryInfo.count
-        } else {
-            return tags.count
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == summaryItemsCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: summaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryInfoCollectionViewCell else { return UICollectionViewCell() }
-           cell.configure(with: summaryInfo[indexPath.item])
-           return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? MediaTagCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(with: tags[indexPath.item])
-            return cell
-
-        }
-    }
-}
-
-extension SuggestionTableViewCell: UICollectionViewDelegateFlowLayout {
-    func calculateNecessaryWidth(text: String) -> CGFloat {
-        let label = UILabel()
-        label.text = text
-        label.font = .systemFont(ofSize: 12)
-        label.sizeToFit()
-        return label.frame.width
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if collectionView == summaryItemsCollectionView {
-            let textWidth = calculateNecessaryWidth(text: summaryInfo[indexPath.item].text)
-            let height: CGFloat = 15
-            let iconSpacerWidth: CGFloat = 19
-            switch summaryInfo[indexPath.item].type {
-            case .spacer:
-                return CGSize(width: 10, height: height)
-            case .duration:
-                return CGSize(width: textWidth + iconSpacerWidth, height: height)
-            default:
-                return CGSize(width: textWidth, height: height)
-            }
-        } else {
-            let totalHorizontalPadding: CGFloat = 32
-            return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item]) + totalHorizontalPadding, height: 27)
-        }
-    }
-}

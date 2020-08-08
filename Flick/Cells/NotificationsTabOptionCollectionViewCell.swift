@@ -16,7 +16,7 @@ class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
     private let tabLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private var activeCellColor: UIColor = .darkPurple
+    private var activeCellColor: UIColor = .darkBlue
     private var inactiveCellColor: UIColor = .mediumGray
 
     override var isSelected: Bool {
@@ -35,7 +35,8 @@ class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
         addSubview(tabLabel)
 
         tabLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(12)
         }
 
     }

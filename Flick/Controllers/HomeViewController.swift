@@ -26,7 +26,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = true
 
         backgroundView = UIView()
         backgroundView.backgroundColor = .offWhite
