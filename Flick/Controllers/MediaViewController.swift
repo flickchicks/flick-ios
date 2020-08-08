@@ -60,6 +60,7 @@ class MediaViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
+        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -90,8 +91,12 @@ class MediaViewController: UIViewController {
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
 
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan))
-        mediaCardViewController.handleArea.addGestureRecognizer(panGestureRecognizer)
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleScollViewCardPan))
+        panGestureRecognizer.delegate = self
+        mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
+
+        let handleAreaPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleAreaCardPan))
+        mediaCardViewController.handleArea.addGestureRecognizer(handleAreaPanGestureRecognizer)
         
     }
 
@@ -103,13 +108,30 @@ class MediaViewController: UIViewController {
         print("Save media.")
     }
 
-    @objc func handleCardPan(recognizer: UIPanGestureRecognizer) {
+    @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.7)
+            startInteractiveTransition(state: nextState, duration: 0.3)
         case .changed:
             let translation = recognizer.translation(in: self.mediaCardViewController.handleArea)
             var fractionComplete = translation.y / expandedCardHeight
+            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
+            updateInteractiveTransiton(fractionCompleted: fractionComplete)
+        case .ended:
+            continueInteractiveTransition()
+        default:
+            break
+        }
+    }
+
+
+    @objc func handleScollViewCardPan(recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            startInteractiveTransition(state: nextState, duration: 0.3)
+        case .changed:
+            let translation = recognizer.translation(in: self.mediaCardViewController.scrollView)
+            var fractionComplete = (translation.y * 2) / expandedCardHeight
             fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
             updateInteractiveTransiton(fractionCompleted: fractionComplete)
         case .ended:
@@ -165,4 +187,15 @@ class MediaViewController: UIViewController {
         }
     }
 
+}
+
+extension MediaViewController: UIGestureRecognizerDelegate {
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return mediaCardViewController.scrollView.contentOffset.y == 0
+    }
 }

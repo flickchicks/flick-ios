@@ -76,6 +76,7 @@ class ListSettingsViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
