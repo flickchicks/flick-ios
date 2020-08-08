@@ -112,7 +112,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         switch section.type {
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
-            cell.configure(name: name, username: username, profilePicUrl: profilePicUrl)
+            cell.configure(name: name, username: username, profilePicUrl: profilePicUrl, delegate: self)
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
@@ -164,6 +164,11 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
+
+    func pushNotificationsView() {
+        let allNotificationsViewController = AllNotificationsViewController()
+        navigationController?.pushViewController(allNotificationsViewController, animated: true)
+    }
 
     func showCreateListModal() {
         let createListModalView = EnterListNameModalView(type: .createList)
