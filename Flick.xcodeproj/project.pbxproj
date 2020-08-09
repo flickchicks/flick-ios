@@ -16,6 +16,7 @@
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
+		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
 		80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */; };
@@ -112,6 +113,7 @@
 		309F287024956FB400A670B0 /* MediaListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListHeaderView.swift; sourceTree = "<group>"; };
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
+		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToListViewController.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 				D478668F24798ADA009E42FE /* UIColor+Shared.swift */,
 				D4F0FB4A24CC544800DEF826 /* UILabel.swift */,
 				D492728724DED27600FA5F2A /* String.swift */,
+				80B3F9B524DF0D8D002891C4 /* UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				80F00F6524AAFE9D0051B8FF /* MediaSeletableCollectionViewCell.swift in Sources */,
+				80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */,
 				D45DC63824B9552F00838DBF /* LeftAlignedFlowLayout.swift in Sources */,
 				D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */,
 				D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */,
