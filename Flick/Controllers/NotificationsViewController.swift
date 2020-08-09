@@ -10,7 +10,11 @@ import UIKit
 
 class NotificationsViewController: UIViewController {
 
+    // MARK: - Private View Vars
     private let notificationsTableView = UITableView(frame: .zero)
+
+    // MARK: - Private Data Vars
+    // TODO: Replace with backend values
     private let notifications: [Notification] = [
         .FriendRequest(fromUser: "Lucy Xu", type: .received),
         .FriendRequest(fromUser: "Cindy Huang", type: .sent),
@@ -28,7 +32,6 @@ class NotificationsViewController: UIViewController {
     private let notificationCellReuseIdentifier = "NotificationCellReuseIdentifier"
 
     override func viewDidLoad() {
-
         view.backgroundColor = .offWhite
         
         notificationsTableView.delegate = self
@@ -48,7 +51,6 @@ class NotificationsViewController: UIViewController {
         }
 
     }
-
 }
 
 extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {

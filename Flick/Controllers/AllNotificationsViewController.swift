@@ -12,13 +12,13 @@ import UIKit
 class AllNotificationsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var backgroundView: UIView!
     private var tabCollectionView: UICollectionView!
     private var tabContainerView: UIView!
     private var tabPageViewController: NotificationsTabPageViewController!
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
+    private let tabBarHeight: CGFloat = 28
     private let tabCellReuseIdentifier = "tabCellReuseIdentifier"
     private let tabs = ["Notifications", "Suggestions"]
 
@@ -27,10 +27,6 @@ class AllNotificationsViewController: UIViewController {
 
         view.backgroundColor = .white
         setupNavigationBar()
-
-        backgroundView = UIView()
-        backgroundView.backgroundColor = .offWhite
-        view.addSubview(backgroundView)
 
         tabPageViewController = NotificationsTabPageViewController()
         addChild(tabPageViewController)
@@ -48,11 +44,13 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.dataSource = self
         tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
         tabCollectionView.backgroundColor = .movieWhite
-        // TODO: Fix tab bar shadows
-        tabCollectionView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-        tabCollectionView.layer.shadowOffset = CGSize(width: 4.0, height: 8.0)
+        tabCollectionView.clipsToBounds = false
+        tabCollectionView.layer.masksToBounds = false
+        // TODO: Double check tab bar shadows
+        tabCollectionView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         tabCollectionView.layer.shadowOpacity = 0.07
-        tabCollectionView.layer.shadowRadius = 4.0
+        tabCollectionView.layer.shadowOffset = .init(width: 0, height: 4)
+        tabCollectionView.layer.shadowRadius = 8
         view.addSubview(tabCollectionView)
 
         setUpConstraints()
@@ -86,11 +84,7 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(28)
-        }
-
-        backgroundView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalTo(tabCollectionView)
+            make.height.equalTo(tabBarHeight)
         }
 
         tabContainerView.snp.makeConstraints { make in
@@ -133,7 +127,7 @@ extension AllNotificationsViewController: UICollectionViewDataSource {
 
 extension AllNotificationsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width/2, height: 28)
+        return CGSize(width: UIScreen.main.bounds.width/2, height: tabBarHeight)
     }
 }
 

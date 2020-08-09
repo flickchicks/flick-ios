@@ -10,16 +10,38 @@ import UIKit
 
 class SuggestionsViewController: UIViewController {
 
+    // MARK: - Private View Vars
     private let suggestionsTableView = UITableView(frame: .zero)
-    private let suggestions: [Suggestion] = [
-        Suggestion(fromUser: "Lucy Xu", message: "Hello, pls watch", media: Media(id: 1, title: "Media", posterPic: "", directors: "James Tarentino", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [Tag(tagId: "2", tag: "K Drama")], seasons: "", audienceLevel: "", imbdRating: 3, friendsRating: 3, platforms: [], keywords: [], cast: ""), liked: true),
-        Suggestion(fromUser: "Haiying Weng", message: "Hello, pls watch", media: Media(id: 1, title: "Media", posterPic: "", directors: "James Tarentino", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [Tag(tagId: "2", tag: "K Drama")], seasons: "", audienceLevel: "", imbdRating: 3, friendsRating: 3, platforms: [], keywords: [], cast: ""), liked: false),
-        Suggestion(fromUser: "Alanna Zhou", message: "Hello, pls watch", media: Media(id: 1, title: "Media", posterPic: "", directors: "James Tarentino", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [Tag(tagId: "2", tag: "K Drama")], seasons: "", audienceLevel: "", imbdRating: 3, friendsRating: 3, platforms: [], keywords: [], cast: ""), liked: true)
+
+    // MARK: - Private Data Vars
+    private var suggestions: [Suggestion] = [
+        Suggestion(
+            fromUser: "Lucy Xu",
+            message: "Hello, pls watch this movie! I really liked it when I watched it with my family.",
+            media: Media(
+                id: 1,
+                title: "Media",
+                posterPic: "",
+                directors: "James Tarentino",
+                isTv: true,
+                dateReleased: "",
+                status: "",
+                language: "",
+                duration: "",
+                plot: "An orphaned boy enrolls in a school of wizardry, where he learns the truth about himself, his family and the terrible evil that haunts the magical world.",
+                tags: [Tag(tagId: "2", tag: "K Drama")],
+                seasons: "",
+                audienceLevel: "",
+                imbdRating: 3,
+                friendsRating: 3,
+                platforms: [],
+                keywords: [],
+                cast: ""),
+            liked: true)
     ]
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
 
     override func viewDidLoad() {
-
         view.backgroundColor = .offWhite
 
         suggestionsTableView.delegate = self
@@ -30,7 +52,6 @@ class SuggestionsViewController: UIViewController {
         suggestionsTableView.separatorStyle = .none
         suggestionsTableView.rowHeight = UITableView.automaticDimension
         suggestionsTableView.estimatedRowHeight = 140
-        suggestionsTableView.sizeToFit()
         view.addSubview(suggestionsTableView)
 
         suggestionsTableView.snp.makeConstraints { make in
@@ -48,7 +69,8 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: suggestionCellReuseIdentifier, for: indexPath) as? SuggestionTableViewCell else { return UITableViewCell() }
-//        cell.configure(with: notifications[indexPath.row])
+        cell.configure(with: suggestions[indexPath.row], index: indexPath.row)
+        cell.delegate = self
         return cell
     }
 
@@ -57,4 +79,11 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 
+}
+
+extension SuggestionsViewController: SuggestionsDelegate {
+    func likeSuggestion(index: Int) {
+        suggestions[index].liked.toggle()
+        suggestionsTableView.reloadData()
+    }
 }

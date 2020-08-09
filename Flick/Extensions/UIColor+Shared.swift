@@ -26,6 +26,7 @@ extension UIColor {
     static let offWhite = colorFromCode(0xF7F5FE)
     // TODO: Update movieWhite name
     static let movieWhite = colorFromCode(0xFBFBFF)
+    static let blueGrayShadow = colorFromCode(0x2D2795)
     static let purpleOverlay = UIColor(red: 0.054, green: 0.041, blue: 0.308, alpha: 0.3)
     static let backgroundOverlay = UIColor(red: 0.245, green: 0.228, blue: 0.346, alpha: 0.7)
 

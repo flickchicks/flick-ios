@@ -10,25 +10,27 @@ import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
 
+    // MARK: - Private View Vars
     private let containerView = UIView()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
+    private let acceptButton = UIButton()
+    private let ignoreButton = UIButton()
+
+    // MARK: - Private Data Vars
+    private let padding = 12
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         selectionStyle = .none
-
         backgroundColor = .offWhite
 
-        // TODO: Double check shadow
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
-        containerView.layer.shadowColor = UIColor.lightGray.cgColor
-        containerView.layer.shadowOpacity = 0.4
-        containerView.layer.shadowOffset = .init(width: 1, height: 1)
-        containerView.layer.shadowRadius = 2
-        containerView.sizeToFit()
+        containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        containerView.layer.shadowOpacity = 0.07
+        containerView.layer.shadowOffset = .init(width: 0, height: 4)
+        containerView.layer.shadowRadius = 8
         contentView.addSubview(containerView)
 
         profileImageView.layer.cornerRadius = 20
@@ -41,16 +43,15 @@ class NotificationTableViewCell: UITableViewCell {
         containerView.addSubview(notificationLabel)
 
         containerView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(12)
-            make.bottom.equalToSuperview()
+            make.top.equalTo(contentView).inset(padding)
+            make.bottom.equalTo(contentView)
             make.leading.trailing.equalToSuperview().inset(20)
         }
 
         profileImageView.snp.makeConstraints { make in
-            make.top.bottom.leading.equalTo(containerView).inset(12)
+            make.top.bottom.leading.equalTo(containerView).inset(padding)
             make.height.width.equalTo(40)
         }
-
     }
 
     required init?(coder: NSCoder) {
@@ -60,7 +61,7 @@ class NotificationTableViewCell: UITableViewCell {
     private func layoutNotificationLabel() {
         notificationLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
             make.trailing.equalTo(containerView).inset(12)
         }
     }
@@ -71,7 +72,6 @@ class NotificationTableViewCell: UITableViewCell {
         friendLabelString.append(friendRequestString)
         notificationLabel.attributedText = friendLabelString
 
-        let acceptButton = UIButton()
         acceptButton.setTitle("Accept", for: .normal)
         acceptButton.titleLabel?.font = .systemFont(ofSize: 14)
         acceptButton.layer.backgroundColor = UIColor.lightPurple.cgColor
@@ -79,7 +79,6 @@ class NotificationTableViewCell: UITableViewCell {
         acceptButton.layer.cornerRadius = 17
         contentView.addSubview(acceptButton)
 
-        let ignoreButton = UIButton()
         ignoreButton.setTitle("Ignore", for: .normal)
         ignoreButton.titleLabel?.font = .systemFont(ofSize: 14)
         ignoreButton.layer.backgroundColor = UIColor.lightGray2.cgColor
@@ -92,7 +91,7 @@ class NotificationTableViewCell: UITableViewCell {
         let buttonSize = CGSize(width: 96, height: 41)
 
         profileImageView.snp.remakeConstraints { remake in
-            remake.top.leading.equalTo(containerView).inset(12)
+            remake.top.leading.equalTo(containerView).inset(padding)
             remake.height.width.equalTo(40)
         }
 
@@ -100,7 +99,7 @@ class NotificationTableViewCell: UITableViewCell {
             make.size.equalTo(buttonSize)
             make.leading.equalTo(notificationLabel)
             make.top.equalTo(profileImageView.snp.bottom).offset(10)
-            make.bottom.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(padding)
         }
 
         ignoreButton.snp.makeConstraints { make in
@@ -151,7 +150,6 @@ class NotificationTableViewCell: UITableViewCell {
 
 
     func configure(with notification: Notification) {
-
         switch notification {
         case .ActivityLike(let fromUser, let likedContent, let media):
             setupActivityLikeCell(fromUser: fromUser, likedContent: likedContent, media: media)
@@ -167,8 +165,6 @@ class NotificationTableViewCell: UITableViewCell {
         case .CollaborationInvite(let fromUser, let media):
             setupCollaborationInviteCell(fromUser: fromUser, media: media)
         }
-
-
     }
 
 }

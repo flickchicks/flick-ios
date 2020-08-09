@@ -1,5 +1,5 @@
 //
-//  TabOptionCollectionViewCell.swift
+//  HomeTabOptionCollectionViewCell.swift
 //  Flick
 //
 //  Created by Lucy Xu on 5/23/20.
@@ -9,7 +9,7 @@
 import SnapKit
 import UIKit
 
-class TabOptionCollectionViewCell: UICollectionViewCell {
+class HomeTabOptionCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
     private let activeTabIndicatorView = UIView()

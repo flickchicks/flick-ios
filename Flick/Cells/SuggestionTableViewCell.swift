@@ -8,62 +8,57 @@
 
 import UIKit
 
+protocol SuggestionsDelegate: class {
+    func likeSuggestion(index: Int)
+}
+
 class SuggestionTableViewCell: UITableViewCell {
 
+    // MARK: - Private View Vars
     private let containerView = UIView()
-    private let notificationLabel = UILabel()
-    private let messageLabel = UILabel()
-    private let profileImageView = UIImageView()
+    private let likeButton = UIButton()
+    private let mediaDurationLabel = UILabel()
     private let mediaImageView = UIImageView()
     private let mediaTitleLabel = UILabel()
-    private let mediaDurationLabel = UILabel()
     private let mediaDurationImageView = UIImageView()
     private let mediaYearLabel = UILabel()
-    private let heartImageView = UIImageView()
-    private let synopsisLabel = UILabel()
-    private let createdYearLabel = UILabel()
+    private let messageLabel = UILabel()
     private let movieIconImageView = UIImageView()
-    private let tagsLabel = UILabel()
+    private let notificationLabel = UILabel()
+    private let profileImageView = UIImageView()
+    private let releaseDateLabel = UILabel()
     private let spacerView = UIView()
+    private let synopsisLabel = UILabel()
+    private let tagsLabel = UILabel()
 
+    // MARK: - Private Data Vars
+    weak var delegate: SuggestionsDelegate?
+    private var index: Int!
 
-    private let tags = ["Comedy", "Romance", "K Drama"]
-    private let createdYear = "2019"
-    private let synopsis = "In May 1940, Germany advanced into France, trapping Allied troops on the beaches of Dunkirk. Under air and ground cover from British and French forces, troops were slowly and methodically evacuated from the beach using every serviceable naval and civilian vessel that could be found. At the end of this heroic mission, 330,000 French, British, Belgian and Dutch soldiers were safely evacuated. 12345678"
-    private let summaryInfo = [
-        MediaSummary(text: "1h 30", type: .duration),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "2019", type: .year)
-    ]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-
         backgroundColor = .offWhite
 
-        // TODO: Double check shadow
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
-        containerView.layer.shadowColor = UIColor.lightGray.cgColor
-        containerView.layer.shadowOpacity = 0.4
-        containerView.layer.shadowOffset = .init(width: 1, height: 1)
-        containerView.layer.shadowRadius = 2
-        containerView.sizeToFit()
+        containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        containerView.layer.shadowOpacity = 0.07
+        containerView.layer.shadowOffset = .init(width: 0, height: 4)
+        containerView.layer.shadowRadius = 8
         contentView.addSubview(containerView)
 
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
 
-        notificationLabel.text = "Lucy Xu suggested a TV show."
         notificationLabel.font = .systemFont(ofSize: 14)
         notificationLabel.textColor = .black
         notificationLabel.numberOfLines = 0
         containerView.addSubview(notificationLabel)
 
-        messageLabel.text = "You gotta watch this fam."
         messageLabel.font = .systemFont(ofSize: 12)
         messageLabel.textColor = .darkBlueGray2
         messageLabel.numberOfLines = 0
@@ -73,10 +68,10 @@ class SuggestionTableViewCell: UITableViewCell {
         mediaImageView.layer.cornerRadius = 8
         containerView.addSubview(mediaImageView)
 
-        heartImageView.image = UIImage(named: "heart")
-        contentView.addSubview(heartImageView)
+//        likeButton.setImage(UIImage(named: "heart"), for: .normal)
+        likeButton.addTarget(self, action: #selector(likeSuggestion), for: .touchUpInside)
+        contentView.addSubview(likeButton)
 
-        mediaTitleLabel.text = "Crash Landing on You"
         mediaTitleLabel.font = .boldSystemFont(ofSize: 14)
         mediaTitleLabel.textColor = .black
         mediaTitleLabel.numberOfLines = 0
@@ -85,21 +80,18 @@ class SuggestionTableViewCell: UITableViewCell {
         movieIconImageView.image = UIImage(named: "film")
         contentView.addSubview(movieIconImageView)
 
-        createdYearLabel.text = createdYear
-        createdYearLabel.textColor = .mediumGray
-        createdYearLabel.font = .systemFont(ofSize: 12)
-        contentView.addSubview(createdYearLabel)
+        releaseDateLabel.textColor = .mediumGray
+        releaseDateLabel.font = .systemFont(ofSize: 12)
+        contentView.addSubview(releaseDateLabel)
 
-        spacerView.layer.cornerRadius = 1
+        spacerView.layer.cornerRadius = 1.5
         spacerView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(spacerView)
 
-        tagsLabel.text = tags.joined(separator: ", ")
         tagsLabel.textColor = .mediumGray
         tagsLabel.font = .systemFont(ofSize: 12)
         contentView.addSubview(tagsLabel)
 
-        synopsisLabel.text = synopsis
         synopsisLabel.font = .systemFont(ofSize: 10)
         synopsisLabel.textColor = .darkBlue
         synopsisLabel.numberOfLines = 0
@@ -110,51 +102,52 @@ class SuggestionTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         let mediaImageSize = CGSize(width: 60, height: 90)
+        let padding = 12
 
         containerView.snp.makeConstraints { make in
-           make.top.equalTo(contentView).inset(12)
+           make.top.equalTo(contentView).inset(padding)
            make.bottom.equalToSuperview()
            make.leading.trailing.equalToSuperview().inset(20)
         }
 
         profileImageView.snp.makeConstraints { make in
-           make.top.leading.equalTo(containerView).inset(12)
+           make.top.leading.equalTo(containerView).inset(padding)
            make.height.width.equalTo(40)
         }
 
         notificationLabel.snp.makeConstraints { make in
            make.centerY.equalTo(profileImageView)
-           make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-           make.trailing.equalToSuperview().inset(12)
+           make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
+           make.trailing.equalToSuperview().inset(padding)
         }
 
         messageLabel.snp.makeConstraints { make in
            make.leading.trailing.equalTo(notificationLabel)
-           make.top.equalTo(notificationLabel.snp.bottom).offset(11.5)
+           make.top.equalTo(notificationLabel.snp.bottom).offset(padding)
         }
 
         mediaImageView.snp.makeConstraints { make in
            make.leading.equalTo(notificationLabel)
            make.size.equalTo(mediaImageSize)
            make.top.equalTo(messageLabel.snp.bottom).offset(16)
-           make.bottom.equalTo(contentView).inset(12)
+           make.bottom.equalTo(contentView).inset(padding)
         }
 
-        heartImageView.snp.makeConstraints { make in
+        likeButton.snp.makeConstraints { make in
            make.centerY.equalTo(mediaImageView)
            make.centerX.equalTo(profileImageView)
         }
 
         mediaTitleLabel.snp.makeConstraints { make in
            make.top.equalTo(mediaImageView)
-           make.leading.equalTo(mediaImageView.snp.trailing).offset(12)
-           make.trailing.equalTo(containerView).inset(12)
+           make.leading.equalTo(mediaImageView.snp.trailing).offset(padding)
+           make.trailing.equalTo(containerView).inset(padding)
         }
 
         spacerView.snp.makeConstraints { make in
            make.centerY.equalTo(movieIconImageView)
-           make.leading.equalTo(createdYearLabel.snp.trailing).offset(6)
-           make.width.height.equalTo(2)
+           make.leading.equalTo(releaseDateLabel.snp.trailing).offset(6)
+           make.width.height.equalTo(3)
         }
 
         movieIconImageView.snp.makeConstraints { make in
@@ -163,7 +156,7 @@ class SuggestionTableViewCell: UITableViewCell {
             make.height.width.equalTo(15)
         }
 
-        createdYearLabel.snp.makeConstraints { make in
+        releaseDateLabel.snp.makeConstraints { make in
             make.leading.equalTo(movieIconImageView.snp.trailing).offset(5)
             make.centerY.equalTo(movieIconImageView)
         }
@@ -171,7 +164,7 @@ class SuggestionTableViewCell: UITableViewCell {
         tagsLabel.snp.makeConstraints { make in
            make.leading.equalTo(spacerView.snp.trailing).offset(6)
            make.centerY.equalTo(movieIconImageView)
-           make.trailing.equalTo(containerView).inset(12)
+           make.trailing.equalTo(containerView).inset(padding)
         }
 
         synopsisLabel.snp.makeConstraints { make in
@@ -183,6 +176,30 @@ class SuggestionTableViewCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func likeSuggestion() {
+        delegate?.likeSuggestion(index: index)
+    }
+
+    func configure(with suggestion: Suggestion, index: Int) {
+        self.index = index
+        let fromUserAttributedString = NSMutableAttributedString(string: suggestion.fromUser, attributes: [
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)
+        ])
+        let suggestedMediaType = suggestion.media.isTv ? "TV show" : "movie"
+        let notificationAttributedString = NSMutableAttributedString(string: " suggested a \(suggestedMediaType).")
+        fromUserAttributedString.append(notificationAttributedString)
+        notificationLabel.attributedText = fromUserAttributedString
+        messageLabel.text = suggestion.message
+        mediaTitleLabel.text = suggestion.media.title
+        let tags = suggestion.media.tags.map { $0.tag }
+        tagsLabel.text = tags.joined(separator: ", ")
+        releaseDateLabel.text = suggestion.media.dateReleased
+        synopsisLabel.text = suggestion.media.plot
+        let heartImage = suggestion.liked ? "filledHeart" : "heart"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+
     }
 }
 

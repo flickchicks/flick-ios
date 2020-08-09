@@ -52,6 +52,6 @@ struct Suggestion {
     let fromUser: String
     let message: String
     let media: Media
-    let liked: Bool
+    var liked: Bool
 
 }
