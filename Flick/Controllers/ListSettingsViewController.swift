@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol ListSettingsDelegate: class {
+    func deleteList()
+    func renameList(to name: String)
+    func updateCollaborators(to collaborators: [UserProfile])
+    func updatePrivacy(to isPrivate: Bool)
+}
+
 enum ListSetting: String {
     case collaboration = "Collaboration"
     case deleteList = "Delete list"
@@ -21,13 +28,13 @@ class ListSettingsViewController: UIViewController {
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
-    private var list: MediaList!
+    private var list: MediaList
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
     private var settings = [ListSetting]()
 
     init(list: MediaList) {
-        super.init(nibName: nil, bundle: nil)
         self.list = list
+        super.init(nibName: nil, bundle: nil)
 
         if list.isSaved || list.isWatchLater {
             settings = [.privacy]
@@ -82,22 +89,18 @@ class ListSettingsViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
-    
-    private func showModalPopup(view: UIView) {
-        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
-            window.addSubview(view)
-        }
-    }
 
     private func showAddCollaboratorsModal() {
-        let addCollaboratorModalView = AddCollaboratorModalView()
-        addCollaboratorModalView.delegate = self
+        let addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
+        addCollaboratorModalView.modalDelegate = self
+        addCollaboratorModalView.listSettingsDelegate = self
         showModalPopup(view: addCollaboratorModalView)
     }
 
     private func showDeleteConfirmationModal() {
-        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?")
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?", type: .deleteList)
         deleteConfirmationModalView.modalDelegate = self
+        deleteConfirmationModalView.listSettingsDelegate = self
         showModalPopup(view: deleteConfirmationModalView)
     }
 
@@ -118,7 +121,7 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: listSettingsCellReuseIdentifier, for: indexPath) as? ListSettingsTableViewCell else { return UITableViewCell() }
-        cell.configure(for: settings[indexPath.row], list: list)
+        cell.configure(for: settings[indexPath.row], list: list, delegate: self)
         return cell
     }
 
@@ -152,7 +155,49 @@ extension ListSettingsViewController: ModalDelegate {
 
 extension ListSettingsViewController: ListSettingsDelegate {
 
-    func renameList(title: String) {
+    func deleteList() {
+        NetworkManager.deleteMediaList(listId: list.lstId) { [weak self] _ in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Renamed to \(self.list.lstName)") {
+                let controllers = self.navigationController?.viewControllers
+                for controller in controllers ?? [] {
+                    if controller is HomeViewController {
+                        self.navigationController?.popToViewController(controller, animated: true)
+                    }
+                }
+            }
+        }
+    }
+
+    func renameList(to name: String) {
+        var updatedList = list
+        updatedList.lstName = name
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Renamed to \(list.lstName)", completion: nil)
+        }
+    }
+
+    func updateCollaborators(to collaborators: [UserProfile]) {
+        var updatedList = list
+        updatedList.collaborators = collaborators
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Updated collaborators", completion: nil)
+        }
+    }
+
+    func updatePrivacy(to isPrivate: Bool) {
+        var updatedList = list
+        updatedList.isPrivate = isPrivate
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
+        }
     }
 
 }

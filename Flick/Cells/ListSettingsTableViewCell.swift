@@ -17,7 +17,10 @@ class ListSettingsTableViewCell: UITableViewCell {
     private let privacySwitch = PrivacySwitch()
 
     // MARK: - Private Data Vars
+    private var list: MediaList!
     private var collaborators: [UserProfile] = []
+
+    weak var listSettingsDelegate: ListSettingsDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,7 +44,9 @@ class ListSettingsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for setting: ListSetting, list: MediaList) {
+    func configure(for setting: ListSetting, list: MediaList, delegate: ListSettingsDelegate) {
+        self.list = list
+        listSettingsDelegate = delegate
         nameLabel.text = setting.rawValue
         switch setting {
         case .collaboration:
@@ -52,10 +57,12 @@ class ListSettingsTableViewCell: UITableViewCell {
         case .privacy:
             let isPrivate = list.isPrivate
             privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
-            privacySwitch.setPrivate(isPrivate)
+            privacySwitch.isPrivate = isPrivate
             contentView.addSubview(privacyStatusLabel)
             contentView.addSubview(privacySwitch)
             setupPrivacyConstraints()
+        case .deleteList:
+            nameLabel.textColor = .flickRed
         default:
             break
         }
@@ -96,6 +103,7 @@ extension ListSettingsTableViewCell: PrivacySwitchDelegate {
 
     func privacyChanged(isPrivate: Bool) {
         privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+        listSettingsDelegate?.updatePrivacy(to: isPrivate)
     }
 
 }

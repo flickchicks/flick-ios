@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EditListDelegate: class {
+    func removeMediaFromList()
+}
+
 class EditListViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -28,13 +32,15 @@ class EditListViewController: UIViewController {
     private let actionButtonSize = CGSize(width: 36, height: 36)
     private let cellPadding: CGFloat = 20
     private var numSelected = 0
+    private var list: MediaList
     private var media = [Media]()
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
+    private var selectedMedia = [Media]()
 
-    init(media: [Media]) {
+    init(list: MediaList) {
+        self.list = list
+        self.media = list.shows
         super.init(nibName: nil, bundle: nil)
-
-        self.media = media
     }
 
     required init?(coder: NSCoder) {
@@ -210,6 +216,7 @@ class EditListViewController: UIViewController {
         }
         setActionsActive(true)
         numSelected = media.count
+        selectedMedia = media
     }
 
     @objc private func deselectTapped() {
@@ -221,12 +228,21 @@ class EditListViewController: UIViewController {
         }
         setActionsActive(false)
         numSelected = 0
+        selectedMedia = []
     }
 
     @objc private func removeTapped() {
+        showDeleteConfirmationModal()
     }
 
     @objc private func moveTapped() {
+    }
+
+    private func showDeleteConfirmationModal() {
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to remove [\(selectedMedia.count)] items from this list?", type: .removeMedia)
+        deleteConfirmationModalView.modalDelegate = self
+        deleteConfirmationModalView.editListDelegate = self
+        showModalPopup(view: deleteConfirmationModalView)
     }
 
     private func setActionsActive(_ isActive: Bool) {
@@ -251,11 +267,13 @@ extension EditListViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setActionsActive(true)
         numSelected += 1
+        selectedMedia.append(media[indexPath.item])
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         numSelected -= 1
         setActionsActive(numSelected != 0)
+        selectedMedia.removeAll { $0.id == media[indexPath.item].id }
     }
 }
 
@@ -265,6 +283,36 @@ extension EditListViewController: UICollectionViewDelegateFlowLayout {
         let width = mediaCollectionView.frame.width / 3.0 - cellPadding
         let height = width * 3 / 2
         return CGSize(width: width, height: height)
+    }
+
+}
+
+extension EditListViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+}
+
+extension EditListViewController: EditListDelegate {
+
+    func removeMediaFromList() {
+        var updatedList = list
+        var updatedMedia = media
+        updatedMedia = updatedMedia.filter { media -> Bool in
+            !selectedMedia.contains { media.id == $0.id }
+        }
+        updatedList.shows = updatedMedia
+        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)
+            self.list = list
+            self.media = list.shows
+            self.mediaCollectionView.reloadData()
+            self.selectedMedia = []
+        }
     }
 
 }

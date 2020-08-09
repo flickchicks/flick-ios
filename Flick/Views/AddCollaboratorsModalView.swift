@@ -24,32 +24,29 @@ class AddCollaboratorModalView: UIView {
     private let noFriendsLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private var allFriends: [Collaborator] = [
-        Collaborator(name: "Olivia Li", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Vivi Ye", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Aaastha Shah", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Haiying Weng", isOwner: false, image: "", isAdded: false)
-    ]
-    private var collaborators: [Collaborator] = [
-        Collaborator(name: "Cindy Huang", isOwner: true, image: "", isAdded: true),
-        Collaborator(name: "Lucy Xu", isOwner: false, image: "", isAdded: true)
-    ]
+    private var allFriends: [UserProfile] = []
+    private var collaborators: [UserProfile]
+    private var friends: [UserProfile] = []
+    private var owner: UserProfile
+    private var selectedCollaborators: [UserProfile] = []
+
     private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
-    weak var delegate: ModalDelegate?
-    private var friends: [Collaborator] = [
-        Collaborator(name: "Olivia Li", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Vivi Ye", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Aaastha Shah", isOwner: false, image: "", isAdded: false),
-        Collaborator(name: "Haiying Weng", isOwner: false, image: "", isAdded: false)
-    ]
-    // TODO: Replace with backend values and maybe rethink object model
     private let inviteCollaboratorCellReuseIdentifier = "InviteCollaboratorCellReuseIdentifier"
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    weak var modalDelegate: ModalDelegate?
+    weak var listSettingsDelegate: ListSettingsDelegate?
 
-        self.frame = UIScreen.main.bounds
-        self.backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
+    init(owner: UserProfile, collaborators: [UserProfile]) {
+        self.owner = owner
+        self.collaborators = [owner] + collaborators
+        self.selectedCollaborators = collaborators
+        super.init(frame: .zero)
+        setupViews()
+    }
+
+    func setupViews() {
+        frame = UIScreen.main.bounds
+        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
 
         collaboratorsTitleLabel.text = "Collaborators"
         collaboratorsTitleLabel.textColor = .black
@@ -73,8 +70,10 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTableView = UITableView(frame: .zero, style: .plain)
         collaboratorsTableView.dataSource = self
         collaboratorsTableView.delegate = self
+        collaboratorsTableView.allowsMultipleSelection = true
         collaboratorsTableView.isScrollEnabled = true
         collaboratorsTableView.alwaysBounceVertical = false
+        collaboratorsTableView.showsVerticalScrollIndicator = false
         collaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
         collaboratorsTableView.separatorStyle = .none
         containerView.addSubview(collaboratorsTableView)
@@ -99,7 +98,11 @@ class AddCollaboratorModalView: UIView {
         addSubview(containerView)
 
         setupConstraints()
-        setupFriendsView()
+
+        NetworkManager.getFriends { friends in
+            self.friends = friends
+            self.setupFriendsView()
+        }
     }
 
     private func setupConstraints() {
@@ -117,7 +120,7 @@ class AddCollaboratorModalView: UIView {
 
         let inviteSectionHeight = friends.count > 0 ? friendsTableViewHeight : noFriendsSectionViewHeight
         // 227 is manually calculated height for container
-        let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + 277
+        let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + 287
 
         let containerViewSize = CGSize(width: 325, height: containerHeight)
 
@@ -183,8 +186,10 @@ class AddCollaboratorModalView: UIView {
             inviteCollaboratorsTableView = UITableView(frame: .zero, style: .plain)
             inviteCollaboratorsTableView.dataSource = self
             inviteCollaboratorsTableView.delegate = self
+            inviteCollaboratorsTableView.allowsMultipleSelection = true
             inviteCollaboratorsTableView.isScrollEnabled = true
             inviteCollaboratorsTableView.alwaysBounceVertical = false
+            inviteCollaboratorsTableView.showsVerticalScrollIndicator = false
             inviteCollaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
             inviteCollaboratorsTableView.separatorStyle = .none
             containerView.addSubview(inviteCollaboratorsTableView)
@@ -223,7 +228,8 @@ class AddCollaboratorModalView: UIView {
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
-            self.delegate?.dismissModal(modalView: self)
+            self.modalDelegate?.dismissModal(modalView: self)
+            self.listSettingsDelegate?.updateCollaborators(to: self.selectedCollaborators)
         }
     }
 
@@ -246,17 +252,29 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? CollaboratorTableViewCell else { return UITableViewCell() }
         let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        cell.configure(for: collaborator)
+        cell.configure(for: collaborator, isOwner: collaborator.userId == owner.userId)
+        if selectedCollaborators.contains(where: { $0.userId == collaborator.userId }) {
+            cell.isSelected = true
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == inviteCollaboratorsTableView {
-            friends[indexPath.row].isAdded.toggle()
-        }
-        tableView.reloadData()
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = true
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
+        selectedCollaborators.append(collaborator)
     }
 
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
+        tableView.deselectRow(at: indexPath, animated: true)
+        let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
+        selectedCollaborators.removeAll { $0.userId == collaborator.userId }
+    }
 }
 
 extension AddCollaboratorModalView: UISearchBarDelegate {
@@ -266,7 +284,7 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
             if searchText == "" {
                 friends = allFriends
             } else {
-                friends = allFriends.filter { $0.name.contains(searchText) }
+                friends = allFriends.filter { "\($0.firstName) \($0.lastName)".contains(searchText) }
             }
             inviteCollaboratorsTableView.reloadData()
         }

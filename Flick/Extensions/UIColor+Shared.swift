@@ -27,6 +27,7 @@ extension UIColor {
     // TODO: Update movieWhite name
     static let movieWhite = colorFromCode(0xFBFBFF)
     static let purpleOverlay = UIColor(red: 0.054, green: 0.041, blue: 0.308, alpha: 0.3)
+    static let flickRed = colorFromCode(0xDA0F33)
     static let backgroundOverlay = UIColor(red: 0.245, green: 0.228, blue: 0.346, alpha: 0.7)
 
     public static func colorFromCode(_ code: Int) -> UIColor {

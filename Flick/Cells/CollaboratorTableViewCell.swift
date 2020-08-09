@@ -16,6 +16,16 @@ class CollaboratorTableViewCell: UITableViewCell {
     private let selectIndicatorView = SelectIndicatorView(width: 20)
     private let userImageView = UIImageView()
 
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                selectIndicatorView.select()
+            } else {
+                selectIndicatorView.deselect()
+            }
+        }
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -40,15 +50,16 @@ class CollaboratorTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func configure(for collaborator: Collaborator) {
-        nameLabel.text = collaborator.name
+    func configure(for collaborator: UserProfile, isOwner: Bool) {
+        nameLabel.text = "\(collaborator.firstName) \(collaborator.lastName)"
 //        userImageView.image = UIImage(named: collaborator.image)
-        if collaborator.isOwner {
+        if isOwner {
             addSubview(ownerLabel)
             setupOwnerConstraints()
+            selectIndicatorView.isHidden = true
         } else {
             setupNonOwnerConstraints()
-            collaborator.isAdded ? selectIndicatorView.select() : selectIndicatorView.deselect()
+//            collaborator.isAdded ? selectIndicatorView.select() : selectIndicatorView.deselect()
             selectIndicatorView.isHidden = false
         }
     }
