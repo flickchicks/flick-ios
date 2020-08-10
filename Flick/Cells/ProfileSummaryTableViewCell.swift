@@ -10,6 +10,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let settingsButton = UIButton()
     private let userInfoView = UIView()
     private let usernameLabel = UILabel()
+    weak var delegate: ProfileDelegate?
 
     // MARK: - Private Data Vars
     private var condensedCellSpacing = -8
@@ -45,12 +46,17 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         contentView.addSubview(userInfoView)
 
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
+        notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
         contentView.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         contentView.addSubview(settingsButton)
 
         setupConstraints()
+    }
+
+    @objc func notificationButtonPressed() {
+        delegate?.pushNotificationsView()
     }
 
     private func calculateUserInfoViewWidth(friendsPreviewWidth: CGFloat) -> CGFloat {
@@ -118,7 +124,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(name: String, username: String, profilePicUrl: String) {
+    func configure(name: String, username: String, profilePicUrl: String, delegate: ProfileDelegate) {
+        self.delegate = delegate
         nameLabel.text = name
         usernameLabel.text = "@\(username)"
         usernameLabel.sizeToFit()

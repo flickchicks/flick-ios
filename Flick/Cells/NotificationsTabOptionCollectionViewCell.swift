@@ -1,23 +1,22 @@
 //
-//  TabOptionCollectionViewCell.swift
+//  NotificationsTabOptionCollectionViewCell.swift
 //  Flick
 //
-//  Created by Lucy Xu on 5/23/20.
+//  Created by Lucy Xu on 8/7/20.
 //  Copyright © 2020 flick. All rights reserved.
 //
 
 import SnapKit
 import UIKit
 
-class TabOptionCollectionViewCell: UICollectionViewCell {
+class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
     private let activeTabIndicatorView = UIView()
     private let tabLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private var activeCellColor: UIColor = .darkPurple
-    private let activeTabIndicatorViewSize = CGSize(width: 8, height: 8)
+    private var activeCellColor: UIColor = .darkBlue
     private var inactiveCellColor: UIColor = .mediumGray
 
     override var isSelected: Bool {
@@ -35,19 +34,9 @@ class TabOptionCollectionViewCell: UICollectionViewCell {
         tabLabel.font = .systemFont(ofSize: 16)
         addSubview(tabLabel)
 
-        activeTabIndicatorView.isHidden = true
-        activeTabIndicatorView.backgroundColor = activeCellColor
-        activeTabIndicatorView.layer.cornerRadius = activeTabIndicatorViewSize.width / 2
-        addSubview(activeTabIndicatorView)
-
         tabLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-        }
-
-        activeTabIndicatorView.snp.makeConstraints { make in
-            make.top.equalTo(tabLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
-            make.size.equalTo(activeTabIndicatorViewSize)
+            make.bottom.equalToSuperview().inset(12)
         }
 
     }
