@@ -111,40 +111,37 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     private func setupFriendAcceptCell(fromUser: String) {
-        let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        let friendAcceptString = NSMutableAttributedString(string: " accepted your friend request ")
-        friendLabelString.append(friendAcceptString)
-        notificationLabel.attributedText = friendLabelString
+        notificationLabel.attributedText =
+            NSMutableAttributedString()
+                .boldFont14(fromUser)
+                .normalFont14(" accepted your friend request ")
         layoutNotificationLabel()
     }
 
     private func setupCollaborationInviteCell(fromUser: String, media: String) {
-        let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        let collaborationInviteString = NSMutableAttributedString(string: " invited you to collaborate on ")
-        let listLabelString = NSMutableAttributedString(string: media, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        friendLabelString.append(collaborationInviteString)
-        friendLabelString.append(listLabelString)
-        notificationLabel.attributedText = friendLabelString
+        notificationLabel.attributedText =
+            NSMutableAttributedString()
+                .boldFont14(fromUser)
+                .normalFont14(" invited you to collaborate on ")
+                .boldFont14(media)
         layoutNotificationLabel()
     }
 
     private func setupActivityLikeCell(fromUser: String, likedContent: ActivityLike.ActivityLikeType, media: String) {
-        let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        let activityLikeString = NSMutableAttributedString(string: " liked your \(String(likedContent)) on ")
-        let mediaLabelString = NSMutableAttributedString(string: media, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        friendLabelString.append(activityLikeString)
-        friendLabelString.append(mediaLabelString)
-        notificationLabel.attributedText = friendLabelString
+        notificationLabel.attributedText =
+            NSMutableAttributedString()
+                .boldFont14(fromUser)
+                .normalFont14(" liked your \(String(likedContent)) on ")
+                .boldFont14(media)
         layoutNotificationLabel()
     }
 
     private func setupListActivityCell(fromUser: String, list: String) {
-        let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        let activityLikeString = NSMutableAttributedString(string: " added 3 items to ")
-        let listLabelString = NSMutableAttributedString(string: list, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        friendLabelString.append(activityLikeString)
-        friendLabelString.append(listLabelString)
-        notificationLabel.attributedText = friendLabelString
+        notificationLabel.attributedText =
+        NSMutableAttributedString()
+            .boldFont14(fromUser)
+            .normalFont14(" added 3 items to ")
+            .boldFont14(list)
         layoutNotificationLabel()
     }
 

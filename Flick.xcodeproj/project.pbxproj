@@ -73,6 +73,7 @@
 		D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */; };
 		D492728824DED27600FA5F2A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728724DED27600FA5F2A /* String.swift */; };
 		D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */; };
+		D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */; };
 		D4DB6CC724D3B11200B69DF6 /* MediaCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
 		D4F0FB4924CC378300DEF826 /* RatingsSliderControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4824CC378300DEF826 /* RatingsSliderControl.swift */; };
@@ -178,6 +179,7 @@
 		D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D492728724DED27600FA5F2A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
+		D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
 		D4DB6CC624D3B11200B69DF6 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		D4F0FB4824CC378300DEF826 /* RatingsSliderControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsSliderControl.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				D4F0FB4A24CC544800DEF826 /* UILabel.swift */,
 				D492728724DED27600FA5F2A /* String.swift */,
 				80B3F9B524DF0D8D002891C4 /* UIViewController.swift */,
+				D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -733,6 +736,7 @@
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
+				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,

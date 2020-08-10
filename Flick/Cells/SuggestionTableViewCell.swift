@@ -68,7 +68,6 @@ class SuggestionTableViewCell: UITableViewCell {
         mediaImageView.layer.cornerRadius = 8
         containerView.addSubview(mediaImageView)
 
-//        likeButton.setImage(UIImage(named: "heart"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeSuggestion), for: .touchUpInside)
         contentView.addSubview(likeButton)
 
@@ -184,13 +183,10 @@ class SuggestionTableViewCell: UITableViewCell {
 
     func configure(with suggestion: Suggestion, index: Int) {
         self.index = index
-        let fromUserAttributedString = NSMutableAttributedString(string: suggestion.fromUser, attributes: [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)
-        ])
-        let suggestedMediaType = suggestion.media.isTv ? "TV show" : "movie"
-        let notificationAttributedString = NSMutableAttributedString(string: " suggested a \(suggestedMediaType).")
-        fromUserAttributedString.append(notificationAttributedString)
-        notificationLabel.attributedText = fromUserAttributedString
+        notificationLabel.attributedText =
+            NSMutableAttributedString()
+                .boldFont14(suggestion.fromUser)
+                .normalFont14(" suggested a \(suggestion.media.isTv ? "TV show" : "movie").")
         messageLabel.text = suggestion.message
         mediaTitleLabel.text = suggestion.media.title
         let tags = suggestion.media.tags.map { $0.tag }
