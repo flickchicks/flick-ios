@@ -20,12 +20,16 @@ class MediaListsModalView: UIView {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    weak var modalDelegate: ModalDelegate?
+    private let listNameCellReuseIdentifier = "ListNameCellReuseIdentifier"
+    private var lists: [MediaList] = []
     private var type: MediaListsModalViewType!
+
+    weak var modalDelegate: ModalDelegate?
 
     init(type: MediaListsModalViewType) {
         super.init(frame: .zero)
 
+        frame = UIScreen.main.bounds
         backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
 
         self.type = type
@@ -51,7 +55,15 @@ class MediaListsModalView: UIView {
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)
 
+        listsTableView.dataSource = self
+        listsTableView.delegate = self
+        listsTableView.showsVerticalScrollIndicator = false
+        listsTableView.register(ListNameTableViewCell.self, forCellReuseIdentifier: listNameCellReuseIdentifier)
+        listsTableView.separatorStyle = .none
+        containerView.addSubview(listsTableView)
+
         setupConstraints()
+        getLists()
 
         // Animate the pop up of error alert view in 0.25 seconds
         UIView.animate(withDuration: 0.25, animations: {
@@ -84,6 +96,20 @@ class MediaListsModalView: UIView {
             make.top.equalTo(containerView).offset(33)
             make.trailing.equalTo(containerView).inset(horizontalPadding)
         }
+
+        listsTableView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(containerView).inset(horizontalPadding)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.bottom.equalToSuperview().inset(verticalPadding)
+        }
+    }
+
+    private func getLists() {
+        NetworkManager.getAllMediaLists { [weak self] lists in
+            guard let self = self else { return }
+            self.lists = lists
+            self.listsTableView.reloadData()
+        }
     }
 
     @objc func doneTapped() {
@@ -98,6 +124,24 @@ class MediaListsModalView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+extension MediaListsModalView: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return lists.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: listNameCellReuseIdentifier, for: indexPath) as? ListNameTableViewCell else { return UITableViewCell() }
+        cell.configure(list: lists[indexPath.row])
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
     }
 
 }

@@ -232,19 +232,16 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
-        showDeleteConfirmationModal()
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to remove [\(selectedMedia.count)] items from this list?", type: .removeMedia)
+        deleteConfirmationModalView.modalDelegate = self
+        deleteConfirmationModalView.editListDelegate = self
+        showModalPopup(view: deleteConfirmationModalView)
     }
 
     @objc private func moveTapped() {
         let listsModalView = MediaListsModalView(type: .moveMedia)
         listsModalView.modalDelegate = self
-    }
-
-    private func showDeleteConfirmationModal() {
-        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to remove [\(selectedMedia.count)] items from this list?", type: .removeMedia)
-        deleteConfirmationModalView.modalDelegate = self
-        deleteConfirmationModalView.editListDelegate = self
-        showModalPopup(view: deleteConfirmationModalView)
+        showModalPopup(view: listsModalView)
     }
 
     private func setActionsActive(_ isActive: Bool) {

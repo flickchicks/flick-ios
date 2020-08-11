@@ -122,15 +122,15 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get all lists of a user
-    static func getAllMediaLists(userId: String, completion: @escaping ([MediaList]) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/lists", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+    /// [GET] Get all lists of a user [updated as of 8/10/20]
+    static func getAllMediaLists(completion: @escaping ([MediaList]) -> Void) {
+        AF.request("\(hostEndpoint)/api/lsts/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let mediaListsData = try? jsonDecoder.decode(Response<MediaListsResponse>.self, from: data) {
-                    let mediaLists = mediaListsData.data.lists
+                if let mediaListsData = try? jsonDecoder.decode(Response<[MediaList]>.self, from: data) {
+                    let mediaLists = mediaListsData.data
                     completion(mediaLists)
                 }
             case .failure(let error):
