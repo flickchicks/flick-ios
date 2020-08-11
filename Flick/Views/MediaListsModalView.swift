@@ -37,7 +37,7 @@ class MediaListsModalView: UIView {
         }
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 18)
-        containerView.addSubview(collaboratorsTitleLabel)
+        containerView.addSubview(titleLabel)
 
         containerView.backgroundColor = .white
         containerView.layer.cornerRadius = 24

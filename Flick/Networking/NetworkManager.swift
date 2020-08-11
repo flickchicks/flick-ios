@@ -13,6 +13,11 @@ class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
 
+    static let headers: HTTPHeaders = [
+        "Authorization": "Token \(UserDefaults().string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
+        "Accept": "application/json"
+    ]
+
     private static let hostEndpoint = "http://localhost:8000"
 
     /// [POST] Register new user [updated as of 7/3/20]
@@ -151,19 +156,19 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Update list of a user by id
-    static func updateMediaList(userId: String, listId: String, list: MediaListBody, completion: @escaping (MediaList) -> Void) {
-        // TODO: Revisit parameters. Current implementation omits delete_media_ids and add_media_ids
+    /// [POST] Update list of a user by id [updated as of 8/5/20]
+    static func updateMediaList(listId: String, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
-            "movie_ids": list.movieIds,
-            "collaborators": list.collaborators,
-            "is_private": list.isPrivate,
-            "tags": list.tags,
-            "list_name": list.listName,
-            "list_pic": list.listPic
+            "lst_name": list.lstName,
+            "collaborators": list.collaborators.map { $0.userId },
+            "owner": list.owner.userId,
+            "shows": list.shows.map { $0.id },
+            "tags": list.tags.map { $0.tagId },
+            "is_private": list.isPrivate
         ]
 
-        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -178,15 +183,32 @@ class NetworkManager {
         }
     }
 
-    /// [DELETE] Delete list of a user by id
-    static func getMediaList(userId: String, listId: String, completion: @escaping (String) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .delete, encoding: JSONEncoding.default).validate().responseData { response in
+    /// [DELETE] Delete list of a user by id [updated as of 8/5/20]
+    static func deleteMediaList(listId: String, completion: @escaping (String) -> Void) {
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .delete, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let listIdData = try? jsonDecoder.decode(Response<IdResponse>.self, from: data) {
-                    let listId = listIdData.data.id
-                    completion(listId)
+                if let listIdData = try? jsonDecoder.decode(Response<String>.self, from: data) {
+                    let message = listIdData.data
+                    completion(message)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get all friends of a user [updated as of 8/7/20]
+    static func getFriends(completion: @escaping ([UserProfile]) -> Void) {
+        AF.request("\(hostEndpoint)/api/friends/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendsData = try? jsonDecoder.decode(Response<[UserProfile]>.self, from: data) {
+                    let friendsList = friendsData.data
+                    completion(friendsList)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -248,23 +270,6 @@ class NetworkManager {
                 if let friendsData = try? jsonDecoder.decode(Response<UsernamesDataResponse>.self, from: data) {
                     let friendsUsernames = friendsData.data.usernames
                     completion(friendsUsernames)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    /// [GET] Get all friends of a user
-    static func getFriends(userId: String, completion: @escaping ([User]) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/friends)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let friendsData = try? jsonDecoder.decode(Response<FriendsDataResponse>.self, from: data) {
-                    let friendsList = friendsData.data.friends
-                    completion(friendsList)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

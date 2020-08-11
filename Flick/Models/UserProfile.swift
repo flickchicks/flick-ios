@@ -15,7 +15,7 @@ struct UserProfile: Codable {
     var firstName: String
     var lastName: String
     var profileId: String
-    var profilePic: ProfilePicture
+    var profilePic: ProfilePicture?
     var bio: String?
     var phoneNumber: String?
     var socialIdToken: String?

@@ -2,6 +2,7 @@ import UIKit
 
 protocol ProfileDelegate: class {
     func showCreateListModal()
+    func pushNotificationsView()
 }
 
 class ProfileHeaderView: UITableViewHeaderFooterView {

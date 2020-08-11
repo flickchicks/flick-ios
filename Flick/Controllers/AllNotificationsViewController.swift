@@ -1,37 +1,34 @@
 //
-//  HomeViewController.swift
+//  NotificationsViewController.swift
 //  Flick
 //
-//  Created by Lucy Xu on 5/22/20.
+//  Created by Lucy Xu on 8/7/20.
 //  Copyright © 2020 flick. All rights reserved.
 //
 
 import SnapKit
 import UIKit
 
-class HomeViewController: UIViewController {
+class AllNotificationsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var backgroundView: UIView!
     private var tabCollectionView: UICollectionView!
     private var tabContainerView: UIView!
-    private var tabPageViewController: TabPageViewController!
+    private var tabPageViewController: NotificationsTabPageViewController!
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
+    private let tabBarHeight: CGFloat = 28
     private let tabCellReuseIdentifier = "tabCellReuseIdentifier"
-    private let tabs = ["Discover", "Profile"]
+    private let tabs = ["Notifications", "Suggestions"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
+        setupNavigationBar()
 
-        backgroundView = UIView()
-        backgroundView.backgroundColor = .offWhite
-        view.addSubview(backgroundView)
-
-        tabPageViewController = TabPageViewController()
+        tabPageViewController = NotificationsTabPageViewController()
         addChild(tabPageViewController)
 
         tabContainerView = UIView()
@@ -45,21 +42,41 @@ class HomeViewController: UIViewController {
         tabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: tabLayout)
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
-        tabCollectionView.register(HomeTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
-        tabCollectionView.backgroundColor = .white
-        tabCollectionView.clipsToBounds = true
+        tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
+        tabCollectionView.backgroundColor = .movieWhite
+        tabCollectionView.clipsToBounds = false
         tabCollectionView.layer.masksToBounds = false
-        tabCollectionView.layer.cornerRadius = 24
-        // Apply corner radius only to bottom left and bottom right corners
-        tabCollectionView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        // TODO: Fix tab bar shadows
-        tabCollectionView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-        tabCollectionView.layer.shadowOffset = CGSize(width: 4.0, height: 8.0)
+        // TODO: Double check tab bar shadows
+        tabCollectionView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         tabCollectionView.layer.shadowOpacity = 0.07
-        tabCollectionView.layer.shadowRadius = 4.0
+        tabCollectionView.layer.shadowOffset = .init(width: 0, height: 4)
+        tabCollectionView.layer.shadowRadius = 8
         view.addSubview(tabCollectionView)
 
         setUpConstraints()
+    }
+
+    private func setupNavigationBar() {
+        let backButtonSize = CGSize(width: 22, height: 18)
+
+        navigationController?.navigationBar.barTintColor = .movieWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
+
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+
+    }
+
+    @objc func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setUpConstraints() {
@@ -67,11 +84,7 @@ class HomeViewController: UIViewController {
         tabCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
-        }
-
-        backgroundView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalTo(tabCollectionView)
+            make.height.equalTo(tabBarHeight)
         }
 
         tabContainerView.snp.makeConstraints { make in
@@ -82,12 +95,12 @@ class HomeViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
 }
 
-extension HomeViewController: UICollectionViewDelegate {
+extension AllNotificationsViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         activeTabIndex = indexPath.item
@@ -97,13 +110,13 @@ extension HomeViewController: UICollectionViewDelegate {
 
 }
 
-extension HomeViewController: UICollectionViewDataSource {
+extension AllNotificationsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tabs.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tabCellReuseIdentifier, for: indexPath) as? HomeTabOptionCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tabCellReuseIdentifier, for: indexPath) as? NotificationsTabOptionCollectionViewCell else { return UICollectionViewCell() }
         if indexPath.item == activeTabIndex {
             cell.isSelected = true
         }
@@ -112,10 +125,11 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 }
 
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
+extension AllNotificationsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width/2, height: 60)
+        return CGSize(width: UIScreen.main.bounds.width/2, height: tabBarHeight)
     }
 }
+
 
 
