@@ -227,6 +227,8 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
+        let listsModalView = MediaListsModalView(type: .moveMedia)
+        listsModalView.modalDelegate = self
     }
 
     private func setActionsActive(_ isActive: Bool) {
