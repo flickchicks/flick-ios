@@ -67,15 +67,10 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get a user with token [updated as of 7/3/20]
-    static func getUserProfile(authToken: String, completion: @escaping (UserProfile) -> Void) {
-        // TODO: Check if we want to use GET parameters
-        let headers: HTTPHeaders = [
-            "Authorization": "Token \(authToken)",
-            "Accept": "application/json"
-        ]
-        print(authToken)
+    /// [GET] Get a user with token [updated as of 8/11/20]
+    static func getUserProfile(completion: @escaping (UserProfile) -> Void) {
         AF.request("\(hostEndpoint)/api/auth/me/", method: .get, headers: headers).validate().responseData { response in
+            print(headers)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

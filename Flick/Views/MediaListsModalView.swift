@@ -8,6 +8,43 @@
 
 import UIKit
 
+class NewListButton: UIButton {
+
+    // MARK: - Private View Vars
+    private let plusImageView = UIImageView()
+    private let newListLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        backgroundColor = .lightGray2
+        layer.cornerRadius = 8
+
+        plusImageView.image = UIImage(named: "plusCircle")
+        addSubview(plusImageView)
+
+        newListLabel.text = "New List"
+        newListLabel.textColor = .darkBlueGray2
+        addSubview(newListLabel)
+
+        let plusImageSize = CGSize(width: 20, height: 20)
+        plusImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.size.equalTo(plusImageSize)
+            make.leading.equalToSuperview().offset(10)
+        }
+
+        newListLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(plusImageView.snp.trailing).offset(5)
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 enum MediaListsModalViewType { case moveMedia, saveMedia }
 
 class MediaListsModalView: UIView {
@@ -16,7 +53,7 @@ class MediaListsModalView: UIView {
     private let containerView = UIView()
     private let doneButton = UIButton()
     private let listsTableView = UITableView()
-    private let newListButton = UIButton()
+    private let newListButton = NewListButton()
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -65,6 +102,10 @@ class MediaListsModalView: UIView {
         setupConstraints()
         getLists()
 
+        if type == .saveMedia {
+            setupNewListButton()
+        }
+
         // Animate the pop up of error alert view in 0.25 seconds
         UIView.animate(withDuration: 0.25, animations: {
             self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
@@ -104,10 +145,28 @@ class MediaListsModalView: UIView {
         }
     }
 
+    private func setupNewListButton() {
+        containerView.addSubview(newListButton)
+
+        let horizontalPadding = 24
+
+        newListButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(containerView).inset(horizontalPadding)
+            make.height.equalTo(32)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+        }
+
+        listsTableView.snp.remakeConstraints { remake in
+            remake.leading.trailing.equalTo(containerView).inset(horizontalPadding)
+            remake.top.equalTo(newListButton.snp.bottom).offset(15)
+            remake.bottom.equalToSuperview().inset(36)
+        }
+    }
+
     private func getLists() {
-        NetworkManager.getAllMediaLists { [weak self] lists in
+        NetworkManager.getUserProfile { [weak self] user in
             guard let self = self else { return }
-            self.lists = lists
+            self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
             self.listsTableView.reloadData()
         }
     }
@@ -142,6 +201,10 @@ extension MediaListsModalView: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected")
     }
 
 }
