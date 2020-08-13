@@ -76,17 +76,16 @@ class ProfileViewController: UIViewController {
     }
 
     private func getUserProfile() {
-        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
-            NetworkManager.getUserProfile(authToken: authToken) { userProfile in
-                self.name = "\(userProfile.firstName) \(userProfile.lastName)"
-                self.username = userProfile.username
-                self.profilePicUrl = userProfile.profilePic?.assetUrls.original ?? ""
-                // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
-                if let ownerLsts = userProfile.ownerLsts {
-                    self.mediaLists = ownerLsts
-                }
-                self.listsTableView.reloadData()
+        NetworkManager.getUserProfile { [weak self] userProfile in
+            guard let self = self else { return }
+            self.name = "\(userProfile.firstName) \(userProfile.lastName)"
+            self.username = userProfile.username
+            self.profilePicUrl = userProfile.profilePic?.assetUrls.original ?? ""
+            // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
+            if let ownerLsts = userProfile.ownerLsts {
+                self.mediaLists = ownerLsts
             }
+            self.listsTableView.reloadData()
         }
     }
 }
