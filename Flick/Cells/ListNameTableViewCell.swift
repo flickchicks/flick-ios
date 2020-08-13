@@ -15,8 +15,6 @@ class ListNameTableViewCell: UITableViewCell {
     private let selectIndicatorView = SelectIndicatorView(width: 20)
     private let titleLabel = UILabel()
 
-    // MARK: - Private Data Vars
-
     override var isSelected: Bool {
         didSet {
             isSelected ? selectIndicatorView.select() : selectIndicatorView.deselect()
@@ -40,15 +38,13 @@ class ListNameTableViewCell: UITableViewCell {
         let selectIndicatorSize = CGSize(width: 20, height: 20)
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.centerY.equalToSuperview()
             make.trailing.equalTo(selectIndicatorView.snp.leading).offset(-5)
-            make.centerY.equalToSuperview()
         }
 
         selectIndicatorView.snp.makeConstraints { make in
             make.size.equalTo(selectIndicatorSize)
-            make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.trailing.centerY.equalToSuperview()
         }
     }
 
