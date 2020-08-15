@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // User is logged out.
             rootViewController = loginViewController
         }
-        let navigationController = UINavigationController(rootViewController: AllNotificationsViewController())
+        let navigationController = UINavigationController(rootViewController: rootViewController)
 
         window.rootViewController = navigationController
         self.window = window

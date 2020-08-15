@@ -16,8 +16,8 @@ class NotificationsViewController: UIViewController {
     // MARK: - Private Data Vars
     // TODO: Replace with backend values
     private let friendRequests: [Notification] = [
-//        .FriendRequest(fromUser: "Lucy Xu", type: .received),
-//        .FriendRequest(fromUser: "Lucy Xu", type: .received)
+        .FriendRequest(fromUser: "Lucy Xu", type: .received),
+        .FriendRequest(fromUser: "Lucy Xu", type: .received)
     ]
     private let friendRequestCellReuseIdentifier = "FriendRequestCellReuseIdentifier"
     private let notifications: [Notification] = [
@@ -60,24 +60,21 @@ class NotificationsViewController: UIViewController {
 extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return friendRequests.count > 0 ? 2 : 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? friendRequests.count : notifications.count
+        return friendRequests.count > 0 && section == 0 ? friendRequests.count : notifications.count
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 && friendRequests.count == 0 {
-            return nil
-        }
         let padding = 20
         let headerView = UIView()
         headerView.backgroundColor = .offWhite
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
         headerLabel.font = .boldSystemFont(ofSize: 12)
-        headerLabel.text = section == 0 ? "New Friend Requests" : "Other Notifications"
+        headerLabel.text = section == 0 && friendRequests.count > 0 ? "New Friend Requests" : "Other Notifications"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
@@ -95,19 +92,13 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
         }
         return headerView
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if friendRequests.count == 0 && section == 0 {
-            return 0
-        } else if friendRequests.count > 0 && section == 1 {
-            return 43
-        } else {
-            return 31
-        }
+        return friendRequests.count > 0 && section == 1 ? 43 : 31
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if friendRequests.count > 0 && indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: friendRequestCellReuseIdentifier, for: indexPath) as? FriendRequestTableViewCell else { return UITableViewCell() }
             cell.configure(with: friendRequests[indexPath.row])
             return cell

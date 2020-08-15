@@ -14,8 +14,6 @@ class NotificationTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
-//    private let acceptButton = UIButton()
-//    private let ignoreButton = UIButton()
 
     // MARK: - Private Data Vars
     private let padding = 12
@@ -52,18 +50,16 @@ class NotificationTableViewCell: UITableViewCell {
             make.top.bottom.leading.equalTo(containerView).inset(padding)
             make.height.width.equalTo(40)
         }
+
+        notificationLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
+            make.trailing.equalTo(containerView).inset(padding)
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func layoutNotificationLabel() {
-        notificationLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
-            make.trailing.equalTo(containerView).inset(12)
-        }
     }
 
     private func setupFriendAcceptCell(fromUser: String) {
@@ -71,7 +67,6 @@ class NotificationTableViewCell: UITableViewCell {
             NSMutableAttributedString()
                 .boldFont14(fromUser)
                 .normalFont14(" accepted your friend request ")
-        layoutNotificationLabel()
     }
 
     private func setupCollaborationInviteCell(fromUser: String, media: String) {
@@ -80,7 +75,6 @@ class NotificationTableViewCell: UITableViewCell {
                 .boldFont14(fromUser)
                 .normalFont14(" invited you to collaborate on ")
                 .boldFont14(media)
-        layoutNotificationLabel()
     }
 
     private func setupActivityLikeCell(fromUser: String, likedContent: ActivityLike.ActivityLikeType, media: String) {
@@ -89,7 +83,6 @@ class NotificationTableViewCell: UITableViewCell {
                 .boldFont14(fromUser)
                 .normalFont14(" liked your \(String(likedContent)) on ")
                 .boldFont14(media)
-        layoutNotificationLabel()
     }
 
     private func setupListActivityCell(fromUser: String, list: String) {
@@ -98,7 +91,6 @@ class NotificationTableViewCell: UITableViewCell {
             .boldFont14(fromUser)
             .normalFont14(" added 3 items to ")
             .boldFont14(list)
-        layoutNotificationLabel()
     }
 
 
@@ -110,11 +102,9 @@ class NotificationTableViewCell: UITableViewCell {
             setupListActivityCell(fromUser: fromUser, list: list)
         case .FriendRequest(let fromUser, let type):
             switch type {
-//            case .received:
-//                setupFriendRequestCell(fromUser: fromUser)
             case .sent:
                 setupFriendAcceptCell(fromUser: fromUser)
-            default:
+            case .received:
                 return
             }
         case .CollaborationInvite(let fromUser, let media):
