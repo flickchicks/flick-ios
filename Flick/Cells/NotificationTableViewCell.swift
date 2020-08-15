@@ -14,8 +14,8 @@ class NotificationTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
-    private let acceptButton = UIButton()
-    private let ignoreButton = UIButton()
+//    private let acceptButton = UIButton()
+//    private let ignoreButton = UIButton()
 
     // MARK: - Private Data Vars
     private let padding = 12
@@ -66,50 +66,6 @@ class NotificationTableViewCell: UITableViewCell {
         }
     }
 
-    private func setupFriendRequestCell(fromUser: String) {
-        let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-        let friendRequestString = NSMutableAttributedString(string: " sent you a friend request")
-        friendLabelString.append(friendRequestString)
-        notificationLabel.attributedText = friendLabelString
-
-        acceptButton.setTitle("Accept", for: .normal)
-        acceptButton.titleLabel?.font = .systemFont(ofSize: 14)
-        acceptButton.layer.backgroundColor = UIColor.lightPurple.cgColor
-        acceptButton.setTitleColor(.gradientPurple, for: .normal)
-        acceptButton.layer.cornerRadius = 17
-        contentView.addSubview(acceptButton)
-
-        ignoreButton.setTitle("Ignore", for: .normal)
-        ignoreButton.titleLabel?.font = .systemFont(ofSize: 14)
-        ignoreButton.layer.backgroundColor = UIColor.lightGray2.cgColor
-        ignoreButton.setTitleColor(.darkBlueGray2, for: .normal)
-        ignoreButton.layer.cornerRadius = 17
-        contentView.addSubview(ignoreButton)
-
-        layoutNotificationLabel()
-
-        let buttonSize = CGSize(width: 96, height: 41)
-
-        profileImageView.snp.remakeConstraints { remake in
-            remake.top.leading.equalTo(containerView).inset(padding)
-            remake.height.width.equalTo(40)
-        }
-
-        acceptButton.snp.makeConstraints { make in
-            make.size.equalTo(buttonSize)
-            make.leading.equalTo(notificationLabel)
-            make.top.equalTo(profileImageView.snp.bottom).offset(10)
-            make.bottom.equalToSuperview().inset(padding)
-        }
-
-        ignoreButton.snp.makeConstraints { make in
-            make.size.equalTo(buttonSize)
-            make.leading.equalTo(acceptButton.snp.trailing).offset(48)
-            make.top.bottom.equalTo(acceptButton)
-        }
-
-    }
-
     private func setupFriendAcceptCell(fromUser: String) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -154,10 +110,12 @@ class NotificationTableViewCell: UITableViewCell {
             setupListActivityCell(fromUser: fromUser, list: list)
         case .FriendRequest(let fromUser, let type):
             switch type {
-            case .received:
-                setupFriendRequestCell(fromUser: fromUser)
+//            case .received:
+//                setupFriendRequestCell(fromUser: fromUser)
             case .sent:
                 setupFriendAcceptCell(fromUser: fromUser)
+            default:
+                return
             }
         case .CollaborationInvite(let fromUser, let media):
             setupCollaborationInviteCell(fromUser: fromUser, media: media)
