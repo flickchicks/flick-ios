@@ -189,7 +189,7 @@ class SuggestionTableViewCell: UITableViewCell {
                 .normalFont14(" suggested a \(suggestion.media.isTv ? "TV show" : "movie").")
         messageLabel.text = suggestion.message
         mediaTitleLabel.text = suggestion.media.title
-        let tags = suggestion.media.tags.map { $0.tag }
+        let tags = suggestion.media.tags.map { $0.name }
         tagsLabel.text = tags.joined(separator: ", ")
         releaseDateLabel.text = suggestion.media.dateReleased
         synopsisLabel.text = suggestion.media.plot

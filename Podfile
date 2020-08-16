@@ -1,5 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '13.0'
+source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Flick' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -17,6 +18,10 @@ target 'Flick' do
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
     	pod 'SnapKit'
+
+	# Data Loading
+	pod 'SkeletonView'
+	pod 'Kingfisher', '~> 5.0'
 
   target 'FlickTests' do
     inherit! :search_paths

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Kingfisher
 import UIKit
 
 class MediaViewController: UIViewController {
@@ -38,7 +39,6 @@ class MediaViewController: UIViewController {
 
         setupNavigationBar()
 
-        mediaImageView.image = UIImage(named: "dunkirk")
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
@@ -49,6 +49,11 @@ class MediaViewController: UIViewController {
         }
 
         setupMediaCard()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        // Make networking call to get a movie
+        getMediaInformation()
     }
 
     private func setupNavigationBar() {
@@ -98,6 +103,14 @@ class MediaViewController: UIViewController {
         let handleAreaPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleAreaCardPan))
         mediaCardViewController.handleArea.addGestureRecognizer(handleAreaPanGestureRecognizer)
         
+    }
+
+    private func getMediaInformation() {
+        NetworkManager.getMedia(mediaId: "1") { media in
+            print(media)
+            let url = URL(string: media.posterPic)
+            self.mediaImageView.kf.setImage(with: url)
+        }
     }
 
     @objc func backButtonPressed() {

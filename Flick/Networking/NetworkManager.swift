@@ -135,7 +135,7 @@ class NetworkManager {
 
     /// [GET] Get list of a user by id
     static func getMediaList(userId: String, listId: String, completion: @escaping (MediaList) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)/", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -271,19 +271,23 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Get media information by id
+    /// [POST] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: String, completion: @escaping (Media) -> Void) {
-        let parameters: [String: Any] = [
-            "media_id": mediaId
-        ]
-
-        AF.request("\(hostEndpoint)/api/media", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/show/\(mediaId)/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+//            print(headers)
+//            print("\(hostEndpoint)/api/show/\(mediaId)/")
+//            print(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+//                print(data)
+                if let string = String(bytes: data, encoding: .utf8) {
+//                    print(string)
+                }
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
                     let media = mediaData.data
+                    print(media)
                     completion(media)
                 }
             case .failure(let error):

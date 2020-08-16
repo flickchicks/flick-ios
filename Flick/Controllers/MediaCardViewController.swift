@@ -35,13 +35,7 @@ class MediaCardViewController: UIViewController {
     // MARK: - Private Data Vars
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
     // TODO: Replace with backend values
-    private var comments = [
-        Comment(name: "Haiying W", comment: "In May 1940, Germany advanced into France, trapping Allied troops on the beaches of Dunkirk. Under air and ground cover from British and French forces, troops were slowly and methodically evacuated from the beach using every serviceable naval and civilian vessel that could be found. At the end of this heroic mission, 330,000 French, British, Belgian and Dutch soldiers were safely evacuated. 12345678", date: "1d", liked: true),
-        Comment(name: "Aastha S", comment: "This is a test comment. This is a test comment. ", date: "3d", liked: false),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. ", date: "4d", liked: true),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment.", date: "4d", liked: true),
-        Comment(name: "Haiying W", comment: "This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment. This is a test comment.", date: "4d", liked: false)
-    ]
+    var comments: [Comment] = []
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
     private let numComments = 4
 
@@ -140,6 +134,17 @@ class MediaCardViewController: UIViewController {
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        // Make networking call to get a movie
+        getMediaInformation()
+    }
+
+    private func getMediaInformation() {
+        NetworkManager.getMedia(mediaId: "1") { media in
+            self.summaryView.setupMediaSummary(media: media)
+        }
+    }
+
     @objc func seeAllComments() {
         let commentsViewController = MediaCommentsViewController(comments: comments)
         navigationController?.pushViewController(commentsViewController, animated: true)
@@ -184,72 +189,72 @@ class MediaCardViewController: UIViewController {
             make.height.equalTo(summaryView.intrinsicContentSize.height)
         }
 
-        ratingsSeparatorView.snp.makeConstraints{ make in
-            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-            make.height.equalTo(2)
-            make.top.equalTo(summaryView.snp.bottom).offset(horizontalPadding)
-        }
+//        ratingsSeparatorView.snp.makeConstraints{ make in
+//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+//            make.height.equalTo(2)
+//            make.top.equalTo(summaryView.snp.bottom).offset(horizontalPadding)
+//        }
 
-        reviewTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(ratingsSeparatorView.snp.bottom).offset(titleLabelPadding)
-            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-        }
+//        reviewTitleLabel.snp.makeConstraints { make in
+//            make.top.equalTo(ratingsSeparatorView.snp.bottom).offset(titleLabelPadding)
+//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+//        }
 
-        reviewerRatingSliderControl.snp.makeConstraints { make in
-            make.top.equalTo(reviewTitleLabel.snp.bottom).offset(45)
-            make.leading.equalToSuperview().offset(horizontalPadding)
-            make.size.equalTo(sliderSize)
-        }
+//        reviewerRatingSliderControl.snp.makeConstraints { make in
+//            make.top.equalTo(reviewTitleLabel.snp.bottom).offset(45)
+//            make.leading.equalToSuperview().offset(horizontalPadding)
+//            make.size.equalTo(sliderSize)
+//        }
 
-        friendRatingSliderControl.snp.makeConstraints { make in
-            make.top.equalTo(reviewerRatingSliderControl.snp.bottom).offset(48)
-            make.leading.equalToSuperview().offset(horizontalPadding)
-            make.size.equalTo(sliderSize)
-        }
+//        friendRatingSliderControl.snp.makeConstraints { make in
+//            make.top.equalTo(reviewerRatingSliderControl.snp.bottom).offset(48)
+//            make.leading.equalToSuperview().offset(horizontalPadding)
+//            make.size.equalTo(sliderSize)
+//        }
+//
+//        criticRatingLabel.snp.makeConstraints { make in
+//            make.centerY.equalTo(reviewerRatingSliderControl)
+//            make.leading.equalTo(reviewerRatingSliderControl.snp.trailing).offset(sliderLabelPadding)
+//            make.trailing.equalToSuperview().inset(horizontalPadding)
+//        }
 
-        criticRatingLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(reviewerRatingSliderControl)
-            make.leading.equalTo(reviewerRatingSliderControl.snp.trailing).offset(sliderLabelPadding)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-        }
+//        friendRatingLabel.snp.makeConstraints { make in
+//            make.centerY.equalTo(friendRatingSliderControl)
+//            make.leading.equalTo(friendRatingSliderControl.snp.trailing).offset(sliderLabelPadding)
+//            make.trailing.equalToSuperview().inset(horizontalPadding)
+//        }
 
-        friendRatingLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(friendRatingSliderControl)
-            make.leading.equalTo(friendRatingSliderControl.snp.trailing).offset(sliderLabelPadding)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-        }
-
-        thoughtsSeparatorView.snp.makeConstraints{ make in
-            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-            make.height.equalTo(2)
-            make.top.equalTo(friendRatingSliderControl.snp.bottom).offset(25)
-        }
+//        thoughtsSeparatorView.snp.makeConstraints{ make in
+//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+//            make.height.equalTo(2)
+//            make.top.equalTo(friendRatingSliderControl.snp.bottom).offset(25)
+//        }
 
         commentAreaView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(71 + bottomSafeAreaInsets)
         }
+//
+//        thoughtsTitleLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().offset(horizontalPadding)
+//            make.top.equalTo(thoughtsSeparatorView.snp.bottom).offset(titleLabelPadding)
+//            make.height.equalTo(22)
+//            make.width.equalTo(83)
+//        }
 
-        thoughtsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(horizontalPadding)
-            make.top.equalTo(thoughtsSeparatorView.snp.bottom).offset(titleLabelPadding)
-            make.height.equalTo(22)
-            make.width.equalTo(83)
-        }
-
-        seeAllCommentsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.bottom.equalTo(thoughtsTitleLabel)
-            make.height.equalTo(15)
-            make.leading.equalTo(thoughtsTitleLabel.snp.trailing)
-        }
-
-        commentsTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(thoughtsTitleLabel.snp.bottom).offset(16)
-            make.bottom.equalTo(commentAreaView.snp.top)
-        }
+//        seeAllCommentsButton.snp.makeConstraints { make in
+//            make.trailing.equalToSuperview().inset(horizontalPadding)
+//            make.bottom.equalTo(thoughtsTitleLabel)
+//            make.height.equalTo(15)
+//            make.leading.equalTo(thoughtsTitleLabel.snp.trailing)
+//        }
+//
+//        commentsTableView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.top.equalTo(thoughtsTitleLabel.snp.bottom).offset(16)
+//            make.bottom.equalTo(commentAreaView.snp.top)
+//        }
 
     }
 

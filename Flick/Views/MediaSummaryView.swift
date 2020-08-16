@@ -23,30 +23,13 @@ class MediaSummaryView: UIView {
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
 
     // TODO: Update media with backend values
-    private let mediaTitle = "Spiderman: Far From Home"
-    private let mediaSummary = "In May 1940, Germany advanced into France, trapping Allied troops on the beaches of Dunkirk. Under air and ground cover from British and French forces, troops were slowly and methodically evacuated from the beach using every serviceable naval and civilian vessel that could be found. At the end of this heroic mission, 330,000 French, British, Belgian and Dutch soldiers were safely evacuated."
-    private let summaryInfo = [
-        MediaSummary(text: "1h 30", type: .duration),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "2019", type: .year),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "Released", type: .releaseStatus),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "PG-13", type: .rating),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "EN", type: .language),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "Quentin Tarantino", type: .director)
-    ]
-    private let tags = ["Comedy", "Romance", "Superhero", "FBI", "Romantic Comedy", "Crime", "Sad"]
+    private var summaryInfo: [MediaSummary] = []
+    private var tags: [MediaTag] = []
     private let platforms = ["Netflix", "Hulu"]
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        print(self.bounds.height)
-
-        titleLabel.text = mediaTitle
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
         titleLabel.numberOfLines = 0
@@ -66,7 +49,6 @@ class MediaSummaryView: UIView {
         summaryItemsCollectionView.layoutIfNeeded()
         addSubview(summaryItemsCollectionView)
 
-        summaryLabel.text = mediaSummary
         summaryLabel.font = .systemFont(ofSize: 14)
         summaryLabel.frame = CGRect(x: 0, y: 0, width: frame.width - 20, height: .greatestFiniteMagnitude)
         summaryLabel.textColor = .darkBlue
@@ -102,6 +84,35 @@ class MediaSummaryView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupMediaSummary(media: Media) {
+        titleLabel.text = media.title
+        summaryLabel.text = media.plot
+        tags = media.tags
+        if let duration = media.duration {
+            summaryInfo.append(MediaSummary(text: duration, type: .duration))
+            summaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let releaseYear = media.dateReleased {
+            summaryInfo.append(MediaSummary(text: releaseYear, type: .releaseStatus))
+            summaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let audienceLevel = media.audienceLevel {
+            summaryInfo.append(MediaSummary(text: audienceLevel, type: .rating))
+            summaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let language = media.language {
+            summaryInfo.append(MediaSummary(text: language, type: .language))
+            summaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let director = media.directors {
+            summaryInfo.append(MediaSummary(text: director, type: .director))
+            summaryInfo.append(MediaSummary(type: .spacer))
+        }
+        summaryInfo.removeLast()
+        summaryItemsCollectionView.reloadData()
+        tagsCollectionView.reloadData()
     }
 
     private func setupConstraints() {
@@ -206,7 +217,7 @@ extension MediaSummaryView: UICollectionViewDelegateFlowLayout {
             }
         } else if collectionView == tagsCollectionView {
             let totalHorizontalPadding: CGFloat = 32
-            return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item]) + totalHorizontalPadding, height: 27)
+            return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item].name) + totalHorizontalPadding, height: 27)
         } else {
             return CGSize(width: 26, height: 26)
         }
