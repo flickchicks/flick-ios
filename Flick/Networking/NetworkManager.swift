@@ -287,7 +287,7 @@ class NetworkManager {
                 }
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
                     let media = mediaData.data
-                    print(media)
+//                    print(media)
                     completion(media)
                 }
             case .failure(let error):

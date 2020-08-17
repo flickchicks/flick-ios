@@ -32,6 +32,8 @@ class MediaCardViewController: UIViewController {
     private let thoughtsSeparatorView = UIView()
     private let thoughtsTitleLabel = UILabel()
 
+    var expanded = false
+
     // MARK: - Private Data Vars
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
     // TODO: Replace with backend values
@@ -52,6 +54,7 @@ class MediaCardViewController: UIViewController {
         view.addSubview(handleIndicatorView)
 
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.delegate = self
         scrollView.isScrollEnabled = true
         scrollView.bounces = false
         view.addSubview(scrollView)
@@ -142,6 +145,10 @@ class MediaCardViewController: UIViewController {
     private func getMediaInformation() {
         NetworkManager.getMedia(mediaId: "1") { media in
             self.summaryView.setupMediaSummary(media: media)
+            print(self.summaryView.intrinsicContentSize.height)
+//            self.summaryView.snp.updateConstraints { update in
+//                update.height.equalTo(self.summaryView.intrinsicContentSize.height)
+//            }
         }
     }
 
@@ -186,14 +193,14 @@ class MediaCardViewController: UIViewController {
         summaryView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(summaryView.intrinsicContentSize.height)
+//            make.height.equalTo(summaryView.intrinsicContentSize.height)
         }
 
-//        ratingsSeparatorView.snp.makeConstraints{ make in
-//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-//            make.height.equalTo(2)
-//            make.top.equalTo(summaryView.snp.bottom).offset(horizontalPadding)
-//        }
+        ratingsSeparatorView.snp.makeConstraints{ make in
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+            make.height.equalTo(2)
+            make.top.equalTo(summaryView.snp.bottom).offset(horizontalPadding)
+        }
 
 //        reviewTitleLabel.snp.makeConstraints { make in
 //            make.top.equalTo(ratingsSeparatorView.snp.bottom).offset(titleLabelPadding)
@@ -287,6 +294,20 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(commentsViewController, animated: true)
     }
 
+}
+
+extension MediaCardViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("did start scrolling")
+        print(expanded)
+        if !expanded {
+            scrollView.contentOffset.y = 0
+        }
+    }
+
+//    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+//        <#code#>
+//    }
 }
 
 extension MediaCardViewController: CommentDelegate {

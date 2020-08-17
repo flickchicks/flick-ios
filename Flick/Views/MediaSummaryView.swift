@@ -8,27 +8,27 @@
 
 import UIKit
 
-class MediaSummaryView: UIView {
+class MediaSummaryView: UITableViewCell {
 
     // MARK: - Private View Vars
-    private var platformCollectionView: SelfSizingCollectionView!
+//    private var platformCollectionView: SelfSizingCollectionView!
     private var summaryItemsCollectionView: SelfSizingCollectionView!
     private let summaryLabel = UILabel()
     private var tagsCollectionView: SelfSizingCollectionView!
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
+//    private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
 
     // TODO: Update media with backend values
     private var summaryInfo: [MediaSummary] = []
     private var tags: [MediaTag] = []
-    private let platforms = ["Netflix", "Hulu"]
+//    private let platforms = ["Netflix", "Hulu"]
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
@@ -50,7 +50,7 @@ class MediaSummaryView: UIView {
         addSubview(summaryItemsCollectionView)
 
         summaryLabel.font = .systemFont(ofSize: 14)
-        summaryLabel.frame = CGRect(x: 0, y: 0, width: frame.width - 20, height: .greatestFiniteMagnitude)
+//        summaryLabel.frame = CGRect(x: 0, y: 0, width: frame.width - 20, height: .greatestFiniteMagnitude)
         summaryLabel.textColor = .darkBlue
         summaryLabel.numberOfLines = 0
         summaryLabel.sizeToFit()
@@ -67,16 +67,16 @@ class MediaSummaryView: UIView {
         tagsCollectionView.layoutIfNeeded()
         addSubview(tagsCollectionView)
 
-        let platformFlowLayout = UICollectionViewFlowLayout()
-        platformFlowLayout.minimumInteritemSpacing = 12
-        platformCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
-        platformCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
-        platformCollectionView.backgroundColor = .clear
-        platformCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: platformCellReuseIdentifier)
-        platformCollectionView.dataSource = self
-        platformCollectionView.delegate = self
-        platformCollectionView.layoutIfNeeded()
-        addSubview(platformCollectionView)
+//        let platformFlowLayout = UICollectionViewFlowLayout()
+//        platformFlowLayout.minimumInteritemSpacing = 12
+//        platformCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
+//        platformCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
+//        platformCollectionView.backgroundColor = .clear
+//        platformCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: platformCellReuseIdentifier)
+//        platformCollectionView.dataSource = self
+//        platformCollectionView.delegate = self
+//        platformCollectionView.layoutIfNeeded()
+//        addSubview(platformCollectionView)
 
         setupConstraints()
 
@@ -139,10 +139,10 @@ class MediaSummaryView: UIView {
             make.leading.trailing.equalTo(titleLabel)
         }
 
-        platformCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(tagsCollectionView.snp.bottom).offset(verticalPadding)
-            make.leading.trailing.equalTo(titleLabel)
-        }
+//        platformCollectionView.snp.makeConstraints { make in
+//            make.top.equalTo(tagsCollectionView.snp.bottom).offset(verticalPadding)
+//            make.leading.trailing.equalTo(titleLabel)
+//        }
     }
 
     override var intrinsicContentSize: CGSize {
@@ -151,9 +151,9 @@ class MediaSummaryView: UIView {
         let summaryItemsCollectionViewHeight = summaryItemsCollectionView.contentSize.height
         let summaryLabelHeight = summaryLabel.frame.height
         let tagsCollectionViewHeight = tagsCollectionView.contentSize.height
-        let platformCollectionViewHeight = platformCollectionView.contentSize.height
+//        let platformCollectionViewHeight = platformCollectionView.contentSize.height
         let totalLabelHeight = titleLabelHeight + summaryLabelHeight
-        let totalCollectionViewHeight = summaryItemsCollectionViewHeight + tagsCollectionViewHeight + platformCollectionViewHeight
+        let totalCollectionViewHeight = summaryItemsCollectionViewHeight + tagsCollectionViewHeight //+ platformCollectionViewHeight
         let totalVerticalPadding: CGFloat = 56
         let height = totalVerticalPadding + totalLabelHeight + totalCollectionViewHeight
         return CGSize(width: width, height: height)
@@ -164,11 +164,14 @@ extension MediaSummaryView: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == summaryItemsCollectionView {
             return summaryInfo.count
-        } else if collectionView == tagsCollectionView {
-            return tags.count
-        } else {
-            return platforms.count
         }
+//        else if collectionView == tagsCollectionView {
+        else {
+            return tags.count
+        }
+//        else {
+//            return platforms.count
+//        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -176,16 +179,19 @@ extension MediaSummaryView: UICollectionViewDataSource, UICollectionViewDelegate
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: summaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryInfoCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(with: summaryInfo[indexPath.item])
             return cell
-        } else if collectionView == tagsCollectionView {
+        }
+//        else if collectionView == tagsCollectionView {
+        else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? MediaTagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(with: tags[indexPath.item])
             return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: platformCellReuseIdentifier, for: indexPath)
-            cell.layer.cornerRadius = 5
-            cell.layer.backgroundColor = UIColor.gray.cgColor
-            return cell
         }
+//        else {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: platformCellReuseIdentifier, for: indexPath)
+//            cell.layer.cornerRadius = 5
+//            cell.layer.backgroundColor = UIColor.gray.cgColor
+//            return cell
+//        }
     }
 }
 

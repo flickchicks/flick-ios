@@ -13,10 +13,9 @@ import UIKit
 class MediaViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var mediaCardViewController: MediaCardViewController!
+    private var mediaCardViewController: MediaCardViewController2!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
-    private var visualEffectView: UIVisualEffectView!
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
@@ -28,6 +27,7 @@ class MediaViewController: UIViewController {
     private var nextState: CardState {
         return cardExpanded ? .collapsed : .expanded
     }
+    private var latestDirection: Int = 0
     private var runningAnimations = [UIViewPropertyAnimator]()
 
     override func viewDidLoad() {
@@ -76,12 +76,8 @@ class MediaViewController: UIViewController {
     }
 
     private func setupMediaCard() {
-        visualEffectView = UIVisualEffectView()
-        visualEffectView.frame = self.view.frame
-        view.addSubview(visualEffectView)
-
         // TODO: Initialize MediaCardViewController with the media object
-        mediaCardViewController = MediaCardViewController()
+        mediaCardViewController = MediaCardViewController2()
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
@@ -96,9 +92,9 @@ class MediaViewController: UIViewController {
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
 
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleScollViewCardPan))
-        panGestureRecognizer.delegate = self
-        mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleScollViewCardPan))
+//        panGestureRecognizer.delegate = self
+//        mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
 
         let handleAreaPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleAreaCardPan))
         mediaCardViewController.handleArea.addGestureRecognizer(handleAreaPanGestureRecognizer)
@@ -107,7 +103,6 @@ class MediaViewController: UIViewController {
 
     private func getMediaInformation() {
         NetworkManager.getMedia(mediaId: "1") { media in
-            print(media)
             let url = URL(string: media.posterPic)
             self.mediaImageView.kf.setImage(with: url)
         }
@@ -122,48 +117,87 @@ class MediaViewController: UIViewController {
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
+
+        let velocity = recognizer.velocity(in: mediaCardViewController.handleArea)
+        var currentDirection: Int = 0
+        var panDirection = "Up"
+        if velocity.y > 0 {
+           panDirection = "Down"
+        } else {
+           panDirection = "Up"
+        }
+
+        // check if direction was changed
+        if currentDirection != latestDirection {
+          print("direction was changed")
+        }
+
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.3)
+            print("Pan Gesture Began")
+            startInteractiveTransition(state: nextState, duration: 0.3, panDirection: panDirection)
         case .changed:
+            print("Pan Gesture Changed")
             let translation = recognizer.translation(in: self.mediaCardViewController.handleArea)
             var fractionComplete = translation.y / expandedCardHeight
-            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
+            fractionComplete = cardExpanded ? -fractionComplete : fractionComplete
             updateInteractiveTransiton(fractionCompleted: fractionComplete)
         case .ended:
+            print("Pan Gesture Ended")
             continueInteractiveTransition()
         default:
             break
         }
+
+        latestDirection = currentDirection
+//        mediaCardViewController.expanded = cardExpanded
     }
 
 
-    @objc func handleScollViewCardPan(recognizer: UIPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            startInteractiveTransition(state: nextState, duration: 0.3)
-        case .changed:
-            let translation = recognizer.translation(in: self.mediaCardViewController.scrollView)
-            var fractionComplete = (translation.y * 2) / expandedCardHeight
-            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
-            updateInteractiveTransiton(fractionCompleted: fractionComplete)
-        case .ended:
-            continueInteractiveTransition()
-        default:
-            break
-        }
-    }
+//    @objc func handleScollViewCardPan(recognizer: UIPanGestureRecognizer) {
+//
+//        let velocity = recognizer.velocity(in: mediaCardViewController.handleArea)
+//        var currentDirection: Int = 0
+//        var panDirection = "Up"
+//        if velocity.y > 0 {
+//            panDirection = "Down"
+//        } else {
+//            panDirection = "Up"
+//        }
+//
+//        // check if direction was changed
+//        if currentDirection != latestDirection {
+//          print("direction was changed")
+//        }
+//
+//        switch recognizer.state {
+//        case .began:
+//            startInteractiveTransition(state: nextState, duration: 0.3, panDirection: panDirection)
+//        case .changed:
+////            let translation = recognizer.translation(in: self.mediaCardViewController.scrollView)
+//            var fractionComplete = (translation.y * 2) / expandedCardHeight
+//            fractionComplete = !cardExpanded ? fractionComplete : -fractionComplete
+//            updateInteractiveTransiton(fractionCompleted: fractionComplete)
+//        case .ended:
+//            continueInteractiveTransition()
+//        default:
+//            break
+//        }
+//
+//        latestDirection = currentDirection
+//
+//    }
 
-    private func animateTransitionIfNeeded(state: CardState, duration: TimeInterval) {
+    private func animateTransitionIfNeeded(state: CardState, duration: TimeInterval, panDirection: String) {
         if runningAnimations.isEmpty {
             let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-                switch state {
-                case .expanded:
+                if panDirection == "Up" {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
-                case .collapsed:
+                } else {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+
                 }
             }
 
@@ -178,9 +212,9 @@ class MediaViewController: UIViewController {
         }
     }
 
-    private func startInteractiveTransition(state: CardState, duration: TimeInterval) {
+    private func startInteractiveTransition(state: CardState, duration: TimeInterval, panDirection: String) {
         if runningAnimations.isEmpty {
-            animateTransitionIfNeeded(state: state, duration: duration)
+            animateTransitionIfNeeded(state: state, duration: duration, panDirection: panDirection)
         }
         for animator in runningAnimations {
             animator.pauseAnimation()
@@ -204,11 +238,11 @@ class MediaViewController: UIViewController {
 
 extension MediaViewController: UIGestureRecognizerDelegate {
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return mediaCardViewController.scrollView.contentOffset.y == 0
-    }
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return true
+//    }
+//
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return mediaCardViewController.scrollView.contentOffset.y == 0
+//    }
 }

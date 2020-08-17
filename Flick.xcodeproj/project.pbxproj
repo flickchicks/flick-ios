@@ -41,6 +41,7 @@
 		D41FE8C92477C7A80048900F /* FlickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8C82477C7A80048900F /* FlickTests.swift */; };
 		D41FE8D42477C7A80048900F /* FlickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8D32477C7A80048900F /* FlickUITests.swift */; };
 		D425B98E24E83AE200FB13A5 /* FriendRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B98D24E83AE200FB13A5 /* FriendRequestTableViewCell.swift */; };
+		D425B99024E9B44200FB13A5 /* MediaCardVewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B98F24E9B44100FB13A5 /* MediaCardVewController2.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444975024B566F700D72FED /* MediaCardViewController.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
@@ -150,6 +151,7 @@
 		D41FE8D32477C7A80048900F /* FlickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickUITests.swift; sourceTree = "<group>"; };
 		D41FE8D52477C7A80048900F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D425B98D24E83AE200FB13A5 /* FriendRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestTableViewCell.swift; sourceTree = "<group>"; };
+		D425B98F24E9B44100FB13A5 /* MediaCardVewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardVewController2.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D444975024B566F700D72FED /* MediaCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCardViewController.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 				D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */,
 				D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */,
 				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
+				D425B98F24E9B44100FB13A5 /* MediaCardVewController2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
+				D425B99024E9B44200FB13A5 /* MediaCardVewController2.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
 				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
