@@ -192,7 +192,8 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(list: MediaList, delegate: ListSummaryDelegate) {
+    func configure(list: MediaList?, delegate: ListSummaryDelegate) {
+        guard let list = list else { return }
         self.list = list
         self.delegate = delegate
         self.allTags = list.tags.map { $0.tag }

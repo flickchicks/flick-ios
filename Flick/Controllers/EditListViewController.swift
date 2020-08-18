@@ -9,6 +9,7 @@
 import UIKit
 
 protocol EditListDelegate: class {
+    func moveMedia(selectedList: MediaList)
     func removeMediaFromList()
 }
 
@@ -33,9 +34,9 @@ class EditListViewController: UIViewController {
     private let cellPadding: CGFloat = 20
     private var numSelected = 0
     private var list: MediaList
-    private var media = [Media]()
+    private var media = [SimpleMedia]()
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
-    private var selectedMedia = [Media]()
+    private var selectedMedia = [SimpleMedia]()
 
     init(list: MediaList) {
         self.list = list
@@ -297,6 +298,18 @@ extension EditListViewController: ModalDelegate {
 
 extension EditListViewController: EditListDelegate {
 
+    func moveMedia(selectedList: MediaList) {
+        let mediaIds = selectedMedia.map { $0.id }
+        NetworkManager.addToMediaList(listId: selectedList.id) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Moved \(self.selectedMedia.count) items to \(selectedList.name)", completion: nil)
+
+            self.mediaCollectionView.reloadData()
+            self.selectedMedia = []
+        }
+    }
+
     func removeMediaFromList() {
         var updatedList = list
         var updatedMedia = media
@@ -304,7 +317,7 @@ extension EditListViewController: EditListDelegate {
             !selectedMedia.contains { media.id == $0.id }
         }
         updatedList.shows = updatedMedia
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)
