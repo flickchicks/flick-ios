@@ -310,13 +310,8 @@ extension EditListViewController: EditListDelegate {
     }
 
     func removeMediaFromList() {
-        var updatedList = list
-        var updatedMedia = media
-        updatedMedia = updatedMedia.filter { media -> Bool in
-            !selectedMedia.contains { media.id == $0.id }
-        }
-        updatedList.shows = updatedMedia
-        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
+        let mediaIds = selectedMedia.map { $0.id }
+        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)

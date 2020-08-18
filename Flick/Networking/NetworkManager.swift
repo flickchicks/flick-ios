@@ -152,8 +152,6 @@ class NetworkManager {
             "name": list.name,
             "collaborators": list.collaborators.map { $0.id },
             "owner": list.owner.id,
-            "shows": list.shows.map { $0.id },
-            "tags": list.tags.map { $0.id },
             "is_private": list.isPrivate
         ]
 
