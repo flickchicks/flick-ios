@@ -46,8 +46,6 @@ class ListViewController: UIViewController {
     init(listId: Int) {
         self.listId = listId
         super.init(nibName: nil, bundle: nil)
-//        self.list = list
-//        self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
     }
 
     override func viewDidLoad() {
