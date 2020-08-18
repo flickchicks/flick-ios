@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EditListDelegate: class {
-    func moveMedia(selectedList: MediaList)
+    func moveMedia(selectedList: SimpleMediaList)
     func removeMediaFromList()
 }
 
@@ -242,6 +242,7 @@ class EditListViewController: UIViewController {
     @objc private func moveTapped() {
         let listsModalView = MediaListsModalView(type: .moveMedia)
         listsModalView.modalDelegate = self
+        listsModalView.editListDelegate = self
         showModalPopup(view: listsModalView)
     }
 
@@ -297,13 +298,12 @@ extension EditListViewController: ModalDelegate {
 
 extension EditListViewController: EditListDelegate {
 
-    func moveMedia(selectedList: MediaList) {
+    func moveMedia(selectedList: SimpleMediaList) {
         let mediaIds = selectedMedia.map { $0.id }
-        NetworkManager.addToMediaList(listId: selectedList.id) { [weak self] list in
+        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Moved \(self.selectedMedia.count) items to \(selectedList.name)", completion: nil)
-
             self.mediaCollectionView.reloadData()
             self.selectedMedia = []
         }

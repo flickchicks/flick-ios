@@ -112,14 +112,14 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get all lists of a user [updated as of 8/10/20]
-    static func getAllMediaLists(completion: @escaping ([MediaList]) -> Void) {
+    /// [GET] Get all lists of a user [updated as of 8/17/20]
+    static func getAllMediaLists(completion: @escaping ([SimpleMediaList]) -> Void) {
         AF.request("\(hostEndpoint)/api/lsts/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let mediaListsData = try? jsonDecoder.decode(Response<[MediaList]>.self, from: data) {
+                if let mediaListsData = try? jsonDecoder.decode(Response<[SimpleMediaList]>.self, from: data) {
                     let mediaLists = mediaListsData.data
                     completion(mediaLists)
                 }
@@ -176,12 +176,12 @@ class NetworkManager {
     /// [POST] Add to list of a user by id [updated as of 8/17/20]
     static func addToMediaList(listId: Int,
                                collaboratorIds: [Int] = [],
-                               showIds: [Int] = [],
+                               mediaIds: [Int] = [],
                                tagIds: [Int] = [],
                                completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "collaborators": collaboratorIds,
-            "shows": showIds,
+            "shows": mediaIds,
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
@@ -203,12 +203,12 @@ class NetworkManager {
     /// [POST] Remove part of a list of a user by id [updated as of 8/17/20]
     static func removeFromMediaList(listId: Int,
                                     collaboratorIds: [Int] = [],
-                                    showIds: [Int] = [],
+                                    mediaIds: [Int] = [],
                                     tagIds: [Int] = [],
                                     completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "collaborators": collaboratorIds,
-            "shows": showIds,
+            "shows": mediaIds,
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
