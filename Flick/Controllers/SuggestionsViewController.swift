@@ -29,7 +29,7 @@ class SuggestionsViewController: UIViewController {
                 language: "",
                 duration: "",
                 plot: "An orphaned boy enrolls in a school of wizardry, where he learns the truth about himself, his family and the terrible evil that haunts the magical world.",
-                tags: [Tag(tagId: "2", tag: "K Drama")],
+                tags: [Tag(id: 2, name: "K Drama")],
                 seasons: "",
                 audienceLevel: "",
                 imbdRating: 3,

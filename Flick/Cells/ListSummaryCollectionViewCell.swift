@@ -196,9 +196,10 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         guard let list = list else { return }
         self.list = list
         self.delegate = delegate
-        self.allTags = list.tags.map { $0.tag }
+        self.allTags = list.tags.map { $0.name }
 
         getAllTagSizes()
+        tagCollectionView.reloadData()
 
         collaborators = list.collaborators
         collaborators.insert(list.owner, at: 0)

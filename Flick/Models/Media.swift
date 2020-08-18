@@ -33,8 +33,3 @@ struct Media: Codable {
     var keywords: [String]?
     var cast: String
 }
-
-struct Tag: Codable {
-    var tagId: String
-    var tag: String
-}

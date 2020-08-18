@@ -19,6 +19,7 @@
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
+		80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BB24EB67CD002891C4 /* Tag.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
 		80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */; };
@@ -120,6 +121,7 @@
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
+		80B3F9BB24EB67CD002891C4 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToListViewController.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				D45DC62E24B933B000838DBF /* MediaSummary.swift */,
 				D4F0FB5224CC72EB00DEF826 /* Comment.swift */,
 				D492728324DE5B8B00FA5F2A /* Notification.swift */,
+				80B3F9BB24EB67CD002891C4 /* Tag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -723,6 +726,7 @@
 				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
 				D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
+				80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
