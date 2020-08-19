@@ -292,5 +292,21 @@ class NetworkManager {
         }
     }
 
+    static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
+        AF.request("\(hostEndpoint)/api/search/?is_movie=true&is_tv=true&query=\(query)", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
 }
 

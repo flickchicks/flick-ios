@@ -29,10 +29,11 @@ class AddToListViewController: UIViewController {
     private let mediaSearchCellReuseIdentifier = "MediaSearchResultCellReuseIdentifier"
     private let mediaSelectableCellReuseIdentifier = "MediaSelectableCellReuseIdentifier"
 
+    private var isSearching = false
     private var numSelected = 0
     // TODO: Get result from backend. Media are string for now
+    private var searchResultMedia: [Media] = []
     private var selectedMedia = [String]()
-    private var searchResultMedia = ["", "", "", "", "", "", "", "", "", "", "", ""]
     private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
 
     init(height: Float) {
@@ -159,6 +160,14 @@ class AddToListViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
+    private func searchMediaByQuery(_ query: String) {
+        NetworkManager.searchMedia(query: query) { [weak self] media in
+            guard let self = self, self.isSearching else { return }
+            self.searchResultMedia = media
+            self.resultMediaTableView.reloadData()
+        }
+    }
+
 }
 
 extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -169,6 +178,7 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaSearchCellReuseIdentifier, for: indexPath) as? MediaSearchResultTableViewCell else { return UITableViewCell() }
+        cell.configure(media: searchResultMedia[indexPath.row])
         return cell
     }
 
@@ -225,10 +235,12 @@ extension AddToListViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
+            isSearching = false
             resultLabel.text = "Suggested"
             resultMediaTableView.isHidden = true
             suggestedMediaCollectionView.isHidden = false
         } else {
+            isSearching = true
             resultLabel.text = "\(searchResultMedia.count) Results"
             resultMediaTableView.isHidden = false
             suggestedMediaCollectionView.isHidden = true
