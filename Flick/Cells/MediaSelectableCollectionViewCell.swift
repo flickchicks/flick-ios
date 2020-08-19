@@ -67,7 +67,7 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(media: Media) {
+    func configure(media: SimpleMedia) {
         if let pictureUrl = URL(string: media.posterPic), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             posterImageView.image = pictureObject

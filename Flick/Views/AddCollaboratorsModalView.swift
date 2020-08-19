@@ -252,8 +252,8 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? CollaboratorTableViewCell else { return UITableViewCell() }
         let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        cell.configure(for: collaborator, isOwner: collaborator.userId == owner.userId)
-        if selectedCollaborators.contains(where: { $0.userId == collaborator.userId }) {
+        cell.configure(for: collaborator, isOwner: collaborator.id == owner.id)
+        if selectedCollaborators.contains(where: { $0.id == collaborator.id }) {
             cell.isSelected = true
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
@@ -273,7 +273,7 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
         cell.isSelected = false
         tableView.deselectRow(at: indexPath, animated: true)
         let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        selectedCollaborators.removeAll { $0.userId == collaborator.userId }
+        selectedCollaborators.removeAll { $0.id == collaborator.id }
     }
 }
 

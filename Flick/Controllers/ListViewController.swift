@@ -14,7 +14,7 @@ class ListViewController: UIViewController {
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
-        var items: [Media]
+        var items: [SimpleMedia]
     }
 
     private enum SectionType {
@@ -34,13 +34,19 @@ class ListViewController: UIViewController {
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
     private let edgeInsets: CGFloat = 28
+    private let listId: Int
     private var listSummaryHeight: CGFloat = 80
-    private var list: MediaList!
+    private var list: MediaList?
     private var sections = [Section]()
 
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listSummaryCellReuseIdentifier = "ListSummaryCellReuseIdentifier"
     private let mediaCellReuseIdentifiter = "MediaCellReuseIdentifier"
+
+    init(listId: Int) {
+        self.listId = listId
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +54,6 @@ class ListViewController: UIViewController {
 
         setupNavigationBar()
 
-        listNameLabel.text = list.lstName
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         view.addSubview(listNameLabel)
@@ -70,18 +75,28 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
-        if list.shows.count == 0 {
-            setupEmptyStateViews()
-        }
-
         setupSections()
         setupConstraints()
     }
 
-    init(list: MediaList) {
-        super.init(nibName: nil, bundle: nil)
-        self.list = list
-        self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        NetworkManager.getMediaList(listId: listId) { [weak self] list in
+            guard let self = self else { return }
+
+            self.list = list
+
+            if list.shows.count == 0 {
+                self.setupEmptyStateViews()
+                return
+            }
+
+            self.listNameLabel.text = list.name
+            self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
+            self.setupSections()
+            self.mediaCollectionView.reloadData()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -174,7 +189,7 @@ class ListViewController: UIViewController {
 
     private func setupSections() {
         let listSummary = Section(type: SectionType.listSummary, items: [])
-        let mediaList = Section(type: SectionType.mediaList, items: list.shows)
+        let mediaList = Section(type: SectionType.mediaList, items: list?.shows ?? [])
         sections = [listSummary, mediaList]
     }
 
@@ -183,6 +198,7 @@ class ListViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
+        guard let list = list else { return }
         let listSettingsVC = ListSettingsViewController(list: list)
         navigationController?.pushViewController(listSettingsVC, animated: true)
     }
@@ -219,7 +235,7 @@ extension ListViewController: UICollectionViewDataSource {
             return cell
         case .mediaList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifiter, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
-            let media = list.shows[indexPath.row]
+            let media = section.items[indexPath.row]
             cell.configure(media: media)
             return cell
         }
@@ -232,7 +248,7 @@ extension ListViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         case .mediaList:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
-            headerView.configure(isEmptyList: list.shows.count == 0)
+            headerView.configure(isEmptyList: section.items.count == 0)
             headerView.delegate = self
             return headerView
         }
@@ -285,6 +301,7 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
     }
 
     func editMedia() {
+        guard let list = list else { return }
         let editVC = EditListViewController(list: list)
         navigationController?.pushViewController(editVC, animated: true)
     }

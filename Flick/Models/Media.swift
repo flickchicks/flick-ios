@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct SimpleMedia: Codable {
+    var id: Int
+    var posterPic: String
+}
+
 struct Media: Codable {
     var id: Int
     var title: String
@@ -27,9 +32,4 @@ struct Media: Codable {
     var platforms: [String]?
     var keywords: [String]?
     var cast: String
-}
-
-struct Tag: Codable {
-    var tagId: String
-    var tag: String
 }

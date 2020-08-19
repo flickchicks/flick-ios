@@ -8,18 +8,24 @@
 
 import Foundation
 
-struct MediaList: Codable {
+struct SimpleMediaList: Codable {
+    var id: Int
+    var name: String
+    var isPrivate: Bool
+    var collaborators: [UserProfile] // Simple collaborator
+    var shows: [SimpleMedia] // Simple Media
+}
 
-    var lstId: String
-    var lstName: String
-    var lstPic: String?
+struct MediaList: Codable {
+    var id: Int
+    var name: String
+    var pic: String?
     var isSaved: Bool
     var isPrivate: Bool
     var isWatchLater: Bool
     var collaborators: [UserProfile]
     var owner: UserProfile
-    var shows: [Media]
+    var shows: [SimpleMedia]
 //    var timestamp: String?
     var tags: [Tag]
-
 }

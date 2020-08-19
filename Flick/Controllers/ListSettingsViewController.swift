@@ -156,10 +156,10 @@ extension ListSettingsViewController: ModalDelegate {
 extension ListSettingsViewController: ListSettingsDelegate {
 
     func deleteList() {
-        NetworkManager.deleteMediaList(listId: list.lstId) { [weak self] _ in
+        NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Renamed to \(self.list.lstName)") {
+            self.persentInfoAlert(message: "Renamed to \(self.list.name)") {
                 let controllers = self.navigationController?.viewControllers
                 for controller in controllers ?? [] {
                     if controller is HomeViewController {
@@ -172,18 +172,18 @@ extension ListSettingsViewController: ListSettingsDelegate {
 
     func renameList(to name: String) {
         var updatedList = list
-        updatedList.lstName = name
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+        updatedList.name = name
+        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Renamed to \(list.lstName)", completion: nil)
+            self.persentInfoAlert(message: "Renamed to \(list.name)", completion: nil)
         }
     }
 
     func updateCollaborators(to collaborators: [UserProfile]) {
         var updatedList = list
         updatedList.collaborators = collaborators
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Updated collaborators", completion: nil)
@@ -193,7 +193,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
     func updatePrivacy(to isPrivate: Bool) {
         var updatedList = list
         updatedList.isPrivate = isPrivate
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)

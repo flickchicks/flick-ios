@@ -15,12 +15,6 @@ class ListNameTableViewCell: UITableViewCell {
     private let selectIndicatorView = SelectIndicatorView(width: 20)
     private let titleLabel = UILabel()
 
-    override var isSelected: Bool {
-        didSet {
-            isSelected ? selectIndicatorView.select() : selectIndicatorView.deselect()
-        }
-    }
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -48,9 +42,14 @@ class ListNameTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(list: MediaList) {
-        titleLabel.text = list.lstName
+    func configure(list: SimpleMediaList) {
+        titleLabel.text = list.name
     }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        selected ? selectIndicatorView.select() : selectIndicatorView.deselect()
+     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

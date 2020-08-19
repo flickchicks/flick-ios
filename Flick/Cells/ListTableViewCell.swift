@@ -18,9 +18,9 @@ class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
-    private var list: MediaList!
+    private var list: SimpleMediaList!
     private let lockImageView = UIImageView()
-    private var media: [Media]!
+    private var media: [SimpleMedia]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -110,12 +110,12 @@ class ListTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(for list: MediaList) {
+    func configure(for list: SimpleMediaList) {
         self.list = list
         self.media = list.shows
         // If there are no shows added, show empty state but no scroll
         mediaCollectionView.isScrollEnabled = self.media.count != 0
-        titleLabel.text = list.lstName
+        titleLabel.text = list.name
         let listCollaborators = list.collaborators
         if list.isPrivate {
             setupPrivateIcon()
