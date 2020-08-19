@@ -79,6 +79,11 @@ class ListViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -202,12 +207,6 @@ class ListViewController: UIViewController {
         let listSettingsVC = ListSettingsViewController(list: list)
         navigationController?.pushViewController(listSettingsVC, animated: true)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
 }
 
 extension ListViewController: UICollectionViewDataSource {
@@ -295,7 +294,8 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
 extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
-        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height))
+        guard let list = list else { return }
+        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height), list: list)
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
     }

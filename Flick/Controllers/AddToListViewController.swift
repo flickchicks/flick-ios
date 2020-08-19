@@ -13,33 +13,39 @@ class AddToListViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let addToListLabel = UILabel()
+    private let chevronButton = UIButton()
     private let doneButton = UIButton()
     private let searchBar = SearchBar()
     private let selectedLabel = UILabel()
+    private var selectedMediaCollectionView: UICollectionView!
     private var suggestedMediaCollectionView: UICollectionView!
     private let resultLabel = UILabel()
     private var resultMediaTableView = UITableView()
     private let roundTopView = RoundTopView(hasShadow: true)
 
     // MARK: - Private Data Vars
-    private var height: Float!
+    private var collectionViewCellSize = CGSize(width: 0, height: 0)
     private let doneButtonSize = CGSize(width: 44, height: 44)
-    private let suggestedMediaCellPadding: CGFloat = 20
+    private var height: Float!
+    private let mediaCellPadding: CGFloat = 20
+    private let tableHorizontalOffset = 24
 
     private let mediaSearchCellReuseIdentifier = "MediaSearchResultCellReuseIdentifier"
     private let mediaSelectableCellReuseIdentifier = "MediaSelectableCellReuseIdentifier"
+    private let selectedMediaCellReuseIdentifier = "SelectedMediaCellReuseIdentifier"
 
     private var isSearching = false
-    private var numSelected = 0
+    private var isSelectedHidden = true
+    private var list: MediaList
     // TODO: Get result from backend. Media are string for now
     private var searchResultMedia: [Media] = []
-    private var selectedMedia = [String]()
+    private var selectedMedia: [SimpleMedia] = []
     private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
 
-    init(height: Float) {
-        super.init(nibName: nil, bundle: nil)
-
+    init(height: Float, list: MediaList) {
+        self.list = list
         self.height = height
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -56,6 +62,10 @@ class AddToListViewController: UIViewController {
         addToListLabel.textColor = .darkBlue
         addToListLabel.font = .systemFont(ofSize: 18, weight: .medium)
         view.addSubview(addToListLabel)
+
+        chevronButton.setImage(UIImage(named: "downChevron"), for: .normal)
+        chevronButton.addTarget(self, action: #selector(tappedChevron), for: .touchUpInside)
+        view.addSubview(chevronButton)
 
         doneButton.setImage(UIImage(named: "doneButton"), for: .normal)
         doneButton.layer.cornerRadius = doneButtonSize.width / 2
@@ -82,12 +92,12 @@ class AddToListViewController: UIViewController {
         resultMediaTableView.showsVerticalScrollIndicator = false
         view.addSubview(resultMediaTableView)
 
-        let mediaCollectionViewLayout = UICollectionViewFlowLayout()
-        mediaCollectionViewLayout.minimumInteritemSpacing = suggestedMediaCellPadding
-        mediaCollectionViewLayout.minimumLineSpacing = suggestedMediaCellPadding
-        mediaCollectionViewLayout.scrollDirection = .vertical
+        let suggestedMediaCollectionViewLayout = UICollectionViewFlowLayout()
+        suggestedMediaCollectionViewLayout.minimumInteritemSpacing = mediaCellPadding
+        suggestedMediaCollectionViewLayout.minimumLineSpacing = mediaCellPadding
+        suggestedMediaCollectionViewLayout.scrollDirection = .vertical
 
-        suggestedMediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaCollectionViewLayout)
+        suggestedMediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: suggestedMediaCollectionViewLayout)
         suggestedMediaCollectionView.backgroundColor = .white
         suggestedMediaCollectionView.register(MediaSelectableCollectionViewCell.self, forCellWithReuseIdentifier: mediaSelectableCellReuseIdentifier)
         suggestedMediaCollectionView.dataSource = self
@@ -97,18 +107,41 @@ class AddToListViewController: UIViewController {
         suggestedMediaCollectionView.allowsMultipleSelection = true
         view.addSubview(suggestedMediaCollectionView)
 
+        let selectedMediaCollectionViewLayout = UICollectionViewFlowLayout()
+        selectedMediaCollectionViewLayout.minimumInteritemSpacing = mediaCellPadding
+        selectedMediaCollectionViewLayout.minimumLineSpacing = mediaCellPadding
+        selectedMediaCollectionViewLayout.scrollDirection = .horizontal
+        selectedMediaCollectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 36, bottom: 0, right: 0)
+
+        selectedMediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: selectedMediaCollectionViewLayout)
+        selectedMediaCollectionView.isHidden = true
+        selectedMediaCollectionView.backgroundColor = .white
+        selectedMediaCollectionView.register(MediaSelectableCollectionViewCell.self, forCellWithReuseIdentifier: selectedMediaCellReuseIdentifier)
+        selectedMediaCollectionView.dataSource = self
+        selectedMediaCollectionView.delegate = self
+        selectedMediaCollectionView.showsHorizontalScrollIndicator = false
+        selectedMediaCollectionView.bounces = false
+        selectedMediaCollectionView.allowsMultipleSelection = true
+        view.addSubview(selectedMediaCollectionView)
+
         searchBar.placeholder = "Search movies and shows"
         searchBar.delegate = self
         view.addSubview(searchBar)
 
+        getCellSize()
         setupConstraints()
     }
 
+    private func getCellSize() {
+        let width = (view.frame.width - CGFloat(2 * tableHorizontalOffset)) / 3.0  - mediaCellPadding
+        let height = width * 3 / 2
+        collectionViewCellSize = CGSize(width: width, height: height)
+    }
+
     private func setupConstraints() {
+        let chevronSize = CGSize(width: 15, height: 7)
         let labelLeadingOffset = 36
-        let labelVerticalOffset = 24
-        let tableHorizontalOffset = 24
-        let tableVerticalOffset = 24
+        let verticalOffset = 20
 
         addToListLabel.snp.makeConstraints { make in
             make.top.equalTo(roundTopView).offset(30)
@@ -128,25 +161,37 @@ class AddToListViewController: UIViewController {
         }
 
         selectedLabel.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(labelVerticalOffset)
+            make.top.equalTo(searchBar.snp.bottom).offset(verticalOffset)
             make.leading.equalToSuperview().offset(labelLeadingOffset)
         }
 
+        chevronButton.snp.makeConstraints { make in
+            make.size.equalTo(chevronSize)
+            make.centerY.equalTo(selectedLabel.snp.centerY)
+            make.leading.equalTo(selectedLabel.snp.trailing).offset(8)
+        }
+
         resultLabel.snp.makeConstraints { make in
-            make.top.equalTo(selectedLabel.snp.bottom).offset(labelVerticalOffset)
+            make.top.equalTo(selectedLabel.snp.bottom).offset(verticalOffset)
             make.leading.equalToSuperview().offset(labelLeadingOffset)
         }
 
         resultMediaTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
-            make.top.equalTo(resultLabel.snp.bottom).offset(tableVerticalOffset)
+            make.top.equalTo(resultLabel.snp.bottom).offset(verticalOffset)
             make.bottom.equalToSuperview()
         }
 
         suggestedMediaCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
-            make.top.equalTo(resultLabel.snp.bottom).offset(tableVerticalOffset)
+            make.top.equalTo(resultLabel.snp.bottom).offset(verticalOffset)
             make.bottom.equalToSuperview()
+        }
+
+        selectedMediaCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(selectedLabel.snp.bottom).offset(15)
+            make.height.equalTo(collectionViewCellSize.height + 10)
+            make.leading.trailing.equalToSuperview()
         }
 
         searchBar.snp.makeConstraints { make in
@@ -156,8 +201,36 @@ class AddToListViewController: UIViewController {
         }
     }
 
+    private func showSelectedMedia() {
+        selectedMediaCollectionView.isHidden = isSelectedHidden
+        if isSelectedHidden {
+            resultLabel.snp.remakeConstraints { remake in
+                remake.top.equalTo(selectedLabel.snp.bottom).offset(24)
+                remake.leading.equalToSuperview().offset(36)
+            }
+        } else {
+            resultLabel.snp.remakeConstraints { remake in
+                remake.top.equalTo(selectedMediaCollectionView.snp.bottom).offset(15)
+                remake.leading.equalToSuperview().offset(36)
+            }
+        }
+    }
+
     @objc private func tappedDone() {
-        dismiss(animated: true, completion: nil)
+        let mediaIds = selectedMedia.map { $0.id }
+        NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+            guard let self = self else { return }
+            self.list = list
+            self.selectedMedia = []
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    @objc private func tappedChevron() {
+        isSelectedHidden.toggle()
+        chevronButton.setImage(UIImage(named: isSelectedHidden ? "downChevron" : "upChevron"), for: .normal)
+        reloadSelectedMediaCollectionView()
+        showSelectedMedia()
     }
 
     private func searchMediaByQuery(_ query: String) {
@@ -165,6 +238,26 @@ class AddToListViewController: UIViewController {
             guard let self = self, self.isSearching else { return }
             self.searchResultMedia = media
             self.resultMediaTableView.reloadData()
+        }
+    }
+
+    private func selectMedia(_ media: Media) {
+        selectedMedia.append(SimpleMedia(id: media.id, posterPic: media.posterPic))
+        selectedLabel.text = "\(selectedMedia.count) Selected"
+        reloadSelectedMediaCollectionView()
+    }
+
+    private func deselectMedia(_ media: Media) {
+        selectedMedia.removeAll { $0.id == media.id }
+        selectedLabel.text = "\(selectedMedia.count) Selected"
+        reloadSelectedMediaCollectionView()
+    }
+
+    private func reloadSelectedMediaCollectionView() {
+        selectedMediaCollectionView.reloadData()
+        for item in 0 ..< selectedMedia.count {
+            let indexPath = IndexPath(item: item, section: 0)
+            selectedMediaCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .right)
         }
     }
 
@@ -187,13 +280,11 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        numSelected += 1
-        selectedLabel.text = "\(numSelected) Selected"
+        selectMedia(searchResultMedia[indexPath.row])
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        numSelected -= 1
-        selectedLabel.text = "\(numSelected) Selected"
+        deselectMedia(searchResultMedia[indexPath.row])
     }
 
 }
@@ -201,22 +292,26 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
 extension AddToListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return suggestedMedia.count
+        return collectionView == selectedMediaCollectionView ? selectedMedia.count : suggestedMedia.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaSelectableCellReuseIdentifier, for: indexPath) as? MediaSelectableCollectionViewCell else { return UICollectionViewCell() }
-        return cell
+        if collectionView == selectedMediaCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: selectedMediaCellReuseIdentifier, for: indexPath) as? MediaSelectableCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(media: selectedMedia[indexPath.item])
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaSelectableCellReuseIdentifier, for: indexPath) as? MediaSelectableCollectionViewCell else { return UICollectionViewCell() }
+            return cell
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        numSelected += 1
-        selectedLabel.text = "\(numSelected) Selected"
+        selectMedia(searchResultMedia[indexPath.row])
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        numSelected -= 1
-        selectedLabel.text = "\(numSelected) Selected"
+        deselectMedia(searchResultMedia[indexPath.row])
     }
 
 }
@@ -224,9 +319,7 @@ extension AddToListViewController: UICollectionViewDataSource, UICollectionViewD
 extension AddToListViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = suggestedMediaCollectionView.frame.width / 3.0 - suggestedMediaCellPadding
-        let height = width * 3 / 2
-        return CGSize(width: width, height: height)
+        return collectionViewCellSize
     }
 
 }
