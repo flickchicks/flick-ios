@@ -183,7 +183,7 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 78
+        return 70
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -244,6 +244,7 @@ extension AddToListViewController: UISearchBarDelegate {
             resultLabel.text = "\(searchResultMedia.count) Results"
             resultMediaTableView.isHidden = false
             suggestedMediaCollectionView.isHidden = true
+            searchMediaByQuery(searchText)
         }
     }
 

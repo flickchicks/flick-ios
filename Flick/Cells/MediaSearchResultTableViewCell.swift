@@ -27,6 +27,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         posterImageView.backgroundColor = .lightGray
         posterImageView.layer.cornerRadius = 4
+        posterImageView.layer.masksToBounds = true
         containerView.addSubview(posterImageView)
 
         nameLabel.textColor = .darkBlue
@@ -43,7 +44,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
         let selectSize = CGSize(width: 20, height: 20)
 
         containerView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(4)
+            make.top.bottom.equalToSuperview().inset(2)
             make.leading.trailing.equalToSuperview()
         }
 
@@ -67,7 +68,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
     func configure(media: Media) {
         nameLabel.text = media.title
-        if let pictureUrl = URL(string: media.posterPic), let pictureData = try? Data(contentsOf: pictureUrl) {
+        if let pictureUrl = URL(string: media.posterPic ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             posterImageView.image = pictureObject
         }

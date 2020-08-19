@@ -341,7 +341,16 @@ class NetworkManager {
     }
 
     static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
-        AF.request("\(hostEndpoint)/api/search/?is_movie=true&is_tv=true&query=\(query)", method: .get, headers: headers).validate().responseData { response in
+        guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
+        var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
+        urlComp?.queryItems = [
+            URLQueryItem(name: "is_movie", value: "true"),
+            URLQueryItem(name: "is_tv", value: "true"),
+            URLQueryItem(name: "query", value: query)
+        ]
+
+        guard let url = urlComp?.url?.absoluteString else { return }
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
