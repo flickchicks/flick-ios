@@ -9,19 +9,17 @@
 import Foundation
 
 struct UserProfile: Codable {
-
-    var userId: String
+    var id: Int
     var username: String
     var firstName: String
     var lastName: String
-    var profileId: String
     var profilePic: ProfilePicture?
     var bio: String?
     var phoneNumber: String?
     var socialIdToken: String?
     var socialIdTokenType: String?
-    var ownerLsts: [MediaList]?
-    var collabLsts: [MediaList]?
+    var ownerLsts: [SimpleMediaList]?
+    var collabLsts: [SimpleMediaList]?
 }
 
 struct ProfilePicture: Codable {

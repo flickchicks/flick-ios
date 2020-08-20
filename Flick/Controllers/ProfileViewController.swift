@@ -15,7 +15,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Collection View Sections
     private struct Section {
         let type: SectionType
-        var items: [MediaList]
+        var items: [SimpleMediaList]
     }
 
     private enum SectionType {
@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController {
 
     private let userDefaults = UserDefaults()
     // TODO: Update media lists with backend lists
-    private var mediaLists: [MediaList] = []
+    private var mediaLists: [SimpleMediaList] = []
     private var name: String = ""
     private var username: String = ""
     private var profilePicUrl: String = ""
@@ -155,7 +155,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // TODO: Update with selected list data
         if sections[indexPath.section].type == .lists {
-            let listViewController = ListViewController(list: mediaLists[indexPath.row])
+            let listViewController = ListViewController(listId: mediaLists[indexPath.row].id)
             navigationController?.pushViewController(listViewController, animated: true)
         }
     }
@@ -181,11 +181,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
     }
 
     func createList(title: String) {
-        if let authToken = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
-            NetworkManager.createNewMediaList(authToken: authToken, listName: title) { mediaList in
-                let listViewController = ListViewController(list: mediaList)
-                self.navigationController?.pushViewController(listViewController, animated: true)
-            }
+        NetworkManager.createNewMediaList(listName: title) { mediaList in
+            let listViewController = ListViewController(listId: mediaList.id)
+            self.navigationController?.pushViewController(listViewController, animated: true)
         }
     }
 

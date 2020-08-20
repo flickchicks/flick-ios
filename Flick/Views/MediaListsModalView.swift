@@ -58,18 +58,20 @@ class MediaListsModalView: UIView {
 
     // MARK: - Private Data Vars
     private let listNameCellReuseIdentifier = "ListNameCellReuseIdentifier"
-    private var lists: [MediaList] = []
-    private var type: MediaListsModalViewType!
+    private var lists: [SimpleMediaList] = []
+    private var selectedList: SimpleMediaList?
+    private var type: MediaListsModalViewType
 
     weak var modalDelegate: ModalDelegate?
+    weak var editListDelegate: EditListDelegate?
 
     init(type: MediaListsModalViewType) {
+        self.type = type
         super.init(frame: .zero)
 
         frame = UIScreen.main.bounds
         backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
 
-        self.type = type
         switch type {
         case .moveMedia:
             titleLabel.text  = "Move to"
@@ -178,6 +180,13 @@ class MediaListsModalView: UIView {
             self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
         }) { (_) in
             self.modalDelegate?.dismissModal(modalView: self)
+            switch self.type {
+            case .moveMedia:
+                guard let selectedList = self.selectedList else { return }
+                self.editListDelegate?.moveMedia(selectedList: selectedList)
+            case .saveMedia:
+                break
+            }
         }
     }
 
@@ -204,7 +213,7 @@ extension MediaListsModalView: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected")
+        selectedList = lists[indexPath.row]
     }
 
 }

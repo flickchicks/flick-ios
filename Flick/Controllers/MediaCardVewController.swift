@@ -154,7 +154,7 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func seeAllComments() {
-        let commentsViewController = CommentsViewCz
+//        let commentsViewController = CommentsViewCz
     }
 }
 
