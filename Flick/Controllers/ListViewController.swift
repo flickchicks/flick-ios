@@ -353,6 +353,7 @@ extension ListViewController: AddToListDelegate {
 
     func reloadList() {
         getMediaList()
+        persentInfoAlert(message: "Added items to list", completion: nil)
     }
 
 }

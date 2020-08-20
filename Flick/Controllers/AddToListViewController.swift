@@ -74,6 +74,7 @@ class AddToListViewController: UIViewController {
         view.addSubview(addToListLabel)
 
         chevronButton.setImage(UIImage(named: "downChevron"), for: .normal)
+        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 7, bottom: 4, right: 7)
         chevronButton.addTarget(self, action: #selector(tappedChevron), for: .touchUpInside)
         view.addSubview(chevronButton)
 
@@ -167,7 +168,7 @@ class AddToListViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let chevronSize = CGSize(width: 15, height: 7)
+        let chevronSize = CGSize(width: 30, height: 15)
         let labelLeadingOffset = 36
         let verticalOffset = 20
 
@@ -196,7 +197,7 @@ class AddToListViewController: UIViewController {
         chevronButton.snp.makeConstraints { make in
             make.size.equalTo(chevronSize)
             make.centerY.equalTo(selectedLabel.snp.centerY)
-            make.leading.equalTo(selectedLabel.snp.trailing).offset(8)
+            make.leading.equalTo(selectedLabel.snp.trailing).offset(4)
         }
 
         resultLabel.snp.makeConstraints { make in
@@ -254,8 +255,7 @@ class AddToListViewController: UIViewController {
             guard let self = self else { return }
             self.list = list
             self.selectedMedia = []
-            self.delegate?.reloadList()
-            self.dismissVC()
+            self.dismissVC(isMediaAdded: true)
         }
     }
 
@@ -304,13 +304,13 @@ class AddToListViewController: UIViewController {
         }
     }
 
-    private func selectMedia(_ media: Media) {
-        selectedMedia.append(SimpleMedia(id: media.id, posterPic: media.posterPic))
+    private func selectMedia(_ media: SimpleMedia) {
+        selectedMedia.append(media)
         selectedLabel.text = "\(selectedMedia.count) Selected"
         reloadSelectedMediaCollectionView()
     }
 
-    private func deselectMedia(_ media: Media) {
+    private func deselectMedia(_ media: SimpleMedia) {
         selectedMedia.removeAll { $0.id == media.id }
         selectedLabel.text = "\(selectedMedia.count) Selected"
         reloadSelectedMediaCollectionView()
@@ -324,9 +324,12 @@ class AddToListViewController: UIViewController {
         }
     }
 
-    private func dismissVC() {
+    private func dismissVC(isMediaAdded: Bool = false) {
         dismiss(animated: true) {
             self.delegate?.addToListDismissed()
+            if isMediaAdded {
+                self.delegate?.reloadList()
+            }
         }
     }
 
@@ -349,11 +352,13 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectMedia(searchResultMedia[indexPath.row])
+        let media = searchResultMedia[indexPath.row]
+        selectMedia(SimpleMedia(id: media.id, posterPic: media.posterPic))
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        deselectMedia(searchResultMedia[indexPath.row])
+        let media = searchResultMedia[indexPath.row]
+        deselectMedia(SimpleMedia(id: media.id, posterPic: media.posterPic))
     }
 
 }
@@ -376,11 +381,23 @@ extension AddToListViewController: UICollectionViewDataSource, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectMedia(searchResultMedia[indexPath.row])
+        // TODO: account for suggested media
+        selectMedia(selectedMedia[indexPath.row])
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        deselectMedia(searchResultMedia[indexPath.row])
+        // TODO: account for suggested media
+        let media = selectedMedia[indexPath.row]
+        deselectMedia(media)
+        // If deselected media in selected media list, also deselect media in search results or suggested media
+        if collectionView == selectedMediaCollectionView {
+            if isSearching {
+                guard let index = searchResultMedia.firstIndex(where: { $0.id == media.id }) else { return }
+                resultMediaTableView.deselectRow(at: IndexPath(item: index, section: 0), animated: true)
+            } else {
+                // TODO: deselect in suggested media collection view
+            }
+        }
     }
 
 }
