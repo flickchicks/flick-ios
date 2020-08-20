@@ -8,11 +8,16 @@
 
 import UIKit
 
-// TODO: need to be able to pull down to dismiss
+protocol AddToListDelegate: class {
+    func addToListDismissed()
+    func reloadList()
+}
+
 class AddToListViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let addToListLabel = UILabel()
+    private let backButton = UIButton()
     private let chevronButton = UIButton()
     private let doneButton = UIButton()
     private let searchBar = SearchBar()
@@ -26,7 +31,7 @@ class AddToListViewController: UIViewController {
     // MARK: - Private Data Vars
     private var collectionViewCellSize = CGSize(width: 0, height: 0)
     private let doneButtonSize = CGSize(width: 44, height: 44)
-    private var height: Float!
+    private var height: Float
     private let mediaCellPadding: CGFloat = 20
     private let tableHorizontalOffset = 24
 
@@ -41,6 +46,11 @@ class AddToListViewController: UIViewController {
     private var searchResultMedia: [Media] = []
     private var selectedMedia: [SimpleMedia] = []
     private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+
+    // Keeps track of current position of pan gesture
+    private var viewTranslation = CGPoint(x: 0, y: 0)
+
+    weak var delegate: AddToListDelegate?
 
     init(height: Float, list: MediaList) {
         self.list = list
@@ -130,6 +140,24 @@ class AddToListViewController: UIViewController {
 
         getCellSize()
         setupConstraints()
+
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDragToDismiss)))
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let backButtonSize = CGSize(width: 22, height: 18)
+
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.addTarget(self, action: #selector(tappedBack), for: .touchUpInside)
+        view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+            make.leading.equalToSuperview().offset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15)
+        }
     }
 
     private func getCellSize() {
@@ -217,13 +245,22 @@ class AddToListViewController: UIViewController {
     }
 
     @objc private func tappedDone() {
+        guard !selectedMedia.isEmpty else {
+            dismissVC()
+            return
+        }
         let mediaIds = selectedMedia.map { $0.id }
         NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
             self.list = list
             self.selectedMedia = []
-            self.dismiss(animated: true, completion: nil)
+            self.delegate?.reloadList()
+            self.dismissVC()
         }
+    }
+
+    @objc private func tappedBack() {
+        dismissVC()
     }
 
     @objc private func tappedChevron() {
@@ -231,6 +268,32 @@ class AddToListViewController: UIViewController {
         chevronButton.setImage(UIImage(named: isSelectedHidden ? "downChevron" : "upChevron"), for: .normal)
         reloadSelectedMediaCollectionView()
         showSelectedMedia()
+    }
+
+    @objc private func handleDragToDismiss(sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .changed:
+            self.backButton.isHidden = true
+            viewTranslation = sender.translation(in: view)
+            // Show translation animation only when dragging downward
+            if viewTranslation.y > 0 {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: self.viewTranslation.y)
+                })
+            }
+        case .ended:
+            if viewTranslation.y < 300 {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    self.view.transform = .identity
+                }) { _ in
+                    self.backButton.isHidden = false
+                }
+            } else {
+                dismissVC()
+            }
+        default:
+            break
+        }
     }
 
     private func searchMediaByQuery(_ query: String) {
@@ -258,6 +321,12 @@ class AddToListViewController: UIViewController {
         for item in 0 ..< selectedMedia.count {
             let indexPath = IndexPath(item: item, section: 0)
             selectedMediaCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .right)
+        }
+    }
+
+    private func dismissVC() {
+        dismiss(animated: true) {
+            self.delegate?.addToListDismissed()
         }
     }
 

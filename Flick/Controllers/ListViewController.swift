@@ -26,6 +26,8 @@ class ListViewController: UIViewController {
     private var addCollaboratorModalView: AddCollaboratorModalView!
     private let addMediaMessageLabel = UILabel()
     private let arrowToAddButtonView = UIImageView()
+    private let backButton = UIButton()
+    private let settingsButton = UIButton()
     private let emptyListImageView = UIImageView()
     private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
@@ -87,6 +89,10 @@ class ListViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        getMediaList()
+    }
+
+    private func getMediaList() {
         NetworkManager.getMediaList(listId: listId) { [weak self] list in
             guard let self = self else { return }
 
@@ -170,15 +176,14 @@ class ListViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
-        let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
         backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
 
-        let settingsButton = UIButton()
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.tintColor = .mediumGray
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(settingsButtonSize)
         }
@@ -295,7 +300,14 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
         guard let list = list else { return }
+        // Hide naviation bar items
+        backButton.tintColor = .clear
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        settingsButton.tintColor = .clear
+        navigationItem.rightBarButtonItem?.isEnabled = false
+
         let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height), list: list)
+        addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
     }
@@ -326,6 +338,21 @@ extension ListViewController: ListSummaryDelegate {
     func changeListSummaryHeight(height: Int) {
         listSummaryHeight = CGFloat(height)
         mediaCollectionView.reloadData()
+    }
+
+}
+
+extension ListViewController: AddToListDelegate {
+
+    func addToListDismissed() {
+        backButton.tintColor = .black
+        navigationItem.leftBarButtonItem?.isEnabled = true
+        settingsButton.tintColor = .mediumGray
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+
+    func reloadList() {
+        getMediaList()
     }
 
 }
