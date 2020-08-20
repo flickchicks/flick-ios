@@ -43,6 +43,8 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
     private let titleLabel = UILabel()
     private let ratingsSeparatorView = UIView()
+    private let friendRatingIndicatorLabel = UILabel()
+    private let criticRatingIndicatorLabel = UILabel()
     private let friendsRatingsSliderView = SliderView()
     private let criticRatingsSliderView = SliderView()
     private let criticRatingLabel = UILabel()
@@ -84,6 +86,22 @@ class MediaRatingsTableViewCell: UITableViewCell {
         friendsRatingsSliderView.layer.cornerRadius = 4
         addSubview(friendsRatingsSliderView)
 
+        criticRatingIndicatorLabel.text = "Critics"
+        criticRatingIndicatorLabel.layer.backgroundColor = UIColor.lightPurple.cgColor
+        criticRatingIndicatorLabel.layer.cornerRadius = 4
+        criticRatingIndicatorLabel.textAlignment = .center
+        criticRatingIndicatorLabel.textColor = .gradientPurple
+        criticRatingIndicatorLabel.font = .systemFont(ofSize: 10)
+        addSubview(criticRatingIndicatorLabel)
+
+        friendRatingIndicatorLabel.text = "Friends"
+        friendRatingIndicatorLabel.layer.backgroundColor = UIColor.lightPurple.cgColor
+        friendRatingIndicatorLabel.layer.cornerRadius = 4
+        friendRatingIndicatorLabel.textAlignment = .center
+        friendRatingIndicatorLabel.textColor = .gradientPurple
+        friendRatingIndicatorLabel.font = .systemFont(ofSize: 10)
+        addSubview(friendRatingIndicatorLabel)
+
         criticRatingLabel.text = "from Rotten Tomatoes and IMDb"
         criticRatingLabel.font = .systemFont(ofSize: 12)
         criticRatingLabel.textColor = .mediumGray
@@ -115,6 +133,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
         let sliderSize = CGSize(width: 133, height: 8)
         let ratingIconSize = CGSize(width: 14, height: 14)
+        let ratingIndictorSize = CGSize(width: 46, height: 20)
         let personalRatingIconSize = CGSize(width: 20, height: 20)
 
         ratingsSeparatorView.snp.makeConstraints{ make in
@@ -159,6 +178,18 @@ class MediaRatingsTableViewCell: UITableViewCell {
             make.size.equalTo(ratingIconSize)
         }
 
+        criticRatingIndicatorLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(criticRatingsSliderView.snp.top).offset(-9)
+            make.centerX.equalTo(criticsIconImageView.snp.centerX)
+            make.size.equalTo(ratingIndictorSize)
+        }
+
+        friendRatingIndicatorLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(friendsRatingsSliderView.snp.top).offset(-9)
+            make.centerX.equalTo(friendsIconImageView.snp.centerX)
+            make.size.equalTo(ratingIndictorSize)
+        }
+
         criticsIconImageView.snp.makeConstraints { make in
             make.centerY.equalTo(criticRatingsSliderView)
             make.centerX.equalTo(criticRatingsSliderView.snp.leading).offset(133*0.4)
@@ -173,6 +204,10 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
     }
 
+    func configure(with media: Media) {
+        
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -184,9 +219,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
     }
 
     @objc func handlePan(recognizer: UIPanGestureRecognizer) {
-
         let coord = personalIconImageView.frame.origin
-
         switch recognizer.state {
         case .began:
             break
@@ -197,7 +230,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
             } else if xCoord > 143 {
                 xCoord = 143
             }
-            personalIconImageView.frame = CGRect(x: xCoord, y: coord.y, width: 20, height: 20)
+            personalIconImageView.frame.origin = CGPoint(x: xCoord, y: coord.y)
             friendsRatingsSliderView.personalRating = xCoord / 133
             friendsRatingsSliderView.setNeedsDisplay()
         case .ended:

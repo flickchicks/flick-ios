@@ -16,6 +16,7 @@ class MediaCardViewController: UIViewController {
     private let commentAreaView = CommentAreaView()
 
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
+    private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imbdRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +87,11 @@ class MediaCardViewController: UIViewController {
         mediaInformationTableView.isScrollEnabled = isScrollEnabled
     }
 
+    func setupMedia(media: Media) {
+        self.media = media
+        mediaInformationTableView.reloadData()
+    }
+
 }
 
 extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
@@ -103,16 +109,19 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaSummaryReuseIdentifier", for: indexPath) as? MediaSummaryTableViewCell else {
                 return UITableViewCell()
             }
+            cell.configure(with: media)
             return cell
         } else if indexPath.section == 1 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaRatingsReuseIdentifier", for: indexPath) as? MediaRatingsTableViewCell else {
                 return UITableViewCell()
             }
+            cell.configure(with: media)
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaThoughtsReuseIdentifier", for: indexPath) as? MediaThoughtsTableViewCell else {
                 return UITableViewCell()
             }
+            cell.configure(with: media)
             return cell
         }
     }

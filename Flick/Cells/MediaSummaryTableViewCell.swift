@@ -17,19 +17,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
 
-    private let summaryInfo = [
-        MediaSummary(text: "1h 30", type: .duration),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "2019", type: .year),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "Released", type: .releaseStatus),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "PG-13", type: .rating),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "EN", type: .language),
-        MediaSummary(type: .spacer),
-        MediaSummary(text: "Quentin Tarantino", type: .director)
-    ]
+    private var summaryInfo: [MediaSummary] = []
 
     private var tags: [MediaTag] = [MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy")]
 
@@ -37,18 +25,14 @@ class MediaSummaryTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .movieWhite
 
-        contentView.autoresizingMask = .flexibleHeight
+//        contentView.autoresizingMask = .flexibleHeight
 
-
-        // Initialization code
-        titleLabel.text = "Maleficent"
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
         addSubview(titleLabel)
 
-        summaryLabel.text = "A beautiful, pure-hearted young woman, Maleficent has an idyllic life growing up in a peaceable forest kingdom, until one day when an invading army threatens the harmony of the land.  Maleficent rises to be the land's fiercest protector, but she ultimately suffers a ruthless betrayal – an act that begins to turn her heart into stone. Bent on revenge, Maleficent faces an epic battle with the invading King's successor and, as a result, places protector, but she ultimately suffers a ruthless betrayal – an act that begins to turn her heart into stone. Bent on revenge, Maleficent faces an epic battle with the invading King's successor and, as a result, place protector, but she ultimately suffers a ruthless betrayal – an act that begins to turn her heart into stone. Bent on revenge, Maleficent faces an epic battle with the invading King's successor and, as a result, place a curse upon his newborn infant Aurora. As the child grows, Maleficent realizes that Aurora holds the key to peace in the kingdom – and to Maleficent's true happiness as well."
         summaryLabel.font = .systemFont(ofSize: 14)
         summaryLabel.textColor = .darkBlue
         summaryLabel.numberOfLines = 0
@@ -86,6 +70,37 @@ class MediaSummaryTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func configure(with media: Media) {
+        titleLabel.text = media.title
+        summaryLabel.text = media.plot
+        tags = media.tags
+        var mediaSummaryInfo: [MediaSummary] = []
+        if let duration = media.duration {
+            mediaSummaryInfo.append(MediaSummary(text: duration, type: .duration))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let releaseYear = media.dateReleased {
+            mediaSummaryInfo.append(MediaSummary(text: releaseYear, type: .releaseStatus))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let audienceLevel = media.audienceLevel {
+            mediaSummaryInfo.append(MediaSummary(text: audienceLevel, type: .rating))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let language = media.language {
+            mediaSummaryInfo.append(MediaSummary(text: language, type: .language))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let director = media.directors {
+            mediaSummaryInfo.append(MediaSummary(text: director, type: .director))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        mediaSummaryInfo.removeLast()
+        summaryInfo = mediaSummaryInfo
+        summaryItemsCollectionView.reloadData()
+        tagsCollectionView.reloadData()
+    }
+
     private func setupConstraints() {
 
         titleLabel.snp.makeConstraints { make in
@@ -113,7 +128,6 @@ class MediaSummaryTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 

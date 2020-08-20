@@ -105,6 +105,7 @@ class MediaViewController: UIViewController {
         NetworkManager.getMedia(mediaId: "1") { media in
             let url = URL(string: media.posterPic)
             self.mediaImageView.kf.setImage(with: url)
+            self.mediaCardViewController.setupMedia(media: media)
         }
     }
 
