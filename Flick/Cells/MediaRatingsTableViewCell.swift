@@ -1,0 +1,210 @@
+//
+//  MediaRatingsTableViewCell.swift
+//  Flick
+//
+//  Created by Lucy Xu on 8/18/20.
+//  Copyright © 2020 flick. All rights reserved.
+//
+
+import UIKit
+
+class SliderView : UIView {
+
+    var externalRating: CGFloat = 0
+    var personalRating: CGFloat = 0
+
+    override func draw(_ rect: CGRect) {
+        let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 133, height: 8), cornerRadius: 4)
+        UIColor.lightGray.setFill()
+        path.fill()
+
+        UIColor.gradientPurple.setFill()
+        let personalValuePosition = personalRating * 133
+        let externalValuePosition = externalRating * 133
+        let maxValuePosition = max(personalValuePosition, externalValuePosition)
+        let rectPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width:maxValuePosition, height: 8), cornerRadius: 4)
+        rectPath.fill()
+    }
+
+//    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+//        let location = touch.location(in: self)
+//        print(location)
+//        let deltaLocation = location.x - previousLocation.x
+//        let deltaValue = deltaLocation / bounds.width
+//        previousLocation = location
+//        personalValue += deltaValue
+//        personalValue = boundValue(personalValue, toLowerValue: minimumValue, upperValue: maximumValue)
+//        sendActions(for: .valueChanged)
+//        return true
+//    }
+}
+
+class MediaRatingsTableViewCell: UITableViewCell {
+
+    private let titleLabel = UILabel()
+    private let ratingsSeparatorView = UIView()
+    private let friendsRatingsSliderView = SliderView()
+    private let criticRatingsSliderView = SliderView()
+    private let criticRatingLabel = UILabel()
+    private let friendsRatingLabel = UILabel()
+
+    private let criticsRating = 0.7
+    private let friendsRating = 0.5
+
+    private let criticsIconImageView = UIImageView()
+    private let friendsIconImageView = UIImageView()
+    private let personalIconImageView = UIImageView()
+
+    private var previousLocation = CGPoint()
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        backgroundColor = .movieWhite
+        // Initialization code
+
+        // Initialization code
+        titleLabel.text = "Ratings"
+        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.textColor = .darkBlue
+        titleLabel.numberOfLines = 0
+        titleLabel.sizeToFit()
+        addSubview(titleLabel)
+
+        ratingsSeparatorView.backgroundColor = .lightGray2
+        addSubview(ratingsSeparatorView)
+
+        criticRatingsSliderView.backgroundColor = .lightGray2
+        criticRatingsSliderView.externalRating = 0.4
+        criticRatingsSliderView.layer.cornerRadius = 4
+        addSubview(criticRatingsSliderView)
+
+        friendsRatingsSliderView.backgroundColor = .lightGray2
+        friendsRatingsSliderView.externalRating = 0.7
+        friendsRatingsSliderView.layer.cornerRadius = 4
+        addSubview(friendsRatingsSliderView)
+
+        criticRatingLabel.text = "from Rotten Tomatoes and IMDb"
+        criticRatingLabel.font = .systemFont(ofSize: 12)
+        criticRatingLabel.textColor = .mediumGray
+        criticRatingLabel.numberOfLines = 0
+        addSubview(criticRatingLabel)
+
+        friendsRatingLabel.text = "Me, Lucy, and 4 others"
+        friendsRatingLabel.font = .systemFont(ofSize: 12)
+        friendsRatingLabel.textColor = .mediumGray
+        friendsRatingLabel.numberOfLines = 0
+        addSubview(friendsRatingLabel)
+
+        criticsIconImageView.image = UIImage(named: "star")
+        addSubview(criticsIconImageView)
+
+        friendsIconImageView.image = UIImage(named: "friendIcon")
+        addSubview(friendsIconImageView)
+
+        personalIconImageView.image = UIImage(named: "dunkirk")
+        personalIconImageView.layer.cornerRadius = 10
+        personalIconImageView.layer.masksToBounds = true
+        personalIconImageView.clipsToBounds = true
+        personalIconImageView.layer.borderColor = UIColor.gradientPurple.cgColor
+        personalIconImageView.layer.borderWidth = 2
+        personalIconImageView.isUserInteractionEnabled = true
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        personalIconImageView.addGestureRecognizer(panGestureRecognizer)
+        addSubview(personalIconImageView)
+
+        let sliderSize = CGSize(width: 133, height: 8)
+        let ratingIconSize = CGSize(width: 14, height: 14)
+        let personalRatingIconSize = CGSize(width: 20, height: 20)
+
+        ratingsSeparatorView.snp.makeConstraints{ make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(2)
+        }
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(ratingsSeparatorView.snp.bottom).offset(17)
+        }
+
+        criticRatingsSliderView.snp.makeConstraints{ make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(45)
+            make.leading.equalToSuperview().inset(20)
+            make.size.equalTo(sliderSize)
+        }
+
+        friendsRatingsSliderView.snp.makeConstraints{ make in
+            make.top.equalTo(criticRatingsSliderView.snp.bottom).offset(48)
+            make.leading.equalToSuperview().inset(20)
+            make.size.equalTo(sliderSize)
+            make.bottom.equalToSuperview().inset(25)
+        }
+
+        criticRatingLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(criticRatingsSliderView)
+            make.leading.equalTo(criticRatingsSliderView.snp.trailing).offset(75)
+            make.trailing.equalToSuperview().inset(20)
+        }
+
+        friendsRatingLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(friendsRatingsSliderView)
+            make.leading.equalTo(friendsRatingsSliderView.snp.trailing).offset(75)
+            make.trailing.equalToSuperview().inset(20)
+        }
+
+        friendsIconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(friendsRatingsSliderView)
+            make.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(133*0.7)
+            make.size.equalTo(ratingIconSize)
+        }
+
+        criticsIconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(criticRatingsSliderView)
+            make.centerX.equalTo(criticRatingsSliderView.snp.leading).offset(133*0.4)
+            make.size.equalTo(ratingIconSize)
+        }
+
+        personalIconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(friendsRatingsSliderView)
+            make.centerX.equalTo(friendsRatingsSliderView.snp.leading)
+            make.size.equalTo(personalRatingIconSize)
+        }
+
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+
+    @objc func handlePan(recognizer: UIPanGestureRecognizer) {
+
+        let coord = personalIconImageView.frame.origin
+
+        switch recognizer.state {
+        case .began:
+            break
+        case .changed:
+            var xCoord = recognizer.location(in: self).x
+            if xCoord < 10 {
+                xCoord = 10
+            } else if xCoord > 143 {
+                xCoord = 143
+            }
+            personalIconImageView.frame = CGRect(x: xCoord, y: coord.y, width: 20, height: 20)
+            friendsRatingsSliderView.personalRating = xCoord / 133
+            friendsRatingsSliderView.setNeedsDisplay()
+        case .ended:
+            print(personalIconImageView.frame.origin)
+        default:
+            break
+        }
+    }
+
+}

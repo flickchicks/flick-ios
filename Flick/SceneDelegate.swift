@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import IQKeyboardManagerSwift
+import Pulley
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -40,6 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // User is logged out.
             rootViewController = loginViewController
         }
+
         let navigationController = UINavigationController(rootViewController: MediaViewController())
 
         window.rootViewController = navigationController

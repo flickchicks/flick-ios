@@ -60,6 +60,7 @@ class MediaSummaryView: UITableViewCell {
         tagsCollectionView = SelfSizingCollectionView(
             frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
             collectionViewLayout: tagsCollectionViewLayout)
+        tagsCollectionViewLayout.minimumInteritemSpacing = 30
         tagsCollectionView.backgroundColor = .clear
         tagsCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: tagCellReuseIdentifier)
         tagsCollectionView.dataSource = self

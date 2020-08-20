@@ -93,7 +93,7 @@ class CommentTableViewCell: UITableViewCell {
 
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(profileImageSize)
-            make.leading.equalToSuperview().offset(horizontalPadding)
+            make.leading.equalToSuperview()
             make.top.equalTo(nameLabel.snp.bottom).offset(2)
         }
 
@@ -120,7 +120,7 @@ class CommentTableViewCell: UITableViewCell {
 
         likeButton.snp.makeConstraints { make in
             make.size.equalTo(heartImageSize)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
+            make.trailing.equalToSuperview()
             make.centerY.equalTo(commentLabel)
 
         }
