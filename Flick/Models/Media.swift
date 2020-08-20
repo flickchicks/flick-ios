@@ -22,11 +22,11 @@ struct Media: Codable {
     var tags: [MediaTag]
     var seasons: String?
     var audienceLevel: String?
-    var imbdRating: Int?
-    var tomatoRating: Int?
-    var friendsRating: Int?
+    var imbdRating: Float?
+    var tomatoRating: Float?
+    var friendsRating: Float?
     var userRating: Int?
-    var comments: [String]
+    var comments: [Comment]
     var platforms: [String]?
     var keywords: [String]?
     var cast: String

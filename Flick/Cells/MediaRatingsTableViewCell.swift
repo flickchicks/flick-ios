@@ -15,28 +15,17 @@ class SliderView : UIView {
 
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 133, height: 8), cornerRadius: 4)
-        UIColor.lightGray.setFill()
+        UIColor.lightGray2.setFill()
         path.fill()
 
         UIColor.gradientPurple.setFill()
         let personalValuePosition = personalRating * 133
         let externalValuePosition = externalRating * 133
         let maxValuePosition = max(personalValuePosition, externalValuePosition)
-        let rectPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width:maxValuePosition, height: 8), cornerRadius: 4)
+        let rectPath = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: maxValuePosition, height: 8), cornerRadius: 4)
         rectPath.fill()
     }
 
-//    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-//        let location = touch.location(in: self)
-//        print(location)
-//        let deltaLocation = location.x - previousLocation.x
-//        let deltaValue = deltaLocation / bounds.width
-//        previousLocation = location
-//        personalValue += deltaValue
-//        personalValue = boundValue(personalValue, toLowerValue: minimumValue, upperValue: maximumValue)
-//        sendActions(for: .valueChanged)
-//        return true
-//    }
 }
 
 class MediaRatingsTableViewCell: UITableViewCell {
@@ -49,9 +38,6 @@ class MediaRatingsTableViewCell: UITableViewCell {
     private let criticRatingsSliderView = SliderView()
     private let criticRatingLabel = UILabel()
     private let friendsRatingLabel = UILabel()
-
-    private let criticsRating = 0.7
-    private let friendsRating = 0.5
 
     private let criticsIconImageView = UIImageView()
     private let friendsIconImageView = UIImageView()
@@ -77,12 +63,10 @@ class MediaRatingsTableViewCell: UITableViewCell {
         addSubview(ratingsSeparatorView)
 
         criticRatingsSliderView.backgroundColor = .lightGray2
-        criticRatingsSliderView.externalRating = 0.4
         criticRatingsSliderView.layer.cornerRadius = 4
         addSubview(criticRatingsSliderView)
 
         friendsRatingsSliderView.backgroundColor = .lightGray2
-        friendsRatingsSliderView.externalRating = 0.7
         friendsRatingsSliderView.layer.cornerRadius = 4
         addSubview(friendsRatingsSliderView)
 
@@ -131,6 +115,10 @@ class MediaRatingsTableViewCell: UITableViewCell {
         personalIconImageView.addGestureRecognizer(panGestureRecognizer)
         addSubview(personalIconImageView)
 
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
         let sliderSize = CGSize(width: 133, height: 8)
         let ratingIconSize = CGSize(width: 14, height: 14)
         let ratingIndictorSize = CGSize(width: 46, height: 20)
@@ -174,7 +162,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
         friendsIconImageView.snp.makeConstraints { make in
             make.centerY.equalTo(friendsRatingsSliderView)
-            make.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(133*0.7)
+            make.centerX.equalTo(friendsRatingsSliderView.snp.leading)
             make.size.equalTo(ratingIconSize)
         }
 
@@ -192,7 +180,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
         criticsIconImageView.snp.makeConstraints { make in
             make.centerY.equalTo(criticRatingsSliderView)
-            make.centerX.equalTo(criticRatingsSliderView.snp.leading).offset(133*0.4)
+            make.centerX.equalTo(criticRatingsSliderView.snp.leading)
             make.size.equalTo(ratingIconSize)
         }
 
@@ -201,11 +189,51 @@ class MediaRatingsTableViewCell: UITableViewCell {
             make.centerX.equalTo(friendsRatingsSliderView.snp.leading)
             make.size.equalTo(personalRatingIconSize)
         }
-
     }
 
     func configure(with media: Media) {
-        
+        var imbdRating: CGFloat = 0
+        var tomatoRating: CGFloat = 0
+        var friendRating: CGFloat = 0
+        if let mediaImbdRating = media.imbdRating {
+            imbdRating = CGFloat(mediaImbdRating)
+        }
+        if let mediaTomatoRating = media.tomatoRating {
+            tomatoRating = CGFloat(mediaTomatoRating)
+        }
+        let criticRating = (imbdRating + tomatoRating) / 2
+        if let mediaFriendRating = media.friendsRating {
+            friendRating = CGFloat(mediaFriendRating)
+        }
+
+        var personalRating: CGFloat = 0
+        if let mediaPersonalRating = media.userRating {
+            personalRating = CGFloat(mediaPersonalRating)
+        }
+
+        criticRatingsSliderView.externalRating = criticRating
+        friendsRatingsSliderView.externalRating = friendRating
+        friendsRatingsSliderView.personalRating = personalRating
+
+        friendsIconImageView.snp.updateConstraints { update in
+            update.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(friendRating * 133)
+        }
+
+        criticsIconImageView.snp.updateConstraints { update in
+            update.centerX.equalTo(criticRatingsSliderView.snp.leading).offset(criticRating * 133)
+        }
+
+        criticRatingIndicatorLabel.snp.makeConstraints { update in
+            update.centerX.equalTo(criticsIconImageView.snp.centerX)
+        }
+
+        friendRatingIndicatorLabel.snp.makeConstraints { update in
+           update.centerX.equalTo(friendsIconImageView.snp.centerX)
+        }
+
+        personalIconImageView.snp.updateConstraints { update in
+            update.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(personalRating * 133)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -234,7 +262,8 @@ class MediaRatingsTableViewCell: UITableViewCell {
             friendsRatingsSliderView.personalRating = xCoord / 133
             friendsRatingsSliderView.setNeedsDisplay()
         case .ended:
-            print(personalIconImageView.frame.origin)
+//            print(personalIconImageView.frame.origin)
+            break
         default:
             break
         }

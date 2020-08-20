@@ -16,6 +16,8 @@ class MediaCardViewController: UIViewController {
     private let commentAreaView = CommentAreaView()
 
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
+
+    // Dummy Media Object (used before data is loaded)
     private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imbdRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
 
     override func viewDidLoad() {
@@ -45,6 +47,7 @@ class MediaCardViewController: UIViewController {
         view.addSubview(mediaInformationTableView)
 
         commentAreaView.delegate = self
+        commentAreaView.sizeToFit()
         view.addSubview(commentAreaView)
 
         setupConstraints()
@@ -79,7 +82,6 @@ class MediaCardViewController: UIViewController {
         commentAreaView.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(71 + view.safeAreaInsets.bottom)
         }
     }
 
@@ -130,14 +132,32 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MediaCardViewController: CommentDelegate {
+    func showSpoilerModal(commentText: String) {
+        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
+        commentSpoilerModalView.delegate = self
+        commentSpoilerModalView.commentDelegate = self
+        showModalPopup(view: commentSpoilerModalView)
+//        view.addSubview(commentSpoilerModalView)
+    }
+
     func likeComment(index: Int) {
 //        comments[index].liked.toggle()
 //        commentsTableView.reloadData()
     }
 
-    func addComment(commentText: String) {
-        let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
+    func addComment(commentText: String, isSpoiler: Bool) {
+        NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { media in
+            print(media)
+        }
 //        comments.insert(comment, at: 0)
 //        commentsTableView.reloadData()
     }
+}
+
+extension MediaCardViewController: ModalDelegate {
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+
 }

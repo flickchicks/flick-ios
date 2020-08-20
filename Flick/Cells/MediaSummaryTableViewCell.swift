@@ -10,16 +10,19 @@ import UIKit
 
 class MediaSummaryTableViewCell: UITableViewCell {
 
+    private var platformCollectionView: SelfSizingCollectionView!
     private let titleLabel = UILabel()
     private let summaryLabel = UILabel()
     private var summaryItemsCollectionView: SelfSizingCollectionView!
     private var tagsCollectionView: SelfSizingCollectionView!
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
+    private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
 
     private var summaryInfo: [MediaSummary] = []
 
     private var tags: [MediaTag] = [MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy")]
+    private let platforms = ["Netflix", "Hulu"]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,7 +48,10 @@ class MediaSummaryTableViewCell: UITableViewCell {
             collectionViewLayout: summaryItemsCollectionViewLayout
         )
         summaryItemsCollectionView.backgroundColor = .clear
-        summaryItemsCollectionView.register(MediaSummaryInfoCollectionViewCell.self, forCellWithReuseIdentifier: summaryInfoCellReuseIdentifier)
+        summaryItemsCollectionView.register(MediaSummarySpacerCollectionViewCell.self, forCellWithReuseIdentifier: "spacer")
+        summaryItemsCollectionView.register(MediaSummaryIconLabelCollectionViewCell.self, forCellWithReuseIdentifier: "icon")
+        summaryItemsCollectionView.register(MediaSummaryLabelCollectionViewCell.self, forCellWithReuseIdentifier: "label")
+        summaryItemsCollectionView.register(MediaSummaryAudienceLevelCollectionViewCell.self, forCellWithReuseIdentifier: "outline")
         summaryItemsCollectionView.dataSource = self
         summaryItemsCollectionView.delegate = self
         summaryItemsCollectionView.layoutIfNeeded()
@@ -62,6 +68,17 @@ class MediaSummaryTableViewCell: UITableViewCell {
         tagsCollectionView.delegate = self
         tagsCollectionView.layoutIfNeeded()
         addSubview(tagsCollectionView)
+
+        let platformFlowLayout = UICollectionViewFlowLayout()
+        platformFlowLayout.minimumInteritemSpacing = 12
+        platformCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
+        platformCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
+        platformCollectionView.backgroundColor = .clear
+        platformCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: platformCellReuseIdentifier)
+        platformCollectionView.dataSource = self
+        platformCollectionView.delegate = self
+        platformCollectionView.layoutIfNeeded()
+        addSubview(platformCollectionView)
 
         setupConstraints()
     }
@@ -121,6 +138,11 @@ class MediaSummaryTableViewCell: UITableViewCell {
         tagsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(summaryLabel.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
+        }
+
+        platformCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(tagsCollectionView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(20)
         }
 
@@ -135,17 +157,42 @@ class MediaSummaryTableViewCell: UITableViewCell {
 
 extension MediaSummaryTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == summaryItemsCollectionView ? summaryInfo.count : tags.count
+        if collectionView == summaryItemsCollectionView {
+            return summaryInfo.count
+        } else if collectionView == tagsCollectionView {
+            return tags.count
+        } else {
+            return platforms.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == summaryItemsCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: summaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryInfoCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(with: summaryInfo[indexPath.item])
-            return cell
-        } else {
+            switch summaryInfo[indexPath.item].type {
+            case .spacer:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "spacer", for: indexPath) as? MediaSummarySpacerCollectionViewCell else { return UICollectionViewCell() }
+                return cell
+            case .director, .duration:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "icon", for: indexPath) as? MediaSummaryIconLabelCollectionViewCell else { return UICollectionViewCell() }
+                cell.configure(with: summaryInfo[indexPath.item])
+                return cell
+            case .rating:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "outline", for: indexPath) as? MediaSummaryAudienceLevelCollectionViewCell else { return UICollectionViewCell() }
+                cell.configure(with: summaryInfo[indexPath.item])
+                return cell
+            case .releaseStatus, .year, .language:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "label", for: indexPath) as? MediaSummaryLabelCollectionViewCell else { return UICollectionViewCell() }
+                cell.configure(with: summaryInfo[indexPath.item])
+                return cell
+            }
+        } else if collectionView == tagsCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? MediaTagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(with: tags[indexPath.item])
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: platformCellReuseIdentifier, for: indexPath)
+            cell.layer.cornerRadius = 5
+            cell.layer.backgroundColor = UIColor.gray.cgColor
             return cell
         }
     }
@@ -177,17 +224,13 @@ extension MediaSummaryTableViewCell: UICollectionViewDelegateFlowLayout {
             default:
                 return CGSize(width: textWidth, height: height)
             }
-        } else {
+        } else if collectionView == tagsCollectionView {
             let totalHorizontalPadding: CGFloat = 32
             return CGSize(width: calculateNecessaryWidth(text: tags[indexPath.item].name) + totalHorizontalPadding, height: 27)
+        } else {
+            return CGSize(width: 26, height: 26)
         }
 
     }
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        if collectionView == tagsCollectionView {
-//            return 0
-//        } else {
-//            return 0
-//        }
-//    }
+
 }

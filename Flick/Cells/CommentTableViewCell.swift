@@ -10,7 +10,8 @@ import UIKit
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
-    func addComment(commentText: String)
+    func addComment(commentText: String, isSpoiler: Bool)
+    func showSpoilerModal(commentText: String)
 }
 
 // Creates UILabel with padding
@@ -130,10 +131,11 @@ class CommentTableViewCell: UITableViewCell {
     func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
-        commentLabel.text = comment.comment
-        nameLabel.text = comment.name
-        dateLabel.text = comment.date
-        let heartImage = comment.liked ? "filledHeart" : "heart"
+        commentLabel.text = comment.message
+        nameLabel.text = comment.owner.firstName
+        dateLabel.text = "temp"
+//        let heartImage = comment.liked ? "filledHeart" : "heart"
+        let heartImage = "filledHeart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
 }

@@ -15,8 +15,6 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let seeAllCommentsButton = UIButton()
     private let commentTableViewCell = CommentTableViewCell()
 
-    
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .movieWhite
@@ -31,15 +29,12 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         separatorView.backgroundColor = .lightGray2
         addSubview(separatorView)
 
-        seeAllCommentsButton.setTitle("See All 4", for: .normal)
+//        seeAllCommentsButton.setTitle("See All 4", for: .normal)
         seeAllCommentsButton.contentHorizontalAlignment = .right
         seeAllCommentsButton.addTarget(self, action: #selector(seeAllComments), for: .touchUpInside)
         seeAllCommentsButton.setTitleColor(.darkBlueGray2, for: .normal)
         seeAllCommentsButton.titleLabel?.font = .systemFont(ofSize: 12)
         addSubview(seeAllCommentsButton)
-
-        commentTableViewCell.configure(for: Comment(name: "Lucy", comment: "fsdfsdf", date: "1d", liked: false), index: 0, delegate: self)
-        addSubview(commentTableViewCell)
 
         separatorView.snp.makeConstraints{ make in
             make.top.equalToSuperview()
@@ -59,12 +54,6 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.height.equalTo(15)
             make.leading.equalTo(titleLabel.snp.trailing)
         }
-
-        commentTableViewCell.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(12)
-        }
     }
 
     @objc func seeAllComments() {
@@ -72,7 +61,18 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     func configure(with media: Media) {
-
+        let numComments = media.comments.count
+        if numComments > 0 {
+            seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
+            commentTableViewCell.configure(for: media.comments[0], index: 0, delegate: self)
+            addSubview(commentTableViewCell)
+            
+            commentTableViewCell.snp.makeConstraints { make in
+                make.top.equalTo(titleLabel.snp.bottom).offset(16)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.bottom.equalToSuperview().inset(12)
+            }
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -88,14 +88,27 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 }
 
 extension MediaThoughtsTableViewCell: CommentDelegate {
+    func showSpoilerModal(commentText: String) {
+//        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
+//        commentSpoilerModalView.delegate = self
+//        addSubview(commentSpoilerModalView)
+    }
+
     func likeComment(index: Int) {
 //        comments[index].liked.toggle()
 //        commentsTableView.reloadData()
     }
 
-    func addComment(commentText: String) {
+    func addComment(commentText: String, isSpoiler: Bool) {
 //        let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
 //        comments.insert(comment, at: 0)
 //        commentsTableView.reloadData()
     }
+
 }
+
+//extension MediaThoughtsTableViewCell: ModalDelegate {
+//    func dismissModal(modalView: UIView) {
+//        modalView.removeFromSuperview()
+//    }
+//}
