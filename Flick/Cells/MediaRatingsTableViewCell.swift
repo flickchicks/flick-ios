@@ -310,8 +310,8 @@ class MediaRatingsTableViewCell: UITableViewCell {
             let filledInSliderWidth = xCoord - 10
             let filledInSliderPercentage = filledInSliderWidth / 133
             let rating = Int((filledInSliderPercentage * 10).rounded(.down))
-            delegate?.rateMedia(userRating: rating)
             sendHapticFeedback()
+            delegate?.rateMedia(userRating: rating)
         default:
             break
         }

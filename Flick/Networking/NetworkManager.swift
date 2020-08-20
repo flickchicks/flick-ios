@@ -382,6 +382,7 @@ class NetworkManager {
         let parameters: [String: Any] = [
             "user_rating": userRating
         ]
+        print("\(hostEndpoint)/api/show/\(String(mediaId))/")
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):

@@ -18,7 +18,6 @@ target 'Flick' do
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
     	pod 'SnapKit'
-	pod 'Pulley'
 
 	# Data Loading
 	pod 'SkeletonView'
