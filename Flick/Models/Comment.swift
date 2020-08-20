@@ -14,7 +14,7 @@ struct Comment: Codable {
     var id: String
     var isSpoiler: Bool
     var numLikes: Int
-    var likers: [String]
+    var likers: [Likers]
     var owner: CommentUser
     var message: String
 
@@ -29,4 +29,9 @@ struct CommentUser: Codable {
     var profileId: String
     var profilePic: ProfilePicture
 
+}
+
+struct Likers: Codable {
+    var liker: CommentUser
+    var createdAt: String
 }

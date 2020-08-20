@@ -44,7 +44,6 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
-        print("add comment")
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
             print(commentText)
             delegate?.showSpoilerModal(commentText: commentText)
@@ -67,7 +66,6 @@ class CommentAreaView: UIView {
         commentTextView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(textFieldVerticalPadding)
             make.leading.equalToSuperview().offset(28)
-//            make.height.equalTo(commentTextView.contentSize.height)
             make.trailing.equalToSuperview().inset(60)
             make.bottom.equalToSuperview().inset(textFieldVerticalPadding)
         }
@@ -81,11 +79,3 @@ class CommentAreaView: UIView {
     }
 
 }
-
-//extension CommentAreaView: ModalDelegate {
-//
-//    func dismissModal(modalView: UIView) {
-//        modalView.removeFromSuperview()
-//    }
-//
-//}

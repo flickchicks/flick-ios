@@ -69,6 +69,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentDateLabel.textColor = .mediumGray
         commentCellView.addSubview(commentDateLabel)
 
+        commentLikeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         commentCellView.addSubview(commentLikeButton)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
@@ -169,6 +170,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentProfileImageView.kf.setImage(with: profileImageUrl)
         seeAllCommentsButton.isHidden = false
         commentCellView.isHidden = false
+    }
+
+    @objc func likeComment() {
+        delegate?.likeComment(index: 0)
     }
 
     required init?(coder: NSCoder) {

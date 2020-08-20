@@ -122,6 +122,7 @@ class CommentSpoilerModalView: UIView {
     }
 
     @objc func yesButtonPressed() {
+        commentDelegate?.addComment(commentText: comment, isSpoiler: true)
         UIView.animate(withDuration: 0.15, animations: {
             self.containerView.alpha = 0
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)

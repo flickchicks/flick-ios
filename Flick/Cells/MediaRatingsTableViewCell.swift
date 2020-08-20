@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol RatingDelegate: class {
+    func rateMedia(userRating: Int)
+}
+
+
 class SliderView : UIView {
     var externalRating: CGFloat = 0
     var personalRating: CGFloat = 0
@@ -52,6 +57,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    weak var delegate: RatingDelegate?
     private var previousLocation = CGPoint()
     private let sliderWidth: CGFloat = 133
 
@@ -227,12 +233,15 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
         var personalRating: CGFloat = 0
         if let mediaPersonalRating = media.userRating {
-            personalRating = CGFloat(mediaPersonalRating)
+            personalRating = CGFloat(mediaPersonalRating) / 10
         }
 
         criticRatingsSliderView.externalRating = criticRating
         friendsRatingsSliderView.externalRating = friendRating
         friendsRatingsSliderView.personalRating = personalRating
+
+        criticRatingsSliderView.setNeedsDisplay()
+        friendsRatingsSliderView.setNeedsDisplay()
 
         friendsIconImageView.snp.updateConstraints { update in
             update.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(friendRating * sliderWidth)
@@ -269,39 +278,49 @@ class MediaRatingsTableViewCell: UITableViewCell {
         personalIconImageView.snp.updateConstraints { update in
             update.centerX.equalTo(friendsRatingsSliderView.snp.leading).offset(personalRating * sliderWidth)
         }
+
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+    private func getSliderXPosition(_ xCoord: CGFloat) -> CGFloat {
+        if xCoord < 10 {
+            return 10
+        } else if xCoord > 143 {
+            return 143
+        } else {
+            return xCoord
+        }
     }
 
     @objc func handlePan(recognizer: UIPanGestureRecognizer) {
         let coord = personalIconImageView.frame.origin
         switch recognizer.state {
         case .began:
-            break
+            sendHapticFeedback()
         case .changed:
-            var xCoord = recognizer.location(in: self).x
-            if xCoord < 10 {
-                xCoord = 10
-            } else if xCoord > 143 {
-                xCoord = 143
-            }
+            let xCoord = getSliderXPosition(recognizer.location(in: self).x)
             personalIconImageView.frame.origin = CGPoint(x: xCoord, y: coord.y)
             friendsRatingsSliderView.personalRating = xCoord / 133
             friendsRatingsSliderView.setNeedsDisplay()
         case .ended:
-//            print(personalIconImageView.frame.origin)
-            break
+            let xCoord = getSliderXPosition(recognizer.location(in: self).x)
+            let filledInSliderWidth = xCoord - 10
+            let filledInSliderPercentage = filledInSliderWidth / 133
+            let rating = Int((filledInSliderPercentage * 10).rounded(.down))
+            delegate?.rateMedia(userRating: rating)
+            sendHapticFeedback()
         default:
             break
         }
+    }
+
+    private func sendHapticFeedback() {
+        let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedbackgenerator.prepare()
+        impactFeedbackgenerator.impactOccurred()
     }
 
 }

@@ -23,6 +23,7 @@ class CommentTableViewCell: UITableViewCell {
     private let likeButton = UIButton()
     private let nameLabel = UILabel()
     private let profileImageView = UIImageView()
+    private let viewSpoilerButton = UIButton()
 
     // MARK: - Private Data Vars
     private var commentIndex: Int!
@@ -59,6 +60,12 @@ class CommentTableViewCell: UITableViewCell {
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         addSubview(likeButton)
 
+        viewSpoilerButton.setTitle("View", for: .normal)
+        viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        viewSpoilerButton.setTitleColor(.darkBlue, for: .normal)
+        viewSpoilerButton.isHidden = true
+        addSubview(viewSpoilerButton)
+
         setupConstraints()
     }
 
@@ -71,12 +78,12 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-
         let heartImageSize = CGSize(width: 16, height: 14)
         let horizontalPadding: CGFloat = 20
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
         let verticalPadding: CGFloat = 8
+        let viewSpoilerButtonSize = CGSize(width: 34, height: 17)
 
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(profileImageSize)
@@ -111,6 +118,11 @@ class CommentTableViewCell: UITableViewCell {
             make.centerY.equalTo(commentTextView)
         }
 
+        viewSpoilerButton.snp.makeConstraints { make in
+            make.trailing.equalTo(commentTextView).inset(12)
+            make.centerY.equalTo(commentTextView)
+            make.size.equalTo(viewSpoilerButtonSize)
+        }
     }
 
     /// Return the date label to be displayed given comment's created date
@@ -129,10 +141,10 @@ class CommentTableViewCell: UITableViewCell {
         return "1d"
     }
 
-    func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
+    func configure(for comment: Comment, index: Int, hideSpoiler: Bool, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
-        commentTextView.text = comment.message
+        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
         let firstName = comment.owner.firstName
         let lastName = comment.owner.lastName
         nameLabel.text = "\(firstName) \(lastName.prefix(1))."
@@ -143,5 +155,6 @@ class CommentTableViewCell: UITableViewCell {
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
         profileImageView.kf.setImage(with: profileImageUrl)
+        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
 }

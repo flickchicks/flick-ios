@@ -120,7 +120,7 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: commentsCellReuseIdentifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
         let comment = comments[indexPath.row]
-        cell.configure(for: comment, index: indexPath.row, delegate: self)
+        cell.configure(for: comment, index: indexPath.row, hideSpoiler: true, delegate: self)
         return cell
     }
 
@@ -128,7 +128,12 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension MediaCommentsViewController: CommentDelegate {
     func likeComment(index: Int) {
-
+        let commentId = comments[index].id
+        NetworkManager.likeComment(commentId: commentId) { comment in
+            print("Like Success")
+            self.comments[index] = comment
+            self.commentsTableView.reloadData()
+        }
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {

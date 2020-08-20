@@ -128,6 +128,7 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.configure(with: media)
+            cell.delegate = self
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaThoughtsReuseIdentifier, for: indexPath) as? MediaThoughtsTableViewCell else {
@@ -149,7 +150,11 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func likeComment(index: Int) {
-        // TODO: Make network call to like comment
+        let commentId = media.comments[index].id
+        NetworkManager.likeComment(commentId: commentId) { comment in
+            print("Like Success")
+            //TODO: Reload thoughts table view cell comment
+       }
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
@@ -164,10 +169,17 @@ extension MediaCardViewController: CommentDelegate {
     }
 }
 
+extension MediaCardViewController: RatingDelegate {
+    func rateMedia(userRating: Int) {
+        NetworkManager.rateMedia(mediaId: media.id, userRating: userRating) { media in
+            self.setupMedia(media: media)
+        }
+    }
+}
+
 extension MediaCardViewController: ModalDelegate {
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
     }
-
 
 }

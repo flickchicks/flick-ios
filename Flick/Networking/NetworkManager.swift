@@ -344,7 +344,44 @@ class NetworkManager {
                 "is_spoiler": isSpoiler
             ]
         ]
-        print(parameters)
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Like comment by id [updated as of 8/21/20]
+    static func likeComment(commentId: String, completion: @escaping (Comment) -> Void) {
+        let parameters: [String: Any] = [:]
+        AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let commentData = try? jsonDecoder.decode(Response<Comment>.self, from: data) {
+                    let comment = commentData.data
+                    completion(comment)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Like comment by id [updated as of 8/21/20]
+    static func rateMedia(mediaId: Int, userRating: Int, completion: @escaping (Media) -> Void) {
+        let parameters: [String: Any] = [
+            "user_rating": userRating
+        ]
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
