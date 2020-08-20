@@ -80,8 +80,7 @@ class MediaCardViewController: UIViewController {
         }
 
         commentAreaView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
+            make.bottom.leading.trailing.equalToSuperview()
         }
     }
 
@@ -124,6 +123,7 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
                 return UITableViewCell()
             }
             cell.configure(with: media)
+            cell.delegate = self
             return cell
         }
     }
@@ -154,7 +154,8 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func seeAllComments() {
-//        let commentsViewController = CommentsViewCz
+        let mediaCommentsViewController = MediaCommentsViewController(comments: media.comments, mediaId: media.id)
+        navigationController?.pushViewController(mediaCommentsViewController, animated: true)
     }
 }
 

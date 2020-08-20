@@ -44,12 +44,10 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
+        print("add comment")
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
+            print(commentText)
             delegate?.showSpoilerModal(commentText: commentText)
-//            delegate?.addComment(commentText: commentText, isSpoiler: false)
-//            let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
-//            comments.insert(comment, at: 0)
-//            commentsTableView.reloadData()
         }
     }
 

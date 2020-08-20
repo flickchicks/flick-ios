@@ -38,6 +38,6 @@ struct CommentUser: Codable {
     var firstName: String
     var lastName: String
     var profileId: String
-    var profilePic: ProfilePicture
+    var profilePic: ProfilePicture?
 
 }

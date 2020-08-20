@@ -129,12 +129,30 @@ class CommentTableViewCell: UITableViewCell {
 
     }
 
+    private func getDateLabelText(createdAt: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.locale = Locale.current
+        let createdAtDate = dateFormatter.date(from: createdAt)
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(
+            [.year, .month, .day, .hour, .minute, .second],
+            from:  createdAtDate!, to: currentDate)
+        let seconds = components.second
+        print("Year: \(components.year), Months: \(components.month), Days: \(components.day), Hour: \(components.hour), Minute: \(components.minute), Seconds: \(seconds)")
+
+        return ""
+    }
+
     func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
         commentLabel.text = comment.message
         nameLabel.text = comment.owner.firstName
-        dateLabel.text = "temp"
+        let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
+        dateLabel.text = "1h"
 //        let heartImage = comment.liked ? "filledHeart" : "heart"
         let heartImage = "filledHeart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)

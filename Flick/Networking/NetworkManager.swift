@@ -322,20 +322,12 @@ class NetworkManager {
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: String, completion: @escaping (Media) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(mediaId)/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-//            print(headers)
-//            print("\(hostEndpoint)/api/show/\(mediaId)/")
-//            print(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-//                print(data)
-//                if let string = String(bytes: data, encoding: .utf8) {
-//                    print(string)
-//                }
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
                     let media = mediaData.data
-                    print(media)
                     completion(media)
                 }
             case .failure(let error):
@@ -346,9 +338,6 @@ class NetworkManager {
 
     /// [POST] Post comment on media by id [updated as of 8/20/20]
     static func postComment(mediaId: Int, comment: String, isSpoiler: Bool, completion: @escaping (Media) -> Void) {
-        print(mediaId)
-        print(comment)
-        print("\(hostEndpoint)/api/show/\(String(mediaId))/")
         let parameters: [String: Any] = [
             "comment": [
                 "message": comment,
@@ -361,13 +350,8 @@ class NetworkManager {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-//                print(data)
-                if let string = String(bytes: data, encoding: .utf8) {
-//                    print(string)
-                }
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
                     let media = mediaData.data
-//                    print(media)
                     completion(media)
                 }
             case .failure(let error):
