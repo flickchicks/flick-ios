@@ -147,10 +147,14 @@ extension MediaCardViewController: CommentDelegate {
 
     func addComment(commentText: String, isSpoiler: Bool) {
         NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { media in
-            print(media)
+            self.setupMedia(media: media)
         }
 //        comments.insert(comment, at: 0)
 //        commentsTableView.reloadData()
+    }
+
+    func seeAllComments() {
+        let commentsViewController = CommentsViewCz
     }
 }
 

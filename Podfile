@@ -18,10 +18,14 @@ target 'Flick' do
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
     	pod 'SnapKit'
+	pod 'Pulley'
 
 	# Data Loading
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.0'
+
+	# Debugging
+	pod 'FLEX', :configurations => ['Debug']
 
   target 'FlickTests' do
     inherit! :search_paths

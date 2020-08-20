@@ -14,6 +14,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let separatorView = UIView()
     private let seeAllCommentsButton = UIButton()
     private let commentTableViewCell = CommentTableViewCell()
+    weak var delegate: CommentDelegate?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,7 +30,6 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         separatorView.backgroundColor = .lightGray2
         addSubview(separatorView)
 
-//        seeAllCommentsButton.setTitle("See All 4", for: .normal)
         seeAllCommentsButton.contentHorizontalAlignment = .right
         seeAllCommentsButton.addTarget(self, action: #selector(seeAllComments), for: .touchUpInside)
         seeAllCommentsButton.setTitleColor(.darkBlueGray2, for: .normal)
@@ -57,7 +57,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     @objc func seeAllComments() {
-
+        delegate?.seeAllComments()
     }
 
     func configure(with media: Media) {
