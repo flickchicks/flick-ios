@@ -37,11 +37,6 @@ struct Media: Codable {
     var cast: String
 }
 
-//struct Tag: Codable {
-//    var tagId: String
-//    var tag: String
-//}
-
 struct MediaTag: Codable {
     var id: Int
     var name: String

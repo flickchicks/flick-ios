@@ -7,23 +7,11 @@
 //
 import UIKit
 
-class CommentTextField: UITextField {
-
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return super.textRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
-    }
-
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return super.editingRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
-    }
-}
-
 class MediaCommentsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
-    private let commentTextField = UITextField()
     private let commentAreaView = CommentAreaView()
     private let sendCommentButton = UIButton()
     private let thoughtsTitleLabel = UILabel()
@@ -105,10 +93,9 @@ class MediaCommentsViewController: UIViewController {
 
     private func setupConstraints() {
 
-        let bottomSafeAreaInsets = view.safeAreaInsets.bottom
-
         commentAreaView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
 
         commentsTableView.snp.makeConstraints { make in
@@ -147,6 +134,8 @@ extension MediaCommentsViewController: CommentDelegate {
     func addComment(commentText: String, isSpoiler: Bool) {
         NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { media in
             self.comments = media.comments
+            self.commentAreaView.commentTextView.text = ""
+            self.commentAreaView.commentTextView.endEditing(true)
             self.commentsTableView.reloadData()
         }
     }
@@ -155,10 +144,11 @@ extension MediaCommentsViewController: CommentDelegate {
         let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
         commentSpoilerModalView.delegate = self
         commentSpoilerModalView.commentDelegate = self
-        view.addSubview(commentSpoilerModalView)
+        showModalPopup(view: commentSpoilerModalView)
     }
 
     func seeAllComments() {
+        // Not used in this view controller
         return
     }
 }

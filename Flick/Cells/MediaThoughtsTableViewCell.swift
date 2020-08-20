@@ -10,28 +10,25 @@ import UIKit
 
 class MediaThoughtsTableViewCell: UITableViewCell {
 
-    private let titleLabel = UILabel()
-    private let separatorView = UIView()
+    // MARK: - Private View Vars
+    private let commentCellView = UIView()
+    private let commentDateLabel = UILabel()
+    private let commentTextView = UITextView()
+    private let commentLikeButton = UIButton()
+    private let commentOwnerLabel = UILabel()
+    private let commentProfileImageView = UIImageView()
     private let seeAllCommentsButton = UIButton()
-    private let commentTableViewCell = CommentTableViewCell()
-    private let commentsTableView = UITableView(frame: .zero, style: .plain)
+    private let separatorView = UIView()
+    private let titleLabel = UILabel()
+
+    // MARK: - Private Data Vars
     weak var delegate: CommentDelegate?
-    private var comments: [Comment] = [Comment(createdAt: "2020-08-08T02:47:53.060628Z", id: "", isSpoiler: false, numLikes: 2, likers: [], owner: CommentUser(userId: "", username: "sdf", firstName: "dsf", lastName: "fsdf", profileId: "fsdf", profilePic: nil), message: "sdfaksfdlsadfklsahdfklsahdfklshdaflkhasdlkjfahksljdfhklasjfhkladsjfhkljsdfhklasdjfalsjdfhklsajdfhklasdhfkalsjdfhklasdjfhklasdjfhklasdjfhklsadjfhklsadjfhkalsdjfhklasddjfhklasdjfhklasdsahdfklsafsdfa")]
-
-
-    private let commentLabel = PaddedLabel()
-    private let dateLabel = UILabel()
-    private let likeButton = UIButton()
-    private let nameLabel = UILabel()
-    private let profileImageView = UIImageView()
-
-
-    private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
+    private var comments: [Comment] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .movieWhite
-        // Initialization code
+
         titleLabel.text = "Thoughts"
         titleLabel.font = .boldSystemFont(ofSize: 18)
         titleLabel.textColor = .darkBlue
@@ -49,96 +46,104 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         seeAllCommentsButton.titleLabel?.font = .systemFont(ofSize: 12)
         addSubview(seeAllCommentsButton)
 
-        profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
-        profileImageView.layer.cornerRadius = 20
-        profileImageView.isHidden = true
-        addSubview(profileImageView)
+        commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
+        commentProfileImageView.contentMode = .scaleAspectFit
+        commentProfileImageView.layer.cornerRadius = 20
+        commentCellView.addSubview(commentProfileImageView)
 
-//        commentLabel.text = "fsadfsadfhaskdfhksahdfkljsahdfkljdsasdffasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadf"
-        commentLabel.layer.backgroundColor = UIColor.lightGray2.cgColor
-        commentLabel.font = .systemFont(ofSize: 12)
-        commentLabel.isHidden = true
-        commentLabel.textColor = .black
-        commentLabel.numberOfLines = 0
-        commentLabel.layer.cornerRadius = 16
-        addSubview(commentLabel)
+        commentTextView.isEditable = false
+        commentTextView.isScrollEnabled = false
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
+        commentTextView.font = .systemFont(ofSize: 12)
+        commentTextView.textColor = .black
+        commentTextView.layer.cornerRadius = 16
+        commentCellView.addSubview(commentTextView)
 
-//        nameLabel.text = "\(media.comments[0].owner.firstName) \(media.comments[0].owner.lastName.prefix(0))"
-        nameLabel.font = .systemFont(ofSize: 10)
-        nameLabel.isHidden = true
-        nameLabel.textColor = .mediumGray
-        addSubview(nameLabel)
+        commentOwnerLabel.font = .systemFont(ofSize: 10)
+        commentOwnerLabel.textColor = .mediumGray
+        commentCellView.addSubview(commentOwnerLabel)
 
-        dateLabel.text = "1d"
-        dateLabel.isHidden = true
-        dateLabel.font = .systemFont(ofSize: 10)
-        dateLabel.textColor = .mediumGray
-        addSubview(dateLabel)
+        commentDateLabel.font = .systemFont(ofSize: 10)
+        commentDateLabel.textAlignment = .right
+        commentDateLabel.textColor = .mediumGray
+        commentCellView.addSubview(commentDateLabel)
 
-        //        likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
-        likeButton.isHidden = true
-        addSubview(likeButton)
+        commentCellView.addSubview(commentLikeButton)
 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
+        commentCellView.sizeToFit()
+        commentCellView.addGestureRecognizer(tapGestureRecognizer)
+        commentCellView.isHidden = true
+        addSubview(commentCellView)
+
+        setupConstraints()
+
+    }
+
+    private func setupConstraints() {
+        let horizontalPadding: CGFloat = 20
         let heartImageSize = CGSize(width: 16, height: 14)
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
-        let horizontalPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 8
-
-        profileImageView.snp.makeConstraints { make in
-            make.size.equalTo(profileImageSize)
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(titleLabel.snp.bottom).offset(32)
-        }
-
-        nameLabel.snp.makeConstraints { make in
-        //            make.bottom.equalTo(commentLabel.snp.top).offset(-4)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.height.equalTo(labelHeight)
-            make.leading.equalTo(commentLabel)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-        }
-
-        dateLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel)
-            make.height.equalTo(labelHeight)
-            make.leading.equalTo(nameLabel.snp.trailing)
-            make.trailing.equalToSuperview().inset(20)
-        }
-
-        commentLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView)
-            make.trailing.equalToSuperview().inset(69)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(8)
-            make.bottom.equalToSuperview().inset(12)
-        }
-
-        likeButton.snp.makeConstraints { make in
-            make.size.equalTo(heartImageSize)
-            make.trailing.equalToSuperview().inset(20)
-            make.centerY.equalTo(commentLabel)
-
-        }
+        let verticalPadding: CGFloat = 16
 
         separatorView.snp.makeConstraints{ make in
             make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.height.equalTo(2)
         }
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(horizontalPadding)
             make.width.equalTo(83)
             make.top.equalTo(separatorView.snp.bottom).offset(17)
         }
 
         seeAllCommentsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
             make.bottom.equalTo(titleLabel)
             make.height.equalTo(15)
             make.leading.equalTo(titleLabel.snp.trailing)
         }
 
+        commentCellView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(verticalPadding)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+            make.bottom.equalToSuperview()
+        }
+
+        commentProfileImageView.snp.makeConstraints { make in
+            make.size.equalTo(profileImageSize)
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview().offset(verticalPadding)
+        }
+
+        commentOwnerLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(labelHeight)
+            make.leading.trailing.equalTo(commentTextView)
+        }
+
+        commentDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(commentOwnerLabel)
+            make.height.equalTo(labelHeight)
+            make.leading.equalTo(commentOwnerLabel.snp.trailing)
+            make.trailing.equalToSuperview()
+        }
+
+        commentTextView.snp.makeConstraints { make in
+            make.top.equalTo(commentProfileImageView)
+            make.trailing.equalToSuperview().inset(49)
+            make.leading.equalTo(commentProfileImageView.snp.trailing).offset(8)
+            make.bottom.equalToSuperview().inset(verticalPadding)
+        }
+
+        commentLikeButton.snp.makeConstraints { make in
+            make.size.equalTo(heartImageSize)
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(commentTextView)
+        }
     }
 
     @objc func seeAllComments() {
@@ -146,68 +151,28 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     func configure(with media: Media) {
-
         let numComments = media.comments.count
-
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
-
         if numComments == 0 {
             return
         }
-
+        let comment = media.comments[0]
+        commentTextView.text = comment.message
+        let firstName = comment.owner.firstName
+        let lastName = comment.owner.lastName
+        commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
+        // TODO: Add logic to calculate difference between createdDate and currentDate
+        commentDateLabel.text = "1d"
+        // TODO: Add logic to discover if comment has been liked by user
+        commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
+        let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
+        commentProfileImageView.kf.setImage(with: profileImageUrl)
         seeAllCommentsButton.isHidden = false
-        profileImageView.isHidden = false
-
-        commentLabel.text = media.comments[0].message
-        commentLabel.isHidden = false
-
-        let firstName = media.comments[0].owner.firstName
-        let lastName = media.comments[0].owner.lastName
-        nameLabel.text = "\(firstName) \(lastName.prefix(1))."
-        nameLabel.isHidden = false
-
-        dateLabel.text = "1d"
-        dateLabel.isHidden = false
-
-        likeButton.setImage(UIImage(named: "heart"), for: .normal)
-        likeButton.isHidden = false
-
+        commentCellView.isHidden = false
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
-
-extension MediaThoughtsTableViewCell: CommentDelegate {
-    func showSpoilerModal(commentText: String) {
-//        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
-//        commentSpoilerModalView.delegate = self
-//        addSubview(commentSpoilerModalView)
-    }
-
-    func likeComment(index: Int) {
-//        comments[index].liked.toggle()
-//        commentsTableView.reloadData()
-    }
-
-    func addComment(commentText: String, isSpoiler: Bool) {
-//        let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
-//        comments.insert(comment, at: 0)
-//        commentsTableView.reloadData()
-    }
-
-}
-
-//extension MediaThoughtsTableViewCell: ModalDelegate {
-//    func dismissModal(modalView: UIView) {
-//        modalView.removeFromSuperview()
-//    }
-//}

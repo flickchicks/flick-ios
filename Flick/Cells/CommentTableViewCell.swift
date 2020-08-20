@@ -15,28 +15,10 @@ protocol CommentDelegate: class {
     func seeAllComments()
 }
 
-// Creates UILabel with padding
-class PaddedLabel: UILabel {
-
-    let padding = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-
-    override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.inset(by: padding))
-    }
-
-    override var intrinsicContentSize : CGSize {
-        let superContentSize = super.intrinsicContentSize
-        let width = superContentSize.width + padding.left + padding.right
-        let height = superContentSize.height + padding.top + padding.bottom
-        return CGSize(width: width, height: height)
-    }
-
-}
-
 class CommentTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let commentLabel = PaddedLabel()
+    private let commentTextView = UITextView()
     private let dateLabel = UILabel()
     private let likeButton = UIButton()
     private let nameLabel = UILabel()
@@ -56,17 +38,20 @@ class CommentTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 20
         addSubview(profileImageView)
 
-        commentLabel.layer.backgroundColor = UIColor.lightGray2.cgColor
-        commentLabel.font = .systemFont(ofSize: 12)
-        commentLabel.textColor = .black
-        commentLabel.numberOfLines = 0
-        commentLabel.layer.cornerRadius = 16
-        addSubview(commentLabel)
+        commentTextView.isEditable = false
+        commentTextView.isScrollEnabled = false
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
+        commentTextView.font = .systemFont(ofSize: 12)
+        commentTextView.textColor = .black
+        commentTextView.layer.cornerRadius = 16
+        addSubview(commentTextView)
 
         nameLabel.font = .systemFont(ofSize: 10)
         nameLabel.textColor = .mediumGray
         addSubview(nameLabel)
 
+        dateLabel.textAlignment = .right
         dateLabel.font = .systemFont(ofSize: 10)
         dateLabel.textColor = .mediumGray
         addSubview(dateLabel)
@@ -88,9 +73,9 @@ class CommentTableViewCell: UITableViewCell {
     private func setupConstraints() {
 
         let heartImageSize = CGSize(width: 16, height: 14)
+        let horizontalPadding: CGFloat = 20
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
-        let horizontalPadding: CGFloat = 20
         let verticalPadding: CGFloat = 8
 
         profileImageView.snp.makeConstraints { make in
@@ -109,11 +94,11 @@ class CommentTableViewCell: UITableViewCell {
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel)
             make.height.equalTo(labelHeight)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.width.equalTo(20)
+            make.trailing.equalTo(likeButton)
+            make.width.equalTo(horizontalPadding)
         }
 
-        commentLabel.snp.makeConstraints { make in
+        commentTextView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView)
             make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
@@ -123,12 +108,12 @@ class CommentTableViewCell: UITableViewCell {
         likeButton.snp.makeConstraints { make in
             make.size.equalTo(heartImageSize)
             make.trailing.equalToSuperview()
-            make.centerY.equalTo(commentLabel)
-
+            make.centerY.equalTo(commentTextView)
         }
 
     }
 
+    /// Return the date label to be displayed given comment's created date
     private func getDateLabelText(createdAt: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
@@ -140,21 +125,23 @@ class CommentTableViewCell: UITableViewCell {
         let components = calendar.dateComponents(
             [.year, .month, .day, .hour, .minute, .second],
             from:  createdAtDate!, to: currentDate)
-        let seconds = components.second
-        print("Year: \(components.year), Months: \(components.month), Days: \(components.day), Hour: \(components.hour), Minute: \(components.minute), Seconds: \(seconds)")
-
-        return ""
+        // TODO: Complete logic to get date string
+        return "1d"
     }
 
     func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
-        commentLabel.text = comment.message
-        nameLabel.text = comment.owner.firstName
+        commentTextView.text = comment.message
+        let firstName = comment.owner.firstName
+        let lastName = comment.owner.lastName
+        nameLabel.text = "\(firstName) \(lastName.prefix(1))."
         let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
-        dateLabel.text = "1h"
-//        let heartImage = comment.liked ? "filledHeart" : "heart"
-        let heartImage = "filledHeart"
+        dateLabel.text = dateLabelText
+        // TODO: Complete logic to detect if comment has been liked
+        let heartImage = "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
+        profileImageView.kf.setImage(with: profileImageUrl)
     }
 }

@@ -10,25 +10,26 @@ import UIKit
 
 class MediaSummaryTableViewCell: UITableViewCell {
 
+    // MARK: - Private View Vars
     private var platformCollectionView: SelfSizingCollectionView!
-    private let titleLabel = UILabel()
     private let summaryLabel = UILabel()
     private var summaryItemsCollectionView: SelfSizingCollectionView!
+    private let titleLabel = UILabel()
     private var tagsCollectionView: SelfSizingCollectionView!
+
+    // MARK: - Private Data Vars
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
     private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
 
     private var summaryInfo: [MediaSummary] = []
-
-    private var tags: [MediaTag] = [MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy"), MediaTag(id: 1, name: "Comedy")]
+    private var tags: [MediaTag] = []
+    // TODO: Replace with platforms after backend is complete
     private let platforms = ["Netflix", "Hulu"]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .movieWhite
-
-//        contentView.autoresizingMask = .flexibleHeight
 
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
@@ -58,7 +59,6 @@ class MediaSummaryTableViewCell: UITableViewCell {
         addSubview(summaryItemsCollectionView)
 
         let tagsCollectionViewLayout = LeftAlignedFlowLayout()
-//        tagsCollectionViewLayout.minimumLineSpacing = 12
         tagsCollectionView = SelfSizingCollectionView(
             frame: CGRect(x: 0, y: 0, width: frame.width, height: 0),
             collectionViewLayout: tagsCollectionViewLayout)
@@ -97,7 +97,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let releaseYear = media.dateReleased {
-            mediaSummaryInfo.append(MediaSummary(text: releaseYear, type: .releaseStatus))
+            mediaSummaryInfo.append(MediaSummary(text: String(releaseYear.prefix(4)), type: .releaseStatus))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let audienceLevel = media.audienceLevel {
@@ -105,7 +105,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let language = media.language {
-            mediaSummaryInfo.append(MediaSummary(text: language, type: .language))
+            mediaSummaryInfo.append(MediaSummary(text: language.uppercased(), type: .language))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let director = media.directors {
@@ -119,38 +119,34 @@ class MediaSummaryTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
+        let horizontalPadding: CGFloat = 20
+        let verticalPadding: CGFloat = 12
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         summaryItemsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
         }
 
         summaryLabel.snp.makeConstraints { make in
             make.top.equalTo(summaryItemsCollectionView.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         tagsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(summaryLabel.snp.bottom).offset(12)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(summaryLabel.snp.bottom).offset(verticalPadding)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         platformCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(tagsCollectionView.snp.bottom).offset(12)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(20)
+            make.top.equalTo(tagsCollectionView.snp.bottom).offset(verticalPadding)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+            make.bottom.equalToSuperview().inset(horizontalPadding)
         }
-
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
     }
 
 }
@@ -168,6 +164,7 @@ extension MediaSummaryTableViewCell: UICollectionViewDataSource, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == summaryItemsCollectionView {
+            // Use different cells for each type because they're different enough that it doesn't make sense to try to reuse cells
             switch summaryInfo[indexPath.item].type {
             case .spacer:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "spacer", for: indexPath) as? MediaSummarySpacerCollectionViewCell else { return UICollectionViewCell() }

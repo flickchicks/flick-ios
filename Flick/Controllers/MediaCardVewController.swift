@@ -10,15 +10,21 @@ import UIKit
 
 class MediaCardViewController: UIViewController {
 
+    // MARK: - Public View Vars
     let handleArea = UIView()
-    private let handleIndicatorView = UIView()
     let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
+
+    // MARK: - Private View Vars
     private let commentAreaView = CommentAreaView()
+    private let handleIndicatorView = UIView()
 
+    // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
-
     // Dummy Media Object (used before data is loaded)
     private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imbdRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
+    private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
+    private let mediaThoughtsReuseIdentifier = "MediaThoughtsReuseIdentifier"
+    private let mediaRatingsReuseIdentifier = "MediaRatingsReuseIdentifier"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,9 +47,9 @@ class MediaCardViewController: UIViewController {
         mediaInformationTableView.estimatedRowHeight = 140
         mediaInformationTableView.setNeedsLayout()
         mediaInformationTableView.layoutIfNeeded()
-        mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: "MediaSummaryReuseIdentifier")
-        mediaInformationTableView.register(MediaRatingsTableViewCell.self, forCellReuseIdentifier: "MediaRatingsReuseIdentifier")
-        mediaInformationTableView.register(MediaThoughtsTableViewCell.self, forCellReuseIdentifier: "MediaThoughtsReuseIdentifier")
+        mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: mediaSummaryReuseIdentifier)
+        mediaInformationTableView.register(MediaRatingsTableViewCell.self, forCellReuseIdentifier: mediaRatingsReuseIdentifier)
+        mediaInformationTableView.register(MediaThoughtsTableViewCell.self, forCellReuseIdentifier: mediaThoughtsReuseIdentifier)
         view.addSubview(mediaInformationTableView)
 
         commentAreaView.delegate = self
@@ -54,8 +60,10 @@ class MediaCardViewController: UIViewController {
 
     }
 
+    // Handle area triggers card pan gesture contrl
     private func setupHandleArea() {
         view.addSubview(handleArea)
+
         handleIndicatorView.layer.backgroundColor = UIColor.lightGray4.cgColor
         handleIndicatorView.layer.cornerRadius = 2
         view.addSubview(handleIndicatorView)
@@ -80,10 +88,13 @@ class MediaCardViewController: UIViewController {
         }
 
         commentAreaView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
+//            make.bottom.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
 
+    // TODO: Fix scrolling and card pan gesture interactions
     func updateTableScroll(isScrollEnabled: Bool) {
         mediaInformationTableView.isScrollEnabled = isScrollEnabled
     }
@@ -107,19 +118,19 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaSummaryReuseIdentifier", for: indexPath) as? MediaSummaryTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaSummaryReuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: media)
             return cell
         } else if indexPath.section == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaRatingsReuseIdentifier", for: indexPath) as? MediaRatingsTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaRatingsReuseIdentifier, for: indexPath) as? MediaRatingsTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: media)
             return cell
         } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MediaThoughtsReuseIdentifier", for: indexPath) as? MediaThoughtsTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaThoughtsReuseIdentifier, for: indexPath) as? MediaThoughtsTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: media)
@@ -127,8 +138,6 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         }
     }
-
-
 }
 
 extension MediaCardViewController: CommentDelegate {
@@ -137,20 +146,16 @@ extension MediaCardViewController: CommentDelegate {
         commentSpoilerModalView.delegate = self
         commentSpoilerModalView.commentDelegate = self
         showModalPopup(view: commentSpoilerModalView)
-//        view.addSubview(commentSpoilerModalView)
     }
 
     func likeComment(index: Int) {
-//        comments[index].liked.toggle()
-//        commentsTableView.reloadData()
+        // TODO: Make network call to like comment
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
         NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { media in
             self.setupMedia(media: media)
         }
-//        comments.insert(comment, at: 0)
-//        commentsTableView.reloadData()
     }
 
     func seeAllComments() {

@@ -18,17 +18,6 @@ struct Comment: Codable {
     var owner: CommentUser
     var message: String
 
-//    var name: String
-//    var comment: String
-//    var date: String
-//    var liked: Bool
-//
-//    init(name: String, comment: String, date: String, liked: Bool) {
-//        self.name = name
-//        self.comment = comment
-//        self.date = date
-//        self.liked = liked
-//    }
 }
 
 struct CommentUser: Codable {
@@ -38,6 +27,6 @@ struct CommentUser: Codable {
     var firstName: String
     var lastName: String
     var profileId: String
-    var profilePic: ProfilePicture?
+    var profilePic: ProfilePicture
 
 }

@@ -9,8 +9,6 @@
 import Foundation
 import Kingfisher
 import UIKit
-import Pulley
-
 
 enum CardState {case collapsed, expanded }
 
@@ -136,7 +134,6 @@ class MediaViewController: UIViewController {
             break
         }
     }
-
 
     @objc func tableViewCardPan(recognizer: UIPanGestureRecognizer) {
 

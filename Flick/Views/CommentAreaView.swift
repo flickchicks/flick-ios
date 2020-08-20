@@ -12,7 +12,7 @@ class CommentAreaView: UIView {
 
     // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
-    private let commentTextView = UITextView()
+    let commentTextView = UITextView()
     private let sendCommentButton = UIButton()
     weak var delegate: CommentDelegate?
 //    weak var modalDelegate: ModalDelegate?
