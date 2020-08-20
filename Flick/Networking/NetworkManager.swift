@@ -84,14 +84,10 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Create new list for a user with default/empty settings [updated as of 7/6/20]
-    static func createNewMediaList(authToken: String, listName: String, completion: @escaping (MediaList) -> Void) {
-        let headers: HTTPHeaders = [
-            "Authorization": "Token \(authToken)",
-            "Accept": "application/json"
-        ]
+    /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
+    static func createNewMediaList(listName: String, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
-            "lst_name": listName,
+            "name": listName,
             "is_favorite": true,
             "is_watched": true,
             "collaborators": [],
@@ -116,14 +112,14 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get all lists of a user [updated as of 8/10/20]
-    static func getAllMediaLists(completion: @escaping ([MediaList]) -> Void) {
+    /// [GET] Get all lists of a user [updated as of 8/17/20]
+    static func getAllMediaLists(completion: @escaping ([SimpleMediaList]) -> Void) {
         AF.request("\(hostEndpoint)/api/lsts/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let mediaListsData = try? jsonDecoder.decode(Response<[MediaList]>.self, from: data) {
+                if let mediaListsData = try? jsonDecoder.decode(Response<[SimpleMediaList]>.self, from: data) {
                     let mediaLists = mediaListsData.data
                     completion(mediaLists)
                 }
@@ -133,9 +129,9 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get list of a user by id
-    static func getMediaList(userId: String, listId: String, completion: @escaping (MediaList) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/list/\(listId)", method: .get, encoding: JSONEncoding.default).validate().responseData { response in
+    /// [GET] Get list of a user by id [updated as of 8/17/20]
+    static func getMediaList(listId: Int, completion: @escaping (MediaList) -> Void) {
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -151,13 +147,11 @@ class NetworkManager {
     }
 
     /// [POST] Update list of a user by id [updated as of 8/5/20]
-    static func updateMediaList(listId: String, list: MediaList, completion: @escaping (MediaList) -> Void) {
+    static func updateMediaList(listId: Int, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
-            "lst_name": list.lstName,
-            "collaborators": list.collaborators.map { $0.userId },
-            "owner": list.owner.userId,
-            "shows": list.shows.map { $0.id },
-            "tags": list.tags.map { $0.tagId },
+            "name": list.name,
+            "collaborators": list.collaborators.map { $0.id },
+            "owner": list.owner.id,
             "is_private": list.isPrivate
         ]
 
@@ -177,8 +171,62 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Add to list of a user by id [updated as of 8/17/20]
+    static func addToMediaList(listId: Int,
+                               collaboratorIds: [Int] = [],
+                               mediaIds: [Int] = [],
+                               tagIds: [Int] = [],
+                               completion: @escaping (MediaList) -> Void) {
+        let parameters: [String: Any] = [
+            "collaborators": collaboratorIds,
+            "shows": mediaIds,
+            "tags": tagIds,
+        ]
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
+                    let mediaList = mediaListData.data
+                    completion(mediaList)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Remove part of a list of a user by id [updated as of 8/17/20]
+    static func removeFromMediaList(listId: Int,
+                                    collaboratorIds: [Int] = [],
+                                    mediaIds: [Int] = [],
+                                    tagIds: [Int] = [],
+                                    completion: @escaping (MediaList) -> Void) {
+        let parameters: [String: Any] = [
+            "collaborators": collaboratorIds,
+            "shows": mediaIds,
+            "tags": tagIds,
+        ]
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
+                    let mediaList = mediaListData.data
+                    completion(mediaList)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     /// [DELETE] Delete list of a user by id [updated as of 8/5/20]
-    static func deleteMediaList(listId: String, completion: @escaping (String) -> Void) {
+    static func deleteMediaList(listId: Int, completion: @escaping (String) -> Void) {
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .delete, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):

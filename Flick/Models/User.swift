@@ -9,12 +9,10 @@
 import Foundation
 
 struct User: Codable {
-
     var username: String
     var firstName: String
     var lastName: String
     var profilePic: String?
     var socialIdToken: String
     var socialIdTokenType: String
-
 }

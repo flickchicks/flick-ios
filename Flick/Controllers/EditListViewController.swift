@@ -9,6 +9,7 @@
 import UIKit
 
 protocol EditListDelegate: class {
+    func moveMedia(selectedList: SimpleMediaList)
     func removeMediaFromList()
 }
 
@@ -33,9 +34,9 @@ class EditListViewController: UIViewController {
     private let cellPadding: CGFloat = 20
     private var numSelected = 0
     private var list: MediaList
-    private var media = [Media]()
+    private var media = [SimpleMedia]()
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
-    private var selectedMedia = [Media]()
+    private var selectedMedia = [SimpleMedia]()
 
     init(list: MediaList) {
         self.list = list
@@ -241,6 +242,7 @@ class EditListViewController: UIViewController {
     @objc private func moveTapped() {
         let listsModalView = MediaListsModalView(type: .moveMedia)
         listsModalView.modalDelegate = self
+        listsModalView.editListDelegate = self
         showModalPopup(view: listsModalView)
     }
 
@@ -296,14 +298,20 @@ extension EditListViewController: ModalDelegate {
 
 extension EditListViewController: EditListDelegate {
 
-    func removeMediaFromList() {
-        var updatedList = list
-        var updatedMedia = media
-        updatedMedia = updatedMedia.filter { media -> Bool in
-            !selectedMedia.contains { media.id == $0.id }
+    func moveMedia(selectedList: SimpleMediaList) {
+        let mediaIds = selectedMedia.map { $0.id }
+        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Moved \(self.selectedMedia.count) items to \(selectedList.name)", completion: nil)
+            self.mediaCollectionView.reloadData()
+            self.selectedMedia = []
         }
-        updatedList.shows = updatedMedia
-        NetworkManager.updateMediaList(listId: list.lstId, list: updatedList) { [weak self] list in
+    }
+
+    func removeMediaFromList() {
+        let mediaIds = selectedMedia.map { $0.id }
+        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)
