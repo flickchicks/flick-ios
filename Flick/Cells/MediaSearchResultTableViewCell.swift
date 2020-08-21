@@ -27,10 +27,9 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         posterImageView.backgroundColor = .lightGray
         posterImageView.layer.cornerRadius = 4
+        posterImageView.layer.masksToBounds = true
         containerView.addSubview(posterImageView)
 
-        // TODO: name is temp
-        nameLabel.text = "Slime anime"
         nameLabel.textColor = .darkBlue
         nameLabel.font = .systemFont(ofSize: 16)
         containerView.addSubview(nameLabel)
@@ -45,7 +44,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
         let selectSize = CGSize(width: 20, height: 20)
 
         containerView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(4)
+            make.top.bottom.equalToSuperview().inset(2)
             make.leading.trailing.equalToSuperview()
         }
 
@@ -64,6 +63,14 @@ class MediaSearchResultTableViewCell: UITableViewCell {
             make.size.equalTo(selectSize)
             make.trailing.equalToSuperview().inset(12)
             make.centerY.equalToSuperview()
+        }
+    }
+
+    func configure(media: Media) {
+        nameLabel.text = media.title
+        if let pictureUrl = URL(string: media.posterPic ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
+            let pictureObject = UIImage(data: pictureData)
+            posterImageView.image = pictureObject
         }
     }
 

@@ -50,6 +50,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         contentView.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.tintColor = .mediumGray
         contentView.addSubview(settingsButton)
 
         setupConstraints()
