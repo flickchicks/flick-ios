@@ -27,10 +27,10 @@ class ListViewController: UIViewController {
     private let addMediaMessageLabel = UILabel()
     private let arrowToAddButtonView = UIImageView()
     private let backButton = UIButton()
-    private let settingsButton = UIButton()
     private let emptyListImageView = UIImageView()
     private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
+    private let settingsButton = UIButton()
     private var sortListModalView: SortListModalView!
 
     // MARK: - Private Data Vars
