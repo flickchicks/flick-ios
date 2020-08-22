@@ -320,8 +320,9 @@ class NetworkManager {
     }
 
     /// [GET] Get media information by id [updated as of 8/15/20]
-    static func getMedia(mediaId: String, completion: @escaping (Media) -> Void) {
-        AF.request("\(hostEndpoint)/api/show/\(mediaId)/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+    static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
+        print(mediaId)
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -360,9 +361,9 @@ class NetworkManager {
     }
 
     /// [POST] Like comment by id [updated as of 8/21/20]
-    static func likeComment(commentId: String, completion: @escaping (Comment) -> Void) {
+    static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
         let parameters: [String: Any] = [:]
-        AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/comment/\(String(commentId))/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -411,9 +412,11 @@ class NetworkManager {
         AF.request(url, method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                print(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    print(mediaData.data)
                     let media = mediaData.data
                     completion(media)
                 }

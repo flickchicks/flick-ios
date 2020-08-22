@@ -9,8 +9,6 @@
 import UIKit
 import FBSDKLoginKit
 import IQKeyboardManagerSwift
-import Pulley
-
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 

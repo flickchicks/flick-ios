@@ -23,7 +23,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
     private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
 
     private var summaryInfo: [MediaSummary] = []
-    private var tags: [MediaTag] = []
+    private var tags: [Tag] = []
     // TODO: Replace with platforms after backend is complete
     private let platforms = ["Netflix", "Hulu"]
 
@@ -90,7 +90,9 @@ class MediaSummaryTableViewCell: UITableViewCell {
     func configure(with media: Media) {
         titleLabel.text = media.title
         summaryLabel.text = media.plot
-        tags = media.tags
+        if let tags = media.tags {
+            self.tags = tags
+        }
         var mediaSummaryInfo: [MediaSummary] = []
         if let duration = media.duration {
             mediaSummaryInfo.append(MediaSummary(text: duration, type: .duration))

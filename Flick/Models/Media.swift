@@ -31,13 +31,8 @@ struct Media: Codable {
     var tomatoRating: Float?
     var friendsRating: Float?
     var userRating: Int?
-    var comments: [Comment]
+    var comments: [Comment]?
     var platforms: [String]?
     var keywords: [String]?
     var cast: String?
-}
-
-struct MediaTag: Codable {
-    var id: Int
-    var name: String
 }

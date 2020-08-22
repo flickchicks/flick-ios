@@ -17,6 +17,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let commentLikeButton = UIButton()
     private let commentOwnerLabel = UILabel()
     private let commentProfileImageView = UIImageView()
+//    private let noCommentLabel = UILabel()
     private let seeAllCommentsButton = UIButton()
     private let separatorView = UIView()
     private let titleLabel = UILabel()
@@ -152,23 +153,23 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     func configure(with media: Media) {
-        let numComments = media.comments.count
+        guard let comments = media.comments else { return }
+        let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
-        if numComments == 0 {
-            return
+        if numComments > 0 {
+            let comment = comments[0]
+            commentTextView.text = comment.message
+            let firstName = comment.owner.firstName
+            let lastName = comment.owner.lastName
+            commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
+            // TODO: Add logic to calculate difference between createdDate and currentDate
+            commentDateLabel.text = "1d"
+            // TODO: Add logic to discover if comment has been liked by user
+            commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
+            let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
+            commentProfileImageView.kf.setImage(with: profileImageUrl)
+            seeAllCommentsButton.isHidden = false
         }
-        let comment = media.comments[0]
-        commentTextView.text = comment.message
-        let firstName = comment.owner.firstName
-        let lastName = comment.owner.lastName
-        commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
-        // TODO: Add logic to calculate difference between createdDate and currentDate
-        commentDateLabel.text = "1d"
-        // TODO: Add logic to discover if comment has been liked by user
-        commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
-        let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
-        commentProfileImageView.kf.setImage(with: profileImageUrl)
-        seeAllCommentsButton.isHidden = false
         commentCellView.isHidden = false
     }
 

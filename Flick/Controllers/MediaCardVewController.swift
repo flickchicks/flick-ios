@@ -150,7 +150,8 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func likeComment(index: Int) {
-        let commentId = media.comments[index].id
+        guard let comments = media.comments else { return }
+        let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { comment in
             print("Like Success")
             //TODO: Reload thoughts table view cell comment
@@ -159,12 +160,15 @@ extension MediaCardViewController: CommentDelegate {
 
     func addComment(commentText: String, isSpoiler: Bool) {
         NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { media in
+            self.commentAreaView.commentTextView.text = ""
+            self.commentAreaView.commentTextView.endEditing(true)
             self.setupMedia(media: media)
         }
     }
 
     func seeAllComments() {
-        let mediaCommentsViewController = MediaCommentsViewController(comments: media.comments, mediaId: media.id)
+        guard let comments = media.comments else { return }
+        let mediaCommentsViewController = MediaCommentsViewController(comments: comments, mediaId: media.id)
         navigationController?.pushViewController(mediaCommentsViewController, animated: true)
     }
 }

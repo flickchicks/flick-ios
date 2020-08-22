@@ -53,7 +53,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mediaViewController = MediaViewController()
+        let mediaViewController = MediaViewController(mediaId: 1)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 

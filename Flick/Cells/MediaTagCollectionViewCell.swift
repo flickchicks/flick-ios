@@ -32,7 +32,7 @@ class MediaTagCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with tag: MediaTag) {
+    func configure(with tag: Tag) {
         tagLabel.text = tag.name
     }
 

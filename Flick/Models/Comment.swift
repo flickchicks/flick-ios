@@ -11,7 +11,7 @@ import Foundation
 struct Comment: Codable {
 
     var createdAt: String
-    var id: String
+    var id: Int
     var isSpoiler: Bool
     var numLikes: Int
     var likers: [Likers]
@@ -22,11 +22,10 @@ struct Comment: Codable {
 
 struct CommentUser: Codable {
 
-    var userId: String
+    var id: Int
     var username: String
     var firstName: String
     var lastName: String
-    var profileId: String
     var profilePic: ProfilePicture
 
 }

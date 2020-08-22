@@ -26,10 +26,20 @@ class MediaViewController: UIViewController {
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
     private var mediaImageHeight: CGFloat!
+    private var mediaId: Int!
     private var nextState: CardState {
         return cardExpanded ? .collapsed : .expanded
     }
     private var runningAnimations = [UIViewPropertyAnimator]()
+
+    init(mediaId: Int) {
+        super.init(nibName: nil, bundle: nil)
+        self.mediaId = mediaId
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,9 +109,11 @@ class MediaViewController: UIViewController {
     }
 
     private func getMediaInformation() {
-        NetworkManager.getMedia(mediaId: "1") { media in
-            let url = URL(string: media.posterPic)
-            self.mediaImageView.kf.setImage(with: url)
+        NetworkManager.getMedia(mediaId: mediaId) { media in
+            if let posterPic = media.posterPic {
+                let url = URL(string: posterPic)
+                self.mediaImageView.kf.setImage(with: url)
+            }
             self.mediaCardViewController.setupMedia(media: media)
         }
     }
