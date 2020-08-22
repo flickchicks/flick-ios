@@ -5,37 +5,26 @@
 //  Created by Lucy Xu on 7/30/20.
 //  Copyright © 2020 flick. All rights reserved.
 //
-
 import UIKit
-
-class CommentTextField: UITextField {
-
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return super.textRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
-    }
-
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return super.editingRect(forBounds: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)))
-    }
-}
 
 class MediaCommentsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
-    private let commentTextField = UITextField()
     private let commentAreaView = CommentAreaView()
     private let sendCommentButton = UIButton()
     private let thoughtsTitleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var comments: [Comment]!
+    private var mediaId: Int!
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
 
-    init(comments: [Comment]) {
+    init(comments: [Comment], mediaId: Int) {
         super.init(nibName: nil, bundle: nil)
         self.comments = comments
+        self.mediaId = mediaId
     }
 
     required init?(coder: NSCoder) {
@@ -49,6 +38,7 @@ class MediaCommentsViewController: UIViewController {
         setupNavigationBar()
 
         commentAreaView.delegate = self
+        commentAreaView.sizeToFit()
         view.addSubview(commentAreaView)
 
         commentsTableView = UITableView(frame: .zero)
@@ -76,6 +66,7 @@ class MediaCommentsViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -102,16 +93,14 @@ class MediaCommentsViewController: UIViewController {
 
     private func setupConstraints() {
 
-        let bottomSafeAreaInsets = view.safeAreaInsets.bottom
-
         commentAreaView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
-            make.height.equalTo(71 + bottomSafeAreaInsets)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
 
         commentsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(commentAreaView.snp.top)
         }
     }
@@ -131,7 +120,7 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: commentsCellReuseIdentifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
         let comment = comments[indexPath.row]
-        cell.configure(for: comment, index: indexPath.row, delegate: self)
+        cell.configure(for: comment, index: indexPath.row, hideSpoiler: true, delegate: self)
         return cell
     }
 
@@ -139,14 +128,40 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
 
 extension MediaCommentsViewController: CommentDelegate {
     func likeComment(index: Int) {
-        comments[index].liked.toggle()
-        commentsTableView.reloadData()
+        let commentId = comments[index].id
+        NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
+            guard let self = self else { return }
+            print("Like Success")
+            self.comments[index] = comment
+            self.commentsTableView.reloadData()
+        }
     }
 
-    func addComment(commentText: String) {
-        let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
-        comments.insert(comment, at: 0)
-        commentsTableView.reloadData()
+    func addComment(commentText: String, isSpoiler: Bool) {
+        NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { [weak self] media in
+            guard let self = self else { return }
+            self.comments = media.comments
+            self.commentAreaView.commentTextView.text = ""
+            self.commentAreaView.commentTextView.endEditing(true)
+            self.commentsTableView.reloadData()
+        }
+    }
+
+    func showSpoilerModal(commentText: String) {
+        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
+        commentSpoilerModalView.delegate = self
+        commentSpoilerModalView.commentDelegate = self
+        showModalPopup(view: commentSpoilerModalView)
+    }
+
+    func seeAllComments() {
+        // Not used in this view controller
+        return
     }
 }
 
+extension MediaCommentsViewController: ModalDelegate {
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+}

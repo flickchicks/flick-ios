@@ -51,6 +51,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
+        settingsButton.tintColor = .mediumGray
         contentView.addSubview(settingsButton)
 
         setupConstraints()

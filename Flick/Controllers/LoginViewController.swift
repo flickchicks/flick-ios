@@ -88,7 +88,8 @@ class LoginViewController: UIViewController {
 extension LoginViewController {
 
     private func loginUser(username: String, socialIdToken: String) {
-        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { (authorizationToken) in
+        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { [weak self] (authorizationToken) in
+            guard let self = self else { return }
             self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
             let homeViewController = HomeViewController()
             self.navigationController?.pushViewController(homeViewController, animated: true)

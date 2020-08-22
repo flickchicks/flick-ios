@@ -15,29 +15,7 @@ class SuggestionsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = [
-        Suggestion(
-            fromUser: "Lucy Xu",
-            message: "Hello, pls watch this movie! I really liked it when I watched it with my family.",
-            media: Media(
-                id: 1,
-                title: "Media",
-                posterPic: "",
-                directors: "James Tarentino",
-                isTv: true,
-                dateReleased: "",
-                status: "",
-                language: "",
-                duration: "",
-                plot: "An orphaned boy enrolls in a school of wizardry, where he learns the truth about himself, his family and the terrible evil that haunts the magical world.",
-                tags: [Tag(id: 2, name: "K Drama")],
-                seasons: "",
-                audienceLevel: "",
-                imbdRating: 3,
-                friendsRating: 3,
-                platforms: [],
-                keywords: [],
-                cast: ""),
-            liked: true)
+        Suggestion(fromUser: "Lucy Xu", message: "Hello There", media: Media(id: 1, title: "fsf", posterPic: "fdf", directors: "fsdf", isTv: false, dateReleased: "fsdf", status: "fdsf", language: "fsdf", duration: "fsdfsdf", plot: "fsdf", tags: [], seasons: "fsdf", audienceLevel: "dss", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: ""), liked: false)
     ]
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
 
@@ -75,7 +53,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mediaViewController = MediaViewController()
+        let mediaViewController = MediaViewController(mediaId: 1)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 

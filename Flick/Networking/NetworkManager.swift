@@ -319,18 +319,103 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Get media information by id
-    static func getMedia(mediaId: String, completion: @escaping (Media) -> Void) {
-        let parameters: [String: Any] = [
-            "media_id": mediaId
-        ]
-
-        AF.request("\(hostEndpoint)/api/media", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+    /// [GET] Get media information by id [updated as of 8/15/20]
+    static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Post comment on media by id [updated as of 8/20/20]
+    static func postComment(mediaId: Int, comment: String, isSpoiler: Bool, completion: @escaping (Media) -> Void) {
+        let parameters: [String: Any] = [
+            "comment": [
+                "message": comment,
+                "is_spoiler": isSpoiler
+            ]
+        ]
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Like comment by id [updated as of 8/21/20]
+    static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
+        let parameters: [String: Any] = [:]
+        AF.request("\(hostEndpoint)/api/comment/\(String(commentId))/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let commentData = try? jsonDecoder.decode(Response<Comment>.self, from: data) {
+                    let comment = commentData.data
+                    completion(comment)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Like comment by id [updated as of 8/21/20]
+    static func rateMedia(mediaId: Int, userRating: Int, completion: @escaping (Media) -> Void) {
+        let parameters: [String: Any] = [
+            "user_rating": userRating
+        ]
+        print("\(hostEndpoint)/api/show/\(String(mediaId))/")
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<Media>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
+        guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
+        var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
+        urlComp?.queryItems = [
+            URLQueryItem(name: "is_movie", value: "true"),
+            URLQueryItem(name: "is_tv", value: "true"),
+            URLQueryItem(name: "query", value: query)
+        ]
+
+        guard let url = urlComp?.url?.absoluteString else { return }
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                print(data)
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    print(mediaData.data)
                     let media = mediaData.data
                     completion(media)
                 }

@@ -32,8 +32,8 @@ class MediaTagCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(with text: String) {
-        tagLabel.text = text
+    func configure(with tag: Tag) {
+        tagLabel.text = tag.name
     }
 
     required init?(coder: NSCoder) {

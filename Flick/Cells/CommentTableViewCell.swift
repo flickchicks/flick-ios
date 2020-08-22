@@ -10,35 +10,20 @@ import UIKit
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
-    func addComment(commentText: String)
-}
-
-// Creates UILabel with padding
-class PaddedLabel: UILabel {
-
-    let padding = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-
-    override func drawText(in rect: CGRect) {
-        super.drawText(in: rect.inset(by: padding))
-    }
-
-    override var intrinsicContentSize : CGSize {
-        let superContentSize = super.intrinsicContentSize
-        let width = superContentSize.width + padding.left + padding.right
-        let height = superContentSize.height + padding.top + padding.bottom
-        return CGSize(width: width, height: height)
-    }
-
+    func addComment(commentText: String, isSpoiler: Bool)
+    func showSpoilerModal(commentText: String)
+    func seeAllComments()
 }
 
 class CommentTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let commentLabel = PaddedLabel()
+    private let commentTextView = UITextView()
     private let dateLabel = UILabel()
     private let likeButton = UIButton()
     private let nameLabel = UILabel()
     private let profileImageView = UIImageView()
+    private let viewSpoilerButton = UIButton()
 
     // MARK: - Private Data Vars
     private var commentIndex: Int!
@@ -54,23 +39,32 @@ class CommentTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 20
         addSubview(profileImageView)
 
-        commentLabel.layer.backgroundColor = UIColor.lightGray2.cgColor
-        commentLabel.font = .systemFont(ofSize: 12)
-        commentLabel.textColor = .black
-        commentLabel.numberOfLines = 0
-        commentLabel.layer.cornerRadius = 16
-        addSubview(commentLabel)
+        commentTextView.isEditable = false
+        commentTextView.isScrollEnabled = false
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
+        commentTextView.font = .systemFont(ofSize: 12)
+        commentTextView.textColor = .black
+        commentTextView.layer.cornerRadius = 16
+        addSubview(commentTextView)
 
         nameLabel.font = .systemFont(ofSize: 10)
         nameLabel.textColor = .mediumGray
         addSubview(nameLabel)
 
+        dateLabel.textAlignment = .right
         dateLabel.font = .systemFont(ofSize: 10)
         dateLabel.textColor = .mediumGray
         addSubview(dateLabel)
 
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         addSubview(likeButton)
+
+        viewSpoilerButton.setTitle("View", for: .normal)
+        viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        viewSpoilerButton.setTitleColor(.darkBlue, for: .normal)
+        viewSpoilerButton.isHidden = true
+        addSubview(viewSpoilerButton)
 
         setupConstraints()
     }
@@ -84,16 +78,16 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-
         let heartImageSize = CGSize(width: 16, height: 14)
+        let horizontalPadding: CGFloat = 20
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
-        let horizontalPadding: CGFloat = 20
         let verticalPadding: CGFloat = 8
+        let viewSpoilerButtonSize = CGSize(width: 34, height: 17)
 
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(profileImageSize)
-            make.leading.equalToSuperview().offset(horizontalPadding)
+            make.leading.equalToSuperview()
             make.top.equalTo(nameLabel.snp.bottom).offset(2)
         }
 
@@ -107,11 +101,11 @@ class CommentTableViewCell: UITableViewCell {
         dateLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel)
             make.height.equalTo(labelHeight)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.width.equalTo(20)
+            make.trailing.equalTo(likeButton)
+            make.width.equalTo(horizontalPadding)
         }
 
-        commentLabel.snp.makeConstraints { make in
+        commentTextView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView)
             make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
@@ -120,20 +114,48 @@ class CommentTableViewCell: UITableViewCell {
 
         likeButton.snp.makeConstraints { make in
             make.size.equalTo(heartImageSize)
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.centerY.equalTo(commentLabel)
-
+            make.trailing.equalToSuperview()
+            make.centerY.equalTo(commentTextView)
         }
 
+        viewSpoilerButton.snp.makeConstraints { make in
+            make.trailing.equalTo(commentTextView).inset(12)
+            make.centerY.equalTo(commentTextView)
+            make.size.equalTo(viewSpoilerButtonSize)
+        }
     }
 
-    func configure(for comment: Comment, index: Int, delegate: CommentDelegate) {
+    /// Return the date label to be displayed given comment's created date
+    private func getDateLabelText(createdAt: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.locale = Locale.current
+        let createdAtDate = dateFormatter.date(from: createdAt)
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(
+            [.year, .month, .day, .hour, .minute, .second],
+            from:  createdAtDate!, to: currentDate)
+        // TODO: Complete logic to get date string
+        return "1d"
+    }
+
+    func configure(for comment: Comment, index: Int, hideSpoiler: Bool, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
-        commentLabel.text = comment.comment
-        nameLabel.text = comment.name
-        dateLabel.text = comment.date
-        let heartImage = comment.liked ? "filledHeart" : "heart"
+        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
+        let firstName = comment.owner.firstName
+        let lastName = comment.owner.lastName
+        nameLabel.text = "\(firstName) \(lastName.prefix(1))."
+        let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
+        dateLabel.text = dateLabelText
+        // TODO: Complete logic to detect if comment has been liked
+        let heartImage = "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
+            profileImageView.kf.setImage(with: profileImageUrl)
+        }
+        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
 }

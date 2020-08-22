@@ -8,16 +8,19 @@
 
 import Foundation
 
-struct Comment {
-    var name: String
-    var comment: String
-    var date: String
-    var liked: Bool
+struct Comment: Codable {
 
-    init(name: String, comment: String, date: String, liked: Bool) {
-        self.name = name
-        self.comment = comment
-        self.date = date
-        self.liked = liked
-    }
+    var createdAt: String
+    var id: Int
+    var isSpoiler: Bool
+    var numLikes: Int
+    var likers: [Likers]
+    var owner: UserProfile
+    var message: String
+
+}
+
+struct Likers: Codable {
+    var liker: UserProfile
+    var createdAt: String
 }
