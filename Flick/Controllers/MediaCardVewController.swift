@@ -21,7 +21,7 @@ class MediaCardViewController: UIViewController {
     // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
     // Dummy Media Object (used before data is loaded)
-    private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imbdRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
+    private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
     private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
     private let mediaThoughtsReuseIdentifier = "MediaThoughtsReuseIdentifier"
     private let mediaRatingsReuseIdentifier = "MediaRatingsReuseIdentifier"
@@ -152,14 +152,16 @@ extension MediaCardViewController: CommentDelegate {
     func likeComment(index: Int) {
         guard let comments = media.comments else { return }
         let commentId = comments[index].id
-        NetworkManager.likeComment(commentId: commentId) { comment in
+        NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
+            guard let self = self else { return }
             print("Like Success")
             //TODO: Reload thoughts table view cell comment
        }
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
-        NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { media in
+        NetworkManager.postComment(mediaId: media.id, comment: commentText, isSpoiler: isSpoiler) { [weak self] media in
+            guard let self = self else { return }
             self.commentAreaView.commentTextView.text = ""
             self.commentAreaView.commentTextView.endEditing(true)
             self.setupMedia(media: media)
@@ -175,7 +177,8 @@ extension MediaCardViewController: CommentDelegate {
 
 extension MediaCardViewController: RatingDelegate {
     func rateMedia(userRating: Int) {
-        NetworkManager.rateMedia(mediaId: media.id, userRating: userRating) { media in
+        NetworkManager.rateMedia(mediaId: media.id, userRating: userRating) { [weak self] media in
+            guard let self = self else { return }
             self.setupMedia(media: media)
         }
     }

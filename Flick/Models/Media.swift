@@ -27,9 +27,9 @@ struct Media: Codable {
     var tags: [Tag]?
     var seasons: String?
     var audienceLevel: String?
-    var imbdRating: Float?
-    var tomatoRating: Float?
-    var friendsRating: Float?
+    var imdbRating: Int?
+    var tomatoRating: Int?
+    var friendsRating: Int?
     var userRating: Int?
     var comments: [Comment]?
     var platforms: [String]?

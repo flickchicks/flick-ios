@@ -129,7 +129,8 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
 extension MediaCommentsViewController: CommentDelegate {
     func likeComment(index: Int) {
         let commentId = comments[index].id
-        NetworkManager.likeComment(commentId: commentId) { comment in
+        NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
+            guard let self = self else { return }
             print("Like Success")
             self.comments[index] = comment
             self.commentsTableView.reloadData()
@@ -137,7 +138,8 @@ extension MediaCommentsViewController: CommentDelegate {
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
-        NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { media in
+        NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { [weak self] media in
+            guard let self = self else { return }
             self.comments = media.comments
             self.commentAreaView.commentTextView.text = ""
             self.commentAreaView.commentTextView.endEditing(true)

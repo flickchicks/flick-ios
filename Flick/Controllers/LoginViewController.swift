@@ -51,7 +51,8 @@ extension LoginViewController: LoginButtonDelegate {
                                 let pictureObject = UIImage(data: pictureData)
                                 let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
                                 let user = User(username: userId, firstName: firstName, lastName: lastName, profilePic: base64PictureString!, socialIdToken: accessToken, socialIdTokenType: "facebook")
-                                NetworkManager.registerUser(user: user) { (registeredUser) in
+                                NetworkManager.registerUser(user: user) { [weak self] (registeredUser) in
+                                    guard let self = self else { return }
                                     let encoder = JSONEncoder()
                                     let decoder = JSONDecoder()
                                     if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
@@ -75,8 +76,8 @@ extension LoginViewController: LoginButtonDelegate {
     }
 
     private func loginUser(username: String, socialIdToken: String) {
-        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { (authorizationToken) in
-            print(authorizationToken)
+        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { [weak self] (authorizationToken) in
+            guard let self = self else { return }
             self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
             let homeViewController = HomeViewController()
             self.navigationController?.pushViewController(homeViewController, animated: true)

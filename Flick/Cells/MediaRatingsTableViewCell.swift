@@ -12,7 +12,6 @@ protocol RatingDelegate: class {
     func rateMedia(userRating: Int)
 }
 
-
 class SliderView : UIView {
     var externalRating: CGFloat = 0
     var personalRating: CGFloat = 0
@@ -217,18 +216,18 @@ class MediaRatingsTableViewCell: UITableViewCell {
         var tomatoRating: CGFloat = 0
         var friendRating: CGFloat = 0
 
-        if let mediaImbdRating = media.imbdRating {
-            imbdRating = CGFloat(mediaImbdRating)
+        if let mediaImdbRating = media.imdbRating {
+            imbdRating = CGFloat(mediaImdbRating) / 10
         }
 
         if let mediaTomatoRating = media.tomatoRating {
-            tomatoRating = CGFloat(mediaTomatoRating)
+            tomatoRating = CGFloat(mediaTomatoRating) / 10
         }
 
         let criticRating = (imbdRating + tomatoRating) / 2
 
         if let mediaFriendRating = media.friendsRating {
-            friendRating = CGFloat(mediaFriendRating)
+            friendRating = CGFloat(mediaFriendRating) / 10
         }
 
         var personalRating: CGFloat = 0
@@ -258,8 +257,10 @@ class MediaRatingsTableViewCell: UITableViewCell {
                 remake.size.equalTo(ratingIndictorSize)
             }
         } else {
-            criticRatingIndicatorLabel.snp.makeConstraints { update in
-                update.centerX.equalTo(criticsIconImageView.snp.centerX)
+            criticRatingIndicatorLabel.snp.remakeConstraints { remake in
+                remake.bottom.equalTo(criticRatingsSliderView.snp.top).offset(-9)
+                remake.size.equalTo(ratingIndictorSize)
+                remake.centerX.equalTo(criticsIconImageView.snp.centerX)
             }
         }
 
@@ -270,8 +271,10 @@ class MediaRatingsTableViewCell: UITableViewCell {
                 remake.size.equalTo(ratingIndictorSize)
             }
         } else {
-            friendRatingIndicatorLabel.snp.makeConstraints { update in
-               update.centerX.equalTo(friendsIconImageView.snp.centerX)
+            friendRatingIndicatorLabel.snp.remakeConstraints { remake in
+                remake.bottom.equalTo(friendsRatingsSliderView.snp.top).offset(-9)
+                remake.size.equalTo(ratingIndictorSize)
+                remake.centerX.equalTo(friendsIconImageView.snp.centerX)
             }
         }
 

@@ -18,6 +18,10 @@ class MediaSummaryTableViewCell: UITableViewCell {
     private var tagsCollectionView: SelfSizingCollectionView!
 
     // MARK: - Private Data Vars
+    private let iconSummaryInfoCellReuseIdentifier = "IconSummaryInfoCellReuseIdentifier"
+    private let labelSummaryInfoCellReuseIdentifier = "LabelSummaryInfoCellReuseIdentifier"
+    private let outlineSummaryInfoCellReuseIdentifier = "OutlineSummaryInfoCellReuseIdentifier"
+    private let spacerSummaryInfoCellReuseIdentifier = "SpacerSummaryInfoCellReuseIdentifier"
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
     private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
@@ -49,10 +53,10 @@ class MediaSummaryTableViewCell: UITableViewCell {
             collectionViewLayout: summaryItemsCollectionViewLayout
         )
         summaryItemsCollectionView.backgroundColor = .clear
-        summaryItemsCollectionView.register(MediaSummarySpacerCollectionViewCell.self, forCellWithReuseIdentifier: "spacer")
-        summaryItemsCollectionView.register(MediaSummaryIconLabelCollectionViewCell.self, forCellWithReuseIdentifier: "icon")
-        summaryItemsCollectionView.register(MediaSummaryLabelCollectionViewCell.self, forCellWithReuseIdentifier: "label")
-        summaryItemsCollectionView.register(MediaSummaryAudienceLevelCollectionViewCell.self, forCellWithReuseIdentifier: "outline")
+        summaryItemsCollectionView.register(MediaSummarySpacerCollectionViewCell.self, forCellWithReuseIdentifier: spacerSummaryInfoCellReuseIdentifier)
+        summaryItemsCollectionView.register(MediaSummaryIconLabelCollectionViewCell.self, forCellWithReuseIdentifier: iconSummaryInfoCellReuseIdentifier)
+        summaryItemsCollectionView.register(MediaSummaryLabelCollectionViewCell.self, forCellWithReuseIdentifier: labelSummaryInfoCellReuseIdentifier)
+        summaryItemsCollectionView.register(MediaSummaryAudienceLevelCollectionViewCell.self, forCellWithReuseIdentifier: outlineSummaryInfoCellReuseIdentifier)
         summaryItemsCollectionView.dataSource = self
         summaryItemsCollectionView.delegate = self
         summaryItemsCollectionView.layoutIfNeeded()
@@ -169,18 +173,18 @@ extension MediaSummaryTableViewCell: UICollectionViewDataSource, UICollectionVie
             // Use different cells for each type because they're different enough that it doesn't make sense to try to reuse cells
             switch summaryInfo[indexPath.item].type {
             case .spacer:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "spacer", for: indexPath) as? MediaSummarySpacerCollectionViewCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: spacerSummaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummarySpacerCollectionViewCell else { return UICollectionViewCell() }
                 return cell
             case .director, .duration:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "icon", for: indexPath) as? MediaSummaryIconLabelCollectionViewCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: iconSummaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryIconLabelCollectionViewCell else { return UICollectionViewCell() }
                 cell.configure(with: summaryInfo[indexPath.item])
                 return cell
             case .rating:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "outline", for: indexPath) as? MediaSummaryAudienceLevelCollectionViewCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: outlineSummaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryAudienceLevelCollectionViewCell else { return UICollectionViewCell() }
                 cell.configure(with: summaryInfo[indexPath.item])
                 return cell
             case .releaseStatus, .year, .language:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "label", for: indexPath) as? MediaSummaryLabelCollectionViewCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: labelSummaryInfoCellReuseIdentifier, for: indexPath) as? MediaSummaryLabelCollectionViewCell else { return UICollectionViewCell() }
                 cell.configure(with: summaryInfo[indexPath.item])
                 return cell
             }

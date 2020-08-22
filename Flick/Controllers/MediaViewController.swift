@@ -109,7 +109,8 @@ class MediaViewController: UIViewController {
     }
 
     private func getMediaInformation() {
-        NetworkManager.getMedia(mediaId: mediaId) { media in
+        NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
+            guard let self = self else { return }
             if let posterPic = media.posterPic {
                 let url = URL(string: posterPic)
                 self.mediaImageView.kf.setImage(with: url)
@@ -127,7 +128,6 @@ class MediaViewController: UIViewController {
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
-
         let velocity = recognizer.velocity(in: mediaCardViewController.handleArea)
         let panDirection = velocity.y > 0 ? "Down" : "Up"
 

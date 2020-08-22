@@ -15,7 +15,7 @@ class SuggestionsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = [
-        Suggestion(fromUser: "Lucy Xu", message: "Hello There", media: Media(id: 1, title: "fsf", posterPic: "fdf", directors: "fsdf", isTv: false, dateReleased: "fsdf", status: "fdsf", language: "fsdf", duration: "fsdfsdf", plot: "fsdf", tags: [], seasons: "fsdf", audienceLevel: "dss", imbdRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: ""), liked: false)
+        Suggestion(fromUser: "Lucy Xu", message: "Hello There", media: Media(id: 1, title: "fsf", posterPic: "fdf", directors: "fsdf", isTv: false, dateReleased: "fsdf", status: "fdsf", language: "fsdf", duration: "fsdfsdf", plot: "fsdf", tags: [], seasons: "fsdf", audienceLevel: "dss", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: ""), liked: false)
     ]
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
 

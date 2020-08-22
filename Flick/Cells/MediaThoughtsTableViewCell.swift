@@ -21,6 +21,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let seeAllCommentsButton = UIButton()
     private let separatorView = UIView()
     private let titleLabel = UILabel()
+    private let viewSpoilerButton = UIButton()
 
     // MARK: - Private Data Vars
     weak var delegate: CommentDelegate?
@@ -73,14 +74,18 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentLikeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         commentCellView.addSubview(commentLikeButton)
 
+        viewSpoilerButton.setTitle("View", for: .normal)
+        viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        viewSpoilerButton.setTitleColor(.darkBlue, for: .normal)
+        viewSpoilerButton.isHidden = true
+        commentCellView.addSubview(viewSpoilerButton)
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
         commentCellView.sizeToFit()
         commentCellView.addGestureRecognizer(tapGestureRecognizer)
-        commentCellView.isHidden = true
         addSubview(commentCellView)
 
         setupConstraints()
-
     }
 
     private func setupConstraints() {
@@ -89,6 +94,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
         let verticalPadding: CGFloat = 16
+        let viewSpoilerButtonSize = CGSize(width: 34, height: 17)
 
         separatorView.snp.makeConstraints{ make in
             make.top.equalToSuperview()
@@ -146,6 +152,12 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview()
             make.centerY.equalTo(commentTextView)
         }
+
+        viewSpoilerButton.snp.makeConstraints { make in
+            make.trailing.equalTo(commentTextView).inset(12)
+            make.centerY.equalTo(commentTextView)
+            make.size.equalTo(viewSpoilerButtonSize)
+        }
     }
 
     @objc func seeAllComments() {
@@ -156,21 +168,21 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         guard let comments = media.comments else { return }
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
-        if numComments > 0 {
-            let comment = comments[0]
-            commentTextView.text = comment.message
-            let firstName = comment.owner.firstName
-            let lastName = comment.owner.lastName
-            commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
-            // TODO: Add logic to calculate difference between createdDate and currentDate
-            commentDateLabel.text = "1d"
-            // TODO: Add logic to discover if comment has been liked by user
-            commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
-            let profileImageUrl = URL(string: comment.owner.profilePic.assetUrls.original)
+        if numComments == 0 { return }
+        let comment = comments[0]
+        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
+        viewSpoilerButton.isHidden = !comment.isSpoiler
+        let firstName = comment.owner.firstName
+        let lastName = comment.owner.lastName
+        commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
+        // TODO: Add logic to calculate difference between createdDate and currentDate
+        commentDateLabel.text = "1d"
+        // TODO: Add logic to discover if comment has been liked by user
+        commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
+        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
             commentProfileImageView.kf.setImage(with: profileImageUrl)
-            seeAllCommentsButton.isHidden = false
         }
-        commentCellView.isHidden = false
+        seeAllCommentsButton.isHidden = false
     }
 
     @objc func likeComment() {

@@ -15,22 +15,12 @@ struct Comment: Codable {
     var isSpoiler: Bool
     var numLikes: Int
     var likers: [Likers]
-    var owner: CommentUser
+    var owner: UserProfile
     var message: String
 
 }
 
-struct CommentUser: Codable {
-
-    var id: Int
-    var username: String
-    var firstName: String
-    var lastName: String
-    var profilePic: ProfilePicture
-
-}
-
 struct Likers: Codable {
-    var liker: CommentUser
+    var liker: UserProfile
     var createdAt: String
 }
