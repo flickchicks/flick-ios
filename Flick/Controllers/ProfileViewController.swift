@@ -163,6 +163,11 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
+    func pushSettingsView() {
+        let settingsViewController = SettingsViewController()
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
 
     func pushNotificationsView() {
         let allNotificationsViewController = AllNotificationsViewController()

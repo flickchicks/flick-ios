@@ -50,6 +50,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         contentView.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         contentView.addSubview(settingsButton)
 
         setupConstraints()
@@ -57,6 +58,10 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     @objc func notificationButtonPressed() {
         delegate?.pushNotificationsView()
+    }
+
+    @objc func settingsButtonPressed() {
+        delegate?.pushSettingsView()
     }
 
     private func calculateUserInfoViewWidth(friendsPreviewWidth: CGFloat) -> CGFloat {

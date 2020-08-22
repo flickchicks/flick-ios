@@ -25,7 +25,7 @@ class AllNotificationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = .offWhite
         setupNavigationBar()
 
         tabPageViewController = NotificationsTabPageViewController()
