@@ -12,84 +12,87 @@ import FBSDKLoginKit
 class LoginViewController: UIViewController {
 
     private let userDefaults = UserDefaults.standard
+    private let loginButton = UIButton()
+    private let profileSize = CGSize(width: 400, height: 400)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
-        
-        let loginButton = FBLoginButton()
-        loginButton.delegate = self
-        loginButton.permissions = ["public_profile", "email"]
-        loginButton.center = view.center
+
+        loginButton.setTitle("Continue with Facebook", for: .normal)
+        loginButton.setTitleColor(.gradientPurple, for: .normal)
+        loginButton.layer.backgroundColor = UIColor.lightPurple.cgColor
+        loginButton.titleLabel?.font = .systemFont(ofSize: 17)
+        loginButton.addTarget(self, action: #selector(initiateFacebookLogin), for: .touchUpInside)
         view.addSubview(loginButton)
+
+        let loginButtonSize = CGSize(width: 240, height: 46)
+
+        loginButton.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.size.equalTo(loginButtonSize)
+        }
+
+    }
+
+    @objc func initiateFacebookLogin() {
+        let loginManager = LoginManager()
+        loginManager.logIn(permissions: [], from: self) { [weak self] (result, error) in
+            guard let self = self else { return }
+
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+
+            guard let result = result, !result.isCancelled else {
+                return
+            }
+
+            Profile.loadCurrentProfile { (profile, error) in
+                if  let profile = profile,
+                    let accessToken = AccessToken.current?.tokenString,
+                    let firstName = profile.firstName,
+                    let lastName = profile.lastName,
+                    let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
+                        let pictureData = try? Data(contentsOf: profileURL)
+                        if let pictureData = pictureData {
+                            let pictureObject = UIImage(data: pictureData)
+                            let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
+                            let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString!, socialIdToken: accessToken, socialIdTokenType: "facebook")
+                            NetworkManager.registerUser(user: user) { [weak self] (registeredUser) in
+                                guard let self = self else { return }
+                                let encoder = JSONEncoder()
+                                if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
+                                    // Upon successful registration of user, save user to user defaults
+                                    self.userDefaults.set(encodedRegisteredUser, forKey: Constants.UserDefaults.authorizationToken)
+                                }
+                                let username = registeredUser.username
+                                let socialIdToken = registeredUser.socialIdToken
+                                self.loginUser(username: username, socialIdToken: socialIdToken)
+                            }
+                        }
+                }
+            }
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
 }
 
-extension LoginViewController: LoginButtonDelegate {
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        guard let accessToken = result?.token?.tokenString else { return }
-        let request = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                 parameters: ["fields": "email, first_name, last_name, picture"],
-                                                 tokenString: accessToken,
-                                                 version: nil,
-                                                 httpMethod: .get)
-        request.start(completionHandler: { connection, result, error in
-            guard let result = result else { return }
-            guard let user = result as? [String: Any] else { return }
-            guard let firstName = user["first_name"] as? String,
-                let lastName = user["last_name"] as? String,
-                let userId = user["id"] as? String,
-                let pictureObject = user["picture"] as? [String: Any],
-                let pictureContent = pictureObject["data"] as? [String: Any],
-                let pictureUrlString = pictureContent["url"] as? String
-                else { return }
-            let pictureUrl = URL(string: pictureUrlString)
-            let pictureData = try? Data(contentsOf: pictureUrl!)
-            if let pictureData = pictureData {
-                // Convert image to base64 string
-                let pictureObject = UIImage(data: pictureData)
-                let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
-                let user = User(
-                    username: userId,
-                    firstName: firstName,
-                    lastName: lastName,
-                    profilePic: base64PictureString!,
-                    socialIdToken: accessToken,
-                    socialIdTokenType: "facebook")
-                NetworkManager.registerUser(user: user) { (registeredUser) in
-                    let encoder = JSONEncoder()
-                    let decoder = JSONDecoder()
-                    if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
-                        // Upon successful registration of user, save user to user defaults
-                        self.userDefaults.set(encodedRegisteredUser, forKey: Constants.UserDefaults.authorizationToken)
-                    }
-                    if let storedUser = self.userDefaults.data(forKey: Constants.UserDefaults.authorizationToken) {
-                        if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
-                            let username = decodedUser.username
-                            let socialIdToken = decodedUser.socialIdToken
-                            // Upon successful registration, log user into application and save authorization token and username
-                            self.loginUser(username: username, socialIdToken: socialIdToken)
-                        }
-                    }
-                }
-            }
-        })
-    }
+extension LoginViewController {
 
     private func loginUser(username: String, socialIdToken: String) {
         NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { (authorizationToken) in
-            print(authorizationToken)
             self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
             let homeViewController = HomeViewController()
             self.navigationController?.pushViewController(homeViewController, animated: true)
         }
     }
-
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        print("User logged out.")
-    }
-
 
 }

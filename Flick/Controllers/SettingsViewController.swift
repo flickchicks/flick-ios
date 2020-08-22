@@ -18,6 +18,7 @@ class SettingsViewController: UIViewController {
     private let logoutButton = UIButton()
     private let sendFeedbackButton = UIButton()
     private let settingsTitleLabel = UILabel()
+    private let userDefaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +56,7 @@ class SettingsViewController: UIViewController {
 
     @objc func logout() {
         LoginManager().logOut()
+        userDefaults.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         let loginViewController = LoginViewController()
         navigationController?.pushViewController(loginViewController, animated: true)
     }
