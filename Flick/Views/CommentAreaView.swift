@@ -12,9 +12,10 @@ class CommentAreaView: UIView {
 
     // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
-    private let commentTextField = UITextField()
+    let commentTextView = UITextView()
     private let sendCommentButton = UIButton()
     weak var delegate: CommentDelegate?
+//    weak var modalDelegate: ModalDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -24,15 +25,15 @@ class CommentAreaView: UIView {
         commentSeparatorView.backgroundColor = .lightGray2
         addSubview(commentSeparatorView)
 
-        commentTextField.backgroundColor = .lightGray2
-        commentTextField.layer.cornerRadius = 15
-        commentTextField.placeholder = "Share your thoughts"
-        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: commentTextField.frame.height))
-        commentTextField.leftView = leftPaddingView
-        commentTextField.leftViewMode = .always
-        commentTextField.textColor = .black
-        commentTextField.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        addSubview(commentTextField)
+        commentTextView.text = ""
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.backgroundColor = .lightGray2
+        commentTextView.layer.cornerRadius = 15
+        commentTextView.isScrollEnabled = false
+        commentTextView.textColor = .black
+        commentTextView.sizeToFit()
+        commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        addSubview(commentTextView)
 
         sendCommentButton.setImage(UIImage(named: "send"), for: .normal)
         sendCommentButton.addTarget(self, action: #selector(addComment), for: .touchUpInside)
@@ -43,13 +44,9 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
-        if let commentText = commentTextField.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
-            delegate?.addComment(commentText: commentText)
-//            let comment = Comment(name: "Lucy", comment: commentText, date: "1d", liked: false)
-//            comments.insert(comment, at: 0)
-//            commentsTableView.reloadData()
+        if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
+            delegate?.showSpoilerModal(commentText: commentText)
         }
-
     }
 
     required init?(coder: NSCoder) {
@@ -65,7 +62,7 @@ class CommentAreaView: UIView {
             make.height.equalTo(2)
         }
 
-        commentTextField.snp.makeConstraints { make in
+        commentTextView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(textFieldVerticalPadding)
             make.leading.equalToSuperview().offset(28)
             make.trailing.equalToSuperview().inset(60)
@@ -74,8 +71,8 @@ class CommentAreaView: UIView {
 
         sendCommentButton.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.leading.equalTo(commentTextField.snp.trailing).offset(14)
-            make.centerY.equalTo(commentTextField)
+            make.leading.equalTo(commentTextView.snp.trailing).offset(14)
+            make.centerY.equalTo(commentTextView)
         }
 
     }

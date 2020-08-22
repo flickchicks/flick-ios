@@ -7,7 +7,10 @@
 //
 
 import Foundation
+import Kingfisher
 import UIKit
+
+enum CardState {case collapsed, expanded }
 
 class MediaViewController: UIViewController {
 
@@ -15,7 +18,6 @@ class MediaViewController: UIViewController {
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
-    private var visualEffectView: UIVisualEffectView!
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
@@ -24,10 +26,20 @@ class MediaViewController: UIViewController {
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
     private var mediaImageHeight: CGFloat!
+    private var mediaId: Int!
     private var nextState: CardState {
         return cardExpanded ? .collapsed : .expanded
     }
     private var runningAnimations = [UIViewPropertyAnimator]()
+
+    init(mediaId: Int) {
+        super.init(nibName: nil, bundle: nil)
+        self.mediaId = mediaId
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +50,6 @@ class MediaViewController: UIViewController {
 
         setupNavigationBar()
 
-        mediaImageView.image = UIImage(named: "dunkirk")
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
@@ -51,6 +62,10 @@ class MediaViewController: UIViewController {
         setupMediaCard()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        getMediaInformation()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
@@ -60,7 +75,6 @@ class MediaViewController: UIViewController {
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
-        backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -71,11 +85,6 @@ class MediaViewController: UIViewController {
     }
 
     private func setupMediaCard() {
-        visualEffectView = UIVisualEffectView()
-        visualEffectView.frame = self.view.frame
-        view.addSubview(visualEffectView)
-
-        // TODO: Initialize MediaCardViewController with the media object
         mediaCardViewController = MediaCardViewController()
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
@@ -91,13 +100,23 @@ class MediaViewController: UIViewController {
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
 
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleScollViewCardPan))
-        panGestureRecognizer.delegate = self
-        mediaCardViewController.scrollView.addGestureRecognizer(panGestureRecognizer)
+        let tableViewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(tableViewCardPan))
+        tableViewPanGestureRecognizer.delegate = self
+        mediaCardViewController.mediaInformationTableView.addGestureRecognizer(tableViewPanGestureRecognizer)
 
         let handleAreaPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleAreaCardPan))
         mediaCardViewController.handleArea.addGestureRecognizer(handleAreaPanGestureRecognizer)
-        
+    }
+
+    private func getMediaInformation() {
+        NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
+            guard let self = self else { return }
+            if let posterPic = media.posterPic {
+                let url = URL(string: posterPic)
+                self.mediaImageView.kf.setImage(with: url)
+            }
+            self.mediaCardViewController.setupMedia(media: media)
+        }
     }
 
     @objc func backButtonPressed() {
@@ -109,53 +128,64 @@ class MediaViewController: UIViewController {
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
+        let velocity = recognizer.velocity(in: mediaCardViewController.handleArea)
+        let panDirection = velocity.y > 0 ? "Down" : "Up"
+
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.3)
+            startInteractiveTransition(state: nextState, duration: 0.2, panDirection: panDirection)
         case .changed:
             let translation = recognizer.translation(in: self.mediaCardViewController.handleArea)
             var fractionComplete = translation.y / expandedCardHeight
-            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
+            fractionComplete = panDirection == "Down" ? fractionComplete : -fractionComplete
             updateInteractiveTransiton(fractionCompleted: fractionComplete)
         case .ended:
             continueInteractiveTransition()
+            self.mediaCardViewController.updateTableScroll(isScrollEnabled: !self.cardExpanded)
         default:
             break
         }
     }
 
+    @objc func tableViewCardPan(recognizer: UIPanGestureRecognizer) {
 
-    @objc func handleScollViewCardPan(recognizer: UIPanGestureRecognizer) {
+        let velocity = recognizer.velocity(in: mediaCardViewController.handleArea)
+        let panDirection = velocity.y > 0 ? "Down" : "Up"
+
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.3)
+            startInteractiveTransition(state: nextState, duration: 0.3, panDirection: panDirection)
         case .changed:
-            let translation = recognizer.translation(in: self.mediaCardViewController.scrollView)
+            let translation = recognizer.translation(in: self.mediaCardViewController.mediaInformationTableView)
             var fractionComplete = (translation.y * 2) / expandedCardHeight
-            fractionComplete = cardExpanded ? fractionComplete : -fractionComplete
+            fractionComplete = panDirection == "Down" ? fractionComplete : -fractionComplete
             updateInteractiveTransiton(fractionCompleted: fractionComplete)
         case .ended:
             continueInteractiveTransition()
+            self.mediaCardViewController.updateTableScroll(isScrollEnabled: !self.cardExpanded)
         default:
             break
         }
+
+
     }
 
-    private func animateTransitionIfNeeded(state: CardState, duration: TimeInterval) {
+    private func animateTransitionIfNeeded(state: CardState, duration: TimeInterval, panDirection: String) {
         if runningAnimations.isEmpty {
             let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-                switch state {
-                case .expanded:
+                if panDirection == "Up" {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
-                case .collapsed:
+                }
+                else {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+
                 }
             }
 
             frameAnimator.addCompletion { _ in
-                self.cardExpanded = !self.cardExpanded
+//                self.cardExpanded = panDirection == "Down" ? false : true
                 self.runningAnimations.removeAll()
             }
 
@@ -165,9 +195,9 @@ class MediaViewController: UIViewController {
         }
     }
 
-    private func startInteractiveTransition(state: CardState, duration: TimeInterval) {
+    private func startInteractiveTransition(state: CardState, duration: TimeInterval, panDirection: String) {
         if runningAnimations.isEmpty {
-            animateTransitionIfNeeded(state: state, duration: duration)
+            animateTransitionIfNeeded(state: state, duration: duration, panDirection: panDirection)
         }
         for animator in runningAnimations {
             animator.pauseAnimation()
@@ -195,7 +225,4 @@ extension MediaViewController: UIGestureRecognizerDelegate {
         return true
     }
 
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return mediaCardViewController.scrollView.contentOffset.y == 0
-    }
 }

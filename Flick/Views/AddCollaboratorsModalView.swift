@@ -99,7 +99,8 @@ class AddCollaboratorModalView: UIView {
 
         setupConstraints()
 
-        NetworkManager.getFriends { friends in
+        NetworkManager.getFriends { [weak self] friends in
+            guard let self = self else { return }
             self.friends = friends
             self.setupFriendsView()
         }
