@@ -13,15 +13,19 @@ class SearchBar: UISearchBar {
     init() {
         super.init(frame: .zero)
 
-        backgroundImage = UIImage()
-        searchTextField.backgroundColor = .clear
+        setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        barTintColor = .clear
+        backgroundColor = .clear
+        isTranslucent = true
+        searchTextField.backgroundColor = .white
         searchTextField.textColor = .mediumGray
-        searchTextField.font = .systemFont(ofSize: 12)
+        searchTextField.font = .systemFont(ofSize: 14)
         searchTextField.clearButtonMode = .never
-        layer.cornerRadius = 18
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.mediumGray.cgColor
-        searchTextPositionAdjustment = UIOffset(horizontal: 12, vertical: 0)
+        searchTextField.layer.masksToBounds = true
+        searchTextField.layer.cornerRadius = 18
+        searchTextField.layer.borderWidth = 1
+        searchTextField.layer.borderColor = UIColor.mediumGray.cgColor
+        setPositionAdjustment(UIOffset(horizontal: 5, vertical: 0), for: UISearchBar.Icon.search)
         showsCancelButton = false
     }
 

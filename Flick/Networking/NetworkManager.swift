@@ -340,12 +340,61 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get media search result by query
     static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
         guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
         var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
         urlComp?.queryItems = [
             URLQueryItem(name: "is_movie", value: "true"),
             URLQueryItem(name: "is_tv", value: "true"),
+            URLQueryItem(name: "query", value: query)
+        ]
+
+        guard let url = urlComp?.url?.absoluteString else { return }
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    static func searchMovies(query: String, completion: @escaping ([Media]) -> Void) {
+        guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
+        var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
+        urlComp?.queryItems = [
+            URLQueryItem(name: "is_movie", value: "true"),
+            URLQueryItem(name: "query", value: query)
+        ]
+
+        guard let url = urlComp?.url?.absoluteString else { return }
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    static func searchShows(query: String, completion: @escaping ([Media]) -> Void) {
+        guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
+        var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
+        urlComp?.queryItems = [
+            URLQueryItem(name: "is_movie", value: "true"),
             URLQueryItem(name: "query", value: query)
         ]
 
