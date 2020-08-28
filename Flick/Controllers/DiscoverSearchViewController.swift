@@ -75,6 +75,7 @@ class DiscoverSearchViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
+        searchBar.delegate = self
         navigationItem.titleView = searchBar
 //        searchBar.snp.makeConstraints { make in
 //            make.leading.equalToSuperview().offset(50)
@@ -91,7 +92,7 @@ class DiscoverSearchViewController: UIViewController {
         }
 
         searchResultPageCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(tabCollectionView.snp.bottom)
+            make.top.equalTo(tabCollectionView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -99,7 +100,7 @@ class DiscoverSearchViewController: UIViewController {
 
     func setupViewControllers() {
         tabs.forEach { tab in
-            searchResultViewControllers.append(SearchResultViewController(seachTab: tab))
+            searchResultViewControllers.append(DiscoverSearchResultViewController(seachTab: tab))
         }
     }
 
@@ -108,10 +109,6 @@ class DiscoverSearchViewController: UIViewController {
         let path = IndexPath(item: currentPosition, section: 0)
 
         DispatchQueue.main.async {
-//            if self.tabStyle == .flexible {
-//                self.collectionHeader.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
-//            }
-
             self.tabCollectionView.reloadData()
         }
 
@@ -178,5 +175,9 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         }
     }
+
+}
+
+extension DiscoverSearchViewController: UISearchBarDelegate {
 
 }
