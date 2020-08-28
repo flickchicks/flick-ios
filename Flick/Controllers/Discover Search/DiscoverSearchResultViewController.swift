@@ -18,9 +18,6 @@ class DiscoverSearchResultViewController: UIViewController {
     private var searchType: SearchTab
     private let searchResultCellReuseIdentifier = "SearchResultCellReuseIdentifier"
 
-
-    let nameLabel = UILabel()
-
     init(seachTab: SearchTab) {
         self.searchType = seachTab
         super.init(nibName: nil, bundle: nil)
@@ -34,9 +31,6 @@ class DiscoverSearchResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        nameLabel.text = searchType.rawValue
-//        view.addSubview(nameLabel)
-
         resultsTableView.backgroundColor = .offWhite
         resultsTableView.dataSource = self
         resultsTableView.delegate = self
@@ -47,35 +41,6 @@ class DiscoverSearchResultViewController: UIViewController {
 
         resultsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-        }
-
-//        nameLabel.snp.makeConstraints { make in
-//            make.centerX.centerY.equalToSuperview()
-//        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        switch searchType {
-        case .movies:
-            break
-//            NetworkManager.searchMovies(query: "Frozen") { [weak self] movies in
-//                guard let self = self else { return }
-//                self.results = movies
-//                print(self.results)
-//                print(self.results[0].title)
-//            }
-        case .shows:
-            break
-//            NetworkManager.searchShows(query: "Friends") { [weak self] shows in
-//                guard let self = self else { return }
-//                self.results = shows
-//                print(self.results)
-//                print(self.results[0].title)
-//            }
-        default:
-            break
         }
     }
 
@@ -89,6 +54,7 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: searchResultCellReuseIdentifier, for: indexPath) as? DiscoverSearchResultTableViewCell else { return UITableViewCell() }
+        cell.configure(searchType: searchType, titleText: "THis is some text")
         return cell
     }
 
