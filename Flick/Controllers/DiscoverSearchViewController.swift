@@ -25,7 +25,6 @@ class DiscoverSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Search"
         view.backgroundColor = .offWhite
 
         setupNavigationBar()
@@ -77,11 +76,6 @@ class DiscoverSearchViewController: UIViewController {
 
         searchBar.delegate = self
         navigationItem.titleView = searchBar
-//        searchBar.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(50)
-//            make.trailing.equalToSuperview().inset(20)
-//            make.height.equalTo(36)
-//        }
     }
 
     private func setupConstraints() {
@@ -138,7 +132,6 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
             cell.configure(with: tabs[indexPath.item].rawValue)
             if indexPath.item == currentPosition {
                 cell.isSelected = true
-//                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
             }
             return cell
         } else {

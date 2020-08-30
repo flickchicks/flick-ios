@@ -15,8 +15,8 @@ class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var results = [Media]()
-    private var searchType: SearchTab
     private let searchResultCellReuseIdentifier = "SearchResultCellReuseIdentifier"
+    private var searchType: SearchTab
 
     init(seachTab: SearchTab) {
         self.searchType = seachTab
@@ -43,7 +43,6 @@ class DiscoverSearchResultViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
-
 }
 
 extension DiscoverSearchResultViewController: UITableViewDataSource, UITableViewDelegate {
@@ -57,9 +56,5 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
         cell.configure(searchType: searchType, titleText: "THis is some text")
         return cell
     }
-
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 60
-//    }
 
 }

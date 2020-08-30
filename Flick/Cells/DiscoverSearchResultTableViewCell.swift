@@ -11,9 +11,9 @@ import UIKit
 class DiscoverSearchResultTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let listPreviewView = ListPreviewView()
     private let iconImageView = UIImageView()
     private let infoStackView = UIStackView()
+    private let listPreviewView = ListPreviewView()
     private let resultImageView =  UIImageView()
     private let subtitleLabel = UILabel()
     private let subtitleStackView = UIStackView()
