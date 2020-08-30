@@ -124,7 +124,9 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMedia() {
-        print("Save media.")
+        let listsModalView = MediaListsModalView(type: .saveMedia)
+        listsModalView.modalDelegate = self
+        showModalPopup(view: listsModalView)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -223,6 +225,14 @@ extension MediaViewController: UIGestureRecognizerDelegate {
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+
+}
+
+extension MediaViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
     }
 
 }
