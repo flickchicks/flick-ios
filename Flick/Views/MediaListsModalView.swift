@@ -106,6 +106,7 @@ class MediaListsModalView: UIView {
         getLists()
 
         if type == .saveMedia {
+            newListButton.addTarget(self, action: #selector(newListTapped), for: .touchUpInside)
             setupNewListButton()
         }
 
@@ -190,6 +191,11 @@ class MediaListsModalView: UIView {
                 self.saveMediaDelegate?.saveMedia(selectedList: selectedList)
             }
         }
+    }
+
+    @objc func newListTapped() {
+        self.modalDelegate?.dismissModal(modalView: self)
+        self.saveMediaDelegate?.presentCreateNewList()
     }
 
     required init?(coder: NSCoder) {

@@ -12,6 +12,7 @@ import UIKit
 
 protocol SaveMediaDelegate: class {
     func saveMedia(selectedList: SimpleMediaList)
+    func presentCreateNewList()
 }
 
 enum CardState {case collapsed, expanded }
@@ -250,6 +251,13 @@ extension MediaViewController: SaveMediaDelegate {
 
             self.persentInfoAlert(message: "Saved to \(selectedList.name)", completion: nil)
         }
+    }
+
+    func presentCreateNewList() {
+        let createListModal = EnterListNameModalView(type: .createList)
+        createListModal.modalDelegate = self
+        createListModal.createListDelegate = self
+        showModalPopup(view: createListModal)
     }
 
 }
