@@ -261,3 +261,15 @@ extension MediaViewController: SaveMediaDelegate {
     }
 
 }
+
+extension MediaViewController: CreateListDelegate {
+
+    func createList(title: String) {
+        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
+        }
+    }
+
+}
