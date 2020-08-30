@@ -10,7 +10,6 @@ import UIKit
 import FBSDKLoginKit
 import IQKeyboardManagerSwift
 
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private let userDefaults = UserDefaults.standard
@@ -40,6 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // User is logged out.
             rootViewController = loginViewController
         }
+
         let navigationController = UINavigationController(rootViewController: rootViewController)
 
         window.rootViewController = navigationController

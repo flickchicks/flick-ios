@@ -92,12 +92,12 @@ class FriendRequestTableViewCell: UITableViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
             make.trailing.equalTo(containerView).inset(12)
         }
+
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 
     private func setupFriendRequestCell(fromUser: String) {
         let friendLabelString = NSMutableAttributedString(string: fromUser, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])

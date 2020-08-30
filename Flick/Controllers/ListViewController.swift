@@ -250,6 +250,18 @@ extension ListViewController: UICollectionViewDataSource {
         }
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .mediaList:
+            let media = section.items[indexPath.row]
+            let mediaViewController = MediaViewController(mediaId: media.id)
+            navigationController?.pushViewController(mediaViewController, animated: true)
+        default:
+            return
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let section = sections[indexPath.section]
         switch section.type {
