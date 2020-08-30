@@ -37,12 +37,14 @@ class EditProfileViewController: UIViewController {
         view.backgroundColor = .offWhite
         setupNavigationBar()
 
-//        imagePickerController.delegate = self
-//        imagePickerController.allowsEditing = true
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
         imagePickerController.mediaTypes = ["public.image"]
         imagePickerController.sourceType = .photoLibrary
 
         profileImageView.layer.cornerRadius = 50
+        profileImageView.layer.masksToBounds = true
+        profileImageView.clipsToBounds = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         view.addSubview(profileImageView)
 
@@ -61,17 +63,6 @@ class EditProfileViewController: UIViewController {
         firstNameFieldLabel.font = .systemFont(ofSize: 8)
         firstNameFieldLabel.textColor = .mediumGray
         view.addSubview(firstNameFieldLabel)
-
-//        let decoder = JSONDecoder()
-//        if let storedUser = userDefaults.data(forKey: Constants.UserDefaults.authorizationToken) {
-//            print(storedUser)
-//            if let decodedUser = try? decoder.decode(User.self, from: storedUser) {
-//                let username = decodedUser.username
-//                let firstName = decodedUser.firstName
-//                let lastName = decodedUser.lastName
-//                print("\(username) \(firstName) \(lastName)")
-//            }
-//        }
 
         firstNameTextField.font = .systemFont(ofSize: 12)
         firstNameTextField.textColor = .black
@@ -159,6 +150,8 @@ class EditProfileViewController: UIViewController {
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
+        // TODO: Update save button size
+        let saveButtonSize = CGSize(width: 60, height: 20)
 
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -173,6 +166,17 @@ class EditProfileViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
+
+        let saveButton = UIButton()
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(.black, for: .normal)
+        saveButton.snp.makeConstraints { make in
+            make.size.equalTo(saveButtonSize)
+        }
+
+        saveButton.addTarget(self, action: #selector(saveProfileInformation), for: .touchUpInside)
+        let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
+        navigationItem.rightBarButtonItem = saveBarButtonItem
 
         editProfileTitleLabel.text = "Edit Profile"
         editProfileTitleLabel.font = .systemFont(ofSize: 18)
@@ -295,7 +299,11 @@ class EditProfileViewController: UIViewController {
     }
 
     @objc func selectImage() {
-        print("select image")
+        present(imagePickerController, animated: true, completion: nil)
+    }
+
+    @objc func saveProfileInformation() {
+        print("save")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -303,27 +311,18 @@ class EditProfileViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        editProfileTitleLabel.removeFromSuperview()
-//    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        editProfileTitleLabel.removeFromSuperview()
+    }
 
 }
 
-extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//        return imagePickerController(picker, didSelect: nil)
-//    }
+extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        guard let image = info[.editedImage] as? UIImage else {
-//            return
-//        }
-//    }
-
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        let image = info[.originalImage] as! UIImage
-//        profileImageView.image = image
-//        dismiss(animated: true, completion: nil)
-//    }
+     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        profileImageView.image = image
+        dismiss(animated: true, completion: nil)
+    }
 }
