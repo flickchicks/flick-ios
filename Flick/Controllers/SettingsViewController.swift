@@ -29,6 +29,7 @@ class SettingsViewController: UIViewController {
         editProfileButton.setTitle("Edit Profile", for: .normal)
         editProfileButton.setTitleColor(.darkBlue, for: .normal)
         editProfileButton.titleLabel?.font = .systemFont(ofSize: 18)
+        editProfileButton.addTarget(self, action: #selector(showEditProfile), for: .touchUpInside)
         editProfileButton.contentHorizontalAlignment = .left
         view.addSubview(editProfileButton)
 
@@ -59,6 +60,11 @@ class SettingsViewController: UIViewController {
         userDefaults.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         let loginViewController = LoginViewController()
         navigationController?.pushViewController(loginViewController, animated: true)
+    }
+
+    @objc func showEditProfile() {
+        let editProfileViewController = EditProfileViewController()
+        navigationController?.pushViewController(editProfileViewController, animated: true)
     }
 
     private func setupConstraints() {

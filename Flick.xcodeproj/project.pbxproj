@@ -50,6 +50,7 @@
 		D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
+		D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
 		D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */; };
 		D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */; };
@@ -163,6 +164,7 @@
 		D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThoughtsTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
 		D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryInfoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
 				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
+				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
+				D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */,
 				80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */,
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
 				D425B98E24E83AE200FB13A5 /* FriendRequestTableViewCell.swift in Sources */,
