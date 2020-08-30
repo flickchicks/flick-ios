@@ -24,7 +24,6 @@
 		80B3F9C024F317D7002891C4 /* SearchTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */; };
 		80B3F9C224F4A3AE002891C4 /* DiscoverSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */; };
 		80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */; };
-		80BC0C5524F897D500BBB178 /* MoviesSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5424F897D500BBB178 /* MoviesSearchResultViewController.swift */; };
 		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
@@ -132,7 +131,6 @@
 		80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabCollectionViewCell.swift; sourceTree = "<group>"; };
 		80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultViewController.swift; sourceTree = "<group>"; };
 		80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultTableViewCell.swift; sourceTree = "<group>"; };
-		80BC0C5424F897D500BBB178 /* MoviesSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesSearchResultViewController.swift; sourceTree = "<group>"; };
 		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
@@ -289,16 +287,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		80BC0C5324F8971500BBB178 /* Discover Search */ = {
-			isa = PBXGroup;
-			children = (
-				80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */,
-				80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */,
-				80BC0C5424F897D500BBB178 /* MoviesSearchResultViewController.swift */,
-			);
-			path = "Discover Search";
-			sourceTree = "<group>";
-		};
 		D41FE8A52477C7A40048900F = {
 			isa = PBXGroup;
 			children = (
@@ -372,7 +360,8 @@
 		D47866812478B8CE009E42FE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				80BC0C5324F8971500BBB178 /* Discover Search */,
+				80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */,
+				80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */,
 				80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */,
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				D478667F2478B4F0009E42FE /* HomeViewController.swift */,
@@ -770,7 +759,6 @@
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
-				80BC0C5524F897D500BBB178 /* MoviesSearchResultViewController.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
 				80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */,
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
