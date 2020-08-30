@@ -62,8 +62,9 @@ class MediaListsModalView: UIView {
     private var selectedList: SimpleMediaList?
     private var type: MediaListsModalViewType
 
-    weak var modalDelegate: ModalDelegate?
     weak var editListDelegate: EditListDelegate?
+    weak var modalDelegate: ModalDelegate?
+    weak var saveMediaDelegate: SaveMediaDelegate?
 
     init(type: MediaListsModalViewType) {
         self.type = type
@@ -185,7 +186,8 @@ class MediaListsModalView: UIView {
                 guard let selectedList = self.selectedList else { return }
                 self.editListDelegate?.moveMedia(selectedList: selectedList)
             case .saveMedia:
-                break
+                guard let selectedList = self.selectedList else { return }
+                self.saveMediaDelegate?.saveMedia(selectedList: selectedList)
             }
         }
     }
