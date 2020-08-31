@@ -26,6 +26,7 @@ class EditProfileViewController: UIViewController {
     private let lastNameFieldLabel = UILabel()
     private let lastNameTextField = UITextField()
     private let profileImageView = UIImageView()
+    private let profileSelectionModalView = ProfileSelectionModalView()
     private let selectImageButton = UIButton()
     private let userNameFieldLabel = UILabel()
     private let userNameTextField = UITextField()
@@ -37,6 +38,9 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .offWhite
         setupNavigationBar()
+
+        profileSelectionModalView.modalDelegate = self
+        profileSelectionModalView.profileSelectionDelegate = self
 
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = false
@@ -167,6 +171,16 @@ class EditProfileViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
+        editProfileTitleLabel.text = "Edit Profile"
+        editProfileTitleLabel.font = .systemFont(ofSize: 18)
+        editProfileTitleLabel.textColor = .black
+        navigationController?.navigationBar.addSubview(editProfileTitleLabel)
+
+        editProfileTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(59)
+            make.top.bottom.trailing.equalToSuperview()
+        }
+
         let saveButton = UIButton()
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.gradientPurple, for: .normal)
@@ -178,16 +192,6 @@ class EditProfileViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveProfileInformation), for: .touchUpInside)
         let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
         navigationItem.rightBarButtonItem = saveBarButtonItem
-
-        editProfileTitleLabel.text = "Edit Profile"
-        editProfileTitleLabel.font = .systemFont(ofSize: 18)
-        editProfileTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(editProfileTitleLabel)
-
-        editProfileTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
 
         headerView.backgroundColor = .movieWhite
         headerView.clipsToBounds = false
@@ -209,10 +213,11 @@ class EditProfileViewController: UIViewController {
 
     private func setupConstraints() {
 
-        let profileImageSize = CGSize(width: 100, height: 100)
         let editButtonSize = CGSize(width: 24, height: 24)
         let horizontalPadding = 24
+        let profileImageSize = CGSize(width: 100, height: 100)
         let smallFieldSize = CGSize(width: 152, height: 17)
+        let verticalPadding = 20
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
@@ -223,13 +228,13 @@ class EditProfileViewController: UIViewController {
         selectImageButton.snp.makeConstraints { make in
             make.size.equalTo(editButtonSize)
             make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(horizontalPadding/2)
         }
 
         firstNameFieldLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
             make.top.equalTo(profileImageView.snp.bottom).offset(32)
-            make.trailing.equalTo(view.snp.centerX).offset(-12)
+            make.trailing.equalTo(view.snp.centerX).offset(-horizontalPadding/2)
         }
 
         firstNameTextField.snp.makeConstraints { make in
@@ -239,8 +244,8 @@ class EditProfileViewController: UIViewController {
         }
 
         lastNameFieldLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(24)
-            make.leading.equalTo(view.snp.centerX).offset(12)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
+            make.leading.equalTo(view.snp.centerX).offset(horizontalPadding/2)
             make.top.equalTo(firstNameFieldLabel)
         }
 
@@ -252,7 +257,7 @@ class EditProfileViewController: UIViewController {
 
         userNameFieldLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(firstNameFieldLabel)
-            make.top.equalTo(firstNameTextField.snp.bottom).offset(20)
+            make.top.equalTo(firstNameTextField.snp.bottom).offset(verticalPadding)
         }
 
         userNameTextField.snp.makeConstraints { make in
@@ -262,7 +267,7 @@ class EditProfileViewController: UIViewController {
         }
 
         bioFieldLabel.snp.makeConstraints { make in
-            make.top.equalTo(userNameTextField.snp.bottom).offset(20)
+            make.top.equalTo(userNameTextField.snp.bottom).offset(verticalPadding)
             make.leading.equalTo(firstNameFieldLabel)
             make.trailing.equalTo(lastNameFieldLabel)
         }
@@ -275,7 +280,7 @@ class EditProfileViewController: UIViewController {
 
         accountInfoTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(bioTextField.snp.bottom).offset(36)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         accountInfoDescriptionLabel.snp.makeConstraints { make in
@@ -285,7 +290,7 @@ class EditProfileViewController: UIViewController {
 
         facebookFieldLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(accountInfoTitleLabel)
-            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(20)
+            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
         }
 
         facebookAccountLabel.snp.makeConstraints { make in
@@ -300,9 +305,6 @@ class EditProfileViewController: UIViewController {
     }
 
     @objc func selectImage() {
-        let profileSelectionModalView = ProfileSelectionModalView()
-        profileSelectionModalView.modalDelegate = self
-        profileSelectionModalView.profileSelectionDelegate = self
         // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
         showModalPopup(view: profileSelectionModalView)
     }
@@ -320,11 +322,6 @@ class EditProfileViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         editProfileTitleLabel.removeFromSuperview()
@@ -338,7 +335,9 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         let resizedImage = image.resize(toSize: profileImageSize, scale: UIScreen.main.scale)
         profileImageView.image = resizedImage
+        profileSelectionModalView.removeFromSuperview()
         dismiss(animated: true, completion: nil)
+
     }
 }
 
@@ -350,11 +349,14 @@ extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
     func selectFromGallery() {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
+//        profileSelectionModalView.removeFromSuperview()
     }
 
     func takeNewPhoto() {
+        profileSelectionModalView.removeFromSuperview()
         imagePickerController.sourceType = .camera
         present(imagePickerController, animated: true, completion: nil)
+//        profileSelectionModalView.removeFromSuperview()
     }
 
 

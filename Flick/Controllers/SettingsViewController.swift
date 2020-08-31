@@ -110,16 +110,6 @@ class SettingsViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        settingsTitleLabel.text = "Settings"
-        settingsTitleLabel.font = .systemFont(ofSize: 18)
-        settingsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(settingsTitleLabel)
-
-        settingsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
         headerView.backgroundColor = .movieWhite
         headerView.clipsToBounds = false
         headerView.layer.masksToBounds = false
@@ -145,21 +135,20 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        settingsTitleLabel.text = "Settings"
+        settingsTitleLabel.font = .systemFont(ofSize: 18)
+        settingsTitleLabel.textColor = .black
+        navigationController?.navigationBar.addSubview(settingsTitleLabel)
+
+        settingsTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(59)
+            make.top.bottom.trailing.equalToSuperview()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         settingsTitleLabel.removeFromSuperview()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
