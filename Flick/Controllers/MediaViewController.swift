@@ -10,6 +10,11 @@ import Foundation
 import Kingfisher
 import UIKit
 
+protocol SaveMediaDelegate: class {
+    func saveMedia(selectedList: SimpleMediaList)
+    func presentCreateNewList()
+}
+
 enum CardState {case collapsed, expanded }
 
 class MediaViewController: UIViewController {
@@ -94,7 +99,7 @@ class MediaViewController: UIViewController {
                                        width: buttonSize.width, height: buttonSize.height)
         saveMediaButton.setImage(UIImage(named: "saveButton"), for: .normal)
         saveMediaButton.layer.cornerRadius = buttonSize.width / 2
-        saveMediaButton.addTarget(self, action: #selector(saveMedia), for: .touchUpInside)
+        saveMediaButton.addTarget(self, action: #selector(saveMediaTapped), for: .touchUpInside)
         view.addSubview(saveMediaButton)
 
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
@@ -123,8 +128,11 @@ class MediaViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    @objc func saveMedia() {
-        print("Save media.")
+    @objc func saveMediaTapped() {
+        let listsModalView = MediaListsModalView(type: .saveMedia)
+        listsModalView.modalDelegate = self
+        listsModalView.saveMediaDelegate = self
+        showModalPopup(view: listsModalView)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -223,6 +231,45 @@ extension MediaViewController: UIGestureRecognizerDelegate {
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+
+}
+
+extension MediaViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+}
+
+extension MediaViewController: SaveMediaDelegate {
+
+    func saveMedia(selectedList: SimpleMediaList) {
+        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Saved to \(selectedList.name)", completion: nil)
+        }
+    }
+
+    func presentCreateNewList() {
+        let createListModal = EnterListNameModalView(type: .createList)
+        createListModal.modalDelegate = self
+        createListModal.createListDelegate = self
+        showModalPopup(view: createListModal)
+    }
+
+}
+
+extension MediaViewController: CreateListDelegate {
+
+    func createList(title: String) {
+        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
+            guard let self = self else { return }
+
+            self.persentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
+        }
     }
 
 }

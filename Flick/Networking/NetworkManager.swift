@@ -85,13 +85,13 @@ class NetworkManager {
     }
 
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
-    static func createNewMediaList(listName: String, completion: @escaping (MediaList) -> Void) {
+    static func createNewMediaList(listName: String, mediaIds: [Int] = [], completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "name": listName,
             "is_favorite": true,
             "is_watched": true,
             "collaborators": [],
-            "shows": [],
+            "shows": mediaIds
         ]
 
         AF.request("\(hostEndpoint)/api/lsts/", method: .post,

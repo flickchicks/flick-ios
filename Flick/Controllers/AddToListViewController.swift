@@ -353,12 +353,12 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let media = searchResultMedia[indexPath.row]
-        selectMedia(SimpleMedia(id: media.id, posterPic: media.posterPic))
+        selectMedia(SimpleMedia(id: media.id, title: media.title, posterPic: media.posterPic))
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let media = searchResultMedia[indexPath.row]
-        deselectMedia(SimpleMedia(id: media.id, posterPic: media.posterPic))
+        deselectMedia(SimpleMedia(id: media.id, title: media.title, posterPic: media.posterPic))
     }
 
 }
