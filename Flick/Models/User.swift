@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FBSDKLoginKit
 
 struct User: Codable {
     var username: String
@@ -15,6 +16,14 @@ struct User: Codable {
     var profilePic: String?
     var bio: String?
     var phoneNumber: String?
-    var socialIdToken: String
-    var socialIdTokenType: String
+    var socialIdToken: String? = AccessToken.current?.tokenString
+    var socialIdTokenType: String = "facebook"
+
+//    init(username: String, firstName: String, lastName: String, bio: String, profilePic: String, phoneNumber: String) {
+//        self.username = username
+//        self.firstName = firstName
+//        self.lastName = lastName
+//        self.bio = bio
+//        self.profilePic = profilePic
+//    }
 }

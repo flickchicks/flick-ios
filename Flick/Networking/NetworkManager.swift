@@ -85,19 +85,19 @@ class NetworkManager {
     }
 
     /// [POST] Update user profile [updated as of 8/20/20]
-    static func updateUserProfile(userProfile: UserProfile, completion: @escaping (UserProfile) -> Void) {
+    static func updateUserProfile(user: User, completion: @escaping (UserProfile) -> Void) {
         let parameters: [String: Any] = [
-            "username": userProfile.username,
-            "first_name": userProfile.firstName,
-            "last_name": userProfile.lastName,
-            "bio": userProfile.bio!,
-            "profile_pic": userProfile.profilePic!,
-            "phone_number": userProfile.phoneNumber!,
-            "social_id_token_type": "facebook",
-            "social_id_token": userProfile.socialIdToken!
+            "username": user.username,
+            "first_name": user.firstName,
+            "last_name": user.lastName,
+            "bio": user.bio!,
+            "profile_pic": user.profilePic!,
+            "phone_number": user.phoneNumber!,
+            "social_id_token_type": user.socialIdTokenType,
+            "social_id_token": user.socialIdToken!
         ]
 
-        AF.request("\(hostEndpoint)/api/auth/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/auth/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

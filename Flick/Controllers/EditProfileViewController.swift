@@ -32,15 +32,15 @@ class EditProfileViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private let userDefaults = UserDefaults.standard
+    private let profileImageSize = CGSize(width: 100, height: 100)
 
     override func viewDidLoad() {
         view.backgroundColor = .offWhite
         setupNavigationBar()
 
         imagePickerController.delegate = self
-        imagePickerController.allowsEditing = true
+        imagePickerController.allowsEditing = false
         imagePickerController.mediaTypes = ["public.image"]
-        imagePickerController.sourceType = .photoLibrary
 
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
@@ -151,7 +151,7 @@ class EditProfileViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
         // TODO: Update save button size
-        let saveButtonSize = CGSize(width: 60, height: 20)
+        let saveButtonSize = CGSize(width: 33, height: 17)
 
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -169,7 +169,8 @@ class EditProfileViewController: UIViewController {
 
         let saveButton = UIButton()
         saveButton.setTitle("Save", for: .normal)
-        saveButton.setTitleColor(.black, for: .normal)
+        saveButton.setTitleColor(.gradientPurple, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
         saveButton.snp.makeConstraints { make in
             make.size.equalTo(saveButtonSize)
         }
@@ -299,11 +300,24 @@ class EditProfileViewController: UIViewController {
     }
 
     @objc func selectImage() {
-        present(imagePickerController, animated: true, completion: nil)
+        let profileSelectionModalView = ProfileSelectionModalView()
+        profileSelectionModalView.modalDelegate = self
+        profileSelectionModalView.profileSelectionDelegate = self
+        // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
+        showModalPopup(view: profileSelectionModalView)
     }
 
     @objc func saveProfileInformation() {
-        print("save")
+        if let firstName = firstNameTextField.text,
+            let lastName = lastNameTextField.text,
+            let username = userNameTextField.text,
+            let bio = bioTextField.text,
+            let base64ProfileImage = profileImageView.image?.toBase64()
+        {
+            let user = User(username: username, firstName: firstName, lastName: lastName, profilePic: base64ProfileImage, bio: bio, phoneNumber: "7812289951")
+            NetworkManager.updateUserProfile(user: user) { [weak self] userProfile in
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -322,7 +336,26 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
 
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        profileImageView.image = image
+        let resizedImage = image.resize(toSize: profileImageSize, scale: UIScreen.main.scale)
+        profileImageView.image = resizedImage
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+    func selectFromGallery() {
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true, completion: nil)
+    }
+
+    func takeNewPhoto() {
+        imagePickerController.sourceType = .camera
+        present(imagePickerController, animated: true, completion: nil)
+    }
+
+
 }

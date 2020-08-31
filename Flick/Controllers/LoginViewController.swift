@@ -60,7 +60,7 @@ class LoginViewController: UIViewController {
                         if let pictureData = pictureData {
                             let pictureObject = UIImage(data: pictureData)
                             let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
-                            let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString!, socialIdToken: accessToken, socialIdTokenType: "facebook")
+                            let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString)
                             NetworkManager.registerUser(user: user) { [weak self] (registeredUser) in
                                 guard let self = self else { return }
                                 let encoder = JSONEncoder()
@@ -70,7 +70,7 @@ class LoginViewController: UIViewController {
                                 }
                                 let username = registeredUser.username
                                 let socialIdToken = registeredUser.socialIdToken
-                                self.loginUser(username: username, socialIdToken: socialIdToken)
+                                self.loginUser(username: username, socialIdToken: socialIdToken!)
                             }
                         }
                 }
