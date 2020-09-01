@@ -398,6 +398,7 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get media search result by query
     static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
         guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
         var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
