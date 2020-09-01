@@ -119,11 +119,7 @@ class DiscoverSearchViewController: UIViewController {
 extension DiscoverSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == tabCollectionView {
-            return tabs.count
-        } else {
-            return searchResultViewControllers.count
-        }
+        collectionView == tabCollectionView ? tabs.count : searchResultViewControllers.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

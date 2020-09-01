@@ -112,8 +112,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
 
         infoStackView.snp.makeConstraints { make in
             make.leading.equalTo(resultImageView.snp.trailing).offset(10)
-            make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.trailing.centerY.equalToSuperview()
         }
     }
 
