@@ -19,6 +19,20 @@ class NetworkManager {
     ]
 
     private static let hostEndpoint = "http://localhost:8000"
+    private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
+
+    private static func getUrlWithQuery(baseUrl: String, items: [String: String]) -> String? {
+        guard let baseUrl = URL(string: baseUrl) else { return nil }
+        var urlComp = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)
+
+        var queryItems: [URLQueryItem] = []
+        items.forEach { (key, value) in
+            queryItems.append(URLQueryItem(name: key, value: value))
+        }
+        urlComp?.queryItems = queryItems
+
+        return urlComp?.url?.absoluteString
+    }
 
     /// [POST] Register new user [updated as of 7/3/20]
     static func registerUser(user: User, completion: @escaping (User) -> Void) {
@@ -399,23 +413,18 @@ class NetworkManager {
     }
 
     static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
-        guard let searchBaseUrl = URL(string: "\(hostEndpoint)/api/search/") else { return }
-        var urlComp = URLComponents(url: searchBaseUrl, resolvingAgainstBaseURL: true)
-        urlComp?.queryItems = [
-            URLQueryItem(name: "is_movie", value: "true"),
-            URLQueryItem(name: "is_tv", value: "true"),
-            URLQueryItem(name: "query", value: query)
-        ]
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_movie" : "true",
+            "is_tv": "true",
+            "query": query
+        ]) else { return }
 
-        guard let url = urlComp?.url?.absoluteString else { return }
         AF.request(url, method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                print(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
-                    print(mediaData.data)
                     let media = mediaData.data
                     completion(media)
                 }
