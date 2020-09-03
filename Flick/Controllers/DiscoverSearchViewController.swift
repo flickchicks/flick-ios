@@ -45,7 +45,7 @@ class DiscoverSearchViewController: UIViewController {
 
         searchResultPageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: pageCollectionViewLayout)
         searchResultPageCollectionView.backgroundColor = .offWhite
-        searchResultPageCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: searchResultPageReuseIdentifier)
+        searchResultPageCollectionView.register(DiscoverSearchVCCollectionViewCell.self, forCellWithReuseIdentifier: searchResultPageReuseIdentifier)
         searchResultPageCollectionView.dataSource = self
         searchResultPageCollectionView.delegate = self
         searchResultPageCollectionView.showsHorizontalScrollIndicator = false
@@ -94,7 +94,9 @@ class DiscoverSearchViewController: UIViewController {
 
     func setupViewControllers() {
         tabs.forEach { tab in
-            searchResultViewControllers.append(DiscoverSearchResultViewController(seachTab: tab))
+            let discoverSearchResultVC = DiscoverSearchResultViewController()
+            discoverSearchResultVC.searchType = tab
+            searchResultViewControllers.append(discoverSearchResultVC)
         }
     }
 
@@ -131,12 +133,8 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
             }
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath)
-            let vc = searchResultViewControllers[indexPath.item]
-            cell.addSubview(vc.view)
-            vc.view.snp.makeConstraints { make in
-                make.edges.equalTo(cell)
-            }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(searchType: tabs[indexPath.item])
             return cell
         }
     }
@@ -168,5 +166,10 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension DiscoverSearchViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
+        cell.viewController.updateSearchResult(query: searchText)
+    }
 
 }
