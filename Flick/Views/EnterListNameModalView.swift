@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol ListDelegate: class {
+protocol CreateListDelegate: class {
     func createList(title: String)
 }
 
@@ -25,8 +25,8 @@ class EnterListNameModalView: UIView {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    weak var createListDelegate: CreateListDelegate?
     weak var modalDelegate: ModalDelegate?
-    weak var listDelegate: ListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     private var type: EnterListNameModalType!
 
@@ -142,7 +142,7 @@ class EnterListNameModalView: UIView {
             self.modalDelegate?.dismissModal(modalView: self)
             switch self.type {
             case .createList:
-                self.listDelegate?.createList(title: nameText)
+                self.createListDelegate?.createList(title: nameText)
             case .renameList:
                 self.listSettingsDelegate?.renameList(to: nameText)
             case .none:

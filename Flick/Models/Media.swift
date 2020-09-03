@@ -10,6 +10,7 @@ import Foundation
 
 struct SimpleMedia: Codable {
     var id: Int
+    var title: String
     var posterPic: String?
 }
 

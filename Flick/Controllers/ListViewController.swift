@@ -103,6 +103,11 @@ class ListViewController: UIViewController {
                 return
             }
 
+            // Hide empty state views
+            self.emptyListImageView.isHidden = true
+            self.addMediaMessageLabel.isHidden = true
+            self.arrowToAddButtonView.isHidden = true
+
             self.listNameLabel.text = list.name
             self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
             self.setupSections()
