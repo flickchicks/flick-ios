@@ -435,5 +435,115 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get movies search result by query [updated as of 9/3/20]
+    static func searchMovies(query: String, completion: @escaping ([Media]) -> Void) {
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_movie" : "true",
+            "query": query
+        ]) else { return }
+
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get shows search result by query [updated as of 9/3/20]
+    static func searchShows(query: String, completion: @escaping ([Media]) -> Void) {
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_tv" : "true",
+            "query": query
+        ]) else { return }
+
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
+                    let media = mediaData.data
+                    completion(media)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get users search result by query [updated as of 9/3/20]
+    static func searchUsers(query: String, completion: @escaping ([UserProfile]) -> Void) {
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_user" : "true",
+            "query": query
+        ]) else { return }
+
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let usersData = try? jsonDecoder.decode(Response<[UserProfile]>.self, from: data) {
+                    let users = usersData.data
+                    completion(users)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get tags search result by query [updated as of 9/3/20]
+    static func searchTags(query: String, completion: @escaping ([Tag]) -> Void) {
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_tag" : "true",
+            "query": query
+        ]) else { return }
+
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let tagsData = try? jsonDecoder.decode(Response<[Tag]>.self, from: data) {
+                    let tags = tagsData.data
+                    completion(tags)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get lists search result by query [updated as of 9/3/20]
+    static func searchLists(query: String, completion: @escaping ([MediaList]) -> Void) {
+        guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
+            "is_lst" : "true",
+            "query": query
+        ]) else { return }
+
+        AF.request(url, method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let listsData = try? jsonDecoder.decode(Response<[MediaList]>.self, from: data) {
+                    let lists = listsData.data
+                    completion(lists)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
 }
 
