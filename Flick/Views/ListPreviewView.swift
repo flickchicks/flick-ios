@@ -15,22 +15,25 @@ class ListPreviewView: UIView {
     private let secondImageView = UIImageView()
     private let thirdImageView = UIImageView()
 
+    // MARK: - Public Data Vars
+    var firstThreeMedia: [SimpleMedia] = [] {
+        didSet {
+            setupMediaImages()
+        }
+    }
     init() {
         super.init(frame: .zero)
 
-        thirdImageView.image = UIImage(named: "dunkirk")
         thirdImageView.backgroundColor = .lightGray
         thirdImageView.layer.masksToBounds = true
         thirdImageView.layer.cornerRadius = 4
         addSubview(thirdImageView)
 
-        secondImageView.image = UIImage(named: "dunkirk")
         secondImageView.backgroundColor = .lightGray
         secondImageView.layer.masksToBounds = true
         secondImageView.layer.cornerRadius = 4
         addSubview(secondImageView)
 
-        firstImageView.image = UIImage(named: "dunkirk")
         firstImageView.backgroundColor = .lightGray
         firstImageView.layer.masksToBounds = true
         firstImageView.layer.cornerRadius = 4
@@ -59,6 +62,27 @@ class ListPreviewView: UIView {
             make.trailing.equalTo(secondImageView.snp.trailing).offset(2)
             make.centerY.equalToSuperview()
             make.size.equalTo(thirdImageSize)
+        }
+    }
+
+    private func setupMediaImages() {
+        for i in 0..<firstThreeMedia.count {
+            switch i {
+            case 0:
+                if let imageUrl = URL(string: firstThreeMedia[i].posterPic ?? "") {
+                    firstImageView.kf.setImage(with: imageUrl)
+                }
+            case 1:
+                if let imageUrl = URL(string: firstThreeMedia[i].posterPic ?? "") {
+                    secondImageView.kf.setImage(with: imageUrl)
+                }
+            case 2:
+                if let imageUrl = URL(string: firstThreeMedia[i].posterPic ?? "") {
+                    thirdImageView.kf.setImage(with: imageUrl)
+                }
+            default:
+                break
+            }
         }
     }
 

@@ -168,7 +168,8 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 extension DiscoverSearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
+        guard searchText != "",
+            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
         cell.viewController.updateSearchResult(query: searchText)
     }
 

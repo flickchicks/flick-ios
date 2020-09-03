@@ -14,8 +14,11 @@ class DiscoverSearchResultViewController: UIViewController {
     private let resultsTableView = UITableView()
 
     // MARK: - Private Data Vars
-    private var results = [Media]()
+    private var lists = [MediaList]()
+    private var media = [Media]()
     private let searchResultCellReuseIdentifier = "SearchResultCellReuseIdentifier"
+    private var tags = [Tag]()
+    private var users = [UserProfile]()
 
     // MARK: - Public Data Vars
     var searchType: SearchTab?
@@ -41,7 +44,31 @@ class DiscoverSearchResultViewController: UIViewController {
         case .movies:
             NetworkManager.searchMovies(query: query) { [weak self] movies in
                 guard let self = self else { return }
-                self.results = movies
+                self.media = movies
+                self.resultsTableView.reloadData()
+            }
+        case .shows:
+            NetworkManager.searchShows(query: query) { [weak self] shows in
+                guard let self = self else { return }
+                self.media = shows
+                self.resultsTableView.reloadData()
+            }
+        case .people:
+            NetworkManager.searchUsers(query: query) { [weak self] users in
+                guard let self = self else { return }
+                self.users = users
+                self.resultsTableView.reloadData()
+            }
+        case .tags:
+            NetworkManager.searchTags(query: query) { [weak self] tags in
+                guard let self = self else { return }
+                self.tags = tags
+                self.resultsTableView.reloadData()
+            }
+        case .lists:
+            NetworkManager.searchLists(query: query) { [weak self] lists in
+                guard let self = self else { return }
+                self.lists = lists
                 self.resultsTableView.reloadData()
             }
         default:
@@ -53,14 +80,37 @@ class DiscoverSearchResultViewController: UIViewController {
 extension DiscoverSearchResultViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
+        switch searchType {
+        case .movies, .shows:
+            return media.count
+        case .people:
+            return users.count
+        case .tags:
+            return tags.count
+        case .lists:
+            return lists.count
+        default:
+            return 0
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: searchResultCellReuseIdentifier, for: indexPath) as? DiscoverSearchResultTableViewCell,
             let searchType = searchType else { return UITableViewCell() }
-        let titleText = results[indexPath.row].title
-        cell.configure(searchType: searchType, titleText: titleText)
+        switch searchType {
+        case .movies:
+            cell.configureMovie(movie: media[indexPath.item])
+        case .shows:
+            cell.configureShow(show: media[indexPath.item])
+        case .people:
+            cell.configureUser(user: users[indexPath.item])
+        case .tags:
+            cell.configureTag(tag: tags[indexPath.item])
+        case .lists:
+            cell.configureList(list: lists[indexPath.item])
+        default:
+            break
+        }
         return cell
     }
 
