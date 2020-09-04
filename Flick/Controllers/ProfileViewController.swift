@@ -162,12 +162,13 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
+
+extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
+
     func pushSettingsView() {
         let settingsViewController = SettingsViewController()
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
-
 
     func pushNotificationsView() {
         let allNotificationsViewController = AllNotificationsViewController()
@@ -177,7 +178,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, ListDelegate {
     func showCreateListModal() {
         let createListModalView = EnterListNameModalView(type: .createList)
         createListModalView.modalDelegate = self
-        createListModalView.listDelegate = self
+        createListModalView.createListDelegate = self
         // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
         if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
             // Add modal view to the window to also cover tab bar

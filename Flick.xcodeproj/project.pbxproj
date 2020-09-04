@@ -20,6 +20,11 @@
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
 		80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BB24EB67CD002891C4 /* Tag.swift */; };
+		80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */; };
+		80B3F9C024F317D7002891C4 /* SearchTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */; };
+		80B3F9C224F4A3AE002891C4 /* DiscoverSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */; };
+		80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */; };
+		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
 		80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */; };
@@ -128,6 +133,11 @@
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
 		80B3F9BB24EB67CD002891C4 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchViewController.swift; sourceTree = "<group>"; };
+		80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabCollectionViewCell.swift; sourceTree = "<group>"; };
+		80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultViewController.swift; sourceTree = "<group>"; };
+		80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToListViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +280,8 @@
 				80F00F7324B96D410051B8FF /* PrivacySwitch.swift */,
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D414185724D5A621000BA11B /* CommentAreaView.swift */,
+				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */
+
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -356,6 +368,8 @@
 		D47866812478B8CE009E42FE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */,
+				80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */,
 				80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */,
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				D478667F2478B4F0009E42FE /* HomeViewController.swift */,
@@ -410,6 +424,8 @@
 				D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */,
 				D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */,
 				D425B98D24E83AE200FB13A5 /* FriendRequestTableViewCell.swift */,
+				80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */,
+				80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */,
 				D425B99124EC194D00FB13A5 /* MediaSummaryTableViewCell.swift */,
 				D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */,
 				D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */,
@@ -711,10 +727,13 @@
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
+				80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */,
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				D40A06B624EE2F8100631E75 /* CommentSpoilerModalView.swift in Sources */,
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
+				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
+				D444975124B566F700D72FED /* MediaCardViewController.swift in Sources */,
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
@@ -760,6 +779,7 @@
 				D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */,
 				D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */,
 				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,
+				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
@@ -767,6 +787,7 @@
 				80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */,
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
 				D425B98E24E83AE200FB13A5 /* FriendRequestTableViewCell.swift in Sources */,
+				80B3F9C024F317D7002891C4 /* SearchTabCollectionViewCell.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
 				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
@@ -785,6 +806,7 @@
 				80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */,
 				D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */,
 				D47866A1247C57F8009E42FE /* MediaList.swift in Sources */,
+				80B3F9C224F4A3AE002891C4 /* DiscoverSearchResultViewController.swift in Sources */,
 				D492728024DE515700FA5F2A /* NotificationsTabPageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,24 +11,35 @@ import UIKit
 class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
-    // TODO: Remove dummy label
-    private let titleLabel = UILabel()
+    private let searchBar = SearchBar()
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        titleLabel.text = "Discover"
-        titleLabel.font = .systemFont(ofSize: 32)
-        view.addSubview(titleLabel)
+        searchBar.placeholder = "Search movies, shows, people, generes"
+        searchBar.delegate = self
+        view.addSubview(searchBar)
 
-        titleLabel.snp.makeConstraints{ make in
-            make.top.equalToSuperview().offset(10)
-            make.leading.trailing.equalToSuperview().offset(24)
-            make.height.equalTo(50)
+        setupConstraints()
+    }
+
+    func setupConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(36)
         }
+    }
+}
 
+extension DiscoverViewController: UISearchBarDelegate {
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        let searchVC = DiscoverSearchViewController()
+        navigationController?.pushViewController(searchVC, animated: true)
+        searchBar.endEditing(true)
     }
 
 }
