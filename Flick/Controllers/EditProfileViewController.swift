@@ -8,28 +8,51 @@
 
 import UIKit
 
+class ProfileInputTextField: UITextField {
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        font = .systemFont(ofSize: 12)
+        textColor = .black
+        borderStyle = .none
+        layer.backgroundColor = UIColor.offWhite.cgColor
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.mediumGray.cgColor
+        leftView = UIView(frame: CGRect(x: 0, y: 0, width: 4, height: frame.height))
+        leftViewMode = .always
+        layer.shadowOffset = CGSize(width: 0, height: 1)
+        layer.shadowOpacity = 1.0
+        layer.shadowRadius = 0.0
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
 class EditProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let accountInfoDescriptionLabel = UILabel()
     private let accountInfoTitleLabel = UILabel()
     private let bioFieldLabel = UILabel()
-    private let bioTextField = UITextField()
+    private let bioTextView = UITextView()
     private let bioTextLimitLabel = UILabel()
     private let editProfileTitleLabel = UILabel()
     private let facebookAccountLabel = UILabel()
     private let facebookFieldLabel = UILabel()
     private let firstNameFieldLabel = UILabel()
-    private let firstNameTextField = UITextField()
+    private let firstNameTextField = ProfileInputTextField()
     private let headerView = UIView()
     private let imagePickerController = UIImagePickerController()
     private let lastNameFieldLabel = UILabel()
-    private let lastNameTextField = UITextField()
+    private let lastNameTextField = ProfileInputTextField()
     private let profileImageView = UIImageView()
     private let profileSelectionModalView = ProfileSelectionModalView()
     private let selectImageButton = UIButton()
     private let userNameFieldLabel = UILabel()
-    private let userNameTextField = UITextField()
+    private let userNameTextField = ProfileInputTextField()
 
     // MARK: - Private Data Vars
     private let userDefaults = UserDefaults.standard
@@ -68,15 +91,6 @@ class EditProfileViewController: UIViewController {
         firstNameFieldLabel.textColor = .mediumGray
         view.addSubview(firstNameFieldLabel)
 
-        firstNameTextField.font = .systemFont(ofSize: 12)
-        firstNameTextField.textColor = .black
-        firstNameTextField.borderStyle = .none
-        firstNameTextField.layer.backgroundColor = UIColor.offWhite.cgColor
-        firstNameTextField.layer.masksToBounds = false
-        firstNameTextField.layer.shadowColor = UIColor.mediumGray.cgColor
-        firstNameTextField.layer.shadowOffset = CGSize(width: 0, height: 1)
-        firstNameTextField.layer.shadowOpacity = 1.0
-        firstNameTextField.layer.shadowRadius = 0.0
         view.addSubview(firstNameTextField)
 
         lastNameFieldLabel.text = "Last Name"
@@ -84,15 +98,6 @@ class EditProfileViewController: UIViewController {
         lastNameFieldLabel.textColor = .mediumGray
         view.addSubview(lastNameFieldLabel)
 
-        lastNameTextField.font = .systemFont(ofSize: 12)
-        lastNameTextField.textColor = .black
-        lastNameTextField.borderStyle = .none
-        lastNameTextField.layer.backgroundColor = UIColor.offWhite.cgColor
-        lastNameTextField.layer.masksToBounds = false
-        lastNameTextField.layer.shadowColor = UIColor.mediumGray.cgColor
-        lastNameTextField.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        lastNameTextField.layer.shadowOpacity = 1.0
-        lastNameTextField.layer.shadowRadius = 0.0
         view.addSubview(lastNameTextField)
 
         userNameFieldLabel.text = "Username"
@@ -100,15 +105,6 @@ class EditProfileViewController: UIViewController {
         userNameFieldLabel.textColor = .mediumGray
         view.addSubview(userNameFieldLabel)
 
-        userNameTextField.font = .systemFont(ofSize: 12)
-        userNameTextField.textColor = .black
-        userNameTextField.borderStyle = .none
-        userNameTextField.layer.backgroundColor = UIColor.offWhite.cgColor
-        userNameTextField.layer.masksToBounds = false
-        userNameTextField.layer.shadowColor = UIColor.mediumGray.cgColor
-        userNameTextField.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        userNameTextField.layer.shadowOpacity = 1.0
-        userNameTextField.layer.shadowRadius = 0.0
         view.addSubview(userNameTextField)
 
         bioFieldLabel.text = "Bio"
@@ -116,16 +112,24 @@ class EditProfileViewController: UIViewController {
         bioFieldLabel.textColor = .mediumGray
         view.addSubview(bioFieldLabel)
 
-        bioTextField.font = .systemFont(ofSize: 12)
-        bioTextField.textColor = .black
-        bioTextField.borderStyle = .none
-        bioTextField.layer.backgroundColor = UIColor.offWhite.cgColor
-        bioTextField.layer.masksToBounds = false
-        bioTextField.layer.shadowColor = UIColor.mediumGray.cgColor
-        bioTextField.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        bioTextField.layer.shadowOpacity = 1.0
-        bioTextField.layer.shadowRadius = 0.0
-        view.addSubview(bioTextField)
+        bioTextLimitLabel.text = "0 / 100"
+        bioTextLimitLabel.textAlignment = .right
+        bioTextLimitLabel.font = .systemFont(ofSize: 8)
+        bioTextLimitLabel.textColor = .mediumGray
+        view.addSubview(bioTextLimitLabel)
+
+        bioTextView.delegate = self
+        bioTextView.sizeToFit()
+        bioTextView.isScrollEnabled = false
+        bioTextView.font = .systemFont(ofSize: 12)
+        bioTextView.textColor = .black
+        bioTextView.layer.backgroundColor = UIColor.offWhite.cgColor
+        bioTextView.layer.masksToBounds = false
+        bioTextView.layer.shadowColor = UIColor.mediumGray.cgColor
+        bioTextView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        bioTextView.layer.shadowOpacity = 1.0
+        bioTextView.layer.shadowRadius = 0.0
+        view.addSubview(bioTextView)
 
         accountInfoTitleLabel.text = "Linked Accounts and Information"
         accountInfoTitleLabel.font = .systemFont(ofSize: 16)
@@ -138,7 +142,7 @@ class EditProfileViewController: UIViewController {
         accountInfoDescriptionLabel.numberOfLines = 0
         view.addSubview(accountInfoDescriptionLabel)
 
-        facebookFieldLabel.text = "First Name"
+        facebookFieldLabel.text = "Facebook"
         facebookFieldLabel.font = .systemFont(ofSize: 8)
         facebookFieldLabel.textColor = .mediumGray
         view.addSubview(facebookFieldLabel)
@@ -149,7 +153,6 @@ class EditProfileViewController: UIViewController {
         view.addSubview(facebookAccountLabel)
 
         setupConstraints()
-
     }
 
     private func setupNavigationBar() {
@@ -269,17 +272,23 @@ class EditProfileViewController: UIViewController {
         bioFieldLabel.snp.makeConstraints { make in
             make.top.equalTo(userNameTextField.snp.bottom).offset(verticalPadding)
             make.leading.equalTo(firstNameFieldLabel)
-            make.trailing.equalTo(lastNameFieldLabel)
+            make.trailing.equalTo(bioTextLimitLabel.snp.leading)
         }
 
-        bioTextField.snp.makeConstraints { make in
+        bioTextLimitLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(lastNameTextField)
+            make.top.equalTo(bioFieldLabel)
+            make.width.equalTo(38)
+        }
+
+        bioTextView.snp.makeConstraints { make in
             make.top.equalTo(bioFieldLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(bioFieldLabel)
-            make.height.equalTo(smallFieldSize.height)
+            make.leading.equalTo(bioFieldLabel)
+            make.trailing.equalTo(bioTextLimitLabel)
         }
 
         accountInfoTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(bioTextField.snp.bottom).offset(36)
+            make.top.equalTo(bioTextView.snp.bottom).offset(36)
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
@@ -313,7 +322,7 @@ class EditProfileViewController: UIViewController {
         if let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
             let username = userNameTextField.text,
-            let bio = bioTextField.text,
+            let bio = bioTextView.text,
             let base64ProfileImage = profileImageView.image?.toBase64()
         {
             let user = User(username: username, firstName: firstName, lastName: lastName, profilePic: base64ProfileImage, bio: bio, phoneNumber: "7812289951")
@@ -325,6 +334,21 @@ class EditProfileViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         editProfileTitleLabel.removeFromSuperview()
+    }
+
+}
+
+extension EditProfileViewController: UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let currentText = textView.text ?? ""
+        // Attempt to read the range they are trying to change, or terminate if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        // Add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
+        let charCount = updatedText.count
+        bioTextLimitLabel.text = "\(charCount) / 150"
+        return charCount <= 150
     }
 
 }
@@ -349,14 +373,12 @@ extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
     func selectFromGallery() {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true, completion: nil)
-//        profileSelectionModalView.removeFromSuperview()
     }
 
     func takeNewPhoto() {
         profileSelectionModalView.removeFromSuperview()
         imagePickerController.sourceType = .camera
         present(imagePickerController, animated: true, completion: nil)
-//        profileSelectionModalView.removeFromSuperview()
     }
 
 
