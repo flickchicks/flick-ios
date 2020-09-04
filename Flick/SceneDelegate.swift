@@ -37,6 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             rootViewController = homeViewController
         } else {
             // User is logged out.
+            LoginManager().logOut()
             rootViewController = loginViewController
         }
 

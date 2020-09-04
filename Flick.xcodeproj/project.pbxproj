@@ -54,11 +54,15 @@
 		D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */; };
 		D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
+		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
+		D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */; };
+		D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3924FC662600EC2FAE /* UIImage.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
 		D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */; };
 		D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */; };
 		D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */; };
 		D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */; };
+		D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */; };
 		D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F6E249E7727008D5484 /* SortListModalView.swift */; };
 		D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F72249EF279008D5484 /* SortSelection.swift */; };
 		D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */; };
@@ -171,11 +175,15 @@
 		D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRatingsTableViewCell.swift; sourceTree = "<group>"; };
 		D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThoughtsTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
+		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		D44B1C3924FC662600EC2FAE /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
 		D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizeCollectionView.swift; sourceTree = "<group>"; };
 		D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
+		D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectionModalView.swift; sourceTree = "<group>"; };
 		D46B3F6E249E7727008D5484 /* SortListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListModalView.swift; sourceTree = "<group>"; };
 		D46B3F72249EF279008D5484 /* SortSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelection.swift; sourceTree = "<group>"; };
 		D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -261,22 +269,19 @@
 		3095FF06247B939A00F08C60 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D4A030562502C95700F21D2E /* ModalViews */,
 				3095FF07247B93D700F08C60 /* RoundTopView.swift */,
 				D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */,
 				309F287024956FB400A670B0 /* MediaListHeaderView.swift */,
-				D46B3F6E249E7727008D5484 /* SortListModalView.swift */,
 				D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */,
 				80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */,
 				80F00F6724AD8D080051B8FF /* SelectIndicatorView.swift */,
 				80F00F6924AEA1F70051B8FF /* SearchBar.swift */,
 				80F00F7324B96D410051B8FF /* PrivacySwitch.swift */,
-				80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */,
-				D474D17124B132A7006795F6 /* EnterListNameModalView.swift */,
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D414185724D5A621000BA11B /* CommentAreaView.swift */,
-				80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */,
-				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */,
-				D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */,
+				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */
+
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -380,7 +385,9 @@
 				D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */,
 				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
 				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
+				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
+				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -434,6 +441,7 @@
 				D492728724DED27600FA5F2A /* String.swift */,
 				80B3F9B524DF0D8D002891C4 /* UIViewController.swift */,
 				D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */,
+				D44B1C3924FC662600EC2FAE /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -453,6 +461,19 @@
 				80B3F9BB24EB67CD002891C4 /* Tag.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D4A030562502C95700F21D2E /* ModalViews */ = {
+			isa = PBXGroup;
+			children = (
+				D46B3F6E249E7727008D5484 /* SortListModalView.swift */,
+				80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */,
+				D474D17124B132A7006795F6 /* EnterListNameModalView.swift */,
+				80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */,
+				D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */,
+				D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */,
+			);
+			path = ModalViews;
 			sourceTree = "<group>";
 		};
 		D4FB449024B11C9A003CA71A /* Supporting */ = {
@@ -729,6 +750,7 @@
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
+				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				80F00F6524AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift in Sources */,
@@ -754,12 +776,14 @@
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
+				D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */,
 				D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */,
 				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
+				D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */,
 				80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */,
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
 				D425B98E24E83AE200FB13A5 /* FriendRequestTableViewCell.swift in Sources */,
@@ -768,6 +792,7 @@
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
 				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
 				80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */,
+				D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,

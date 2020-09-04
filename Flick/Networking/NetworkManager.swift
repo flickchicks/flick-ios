@@ -84,6 +84,35 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Update user profile [updated as of 8/20/20]
+    static func updateUserProfile(user: User, completion: @escaping (UserProfile) -> Void) {
+        let parameters: [String: Any] = [
+            "username": user.username,
+            "first_name": user.firstName,
+            "last_name": user.lastName,
+            "bio": user.bio!,
+            "profile_pic": user.profilePic!,
+            "phone_number": user.phoneNumber!,
+            "social_id_token_type": user.socialIdTokenType,
+            "social_id_token": user.socialIdToken!
+        ]
+
+        AF.request("\(hostEndpoint)/api/auth/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
+                    let user = userData.data
+                    completion(user)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
     static func createNewMediaList(listName: String, mediaIds: [Int] = [], completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [

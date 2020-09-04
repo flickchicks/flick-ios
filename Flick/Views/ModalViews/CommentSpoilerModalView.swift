@@ -47,7 +47,7 @@ class CommentSpoilerModalView: UIView {
         commentTextView.isScrollEnabled = false
         commentTextView.textColor = .black
         commentTextView.sizeToFit()
-        commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        commentTextView.font = .systemFont(ofSize: 12, weight: .regular)
         containerView.addSubview(commentTextView)
 
         noButton.setTitle("No", for: .normal)
