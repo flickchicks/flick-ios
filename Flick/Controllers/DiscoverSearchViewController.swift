@@ -111,6 +111,11 @@ class DiscoverSearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.searchResultPageCollectionView.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
         }
+
+        guard let searchText = self.searchBar.text,
+            searchText != "",
+            let cell = self.searchResultPageCollectionView.cellForItem(at: path) as? DiscoverSearchVCCollectionViewCell else { return }
+        cell.viewController.updateSearchResult(query: searchText)
     }
 
     @objc private func backButtonPressed() {
