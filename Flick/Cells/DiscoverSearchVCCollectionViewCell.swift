@@ -11,7 +11,7 @@ import UIKit
 class DiscoverSearchVCCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Public View Vars
-    let viewController = DiscoverSearchResultViewController()
+    var viewController = DiscoverSearchResultViewController()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,6 +25,10 @@ class DiscoverSearchVCCollectionViewCell: UICollectionViewCell {
 
     func configure(searchType: SearchTab) {
         viewController.searchType = searchType
+    }
+
+    override func prepareForReuse() {
+        viewController.clearContent()
     }
 
     required init?(coder: NSCoder) {

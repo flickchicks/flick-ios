@@ -18,9 +18,9 @@ class DiscoverSearchViewController: UIViewController {
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private let searchResultPageReuseIdentifier = "SearchResultPageCollectionView"
-    private var searchResultViewControllers = [UIViewController]()
+    private var searchResultViewControllers = [DiscoverSearchResultViewController]()
     private let searchTabCellReuseIdentifier = "SearchTabCellReuseIdentifier"
-    private let tabs: [SearchTab] = [.top, .movies, .shows, .people, .tags, .lists]
+    private let tabs: [SearchTab] = [.movies, .shows, .people, .tags, .lists]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,8 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.dataSource = self
         searchResultPageCollectionView.delegate = self
         searchResultPageCollectionView.showsHorizontalScrollIndicator = false
-        searchResultPageCollectionView.isPagingEnabled = true
+//        searchResultPageCollectionView.isPagingEnabled = true
+//        searchResultPageCollectionView.isDirectionalLockEnabled = true
         view.addSubview(searchResultPageCollectionView)
 
         setupConstraints()
@@ -111,10 +112,11 @@ class DiscoverSearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.searchResultPageCollectionView.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
         }
+    }
 
-        guard let searchText = self.searchBar.text,
-            searchText != "",
-            let cell = self.searchResultPageCollectionView.cellForItem(at: path) as? DiscoverSearchVCCollectionViewCell else { return }
+    private func searchByText(searchText: String) {
+        guard searchText != "",
+            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
         cell.viewController.updateSearchResult(query: searchText)
     }
 
@@ -140,18 +142,34 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(searchType: tabs[indexPath.item])
+//            cell.viewController = searchResultViewControllers[indexPath.item]
             return cell
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        setCurrentPosition(position: indexPath.row)
+        if collectionView == tabCollectionView {
+            setCurrentPosition(position: indexPath.item)
+        }
     }
 
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print("did scroll")
+//    }
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("scroll end decelerate")
         if scrollView == searchResultPageCollectionView {
             let currentIndex = Int(searchResultPageCollectionView.contentOffset.x / searchResultPageCollectionView.frame.size.width)
             setCurrentPosition(position: currentIndex)
+        }
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if scrollView == searchResultPageCollectionView {
+            if let searchText = searchBar.text {
+                searchByText(searchText: searchText)
+            }
         }
     }
 
@@ -173,9 +191,7 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 extension DiscoverSearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard searchText != "",
-            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
-        cell.viewController.updateSearchResult(query: searchText)
+        searchByText(searchText: searchText)
     }
 
 }

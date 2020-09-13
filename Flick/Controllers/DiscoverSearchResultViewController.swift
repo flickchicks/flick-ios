@@ -32,6 +32,7 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.register(DiscoverSearchResultTableViewCell.self, forCellReuseIdentifier: searchResultCellReuseIdentifier)
         resultsTableView.showsVerticalScrollIndicator = false
         resultsTableView.separatorStyle = .none
+        resultsTableView.isDirectionalLockEnabled = true
         view.addSubview(resultsTableView)
 
         resultsTableView.snp.makeConstraints { make in
@@ -74,6 +75,13 @@ class DiscoverSearchResultViewController: UIViewController {
         default:
             break
         }
+    }
+
+    func clearContent() {
+        lists.removeAll()
+        media.removeAll()
+        tags.removeAll()
+        users.removeAll()
     }
 }
 

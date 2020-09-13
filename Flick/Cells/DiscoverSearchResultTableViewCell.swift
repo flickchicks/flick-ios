@@ -82,6 +82,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     func configureMovie(movie: Media) {
         titleLabel.text = movie.title
         subtitleLabel.text = movie.dateReleased ?? ""
+        resultImageView.layer.cornerRadius = 4
         updateConstraintsForPoster()
         iconImageView.image = UIImage(named: "film")
         if let imageUrl = URL(string: movie.posterPic ?? "") {
@@ -103,6 +104,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     func configureShow(show: Media) {
         titleLabel.text = show.title
         subtitleLabel.text = show.dateReleased ?? ""
+        resultImageView.layer.cornerRadius = 4
         updateConstraintsForPoster()
         iconImageView.image = UIImage(named: "tv")
         if let imageUrl = URL(string: show.posterPic ?? "") {
@@ -112,6 +114,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
 
     func configureTag(tag: Tag) {
         titleLabel.text = tag.name
+        updateConstraintsForCircleImage()
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.image = UIImage(named: "tag")
         subtitleStackView.isHidden = true
