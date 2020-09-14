@@ -71,6 +71,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
 
     func configureList(list: MediaList) {
         titleLabel.text = list.name
+        subtitleStackView.isHidden = false
         resultImageView.isHidden = true
         iconImageView.isHidden = true
         listPreviewView.isHidden = false
@@ -82,11 +83,17 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     func configureMovie(movie: Media) {
         titleLabel.text = movie.title
         subtitleLabel.text = movie.dateReleased ?? ""
+        subtitleStackView.isHidden = false
         resultImageView.layer.cornerRadius = 4
+        resultImageView.isHidden = false
         updateConstraintsForPoster()
+        iconImageView.isHidden = false
         iconImageView.image = UIImage(named: "film")
+        listPreviewView.isHidden = true
         if let imageUrl = URL(string: movie.posterPic ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
         }
     }
 
@@ -96,19 +103,29 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         iconImageView.isHidden = true
         subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
+        resultImageView.isHidden = false
+        listPreviewView.isHidden = true
         if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
         }
     }
 
     func configureShow(show: Media) {
         titleLabel.text = show.title
+        subtitleStackView.isHidden = false
         subtitleLabel.text = show.dateReleased ?? ""
         resultImageView.layer.cornerRadius = 4
+        resultImageView.isHidden = false
         updateConstraintsForPoster()
+        iconImageView.isHidden = false
         iconImageView.image = UIImage(named: "tv")
+        listPreviewView.isHidden = true
         if let imageUrl = URL(string: show.posterPic ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
         }
     }
 
@@ -117,7 +134,9 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         updateConstraintsForCircleImage()
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.image = UIImage(named: "tag")
+        resultImageView.isHidden = false
         subtitleStackView.isHidden = true
+        listPreviewView.isHidden = true
     }
 
     private func setupConstraints() {

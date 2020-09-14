@@ -82,6 +82,7 @@ class DiscoverSearchResultViewController: UIViewController {
         media.removeAll()
         tags.removeAll()
         users.removeAll()
+        resultsTableView.reloadData()
     }
 }
 
