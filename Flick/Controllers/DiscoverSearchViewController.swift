@@ -49,8 +49,9 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.dataSource = self
         searchResultPageCollectionView.delegate = self
         searchResultPageCollectionView.showsHorizontalScrollIndicator = false
+//       TODO: Revisit using isPagingEnabled
 //        searchResultPageCollectionView.isPagingEnabled = true
-//        searchResultPageCollectionView.isDirectionalLockEnabled = true
+        searchResultPageCollectionView.isScrollEnabled = false
         view.addSubview(searchResultPageCollectionView)
 
         setupConstraints()
@@ -142,7 +143,6 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(searchType: tabs[indexPath.item])
-//            cell.viewController = searchResultViewControllers[indexPath.item]
             return cell
         }
     }
@@ -153,12 +153,7 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         }
     }
 
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        print("did scroll")
-//    }
-
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("scroll end decelerate")
         if scrollView == searchResultPageCollectionView {
             let currentIndex = Int(searchResultPageCollectionView.contentOffset.x / searchResultPageCollectionView.frame.size.width)
             setCurrentPosition(position: currentIndex)
@@ -172,7 +167,6 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
             }
         }
     }
-
 }
 
 extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
