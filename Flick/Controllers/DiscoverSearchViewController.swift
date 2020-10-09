@@ -18,9 +18,9 @@ class DiscoverSearchViewController: UIViewController {
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private let searchResultPageReuseIdentifier = "SearchResultPageCollectionView"
-    private var searchResultViewControllers = [UIViewController]()
+    private var searchResultViewControllers = [DiscoverSearchResultViewController]()
     private let searchTabCellReuseIdentifier = "SearchTabCellReuseIdentifier"
-    private let tabs: [SearchTab] = [.top, .movies, .shows, .people, .tags, .lists]
+    private let tabs: [SearchTab] = [.movies, .shows, .people, .tags, .lists]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +45,13 @@ class DiscoverSearchViewController: UIViewController {
 
         searchResultPageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: pageCollectionViewLayout)
         searchResultPageCollectionView.backgroundColor = .offWhite
-        searchResultPageCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: searchResultPageReuseIdentifier)
+        searchResultPageCollectionView.register(DiscoverSearchVCCollectionViewCell.self, forCellWithReuseIdentifier: searchResultPageReuseIdentifier)
         searchResultPageCollectionView.dataSource = self
         searchResultPageCollectionView.delegate = self
         searchResultPageCollectionView.showsHorizontalScrollIndicator = false
-        searchResultPageCollectionView.isPagingEnabled = true
+//       TODO: Revisit using isPagingEnabled
+//        searchResultPageCollectionView.isPagingEnabled = true
+        searchResultPageCollectionView.isScrollEnabled = false
         view.addSubview(searchResultPageCollectionView)
 
         setupConstraints()
@@ -94,7 +96,9 @@ class DiscoverSearchViewController: UIViewController {
 
     func setupViewControllers() {
         tabs.forEach { tab in
-            searchResultViewControllers.append(DiscoverSearchResultViewController(seachTab: tab))
+            let discoverSearchResultVC = DiscoverSearchResultViewController()
+            discoverSearchResultVC.searchType = tab
+            searchResultViewControllers.append(discoverSearchResultVC)
         }
     }
 
@@ -109,6 +113,12 @@ class DiscoverSearchViewController: UIViewController {
         DispatchQueue.main.async {
             self.searchResultPageCollectionView.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
         }
+    }
+
+    private func searchByText(searchText: String) {
+        guard searchText != "",
+            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
+        cell.viewController.updateSearchResult(query: searchText)
     }
 
     @objc private func backButtonPressed() {
@@ -131,18 +141,16 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
             }
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath)
-            let vc = searchResultViewControllers[indexPath.item]
-            cell.addSubview(vc.view)
-            vc.view.snp.makeConstraints { make in
-                make.edges.equalTo(cell)
-            }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(searchType: tabs[indexPath.item])
             return cell
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        setCurrentPosition(position: indexPath.row)
+        if collectionView == tabCollectionView {
+            setCurrentPosition(position: indexPath.item)
+        }
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -152,6 +160,13 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         }
     }
 
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if scrollView == searchResultPageCollectionView {
+            if let searchText = searchBar.text {
+                searchByText(searchText: searchText)
+            }
+        }
+    }
 }
 
 extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
@@ -168,5 +183,9 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension DiscoverSearchViewController: UISearchBarDelegate {
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchByText(searchText: searchText)
+    }
 
 }

@@ -50,7 +50,6 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         }
         subtitleStackView.addArrangedSubview(iconImageView)
 
-        subtitleLabel.text = "2020"
         subtitleLabel.textColor = .mediumGray
         subtitleLabel.font = .systemFont(ofSize: 10)
         subtitleStackView.addArrangedSubview(subtitleLabel)
@@ -70,36 +69,74 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(searchType: SearchTab, titleText: String) {
-        titleLabel.text = titleText
-        switch searchType {
-        case .lists:
-            resultImageView.isHidden = true
-            iconImageView.isHidden = true
-            listPreviewView.isHidden = false
-            setupConstraintsForListPreview()
-            subtitleLabel.text = "by Lucy Xu" // Temp
-        case .movies:
-            updateConstraintsForPoster()
-            resultImageView.image = UIImage(named: "dunkirk") // Temp
-            iconImageView.image = UIImage(named: "film")
-        case .people:
-            updateConstraintsForCircleImage()
-            resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
-            iconImageView.isHidden = true
-            subtitleLabel.text = "3 mutual friends" // Temp
-        case .shows:
-            resultImageView.image = UIImage(named: "dunkirk") // Temp
-            updateConstraintsForPoster()
-            iconImageView.image = UIImage(named: "tv")
-        case .tags:
-            updateConstraintsForCircleImage()
-            resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
-            resultImageView.image = UIImage(named: "tag")
-            subtitleStackView.isHidden = true
-        case .top:
-            iconImageView.image = UIImage(named: "film")
+    func configureList(list: MediaList) {
+        titleLabel.text = list.name
+        subtitleStackView.isHidden = false
+        resultImageView.isHidden = true
+        iconImageView.isHidden = true
+        listPreviewView.isHidden = false
+        listPreviewView.firstThreeMedia = Array(list.shows.prefix(3))
+        setupConstraintsForListPreview()
+        subtitleLabel.text = "by \(list.owner.firstName) \(list.owner.lastName)"
+    }
+
+    func configureMovie(movie: Media) {
+        titleLabel.text = movie.title
+        subtitleLabel.text = movie.dateReleased ?? ""
+        subtitleStackView.isHidden = false
+        resultImageView.layer.cornerRadius = 4
+        resultImageView.isHidden = false
+        updateConstraintsForPoster()
+        iconImageView.isHidden = false
+        iconImageView.image = UIImage(named: "film")
+        listPreviewView.isHidden = true
+        if let imageUrl = URL(string: movie.posterPic ?? "") {
+            resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
         }
+    }
+
+    func configureUser(user: UserProfile) {
+        titleLabel.text = "\(user.firstName) \(user.lastName)"
+        updateConstraintsForCircleImage()
+        iconImageView.isHidden = true
+        subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
+        resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
+        resultImageView.isHidden = false
+        listPreviewView.isHidden = true
+        if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
+            resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
+        }
+    }
+
+    func configureShow(show: Media) {
+        titleLabel.text = show.title
+        subtitleStackView.isHidden = false
+        subtitleLabel.text = show.dateReleased ?? ""
+        resultImageView.layer.cornerRadius = 4
+        resultImageView.isHidden = false
+        updateConstraintsForPoster()
+        iconImageView.isHidden = false
+        iconImageView.image = UIImage(named: "tv")
+        listPreviewView.isHidden = true
+        if let imageUrl = URL(string: show.posterPic ?? "") {
+            resultImageView.kf.setImage(with: imageUrl)
+        } else {
+            resultImageView.image = nil
+        }
+    }
+
+    func configureTag(tag: Tag) {
+        titleLabel.text = tag.name
+        updateConstraintsForCircleImage()
+        resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
+        resultImageView.image = UIImage(named: "tag")
+        resultImageView.isHidden = false
+        subtitleStackView.isHidden = true
+        listPreviewView.isHidden = true
     }
 
     private func setupConstraints() {

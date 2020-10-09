@@ -20,6 +20,7 @@ struct UserProfile: Codable {
     var socialIdTokenType: String?
     var ownerLsts: [SimpleMediaList]?
     var collabLsts: [SimpleMediaList]?
+    var numMutualFriends: Int?
 }
 
 struct ProfilePicture: Codable {
