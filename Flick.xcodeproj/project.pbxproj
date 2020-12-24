@@ -40,6 +40,9 @@
 		80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7924C296460051B8FF /* EditListViewController.swift */; };
 		D40A06B624EE2F8100631E75 /* CommentSpoilerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */; };
 		D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */; };
+		D40ED7CF25946CE9004C2F2C /* DiscoverContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */; };
+		D40ED7D4259471D7004C2F2C /* DiscoverContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40ED7D3259471D7004C2F2C /* DiscoverContentCell.swift */; };
+		D40ED7DB25950E9E004C2F2C /* TrendingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40ED7DA25950E9E004C2F2C /* TrendingTableViewCell.swift */; };
 		D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414185724D5A621000BA11B /* CommentAreaView.swift */; };
 		D41FE8B22477C7A40048900F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B12477C7A40048900F /* AppDelegate.swift */; };
 		D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41FE8B32477C7A40048900F /* SceneDelegate.swift */; };
@@ -156,6 +159,9 @@
 		C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.release.xcconfig"; sourceTree = "<group>"; };
 		D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSpoilerModalView.swift; sourceTree = "<group>"; };
 		D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
+		D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverContent.swift; sourceTree = "<group>"; };
+		D40ED7D3259471D7004C2F2C /* DiscoverContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverContentCell.swift; sourceTree = "<group>"; };
+		D40ED7DA25950E9E004C2F2C /* TrendingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingTableViewCell.swift; sourceTree = "<group>"; };
 		D414185724D5A621000BA11B /* CommentAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAreaView.swift; sourceTree = "<group>"; };
 		D41FE8AE2477C7A40048900F /* Flick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D41FE8B12477C7A40048900F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -282,8 +288,7 @@
 				80F00F7324B96D410051B8FF /* PrivacySwitch.swift */,
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D414185724D5A621000BA11B /* CommentAreaView.swift */,
-				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */
-
+				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +301,21 @@
 				FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D40ED7D825950E84004C2F2C /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionViewCells;
+			sourceTree = "<group>";
+		};
+		D40ED7D925950E8F004C2F2C /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				D40ED7DA25950E9E004C2F2C /* TrendingTableViewCell.swift */,
+			);
+			path = TableViewCells;
 			sourceTree = "<group>";
 		};
 		D41FE8A52477C7A40048900F = {
@@ -407,6 +427,8 @@
 		D478668B24797C56009E42FE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				D40ED7D925950E8F004C2F2C /* TableViewCells */,
+				D40ED7D825950E84004C2F2C /* CollectionViewCells */,
 				80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
 				D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */,
@@ -432,6 +454,7 @@
 				D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */,
 				D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */,
 				802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */,
+				D40ED7D3259471D7004C2F2C /* DiscoverContentCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -462,6 +485,7 @@
 				D4F0FB5224CC72EB00DEF826 /* Comment.swift */,
 				D492728324DE5B8B00FA5F2A /* Notification.swift */,
 				80B3F9BB24EB67CD002891C4 /* Tag.swift */,
+				D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -746,6 +770,7 @@
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D492727E24DE50A100FA5F2A /* NotificationsViewController.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
+				D40ED7CF25946CE9004C2F2C /* DiscoverContent.swift in Sources */,
 				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				80F00F7824BA50920051B8FF /* ConfirmationModalView.swift in Sources */,
@@ -779,11 +804,13 @@
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
+				D40ED7D4259471D7004C2F2C /* DiscoverContentCell.swift in Sources */,
 				D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */,
 				D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */,
 				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
+				D40ED7DB25950E9E004C2F2C /* TrendingTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
 				D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */,

@@ -20,6 +20,7 @@ class NetworkManager {
 
     private static let hostEndpoint = "http://localhost:8000"
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
+    private static let discoverBaseUrl = "\(hostEndpoint)/api/discover/show/"
 
     private static func getUrlWithQuery(baseUrl: String, items: [String: String]) -> String? {
         guard let baseUrl = URL(string: baseUrl) else { return nil }
@@ -567,6 +568,23 @@ class NetworkManager {
                 if let listsData = try? jsonDecoder.decode(Response<[MediaList]>.self, from: data) {
                     let lists = listsData.data
                     completion(lists)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    /// [GET] Get lists search result by query [updated as of 9/3/20]
+    static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
+        AF.request("\(hostEndpoint)/api/discover/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let showsData = try? jsonDecoder.decode(Response<DiscoverContent>.self, from: data) {
+                    let shows = showsData.data
+                    completion(shows)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
