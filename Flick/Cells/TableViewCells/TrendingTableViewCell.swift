@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol MediaControllerDelegate: class {
+    func showMediaViewController(id: Int)
+}
+
 class TrendingTableViewCell: UITableViewCell {
     
     private var discoverCollectionView: UICollectionView!
     private var discoverShows: [DiscoverMedia] = []
     
+    var delegate: MediaControllerDelegate?
     static var reuseIdentifier = "TrendingTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -69,11 +74,16 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let show = discoverShows[indexPath.item]
+        delegate?.showMediaViewController(id: show.id)
+    }
+    
 }
 
 extension TrendingTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 312, height: 460)
+        return CGSize(width: 312, height: 468)
     }
 
 }

@@ -83,6 +83,7 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendingTableViewCell.reuseIdentifier, for: indexPath) as? TrendingTableViewCell else { return UITableViewCell() }
         cell.configure(with: discoverShows)
+        cell.delegate = self
         return cell
     }
     
@@ -108,4 +109,11 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
         return headerView
     }
     
+}
+
+extension DiscoverViewController: MediaControllerDelegate {
+    func showMediaViewController(id: Int) {
+        let mediaViewController = MediaViewController(mediaId: id)
+        navigationController?.pushViewController(mediaViewController, animated: true)
+    }
 }

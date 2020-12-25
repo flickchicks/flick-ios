@@ -51,7 +51,7 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         
         shareButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 36, height: 36))
-            make.trailing.equalTo(saveButton.snp.leading).offset(-12)
+            make.trailing.equalTo(saveButton.snp.leading).offset(-6)
             make.centerY.equalTo(saveButton)
         }
         
