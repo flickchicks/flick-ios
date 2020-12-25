@@ -12,8 +12,10 @@ class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
-    private var discoverShows: [DiscoverMedia] = []
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
+    
+    // MARK: - Private Data Vars
+    private var discoverShows: [DiscoverMedia] = []
 
     override func viewDidLoad() {
         
@@ -26,12 +28,11 @@ class DiscoverViewController: UIViewController {
         
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
-        discoverFeedTableView.layer.backgroundColor = UIColor.clear.cgColor
+        discoverFeedTableView.backgroundColor = .clear
         discoverFeedTableView.showsVerticalScrollIndicator = false
         discoverFeedTableView.separatorStyle = .none
-        discoverFeedTableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
+        discoverFeedTableView.register(DiscoverTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier)
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
-//        discoverFeedTableView.allowsSelection = false
         view.addSubview(discoverFeedTableView)
         
         setupConstraints()
@@ -97,18 +98,13 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
         return 500
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Trending"
-//    }
-//
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return 26
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") else { return UITableViewHeaderFooterView() }
-        headerView.layer.backgroundColor = UIColor.white.cgColor
-        headerView.textLabel?.text = "Trending"
+        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier) as? DiscoverTableViewHeaderFooterView else { return UITableViewHeaderFooterView() }
+        headerView.configure(with: "🔥 Trending")
         return headerView
     }
     

@@ -1,5 +1,5 @@
 //
-//  DiscoverContentCell.swift
+//  TrendingContentCollectionViewCell.swift
 //  Flick
 //
 //  Created by Lucy Xu on 12/24/20.
@@ -8,16 +8,18 @@
 
 import UIKit
 
-class DiscoverContentCell: UICollectionViewCell {
+class TrendingContentCollectionViewCell: UICollectionViewCell {
     
     private let imageView = UIImageView()
     private let shareButton = UIButton()
     private let saveButton = UIButton()
     
-    static let reuseIdentifier = "DiscoverContentCell"
+    static let reuseIdentifier = "TrendingContentCellReuseIdentifier"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        backgroundColor = .clear
         
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
@@ -25,7 +27,7 @@ class DiscoverContentCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         
-        shareButton.setImage(UIImage(named: "saveButton"), for: .normal)
+        shareButton.setImage(UIImage(named: "shareButton"), for: .normal)
         addSubview(shareButton)
         
         saveButton.setImage(UIImage(named: "saveButton"), for: .normal)
@@ -41,13 +43,13 @@ class DiscoverContentCell: UICollectionViewCell {
         }
         
         saveButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 35, height: 35))
+            make.size.equalTo(CGSize(width: 36, height: 36))
             make.trailing.equalTo(imageView).inset(12)
             make.centerY.equalTo(imageView.snp.bottom)
         }
         
         shareButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 35, height: 35))
+            make.size.equalTo(CGSize(width: 36, height: 36))
             make.trailing.equalTo(saveButton.snp.leading).offset(-12)
             make.centerY.equalTo(saveButton)
         }

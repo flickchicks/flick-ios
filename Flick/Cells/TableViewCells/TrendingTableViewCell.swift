@@ -28,12 +28,11 @@ class TrendingTableViewCell: UITableViewCell {
         discoverCollectionView.layer.backgroundColor = UIColor.yellow.cgColor
         discoverCollectionView.delegate = self
         discoverCollectionView.dataSource = self
-        discoverCollectionView.contentInset = UIEdgeInsets(top: 0, left: 23, bottom: 0, right: 0)
-        discoverCollectionView.register(DiscoverContentCell.self, forCellWithReuseIdentifier: DiscoverContentCell.reuseIdentifier)
-        discoverCollectionView.showsHorizontalScrollIndicator = true
-        discoverCollectionView.backgroundColor = UIColor.clear
+        discoverCollectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        discoverCollectionView.register(TrendingContentCollectionViewCell.self, forCellWithReuseIdentifier: TrendingContentCollectionViewCell.reuseIdentifier)
+        discoverCollectionView.showsHorizontalScrollIndicator = false
+        discoverCollectionView.backgroundColor = .clear
         discoverCollectionView.isScrollEnabled = true
-//        discoverCollectionView.scroll
         contentView.addSubview(discoverCollectionView)
 
         setupConstraints()
@@ -63,7 +62,7 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiscoverContentCell.reuseIdentifier, for: indexPath) as? DiscoverContentCell else { return UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrendingContentCollectionViewCell.reuseIdentifier, for: indexPath) as? TrendingContentCollectionViewCell else { return UICollectionViewCell()
         }
         let show = discoverShows[indexPath.row]
         cell.configure(with: show)
