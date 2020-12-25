@@ -14,6 +14,8 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let saveButton = UIButton()
     private let shareButton = UIButton()
+    private var mediaId: Int!
+    var delegate: MediaControllerDelegate?
     
     static let reuseIdentifier = "TrendingContentCellReuseIdentifier"
     
@@ -32,6 +34,7 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(shareButton)
         
         saveButton.setImage(UIImage(named: "saveButton"), for: .normal)
+        saveButton.addTarget(self, action: #selector(saveMedia), for: .touchUpInside)
         contentView.addSubview(saveButton)
         
         setupConstraints()
@@ -57,7 +60,16 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         
     }
     
+    @objc func saveMedia() {
+        print("saving media")
+        NetworkManager.addToMediaList(listId: 1, mediaIds: [mediaId]) { [weak self] list in
+            guard let self = self else { return }
+            self.delegate?.persentInfoAlert(message: "Saved")
+        }
+    }
+    
     func configure(with media: DiscoverMedia) {
+        mediaId = media.id
         if let imageUrl = URL(string: media.posterPic) {
             imageView.kf.setImage(with: imageUrl)
         }

@@ -84,6 +84,7 @@ class ProfileViewController: UIViewController {
             // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
             if let ownerLsts = userProfile.ownerLsts {
                 self.mediaLists = ownerLsts
+                print(ownerLsts)
             }
             self.listsTableView.reloadData()
         }

@@ -15,7 +15,7 @@ class DiscoverViewController: UIViewController {
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: - Private Data Vars
-    private var discoverShows: [DiscoverMedia] = []
+    private var discoverShows: [[DiscoverMedia]] = [[], [], []]
 
     override func viewDidLoad() {
         
@@ -59,7 +59,9 @@ class DiscoverViewController: UIViewController {
             print(mediaList)
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.discoverShows = mediaList.trendingTvs + mediaList.trendingMovies + mediaList.trendingAnimes
+                self.discoverShows[0] = mediaList.trendingTvs
+                self.discoverShows[1] = mediaList.trendingMovies
+                self.discoverShows[2] = mediaList.trendingAnimes
                 // TODO: Do we want to shuffle this?
                 self.discoverFeedTableView.reloadData()
             }
@@ -82,13 +84,13 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendingTableViewCell.reuseIdentifier, for: indexPath) as? TrendingTableViewCell else { return UITableViewCell() }
-        cell.configure(with: discoverShows)
+        cell.configure(with: discoverShows[indexPath.section])
         cell.delegate = self
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return discoverShows.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -105,15 +107,27 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier) as? DiscoverTableViewHeaderFooterView else { return UITableViewHeaderFooterView() }
-        headerView.configure(with: "🔥 Trending")
+        if section == 0 {
+            headerView.configure(with: "📺 Trending TV Shows")
+        } else if section == 1 {
+            headerView.configure(with: "🍿 Trending Movies")
+        } else {
+            headerView.configure(with: "🍙 Trending Anime")
+        }
         return headerView
     }
     
 }
 
 extension DiscoverViewController: MediaControllerDelegate {
+    func persentInfoAlert(message: String) {
+        persentInfoAlert(message: message, completion: nil)
+    }
+    
     func showMediaViewController(id: Int) {
         let mediaViewController = MediaViewController(mediaId: id)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
+    
+    
 }

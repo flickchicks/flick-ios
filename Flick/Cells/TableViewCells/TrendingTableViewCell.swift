@@ -10,6 +10,7 @@ import UIKit
 
 protocol MediaControllerDelegate: class {
     func showMediaViewController(id: Int)
+    func persentInfoAlert(message: String)
 }
 
 class TrendingTableViewCell: UITableViewCell {
@@ -71,6 +72,7 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         }
         let show = discoverShows[indexPath.row]
         cell.configure(with: show)
+        cell.delegate = delegate
         return cell
     }
     
