@@ -18,6 +18,8 @@ class TrendingTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        selectionStyle = .none
+        
         let discoverLayout = UICollectionViewFlowLayout()
         discoverLayout.scrollDirection = .horizontal
         discoverLayout.minimumInteritemSpacing = 20
@@ -30,8 +32,9 @@ class TrendingTableViewCell: UITableViewCell {
         discoverCollectionView.register(DiscoverContentCell.self, forCellWithReuseIdentifier: DiscoverContentCell.reuseIdentifier)
         discoverCollectionView.showsHorizontalScrollIndicator = true
         discoverCollectionView.backgroundColor = UIColor.clear
-//        discoverCollectionView.isScrollEnabled = true
-        addSubview(discoverCollectionView)
+        discoverCollectionView.isScrollEnabled = true
+//        discoverCollectionView.scroll
+        contentView.addSubview(discoverCollectionView)
 
         setupConstraints()
     }

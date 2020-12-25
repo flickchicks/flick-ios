@@ -13,7 +13,7 @@ class DiscoverViewController: UIViewController {
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
     private var discoverShows: [DiscoverMedia] = []
-    private let discoverFeedTableView = UITableView()
+    private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
 
     override func viewDidLoad() {
         
@@ -31,7 +31,7 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.separatorStyle = .none
         discoverFeedTableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
-        discoverFeedTableView.allowsSelection = false
+//        discoverFeedTableView.allowsSelection = false
         view.addSubview(discoverFeedTableView)
         
         setupConstraints()
@@ -94,7 +94,7 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 700
+        return 500
     }
     
 //    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
