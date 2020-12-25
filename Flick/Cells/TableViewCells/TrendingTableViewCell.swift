@@ -19,19 +19,20 @@ class TrendingTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-        
+        backgroundColor = .clear
+                
         let discoverLayout = UICollectionViewFlowLayout()
         discoverLayout.scrollDirection = .horizontal
         discoverLayout.minimumInteritemSpacing = 20
+        discoverLayout.minimumLineSpacing = 11
 
         discoverCollectionView = UICollectionView(frame: .zero, collectionViewLayout: discoverLayout)
-        discoverCollectionView.layer.backgroundColor = UIColor.yellow.cgColor
+        discoverCollectionView.backgroundColor = .clear
         discoverCollectionView.delegate = self
         discoverCollectionView.dataSource = self
         discoverCollectionView.contentInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
         discoverCollectionView.register(TrendingContentCollectionViewCell.self, forCellWithReuseIdentifier: TrendingContentCollectionViewCell.reuseIdentifier)
         discoverCollectionView.showsHorizontalScrollIndicator = false
-        discoverCollectionView.backgroundColor = .clear
         discoverCollectionView.isScrollEnabled = true
         contentView.addSubview(discoverCollectionView)
 
@@ -40,8 +41,7 @@ class TrendingTableViewCell: UITableViewCell {
     
     func setupConstraints() {
         discoverCollectionView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(500)
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
     
@@ -73,7 +73,7 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
 
 extension TrendingTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 312, height: 468)
+        return CGSize(width: 312, height: 460)
     }
 
 }

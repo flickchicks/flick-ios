@@ -10,9 +10,10 @@ import UIKit
 
 class TrendingContentCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Private View Variables
     private let imageView = UIImageView()
-    private let shareButton = UIButton()
     private let saveButton = UIButton()
+    private let shareButton = UIButton()
     
     static let reuseIdentifier = "TrendingContentCellReuseIdentifier"
     
@@ -25,13 +26,13 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
-        addSubview(imageView)
+        contentView.addSubview(imageView)
         
         shareButton.setImage(UIImage(named: "shareButton"), for: .normal)
-        addSubview(shareButton)
+        contentView.addSubview(shareButton)
         
         saveButton.setImage(UIImage(named: "saveButton"), for: .normal)
-        addSubview(saveButton)
+        contentView.addSubview(saveButton)
         
         setupConstraints()
     }
@@ -57,7 +58,6 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with media: DiscoverMedia) {
-        print(media.posterPic)
         if let imageUrl = URL(string: media.posterPic) {
             imageView.kf.setImage(with: imageUrl)
         }
