@@ -97,8 +97,12 @@ class ListViewController: UIViewController {
             guard let self = self else { return }
 
             self.list = list
+            self.listNameLabel.text = list.name
+            self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
+            self.setupSections()
+            self.mediaCollectionView.reloadData()
 
-            if list.shows.count == 0 {
+            if list.shows.isEmpty {
                 self.setupEmptyStateViews()
                 return
             }
@@ -107,11 +111,6 @@ class ListViewController: UIViewController {
             self.emptyListImageView.isHidden = true
             self.addMediaMessageLabel.isHidden = true
             self.arrowToAddButtonView.isHidden = true
-
-            self.listNameLabel.text = list.name
-            self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
-            self.setupSections()
-            self.mediaCollectionView.reloadData()
         }
     }
 
