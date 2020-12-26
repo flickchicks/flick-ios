@@ -12,11 +12,12 @@ import SnapKit
 class AddCollaboratorModalView: UIView {
 
     // MARK: - Private View Vars
+    private var cancelButton = UIButton()
     private var collaboratorsTableView: UITableView!
     private let collaboratorsTitleLabel = UILabel()
     private let containerView = UIView()
     private let copyLinkButton = UIButton()
-    private let dismissButton = UIButton()
+    private var doneButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
@@ -53,13 +54,13 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTitleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(collaboratorsTitleLabel)
 
-        dismissButton.setTitle("Done", for: .normal)
-        dismissButton.setTitleColor(.gradientPurple, for: .normal)
-        dismissButton.titleLabel?.font = .systemFont(ofSize: 14)
-        dismissButton.layer.cornerRadius = 12
-        dismissButton.layer.backgroundColor = UIColor.lightPurple.cgColor
-        dismissButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
-        containerView.addSubview(dismissButton)
+        cancelButton = GrayRoundButton(title: "Cancel")
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        containerView.addSubview(cancelButton)
+
+        doneButton = PurpleRoundButton(title: "Done")
+        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        containerView.addSubview(doneButton)
 
         subtitleLabel.text = "Collaborators can add or remove media and collaborators. The owner can edit privacy settings."
         subtitleLabel.numberOfLines = 0
@@ -110,10 +111,10 @@ class AddCollaboratorModalView: UIView {
         let collaboratorCellHeight = 57
         let collaboratorsTitleLabelSize = CGSize(width: 117, height: 22)
         let copyLinkButtonSize = CGSize(width: 48, height: 12)
-        let dismissButtonSize = CGSize(width: 60, height: 25)
         let horizontalPadding = 24
         let inviteTitleLabelSize = CGSize(width: 48, height: 22)
         let noFriendsSectionViewHeight = 193
+        let roundButtonSize = CGSize(width: 84, height: 40)
         let verticalPadding = 36
 
         let collaboratorsTableViewHeight = min(collaborators.count, 4) * collaboratorCellHeight
@@ -121,7 +122,7 @@ class AddCollaboratorModalView: UIView {
 
         let inviteSectionHeight = friends.count > 0 ? friendsTableViewHeight : noFriendsSectionViewHeight
         // 227 is manually calculated height for container
-        let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + 287
+        let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + Int(roundButtonSize.height) + 287
 
         let containerViewSize = CGSize(width: 325, height: containerHeight)
 
@@ -136,21 +137,27 @@ class AddCollaboratorModalView: UIView {
             make.size.equalTo(collaboratorsTitleLabelSize)
         }
 
-        dismissButton.snp.makeConstraints { make in
-            make.size.equalTo(dismissButtonSize)
-            make.top.equalTo(containerView).offset(33)
-            make.trailing.equalTo(containerView).inset(horizontalPadding)
+        doneButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(62.5)
+            make.size.equalTo(roundButtonSize)
+            make.bottom.equalToSuperview().inset(verticalPadding)
+        }
+
+        cancelButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(62.5)
+            make.size.equalTo(roundButtonSize)
+            make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
         subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(collaboratorsTitleLabel.snp.bottom).offset(10)
             make.leading.equalTo(collaboratorsTitleLabel)
-            make.trailing.equalTo(dismissButton)
+            make.trailing.equalTo(containerView).inset(horizontalPadding)
         }
 
         collaboratorsTableView.snp.makeConstraints { make in
             make.leading.equalTo(collaboratorsTitleLabel)
-            make.trailing.equalTo(dismissButton)
+            make.trailing.equalTo(containerView).inset(horizontalPadding)
             make.top.equalTo(subtitleLabel.snp.bottom).offset(20)
             make.height.equalTo(collaboratorsTableViewHeight)
         }
@@ -162,7 +169,7 @@ class AddCollaboratorModalView: UIView {
         }
 
         copyLinkButton.snp.makeConstraints { make in
-            make.trailing.equalTo(dismissButton)
+            make.trailing.equalTo(containerView).inset(horizontalPadding)
             make.centerY.equalTo(inviteTitleLabel)
             make.size.equalTo(copyLinkButtonSize)
         }
@@ -198,12 +205,12 @@ class AddCollaboratorModalView: UIView {
             let inviteCollaboratorsTableViewHeight = min(4, friends.count) * 57
             inviteCollaboratorsTableView.snp.makeConstraints { make in
                 make.leading.equalTo(collaboratorsTitleLabel)
-                make.trailing.equalTo(dismissButton)
+                make.trailing.equalTo(subtitleLabel)
                 make.height.equalTo(inviteCollaboratorsTableViewHeight)
                 make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
             }
         } else {
-            noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... Tell them to join Flick!"
+            noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
             noFriendsLabel.textColor = .darkBlue
             noFriendsLabel.numberOfLines = 0
             noFriendsLabel.font = .systemFont(ofSize: 12)
@@ -212,7 +219,7 @@ class AddCollaboratorModalView: UIView {
 
             noFriendsLabel.snp.makeConstraints { make in
                 make.leading.equalTo(collaboratorsTitleLabel)
-                make.trailing.equalTo(dismissButton)
+                make.trailing.equalTo(subtitleLabel)
                 make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
                 make.height.equalTo(193)
             }
@@ -223,7 +230,7 @@ class AddCollaboratorModalView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func dismiss() {
+    @objc func doneTapped() {
         UIView.animate(withDuration: 0.15, animations: {
             self.containerView.alpha = 0
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
@@ -231,6 +238,16 @@ class AddCollaboratorModalView: UIView {
         }) { (_) in
             self.modalDelegate?.dismissModal(modalView: self)
             self.listSettingsDelegate?.updateCollaborators(to: self.selectedCollaborators)
+        }
+    }
+
+    @objc func cancelTapped() {
+        UIView.animate(withDuration: 0.15, animations: {
+            self.containerView.alpha = 0
+            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
+        }) { (_) in
+            self.modalDelegate?.dismissModal(modalView: self)
         }
     }
 

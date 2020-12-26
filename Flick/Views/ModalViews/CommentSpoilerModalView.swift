@@ -12,8 +12,8 @@ class CommentSpoilerModalView: UIView {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
-    private let noButton = UIButton()
-    private let yesButton = UIButton()
+    private var noButton = UIButton()
+    private var yesButton = UIButton()
     private let titleLabel = UILabel()
     private let commentTextView = UITextView()
 
@@ -50,19 +50,11 @@ class CommentSpoilerModalView: UIView {
         commentTextView.font = .systemFont(ofSize: 12, weight: .regular)
         containerView.addSubview(commentTextView)
 
-        noButton.setTitle("No", for: .normal)
-        noButton.setTitleColor(.gradientPurple, for: .normal)
-        noButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        noButton.layer.cornerRadius = 22
-        noButton.layer.backgroundColor = UIColor.lightPurple.cgColor
+        noButton = PurpleRoundButton(title: "No")
         noButton.addTarget(self, action: #selector(noButtonPressed), for: .touchUpInside)
         containerView.addSubview(noButton)
 
-        yesButton.setTitle("Yes", for: .normal)
-        yesButton.setTitleColor(.black, for: .normal)
-        yesButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        yesButton.layer.cornerRadius = 22
-        yesButton.layer.backgroundColor = UIColor.lightGray2.cgColor
+        yesButton = PurpleRoundButton(title: "Yes")
         yesButton.addTarget(self, action: #selector(yesButtonPressed), for: .touchUpInside)
         containerView.addSubview(yesButton)
 

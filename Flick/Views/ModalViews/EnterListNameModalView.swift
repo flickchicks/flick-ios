@@ -18,9 +18,9 @@ enum EnterListNameModalType { case createList, renameList }
 class EnterListNameModalView: UIView {
 
     // MARK: - Private View Vars
-    private let cancelButton = UIButton()
+    private var cancelButton = UIButton()
+    private var doneButton = UIButton()
     private let containerView = UIView()
-    private let dismissButton = UIButton()
     private let nameTextField = UITextField()
     private let titleLabel = UILabel()
 
@@ -48,14 +48,6 @@ class EnterListNameModalView: UIView {
         titleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(titleLabel)
 
-        dismissButton.setTitle("Done", for: .normal)
-        dismissButton.setTitleColor(.gradientPurple, for: .normal)
-        dismissButton.titleLabel?.font = .systemFont(ofSize: 14)
-        dismissButton.layer.cornerRadius = 12
-        dismissButton.layer.backgroundColor = UIColor.lightPurple.cgColor
-        dismissButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
-        containerView.addSubview(dismissButton)
-
         nameTextField.textColor = .black
         nameTextField.placeholder = "Name"
         nameTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -71,10 +63,12 @@ class EnterListNameModalView: UIView {
         nameTextField.delegate = self
         containerView.addSubview(nameTextField)
 
-        cancelButton.setTitle("Cancel", for: .normal)
-        cancelButton.setTitleColor(.mediumGray, for: .normal)
-        cancelButton.titleLabel?.font = .systemFont(ofSize: 14)
-        cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        doneButton = PurpleRoundButton(title: "Done")
+        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        containerView.addSubview(doneButton)
+
+        cancelButton = GrayRoundButton(title: "Cancel")
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
 
         containerView.backgroundColor = .white
@@ -92,9 +86,8 @@ class EnterListNameModalView: UIView {
     }
 
     func setupConstraints() {
-        let cancelButtonSize = CGSize(width: 47, height: 17)
-        let containerViewSize = CGSize(width: 325, height: 200)
-        let dismissButtonSize = CGSize(width: 60, height: 25)
+        let buttonSize = CGSize(width: 84, height: 40)
+        let containerViewSize = CGSize(width: 325, height: 220)
         let horizontalPadding = 24
         let titleLabelSize = CGSize(width: 144, height: 22)
         let verticalPadding = 36
@@ -102,12 +95,6 @@ class EnterListNameModalView: UIView {
         containerView.snp.makeConstraints { make in
             make.size.equalTo(containerViewSize)
             make.center.equalToSuperview()
-        }
-
-        dismissButton.snp.makeConstraints { make in
-            make.size.equalTo(dismissButtonSize)
-            make.top.equalTo(containerView).offset(33)
-            make.trailing.equalTo(containerView).inset(horizontalPadding)
         }
 
         titleLabel.snp.makeConstraints { make in
@@ -118,19 +105,24 @@ class EnterListNameModalView: UIView {
 
         nameTextField.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(25)
-            make.leading.equalTo(titleLabel)
-            make.trailing.equalTo(dismissButton)
-            make.height.equalTo(31)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+            make.height.equalTo(25)
+        }
+
+        doneButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(62.5)
+            make.size.equalTo(buttonSize)
+            make.top.equalTo(nameTextField.snp.bottom).offset(verticalPadding)
         }
 
         cancelButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.size.equalTo(cancelButtonSize)
-            make.top.equalTo(nameTextField.snp.bottom).offset(36)
+            make.trailing.equalToSuperview().inset(62.5)
+            make.size.equalTo(buttonSize)
+            make.top.equalTo(nameTextField.snp.bottom).offset(verticalPadding)
         }
     }
 
-    @objc func dismiss() {
+    @objc func doneTapped() {
         guard let nameText = nameTextField.text,
             nameText.trimmingCharacters(in: .whitespaces) != ""
             else { return }
@@ -151,7 +143,7 @@ class EnterListNameModalView: UIView {
         }
     }
 
-    @objc func cancel() {
+    @objc func cancelTapped() {
         UIView.animate(withDuration: 0.15, animations: {
             self.containerView.alpha = 0
             self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
