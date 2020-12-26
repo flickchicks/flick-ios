@@ -14,21 +14,22 @@ class TagCollectionViewCell: UICollectionViewCell {
     
     private let tagLabel = UILabel()
     var type: TagType!
-    
-    override var isSelected: Bool {
-        didSet {
-            if self.type == .tag {
-                if isSelected {
-                    backgroundColor = .lightPurple
-                    layer.borderWidth = 1
-                    layer.borderColor = UIColor.darkPurple.cgColor
-                } else {
-                    backgroundColor = .white
-                    layer.borderWidth = 0
-                }
-            }
-        }
-    }
+
+    // Uncomment when allow tag selection
+//    override var isSelected: Bool {
+//        didSet {
+//            if self.type == .tag {
+//                if isSelected {
+//                    backgroundColor = .lightPurple
+//                    layer.borderWidth = 1
+//                    layer.borderColor = UIColor.darkPurple.cgColor
+//                } else {
+//                    backgroundColor = .white
+//                    layer.borderWidth = 0
+//                }
+//            }
+//        }
+//    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -222,7 +222,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             let collectionViewWidth = UIScreen.main.bounds.width - 60
             let cellWidth = width
             totalWidthPerRow += cellWidth + tagCellSpacing
-            if (totalWidthPerRow > collectionViewWidth) {
+            if totalWidthPerRow > collectionViewWidth {
                 tagRowCount += 1
                 totalWidthPerRow = cellWidth + tagCellSpacing
              }
@@ -276,11 +276,12 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
             let tag = tagDisplay == .collapsed ? collapsedTags[indexPath.item] : allTags[indexPath.item]
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: tag, type: .tag)
-            // Select cell if it was previously selected
-            if let selectedIndexPath = selectedTagIndex, indexPath == selectedIndexPath {
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-                cell.isSelected = true
-            }
+            // Uncomment when allow tag selection
+//            // Select cell if it was previously selected
+//            if let selectedIndexPath = selectedTagIndex, indexPath == selectedIndexPath {
+//                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+//                cell.isSelected = true
+//            }
             return cell
         }
     }
@@ -290,9 +291,11 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if tagDisplay == .collapsed && indexPath.item != collapsedTags.count - 1 || tagDisplay == .expanded {
-            selectedTagIndex = indexPath
-        }
+        // Uncomment when allow tag selection
+//        if tagDisplay == .collapsed && indexPath.item != collapsedTags.count - 1 || tagDisplay == .expanded {
+//            selectedTagIndex = indexPath
+//        }
+
         // If tapped to show more tags
         if tagDisplay == .collapsed && indexPath.item == collapsedTags.count - 1 {
             tagDisplay = .expanded
