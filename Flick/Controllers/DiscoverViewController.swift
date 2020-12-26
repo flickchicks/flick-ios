@@ -51,9 +51,9 @@ class DiscoverViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // Make network request to get top shows, movies, and playing shows
-        super.viewWillAppear(animated)
+        super.viewDidAppear(animated)
         print("Get top rated shows")
         NetworkManager.discoverShows { [weak self] mediaList in
             print(mediaList)

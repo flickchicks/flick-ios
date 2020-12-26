@@ -18,7 +18,7 @@ class TrendingTableViewCell: UITableViewCell {
     private var discoverCollectionView: UICollectionView!
     private var discoverShows: [DiscoverMedia] = []
     
-    var delegate: MediaControllerDelegate?
+    weak var delegate: MediaControllerDelegate?
     static var reuseIdentifier = "TrendingTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

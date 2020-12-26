@@ -113,5 +113,3 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
 }
-
-

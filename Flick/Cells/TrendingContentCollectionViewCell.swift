@@ -15,7 +15,7 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     private let saveButton = UIButton()
     private let shareButton = UIButton()
     private var mediaId: Int!
-    var delegate: MediaControllerDelegate?
+    weak var delegate: MediaControllerDelegate?
     
     static let reuseIdentifier = "TrendingContentCellReuseIdentifier"
     
@@ -61,7 +61,6 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func saveMedia() {
-        print("saving media")
         NetworkManager.addToMediaList(listId: 1, mediaIds: [mediaId]) { [weak self] list in
             guard let self = self else { return }
             self.delegate?.persentInfoAlert(message: "Saved")
@@ -78,6 +77,5 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
 }
