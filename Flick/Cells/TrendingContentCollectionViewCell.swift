@@ -67,9 +67,9 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(with media: DiscoverMedia) {
+    func configure(with media: SimpleMedia) {
         mediaId = media.id
-        if let imageUrl = URL(string: media.posterPic) {
+        if let posterPic = media.posterPic, let imageUrl = URL(string: posterPic) {
             imageView.kf.setImage(with: imageUrl)
         }
     }

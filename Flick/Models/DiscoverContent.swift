@@ -7,13 +7,7 @@
 //
 
 struct DiscoverContent: Codable {
-    var trendingMovies: [DiscoverMedia]
-    var trendingTvs: [DiscoverMedia]
-    var trendingAnimes: [DiscoverMedia]
-}
-
-struct DiscoverMedia: Codable {
-    var id: Int
-    var posterPic: String
-    var title: String
+    var trendingMovies: [SimpleMedia]
+    var trendingTvs: [SimpleMedia]
+    var trendingAnimes: [SimpleMedia]
 }

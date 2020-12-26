@@ -15,7 +15,7 @@ class DiscoverViewController: UIViewController {
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: - Private Data Vars
-    private var discoverShows: [[DiscoverMedia]] = [[], [], []]
+    private var discoverShows: [[SimpleMedia]] = [[], [], []]
 
     override func viewDidLoad() {
         

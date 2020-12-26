@@ -16,7 +16,7 @@ protocol MediaControllerDelegate: class {
 class TrendingTableViewCell: UITableViewCell {
     
     private var discoverCollectionView: UICollectionView!
-    private var discoverShows: [DiscoverMedia] = []
+    private var discoverShows: [SimpleMedia] = []
     
     weak var delegate: MediaControllerDelegate?
     static var reuseIdentifier = "TrendingTableViewCell"
@@ -55,7 +55,7 @@ class TrendingTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with shows: [DiscoverMedia]) {
+    func configure(with shows: [SimpleMedia]) {
         discoverShows = shows
         discoverCollectionView.reloadData()
     }
