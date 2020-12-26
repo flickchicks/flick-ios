@@ -128,6 +128,4 @@ extension DiscoverViewController: MediaControllerDelegate {
         let mediaViewController = MediaViewController(mediaId: id)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
-    
-    
 }
