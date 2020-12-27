@@ -18,7 +18,7 @@ class DiscoverViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        searchBar.placeholder = "Search movies, shows, people, generes"
+        searchBar.placeholder = "Search movies, shows, people, genres"
         searchBar.delegate = self
         view.addSubview(searchBar)
 
