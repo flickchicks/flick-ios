@@ -81,9 +81,9 @@ class ProfileViewController: UIViewController {
             self.name = "\(userProfile.firstName) \(userProfile.lastName)"
             self.username = userProfile.username
             self.profilePicUrl = userProfile.profilePic?.assetUrls.original ?? ""
-            // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
-            if let ownerLsts = userProfile.ownerLsts {
-                self.mediaLists = ownerLsts
+            if let ownerLists = userProfile.ownerLsts,
+               let collabLists = userProfile.collabLsts {
+                self.mediaLists = ownerLists + collabLists
             }
             self.listsTableView.reloadData()
         }
@@ -116,6 +116,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
             cell.configure(for: mediaLists[indexPath.item])
+            cell.delegate = self
             return cell
         }
     }
@@ -152,16 +153,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Update with selected list data
-        if sections[indexPath.section].type == .lists {
-            let listViewController = ListViewController(listId: mediaLists[indexPath.row].id)
-            navigationController?.pushViewController(listViewController, animated: true)
-        }
-    }
-
 }
-
 
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
@@ -197,4 +189,18 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
     }
+}
+
+extension ProfileViewController: ListTableViewCellDelegate {
+
+    func pushListViewController(listId: Int) {
+        let listVC = ListViewController(listId: listId)
+        navigationController?.pushViewController(listVC, animated: true)
+    }
+
+    func pushMediaViewController(mediaId: Int) {
+        let mediaVC = MediaViewController(mediaId: mediaId)
+        navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
 }
