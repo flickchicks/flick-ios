@@ -17,8 +17,7 @@
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
-		803E5EA32596D92B004CF4B7 /* PurpleRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA22596D92B004CF4B7 /* PurpleRoundButton.swift */; };
-		803E5EA82596DA20004CF4B7 /* GrayRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA72596DA20004CF4B7 /* GrayRoundButton.swift */; };
+		803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA22596D92B004CF4B7 /* RoundedButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
@@ -137,8 +136,7 @@
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
-		803E5EA22596D92B004CF4B7 /* PurpleRoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurpleRoundButton.swift; sourceTree = "<group>"; };
-		803E5EA72596DA20004CF4B7 /* GrayRoundButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrayRoundButton.swift; sourceTree = "<group>"; };
+		803E5EA22596D92B004CF4B7 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -295,8 +293,7 @@
 				D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */,
 				D414185724D5A621000BA11B /* CommentAreaView.swift */,
 				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */,
-				803E5EA22596D92B004CF4B7 /* PurpleRoundButton.swift */,
-				803E5EA72596DA20004CF4B7 /* GrayRoundButton.swift */,
+				803E5EA22596D92B004CF4B7 /* RoundedButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -796,7 +793,7 @@
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
 				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
-				803E5EA32596D92B004CF4B7 /* PurpleRoundButton.swift in Sources */,
+				803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				80F00F6524AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift in Sources */,
@@ -811,7 +808,6 @@
 				D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
 				80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */,
-				803E5EA82596DA20004CF4B7 /* GrayRoundButton.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
 				D425B99024E9B44200FB13A5 /* MediaCardVewController.swift in Sources */,

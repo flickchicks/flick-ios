@@ -50,11 +50,11 @@ class CommentSpoilerModalView: UIView {
         commentTextView.font = .systemFont(ofSize: 12, weight: .regular)
         containerView.addSubview(commentTextView)
 
-        noButton = PurpleRoundButton(title: "No")
+        noButton = RoundedButton(style: .purple, title: "No")
         noButton.addTarget(self, action: #selector(noButtonPressed), for: .touchUpInside)
         containerView.addSubview(noButton)
 
-        yesButton = PurpleRoundButton(title: "Yes")
+        yesButton = RoundedButton(style: .purple, title: "Yes")
         yesButton.addTarget(self, action: #selector(yesButtonPressed), for: .touchUpInside)
         containerView.addSubview(yesButton)
 

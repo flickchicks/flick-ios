@@ -44,11 +44,11 @@ class ConfirmationModalView: UIView {
         messageLabel.lineBreakMode = .byWordWrapping
         containerView.addSubview(messageLabel)
 
-        noButton = PurpleRoundButton(title: "No")
+        noButton = RoundedButton(style: .purple, title: "No")
         noButton.addTarget(self, action: #selector(noButtonPressed), for: .touchUpInside)
         containerView.addSubview(noButton)
 
-        yesButton = GrayRoundButton(title: "Yes")
+        yesButton = RoundedButton(style: .gray, title: "Yes")
         yesButton.addTarget(self, action: #selector(yesButtonPressed), for: .touchUpInside)
         containerView.addSubview(yesButton)
 

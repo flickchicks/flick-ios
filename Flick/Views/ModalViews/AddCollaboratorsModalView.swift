@@ -58,7 +58,7 @@ class AddCollaboratorModalView: UIView {
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
 
-        doneButton = PurpleRoundButton(title: "Done")
+        doneButton = RoundedButton(style: .purple, title: "Done")
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)
 

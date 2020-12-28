@@ -63,11 +63,11 @@ class EnterListNameModalView: UIView {
         nameTextField.delegate = self
         containerView.addSubview(nameTextField)
 
-        doneButton = PurpleRoundButton(title: "Done")
+        doneButton = RoundedButton(style: .purple, title: "Done")
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)
 
-        cancelButton = GrayRoundButton(title: "Cancel")
+        cancelButton = RoundedButton(style: .gray, title: "Cancel")
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
 

@@ -88,11 +88,11 @@ class MediaListsModalView: UIView {
         containerView.layer.cornerRadius = 24
         addSubview(containerView)
 
-        doneButton = PurpleRoundButton(title: "Done")
+        doneButton = RoundedButton(style: .purple, title: "Done")
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)
 
-        cancelButton = GrayRoundButton(title: "Cancel")
+        cancelButton = RoundedButton(style: .gray, title: "Cancel")
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
 
