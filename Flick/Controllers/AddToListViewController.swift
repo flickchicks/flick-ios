@@ -303,7 +303,7 @@ class AddToListViewController: UIViewController {
             NetworkManager.searchMedia(query: searchText) { [weak self] query, media in
                 guard let self = self, self.isSearching else { return }
                 // Update search result only if there's no query or query matches current searchText
-                if let query = query, query != searchText {
+                if let query = query, query != self.searchBar.searchTextField.text {
                     return
                 }
                 DispatchQueue.main.async {

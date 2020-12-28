@@ -41,36 +41,50 @@ class DiscoverSearchResultViewController: UIViewController {
     }
 
     func updateSearchResult(query: String) {
+        if query == "" {
+            clearContent()
+            return
+        }
         switch searchType {
         case .movies:
             NetworkManager.searchMovies(query: query) { [weak self] movies in
                 guard let self = self else { return }
-                self.media = movies
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.media = movies
+                    self.resultsTableView.reloadData()
+                }
             }
         case .shows:
             NetworkManager.searchShows(query: query) { [weak self] shows in
                 guard let self = self else { return }
-                self.media = shows
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.media = shows
+                    self.resultsTableView.reloadData()
+                }
             }
         case .people:
             NetworkManager.searchUsers(query: query) { [weak self] users in
                 guard let self = self else { return }
-                self.users = users
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.users = users
+                    self.resultsTableView.reloadData()
+                }
             }
         case .tags:
             NetworkManager.searchTags(query: query) { [weak self] tags in
                 guard let self = self else { return }
-                self.tags = tags
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tags = tags
+                    self.resultsTableView.reloadData()
+                }
             }
         case .lists:
             NetworkManager.searchLists(query: query) { [weak self] lists in
                 guard let self = self else { return }
-                self.lists = lists
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.lists = lists
+                    self.resultsTableView.reloadData()
+                }
             }
         default:
             break

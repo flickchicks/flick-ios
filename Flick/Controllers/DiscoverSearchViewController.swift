@@ -21,6 +21,7 @@ class DiscoverSearchViewController: UIViewController {
     private var searchResultViewControllers = [DiscoverSearchResultViewController]()
     private let searchTabCellReuseIdentifier = "SearchTabCellReuseIdentifier"
     private let tabs: [SearchTab] = [.movies, .shows, .people, .tags, .lists]
+    private var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,9 +116,15 @@ class DiscoverSearchViewController: UIViewController {
         }
     }
 
+    @objc private func getSearchResult(timer: Timer) {
+        if let userInfo = timer.userInfo as? [String: String],
+            let searchText = userInfo["searchText"] {
+            searchByText(searchText: searchText)
+        }
+    }
+
     private func searchByText(searchText: String) {
-        guard searchText != "",
-            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
+        guard let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
         cell.viewController.updateSearchResult(query: searchText)
     }
 
@@ -185,7 +192,14 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 extension DiscoverSearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchByText(searchText: searchText)
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(
+            timeInterval: 0.2,
+            target: self,
+            selector: #selector(getSearchResult),
+            userInfo: ["searchText": searchText],
+            repeats: false
+        )
     }
 
 }
