@@ -21,7 +21,7 @@ class MediaListHeaderView: UICollectionReusableView {
     private let containerView = UIView()
     private let editButton = UIButton()
     private let roundTopView = RoundTopView(hasShadow: true)
-    private let sortButton = UIButton()
+//    private let sortButton = UIButton()
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
@@ -46,9 +46,9 @@ class MediaListHeaderView: UICollectionReusableView {
         editButton.layer.cornerRadius = buttonSize.width / 2
         addSubview(editButton)
 
-        sortButton.addTarget(self, action: #selector(sortMedia), for: .touchUpInside)
-        sortButton.layer.cornerRadius = buttonSize.width / 2
-        addSubview(sortButton)
+//        sortButton.addTarget(self, action: #selector(sortMedia), for: .touchUpInside)
+//        sortButton.layer.cornerRadius = buttonSize.width / 2
+//        addSubview(sortButton)
 
         setupConstraints()
     }
@@ -61,15 +61,15 @@ class MediaListHeaderView: UICollectionReusableView {
             
         }
 
-        sortButton.snp.makeConstraints { make in
-            make.centerY.equalTo(roundTopView.snp.top)
-            make.trailing.equalTo(addButton.snp.leading).offset(-16)
-            make.size.equalTo(buttonSize)
-        }
+//        sortButton.snp.makeConstraints { make in
+//            make.centerY.equalTo(roundTopView.snp.top)
+//            make.trailing.equalTo(addButton.snp.leading).offset(-16)
+//            make.size.equalTo(buttonSize)
+//        }
 
         editButton.snp.makeConstraints { make in
             make.centerY.equalTo(roundTopView.snp.top)
-            make.trailing.equalTo(sortButton.snp.leading).offset(-16)
+            make.trailing.equalTo(addButton.snp.leading).offset(-16)
             make.size.equalTo(buttonSize)
         }
 
@@ -88,7 +88,7 @@ class MediaListHeaderView: UICollectionReusableView {
     func configure(isEmptyList: Bool) {
         self.isEmptyList = isEmptyList
         editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
-        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)
+//        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)
     }
 
     @objc func addMedia() {

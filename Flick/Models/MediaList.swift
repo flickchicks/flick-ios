@@ -26,6 +26,5 @@ struct MediaList: Codable {
     var collaborators: [UserProfile]
     var owner: UserProfile
     var shows: [SimpleMedia]
-//    var timestamp: String?
     var tags: [Tag]
 }
