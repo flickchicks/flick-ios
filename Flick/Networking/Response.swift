@@ -11,6 +11,7 @@ import Foundation
 struct Response<T: Codable>: Codable {
 
     var data: T
+    var query: String?
     var success: Bool
 
 }

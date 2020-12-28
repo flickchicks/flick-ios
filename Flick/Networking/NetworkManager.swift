@@ -443,7 +443,7 @@ class NetworkManager {
     }
 
     /// [GET] Get media search result by query
-    static func searchMedia(query: String, completion: @escaping ([Media]) -> Void) {
+    static func searchMedia(query: String, completion: @escaping (String?, [Media]) -> Void) {
         guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
             "is_movie" : "true",
             "is_tv": "true",
@@ -457,7 +457,8 @@ class NetworkManager {
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaData = try? jsonDecoder.decode(Response<[Media]>.self, from: data) {
                     let media = mediaData.data
-                    completion(media)
+                    let query = mediaData.query
+                    completion(query, media)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
