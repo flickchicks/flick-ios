@@ -82,7 +82,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private var selectedTagIndex: IndexPath?
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
     private let tagCellSpacing: CGFloat = 8
-    private var tagDisplay: tagDisplay = .expanded
+    private var tagDisplay: tagDisplay = .collapsed
     private var tagRowCount = 1
     private var totalWidthPerRow: CGFloat = 0
     private var list: MediaList!
@@ -210,7 +210,12 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func getAllTagSizes() {
+        // Reset initial values
+        numInFirstTwoRows = 0
         tagRowCount = 1
+        totalWidthPerRow = 0
+
+        // Get size of all tags
         allTags.forEach { tag in
             let tagSize = tag.size(withAttributes: [
                 NSAttributedString.Key.font : UIFont.systemFont(ofSize: 12)
@@ -222,7 +227,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             let collectionViewWidth = UIScreen.main.bounds.width - 60
             let cellWidth = width
             totalWidthPerRow += cellWidth + tagCellSpacing
-            if (totalWidthPerRow > collectionViewWidth) {
+            if totalWidthPerRow > collectionViewWidth {
                 tagRowCount += 1
                 totalWidthPerRow = cellWidth + tagCellSpacing
              }
@@ -233,21 +238,20 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             allTagSizes.append(CGSize(width: width, height: height))
         }
 
-        tagDisplay = numInFirstTwoRows != 0 && allTags.count > numInFirstTwoRows ? .collapsed : .expanded
-        if tagDisplay == .collapsed {
+        if tagDisplay == .collapsed && numInFirstTwoRows > 0 {
             collapsedTags = Array(allTags.prefix(numInFirstTwoRows - 1))
         }
     }
 
     @objc private func tappedShowLess() {
-        tagDisplay = .collapsed
         showLessButton.isHidden = true
         tagCollectionView.snp.updateConstraints { update in
             update.bottom.equalToSuperview().inset(10)
         }
-        tagCollectionView.reloadData()
 
         delegate?.changeListSummaryHeight(height: 145)
+        tagDisplay = .collapsed
+        tagCollectionView.reloadData()
     }
 
     required init?(coder: NSCoder) {
@@ -268,7 +272,9 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if tagDisplay == .collapsed && indexPath.item == numInFirstTwoRows - 2 {
+        if tagDisplay == .collapsed &&
+            allTags.count > numInFirstTwoRows &&
+            indexPath.item == numInFirstTwoRows - 2 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: "+ \(allTags.count - numInFirstTwoRows + 2) more", type: .more)
             return cell
@@ -276,11 +282,12 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
             let tag = tagDisplay == .collapsed ? collapsedTags[indexPath.item] : allTags[indexPath.item]
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tagCellReuseIdentifier, for: indexPath) as? TagCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(for: tag, type: .tag)
-            // Select cell if it was previously selected
-            if let selectedIndexPath = selectedTagIndex, indexPath == selectedIndexPath {
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
-                cell.isSelected = true
-            }
+            // Uncomment when allow tag selection
+//            // Select cell if it was previously selected
+//            if let selectedIndexPath = selectedTagIndex, indexPath == selectedIndexPath {
+//                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
+//                cell.isSelected = true
+//            }
             return cell
         }
     }
@@ -290,9 +297,11 @@ extension ListSummaryCollectionViewCell: UICollectionViewDataSource {
 extension ListSummaryCollectionViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if tagDisplay == .collapsed && indexPath.item != collapsedTags.count - 1 || tagDisplay == .expanded {
-            selectedTagIndex = indexPath
-        }
+        // Uncomment when allow tag selection
+//        if tagDisplay == .collapsed && indexPath.item != collapsedTags.count - 1 || tagDisplay == .expanded {
+//            selectedTagIndex = indexPath
+//        }
+
         // If tapped to show more tags
         if tagDisplay == .collapsed && indexPath.item == collapsedTags.count - 1 {
             tagDisplay = .expanded

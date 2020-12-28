@@ -50,8 +50,9 @@ enum MediaListsModalViewType { case moveMedia, saveMedia }
 class MediaListsModalView: UIView {
 
     // MARK: - Private View Vars
+    private var cancelButton = UIButton()
     private let containerView = UIView()
-    private let doneButton = UIButton()
+    private var doneButton = UIButton()
     private let listsTableView = UITableView()
     private let newListButton = NewListButton()
     private let titleLabel = UILabel()
@@ -87,19 +88,20 @@ class MediaListsModalView: UIView {
         containerView.layer.cornerRadius = 24
         addSubview(containerView)
 
-        doneButton.setTitle("Done", for: .normal)
-        doneButton.setTitleColor(.gradientPurple, for: .normal)
-        doneButton.titleLabel?.font = .systemFont(ofSize: 14)
-        doneButton.layer.cornerRadius = 12
-        doneButton.layer.backgroundColor = UIColor.lightPurple.cgColor
+        doneButton = RoundedButton(style: .purple, title: "Done")
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)
+
+        cancelButton = RoundedButton(style: .gray, title: "Cancel")
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        containerView.addSubview(cancelButton)
 
         listsTableView.dataSource = self
         listsTableView.delegate = self
         listsTableView.showsVerticalScrollIndicator = false
         listsTableView.register(ListNameTableViewCell.self, forCellReuseIdentifier: listNameCellReuseIdentifier)
         listsTableView.separatorStyle = .none
+        listsTableView.bounces = false
         containerView.addSubview(listsTableView)
 
         setupConstraints()
@@ -120,7 +122,7 @@ class MediaListsModalView: UIView {
 
     private func setupConstraints() {
         let containerViewSize = CGSize(width: 325, height: 430)
-        let doneButtonSize = CGSize(width: 60, height: 25)
+        let buttonSize = CGSize(width: 84, height: 40)
         let horizontalPadding = 24
         let titleLabelSize = CGSize(width: 144, height: 22)
         let verticalPadding = 36
@@ -136,15 +138,22 @@ class MediaListsModalView: UIView {
             make.size.equalTo(titleLabelSize)
         }
 
-        doneButton.snp.makeConstraints { make in
-            make.size.equalTo(doneButtonSize)
-            make.top.equalTo(containerView).offset(33)
-            make.trailing.equalTo(containerView).inset(horizontalPadding)
-        }
-
         listsTableView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(containerView).inset(horizontalPadding)
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
+        }
+
+        doneButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(62.5)
+            make.size.equalTo(buttonSize)
+            make.top.equalTo(listsTableView.snp.bottom).offset(verticalPadding)
+            make.bottom.equalToSuperview().inset(verticalPadding)
+        }
+
+        cancelButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(62.5)
+            make.size.equalTo(buttonSize)
+            make.top.equalTo(listsTableView.snp.bottom).offset(verticalPadding)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
     }
@@ -163,7 +172,6 @@ class MediaListsModalView: UIView {
         listsTableView.snp.remakeConstraints { remake in
             remake.leading.trailing.equalTo(containerView).inset(horizontalPadding)
             remake.top.equalTo(newListButton.snp.bottom).offset(15)
-            remake.bottom.equalToSuperview().inset(36)
         }
     }
 
@@ -190,6 +198,16 @@ class MediaListsModalView: UIView {
                 guard let selectedList = self.selectedList else { return }
                 self.saveMediaDelegate?.saveMedia(selectedList: selectedList)
             }
+        }
+    }
+
+    @objc func cancelTapped() {
+        UIView.animate(withDuration: 0.15, animations: {
+            self.containerView.alpha = 0
+            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
+        }) { (_) in
+            self.modalDelegate?.dismissModal(modalView: self)
         }
     }
 
