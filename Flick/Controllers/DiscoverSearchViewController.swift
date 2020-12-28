@@ -150,6 +150,7 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(searchType: tabs[indexPath.item])
+            cell.viewController.delegate = self
             return cell
         }
     }
@@ -200,6 +201,20 @@ extension DiscoverSearchViewController: UISearchBarDelegate {
             userInfo: ["searchText": searchText],
             repeats: false
         )
+    }
+
+}
+
+extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
+
+    func pushMediaViewController(mediaId: Int) {
+        let mediaVC = MediaViewController(mediaId: mediaId)
+        navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
+    func pushListViewController(listId: Int) {
+        let listVC = ListViewController(listId: listId)
+        navigationController?.pushViewController(listVC, animated: true)
     }
 
 }

@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol DiscoverSearchResultDelegate: class {
+    func pushListViewController(listId: Int)
+    func pushMediaViewController(mediaId: Int)
+}
+
 class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
 
     // MARK: - Private Data Vars
+    weak var delegate: DiscoverSearchResultDelegate?
     private var lists = [MediaList]()
     private var media = [Media]()
     private let searchResultCellReuseIdentifier = "SearchResultCellReuseIdentifier"
@@ -135,6 +141,19 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
             break
         }
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch searchType {
+        case .movies, .shows:
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
+        case .people:
+            break
+        case .lists:
+            delegate?.pushListViewController(listId: lists[indexPath.row].id)
+        default:
+            break
+        }
     }
 
 }
