@@ -20,7 +20,7 @@ class DiscoverSearchViewController: UIViewController {
     private let searchResultPageReuseIdentifier = "SearchResultPageCollectionView"
     private var searchResultViewControllers = [DiscoverSearchResultViewController]()
     private let searchTabCellReuseIdentifier = "SearchTabCellReuseIdentifier"
-    private let tabs: [SearchTab] = [.movies, .shows, .people, .tags, .lists]
+    private let tabs: [SearchTab] = [.movies, .shows, .people, .lists]
     private var timer: Timer?
 
     override func viewDidLoad() {

@@ -72,10 +72,10 @@ class DiscoverViewController: UIViewController {
 
 extension DiscoverViewController: UISearchBarDelegate {
 
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         let searchVC = DiscoverSearchViewController()
         navigationController?.pushViewController(searchVC, animated: true)
-        searchBar.endEditing(true)
+        return false
     }
 
 }
