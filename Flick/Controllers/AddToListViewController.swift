@@ -227,7 +227,7 @@ class AddToListViewController: UIViewController {
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(labelLeadingOffset)
             make.top.equalTo(addToListLabel.snp.bottom).offset(12)
-            make.height.equalTo(36)
+            make.height.equalTo(40)
         }
     }
 

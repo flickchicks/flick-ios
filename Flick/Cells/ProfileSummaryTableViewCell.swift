@@ -47,11 +47,13 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
         notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
+        notificationButton.isHidden = true
         contentView.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         settingsButton.tintColor = .mediumGray
+        settingsButton.isHidden = true
         contentView.addSubview(settingsButton)
 
         setupConstraints()
@@ -130,16 +132,19 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(name: String, username: String, profilePicUrl: String, delegate: ProfileDelegate) {
+    func configure(isCurrentUser: Bool, user: UserProfile?, delegate: ProfileDelegate) {
+        guard let user = user else { return }
         self.delegate = delegate
-        nameLabel.text = name
-        usernameLabel.text = "@\(username)"
+        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
-        if let pictureUrl = URL(string: profilePicUrl), let pictureData = try? Data(contentsOf: pictureUrl) {
+        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
             let pictureObject = UIImage(data: pictureData)
             profileImageView.image = pictureObject
         }
         updateUserInfoViewConstraints()
+        notificationButton.isHidden = !isCurrentUser
+        settingsButton.isHidden = !isCurrentUser
     }
     
     required init?(coder: NSCoder) {

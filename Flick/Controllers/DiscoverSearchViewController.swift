@@ -217,4 +217,8 @@ extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
         navigationController?.pushViewController(listVC, animated: true)
     }
 
+    func pushProfileViewController(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(userId: userId), animated: true)
+    }
+
 }

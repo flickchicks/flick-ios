@@ -127,6 +127,23 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get a user with id [updated as of 12/28/20]
+    static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
+        AF.request("\(hostEndpoint)/api/user/\(userId)", method: .get, headers: headers).validate().responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
+                    let user = userData.data
+                    completion(user)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
     static func createNewMediaList(listName: String, mediaIds: [Int] = [], completion: @escaping (MediaList) -> Void) {

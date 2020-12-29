@@ -11,6 +11,7 @@ import UIKit
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)
     func pushMediaViewController(mediaId: Int)
+    func pushProfileViewController(userId: Int)
 }
 
 class DiscoverSearchResultViewController: UIViewController {
@@ -148,7 +149,7 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
         case .movies, .shows:
             delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
         case .people:
-            break
+            delegate?.pushProfileViewController(userId: users[indexPath.row].id)
         case .lists:
             delegate?.pushListViewController(listId: lists[indexPath.row].id)
         default:
