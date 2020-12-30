@@ -23,10 +23,11 @@ class MediaViewController: UIViewController {
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
+    private let shareButton = UIButton()
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
-    private let buttonSize = CGSize(width: 72, height: 72)
+    private let buttonSize = CGSize(width: 54, height: 54)
     private var cardExpanded = false
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
@@ -96,13 +97,21 @@ class MediaViewController: UIViewController {
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
-        saveMediaButton.frame = CGRect(x: self.view.frame.width - 68 - buttonSize.width/2,
+        saveMediaButton.frame = CGRect(x: self.view.frame.width - 60 - buttonSize.width/2,
                                        y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
                                        width: buttonSize.width, height: buttonSize.height)
         saveMediaButton.setImage(UIImage(named: "saveButton"), for: .normal)
         saveMediaButton.layer.cornerRadius = buttonSize.width / 2
         saveMediaButton.addTarget(self, action: #selector(saveMediaTapped), for: .touchUpInside)
         view.addSubview(saveMediaButton)
+
+        shareButton.frame = CGRect(x: self.view.frame.width - 60 - 3*buttonSize.width/2,
+                                       y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
+                                       width: buttonSize.width, height: buttonSize.height)
+        shareButton.setImage(UIImage(named: "shareButton"), for: .normal)
+        shareButton.layer.cornerRadius = buttonSize.width / 2
+        shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        view.addSubview(shareButton)
 
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
@@ -135,6 +144,13 @@ class MediaViewController: UIViewController {
         listsModalView.modalDelegate = self
         listsModalView.saveMediaDelegate = self
         showModalPopup(view: listsModalView)
+    }
+
+    @objc func shareButtonTapped() {
+        let shareMediaView = ShareMediaModalView()
+        shareMediaView.modalDelegate = self
+        shareMediaView.shareMediaDelegate = self
+        showModalPopup(view: shareMediaView)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -186,11 +202,12 @@ class MediaViewController: UIViewController {
                 if panDirection == "Up" {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+                    self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
                 else {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
-
+                    self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
             }
 
@@ -272,6 +289,16 @@ extension MediaViewController: CreateListDelegate {
 
             self.persentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
         }
+    }
+
+}
+
+extension MediaViewController: ShareMediaDelegate {
+
+    func showFlickToFriendView() {
+        let flickToFriendView = FlickToFriendModalView()
+        flickToFriendView.modalDelegate = self
+        showModalPopup(view: flickToFriendView)
     }
 
 }
