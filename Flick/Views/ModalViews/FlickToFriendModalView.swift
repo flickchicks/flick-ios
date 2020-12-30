@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol FlickToFriendDelegate: class {
+    func flickMediaToFriend(mediaId: Int, friendId: Int, message: String)
+}
+
 class FlickToFriendModalView: UIView {
 
     // MARK: - Private View Vars
@@ -24,10 +28,17 @@ class FlickToFriendModalView: UIView {
     // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
     private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
+    private let media: Media
+    private var selectedFriend: UserProfile?
+    private var selectedIndexPath: IndexPath?
+
+    weak var flickToFriendDelegate: FlickToFriendDelegate?
     weak var modalDelegate: ModalDelegate?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(media: Media) {
+        self.media = media
+
+        super.init(frame: .zero)
 
         self.frame = UIScreen.main.bounds
 
@@ -49,9 +60,12 @@ class FlickToFriendModalView: UIView {
         mediaPosterImageView.backgroundColor = .lightGray
         mediaPosterImageView.layer.cornerRadius = 8
         mediaPosterImageView.layer.masksToBounds = true
+        if let imageUrl = URL(string: media.posterPic ?? "") {
+            mediaPosterImageView.kf.setImage(with: imageUrl)
+        }
         containerView.addSubview(mediaPosterImageView)
 
-        mediaNameLabel.text = "Crash landing on you"
+        mediaNameLabel.text = media.title
         mediaNameLabel.font = .boldSystemFont(ofSize: 14)
         containerView.addSubview(mediaNameLabel)
 
@@ -67,7 +81,6 @@ class FlickToFriendModalView: UIView {
         friendsTableView.delegate = self
         friendsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: friendsCellReuseIdentifier)
         friendsTableView.separatorStyle = .none
-        friendsTableView.backgroundColor = .black
         containerView.addSubview(friendsTableView)
 
         cancelButton = RoundedButton(style: .gray, title: "Cancel")
@@ -75,6 +88,7 @@ class FlickToFriendModalView: UIView {
         containerView.addSubview(cancelButton)
 
         shareButton = RoundedButton(style: .purple, title: "Share")
+        shareButton.isEnabled = false
         shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
         containerView.addSubview(shareButton)
 
@@ -155,7 +169,10 @@ class FlickToFriendModalView: UIView {
     }
 
     @objc private func shareTapped() {
-
+        if let selectedFriend = selectedFriend {
+            modalDelegate?.dismissModal(modalView: self)
+            flickToFriendDelegate?.flickMediaToFriend(mediaId: media.id, friendId: selectedFriend.id, message: messageTextField.text ?? "")
+        }
     }
 
     @objc private func cancelTapped() {
@@ -188,8 +205,17 @@ extension FlickToFriendModalView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if selectedIndexPath == indexPath {
+            // It was already selected
+            selectedIndexPath = nil
+            selectedFriend = nil
+            shareButton.isEnabled = false
+            tableView.deselectRow(at: indexPath, animated: false)
+        } else {
+            // It wasn't yet selected
+            selectedIndexPath = indexPath
+            shareButton.isEnabled = true
+            selectedFriend = friends[indexPath.row]
+        }
     }
 }

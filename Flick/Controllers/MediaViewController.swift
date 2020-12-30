@@ -31,8 +31,9 @@ class MediaViewController: UIViewController {
     private var cardExpanded = false
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
-    private var mediaImageHeight: CGFloat!
+    private var media: Media?
     private var mediaId: Int!
+    private var mediaImageHeight: CGFloat!
     private var nextState: CardState {
         return cardExpanded ? .collapsed : .expanded
     }
@@ -127,6 +128,7 @@ class MediaViewController: UIViewController {
     private func getMediaInformation() {
         NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
             guard let self = self else { return }
+            self.media = media
             if let posterPic = media.posterPic {
                 let url = URL(string: posterPic)
                 self.mediaImageView.kf.setImage(with: url)
@@ -293,12 +295,26 @@ extension MediaViewController: CreateListDelegate {
 
 }
 
-extension MediaViewController: ShareMediaDelegate {
+extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
 
     func showFlickToFriendView() {
-        let flickToFriendView = FlickToFriendModalView()
-        flickToFriendView.modalDelegate = self
-        showModalPopup(view: flickToFriendView)
+        if let media = media {
+            let flickToFriendView = FlickToFriendModalView(media: media)
+            flickToFriendView.modalDelegate = self
+            flickToFriendView.flickToFriendDelegate = self
+            showModalPopup(view: flickToFriendView)
+        }
+    }
+
+    func flickMediaToFriend(mediaId: Int, friendId: Int, message: String) {
+        NetworkManager.flickMediaToFriend(friendId: friendId, mediaId: mediaId, message: message) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.persentInfoAlert(message: "Flicked to friend", completion: nil)
+            } else {
+                self.persentInfoAlert(message: "Failed to flick to friend", completion: nil)
+            }
+        }
     }
 
 }

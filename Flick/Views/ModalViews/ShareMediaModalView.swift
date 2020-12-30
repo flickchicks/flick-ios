@@ -17,8 +17,9 @@ class ShareMediaModalView: UIView {
     // MARK: - Private View Vars
     private let cancelButton = UIButton()
     private let containerView = UIView()
+    private let flickToFriendButton = UIButton()
     private let flickToFriendLabel = UILabel()
-    private let rightChevronButton = UIButton()
+    private let rightChevronImageView = UIImageView()
     private let shareLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -40,13 +41,17 @@ class ShareMediaModalView: UIView {
         shareLabel.font = .boldSystemFont(ofSize: 20)
         containerView.addSubview(shareLabel)
 
-        flickToFriendLabel.text = "Flick to a friend"
-        flickToFriendLabel.font = .systemFont(ofSize: 16)
-        containerView.addSubview(flickToFriendLabel)
+        flickToFriendButton.addTarget(self, action: #selector(flickToFriendTapped), for: .touchUpInside)
+        containerView.addSubview(flickToFriendButton)
 
-        rightChevronButton.setImage(UIImage(named: "rightChevron"), for: .normal)
-        rightChevronButton.addTarget(self, action: #selector(rightChevronTapped), for: .touchUpInside)
-        containerView.addSubview(rightChevronButton)
+        flickToFriendLabel.text = "Flick to a friend"
+        flickToFriendLabel.textColor = .darkBlue
+        flickToFriendLabel.font = .systemFont(ofSize: 16)
+        flickToFriendButton.addSubview(flickToFriendLabel)
+
+        rightChevronImageView.image = UIImage(named: "rightChevron")
+        rightChevronImageView.isUserInteractionEnabled = false
+        flickToFriendButton.addSubview(rightChevronImageView)
 
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.mediumGray, for: .normal)
@@ -62,7 +67,7 @@ class ShareMediaModalView: UIView {
     }
 
     private func setupConstraints() {
-        let containerViewSize = CGSize(width: 335, height: 200)
+        let containerViewSize = CGSize(width: 335, height: 210)
         let horizontalPadding = 24
         let verticalPadding = 36
 
@@ -76,16 +81,20 @@ class ShareMediaModalView: UIView {
             make.leading.equalToSuperview().offset(horizontalPadding)
         }
 
-        flickToFriendLabel.snp.makeConstraints { make in
+        flickToFriendButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(shareLabel.snp.bottom).offset(verticalPadding)
-            make.leading.equalToSuperview().offset(horizontalPadding)
+            make.height.equalTo(20)
         }
 
-        rightChevronButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.top.equalTo(flickToFriendLabel)
-            make.width.equalTo(10)
-            make.height.equalTo(20)
+        flickToFriendLabel.snp.makeConstraints { make in
+            make.leading.centerY.equalToSuperview()
+        }
+
+        rightChevronImageView.snp.makeConstraints { make in
+            make.trailing.centerY.equalToSuperview()
+            make.width.equalTo(5)
+            make.height.equalTo(10)
         }
 
         cancelButton.snp.makeConstraints { make in
@@ -94,7 +103,7 @@ class ShareMediaModalView: UIView {
         }
     }
 
-    @objc private func rightChevronTapped() {
+    @objc private func flickToFriendTapped() {
         modalDelegate?.dismissModal(modalView: self)
         shareMediaDelegate?.showFlickToFriendView()
     }
