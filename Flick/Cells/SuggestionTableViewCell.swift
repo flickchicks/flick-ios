@@ -142,11 +142,11 @@ class SuggestionTableViewCell: UITableViewCell {
            make.trailing.equalTo(containerView).inset(padding)
         }
 
-        spacerView.snp.makeConstraints { make in
-           make.centerY.equalTo(movieIconImageView)
-           make.leading.equalTo(releaseDateLabel.snp.trailing).offset(6)
-           make.width.height.equalTo(3)
-        }
+//        spacerView.snp.makeConstraints { make in
+//           make.centerY.equalTo(movieIconImageView)
+//           make.leading.equalTo(releaseDateLabel.snp.trailing).offset(6)
+//           make.width.height.equalTo(3)
+//        }
 
         movieIconImageView.snp.makeConstraints { make in
             make.leading.equalTo(mediaTitleLabel)
@@ -159,11 +159,11 @@ class SuggestionTableViewCell: UITableViewCell {
             make.centerY.equalTo(movieIconImageView)
         }
 
-        tagsLabel.snp.makeConstraints { make in
-           make.leading.equalTo(spacerView.snp.trailing).offset(6)
-           make.centerY.equalTo(movieIconImageView)
-           make.trailing.equalTo(containerView).inset(padding)
-        }
+//        tagsLabel.snp.makeConstraints { make in
+//           make.leading.equalTo(spacerView.snp.trailing).offset(6)
+//           make.centerY.equalTo(movieIconImageView)
+//           make.trailing.equalTo(containerView).inset(padding)
+//        }
 
         synopsisLabel.snp.makeConstraints { make in
            make.leading.trailing.equalTo(mediaTitleLabel)
