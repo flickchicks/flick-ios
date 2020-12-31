@@ -60,6 +60,13 @@ class ShareMediaModalView: UIView {
         containerView.addSubview(cancelButton)
 
         setupConstraints()
+
+        // Animate the pop up of alert view in 0.25 seconds
+        UIView.animate(withDuration: 0.25, animations: {
+            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
+            self.containerView.alpha = 1
+            self.containerView.transform = .identity
+        })
     }
 
     required init?(coder: NSCoder) {

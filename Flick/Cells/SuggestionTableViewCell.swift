@@ -185,18 +185,23 @@ class SuggestionTableViewCell: UITableViewCell {
         self.index = index
         notificationLabel.attributedText =
             NSMutableAttributedString()
-                .boldFont14(suggestion.fromUser)
-                .normalFont14(" suggested a \(suggestion.media.isTv ? "TV show" : "movie").")
+            .boldFont14("\(suggestion.fromUser.firstName) \(suggestion.fromUser.lastName)")
+            .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
+        if let profileImageUrl = URL(string: suggestion.fromUser.profilePic?.assetUrls.small ?? "") {
+            profileImageView.kf.setImage(with: profileImageUrl)
+        }
         messageLabel.text = suggestion.message
-        mediaTitleLabel.text = suggestion.media.title
-        if let tags = suggestion.media.tags?.map({ $0.name }) {
+        mediaTitleLabel.text = suggestion.show.title
+        if let posterImageUrl = URL(string: suggestion.show.posterPic ?? "") {
+            mediaImageView.kf.setImage(with: posterImageUrl)
+        }
+        if let tags = suggestion.show.tags?.map({ $0.name }) {
             tagsLabel.text = tags.joined(separator: ", ")
         }
-        releaseDateLabel.text = suggestion.media.dateReleased
-        synopsisLabel.text = suggestion.media.plot
-        let heartImage = suggestion.liked ? "filledHeart" : "heart"
-        likeButton.setImage(UIImage(named: heartImage), for: .normal)
-
+        releaseDateLabel.text = suggestion.show.dateReleased
+        synopsisLabel.text = suggestion.show.plot
+//        let heartImage = suggestion.liked ? "filledHeart" : "heart"
+//        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
 }
 
