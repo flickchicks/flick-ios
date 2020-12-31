@@ -76,7 +76,6 @@ class SuggestionTableViewCell: UITableViewCell {
         mediaTitleLabel.numberOfLines = 0
         contentView.addSubview(mediaTitleLabel)
 
-        movieIconImageView.image = UIImage(named: "film")
         contentView.addSubview(movieIconImageView)
 
         releaseDateLabel.textColor = .mediumGray
@@ -198,6 +197,7 @@ class SuggestionTableViewCell: UITableViewCell {
         if let tags = suggestion.show.tags?.map({ $0.name }) {
             tagsLabel.text = tags.joined(separator: ", ")
         }
+        movieIconImageView.image = UIImage(named: suggestion.show.isTv ? "tv" : "film")
         releaseDateLabel.text = suggestion.show.dateReleased
         synopsisLabel.text = suggestion.show.plot
 //        let heartImage = suggestion.liked ? "filledHeart" : "heart"

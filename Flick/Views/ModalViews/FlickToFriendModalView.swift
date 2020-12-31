@@ -19,6 +19,8 @@ class FlickToFriendModalView: UIView {
     private let containerView = UIView()
     private let flickToFriendLabel = UILabel()
     private let friendsTableView = UITableView()
+    private let mediaIconImageView = UIImageView()
+    private let mediaInfoLabel = UILabel()
     private let mediaNameLabel = UILabel()
     private let mediaPosterImageView = UIImageView()
     private let messageTextField = UITextField()
@@ -57,6 +59,16 @@ class FlickToFriendModalView: UIView {
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
         containerView.addSubview(onlyFriendSeeLabel)
 
+        mediaIconImageView.image = UIImage(named: media.isTv ? "tv" : "film")
+        containerView.addSubview(mediaIconImageView)
+
+        if let duration = media.duration, let dateReleased = media.dateReleased {
+            mediaInfoLabel.text = "\(duration) • \(dateReleased)"
+        }
+        mediaInfoLabel.textColor = .mediumGray
+        mediaInfoLabel.font = .systemFont(ofSize: 12)
+        containerView.addSubview(mediaInfoLabel)
+
         mediaPosterImageView.backgroundColor = .lightGray
         mediaPosterImageView.layer.cornerRadius = 8
         mediaPosterImageView.layer.masksToBounds = true
@@ -81,6 +93,7 @@ class FlickToFriendModalView: UIView {
         friendsTableView.delegate = self
         friendsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: friendsCellReuseIdentifier)
         friendsTableView.separatorStyle = .none
+        friendsTableView.bounces = false
         containerView.addSubview(friendsTableView)
 
         cancelButton = RoundedButton(style: .gray, title: "Cancel")
@@ -137,7 +150,18 @@ class FlickToFriendModalView: UIView {
 
         mediaNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(mediaPosterImageView.snp.trailing).offset(12)
-            make.top.equalTo(mediaPosterImageView.snp.top)
+            make.top.equalTo(mediaPosterImageView.snp.top).offset(9)
+        }
+
+        mediaIconImageView.snp.makeConstraints { make in
+            make.leading.equalTo(mediaNameLabel)
+            make.top.equalTo(mediaNameLabel.snp.bottom).offset(9)
+            make.height.width.equalTo(12)
+        }
+
+        mediaInfoLabel.snp.makeConstraints { make in
+            make.leading.equalTo(mediaIconImageView.snp.trailing).offset(6)
+            make.centerY.equalTo(mediaIconImageView)
         }
 
         messageTextField.snp.makeConstraints { make in
