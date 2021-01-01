@@ -30,20 +30,34 @@ class ProfileViewController: UIViewController {
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
-    private var sections = [Section]()
-
     private let userDefaults = UserDefaults()
-    // TODO: Update media lists with backend lists
+
+    private var isCurrentUser = false
     private var mediaLists: [SimpleMediaList] = []
-    private var name: String = ""
-    private var username: String = ""
-    private var profilePicUrl: String = ""
+    private var sections = [Section]()
+    private var user: UserProfile?
+    private var userId: Int?
+
+    // Use nil as userId if getting profile for current user
+    init(userId: Int?) {
+        super.init(nibName: nil, bundle: nil)
+        self.isCurrentUser = userId == nil
+        self.userId = userId
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
 
         super.viewDidLoad()
 
         view.backgroundColor = .offWhite
+
+        if !isCurrentUser {
+            setupNavigationBar()
+        }
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
@@ -66,7 +80,34 @@ class ProfileViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        getUserProfile()
+        if let userId = userId, !isCurrentUser {
+            getUser(userId: userId)
+        } else {
+            getCurrentUser()
+        }
+    }
+
+    private func setupNavigationBar() {
+        let backButtonSize = CGSize(width: 22, height: 18)
+
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barTintColor = .offWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
+
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+
+    @objc private func backButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setupSections() {
@@ -75,18 +116,31 @@ class ProfileViewController: UIViewController {
         sections = [profileSummary, lists]
     }
 
-    private func getUserProfile() {
+    private func getCurrentUser() {
         NetworkManager.getUserProfile { [weak self] userProfile in
             guard let self = self else { return }
-            self.name = "\(userProfile.firstName) \(userProfile.lastName)"
-            self.username = userProfile.username
-            self.profilePicUrl = userProfile.profilePic?.assetUrls.original ?? ""
-            // TODO: Ask Alanna about combining ownerLsts and collaboratorLsts
-            if let ownerLsts = userProfile.ownerLsts {
-                self.mediaLists = ownerLsts
+            DispatchQueue.main.async {
+                self.updateUserInfo(user: userProfile)
             }
-            self.listsTableView.reloadData()
         }
+    }
+
+    private func getUser(userId: Int) {
+        NetworkManager.getUser(userId: userId) { [weak self] user in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.updateUserInfo(user: user)
+            }
+        }
+    }
+
+    private func updateUserInfo(user: UserProfile) {
+        self.user = user
+        if let ownerLists = user.ownerLsts,
+           let collabLists = user.collabLsts {
+            self.mediaLists = ownerLists + collabLists
+        }
+        self.listsTableView.reloadData()
     }
 }
 
@@ -111,11 +165,12 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         switch section.type {
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
-            cell.configure(name: name, username: username, profilePicUrl: profilePicUrl, delegate: self)
+            cell.configure(isCurrentUser: isCurrentUser, user: user, delegate: self)
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
             cell.configure(for: mediaLists[indexPath.item])
+            cell.delegate = self
             return cell
         }
     }
@@ -137,6 +192,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             return UIView()
         case .lists:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
+            headerView.configure(isCurrentUser: isCurrentUser)
             headerView.delegate = self
             return headerView
         }
@@ -152,16 +208,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: Update with selected list data
-        if sections[indexPath.section].type == .lists {
-            let listViewController = ListViewController(listId: mediaLists[indexPath.row].id)
-            navigationController?.pushViewController(listViewController, animated: true)
-        }
-    }
-
 }
-
 
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
@@ -197,4 +244,18 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
     }
+}
+
+extension ProfileViewController: ListTableViewCellDelegate {
+
+    func pushListViewController(listId: Int) {
+        let listVC = ListViewController(listId: listId)
+        navigationController?.pushViewController(listVC, animated: true)
+    }
+
+    func pushMediaViewController(mediaId: Int) {
+        let mediaVC = MediaViewController(mediaId: mediaId)
+        navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
 }

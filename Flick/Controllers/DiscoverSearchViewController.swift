@@ -20,7 +20,8 @@ class DiscoverSearchViewController: UIViewController {
     private let searchResultPageReuseIdentifier = "SearchResultPageCollectionView"
     private var searchResultViewControllers = [DiscoverSearchResultViewController]()
     private let searchTabCellReuseIdentifier = "SearchTabCellReuseIdentifier"
-    private let tabs: [SearchTab] = [.movies, .shows, .people, .tags, .lists]
+    private let tabs: [SearchTab] = [.movies, .shows, .people, .lists]
+    private var timer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,9 +116,15 @@ class DiscoverSearchViewController: UIViewController {
         }
     }
 
+    @objc private func getSearchResult(timer: Timer) {
+        if let userInfo = timer.userInfo as? [String: String],
+            let searchText = userInfo["searchText"] {
+            searchByText(searchText: searchText)
+        }
+    }
+
     private func searchByText(searchText: String) {
-        guard searchText != "",
-            let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
+        guard let cell = searchResultPageCollectionView.cellForItem(at: IndexPath(item: currentPosition, section: 0)) as? DiscoverSearchVCCollectionViewCell else { return }
         cell.viewController.updateSearchResult(query: searchText)
     }
 
@@ -143,6 +150,7 @@ extension DiscoverSearchViewController: UICollectionViewDataSource, UICollection
         } else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: searchResultPageReuseIdentifier, for: indexPath) as? DiscoverSearchVCCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(searchType: tabs[indexPath.item])
+            cell.viewController.delegate = self
             return cell
         }
     }
@@ -185,7 +193,32 @@ extension DiscoverSearchViewController: UICollectionViewDelegateFlowLayout {
 extension DiscoverSearchViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchByText(searchText: searchText)
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(
+            timeInterval: 0.2,
+            target: self,
+            selector: #selector(getSearchResult),
+            userInfo: ["searchText": searchText],
+            repeats: false
+        )
+    }
+
+}
+
+extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
+
+    func pushMediaViewController(mediaId: Int) {
+        let mediaVC = MediaViewController(mediaId: mediaId)
+        navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
+    func pushListViewController(listId: Int) {
+        let listVC = ListViewController(listId: listId)
+        navigationController?.pushViewController(listVC, animated: true)
+    }
+
+    func pushProfileViewController(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(userId: userId), animated: true)
     }
 
 }

@@ -11,6 +11,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Private View Vars
     private let createListButton = UIButton()
     private let containerView = UIView()
+    private let friendButton = UIButton()
     private let roundTopView = RoundTopView(hasShadow: true)
 
     // MARK: - Private Data Vars
@@ -28,18 +29,14 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         createListButton.setImage(UIImage(named: "newList"), for: .normal)
         createListButton.layer.cornerRadius = buttonSize.width / 2
         createListButton.addTarget(self, action: #selector(showCreateListModal), for: .touchUpInside)
-        contentView.addSubview(createListButton)
+
+        friendButton.setImage(UIImage(named: "addFriendButton"), for: .normal)
+        friendButton.layer.cornerRadius = buttonSize.width / 2
 
         setupConstraints()
     }
 
     func setupConstraints() {
-        createListButton.snp.makeConstraints { make in
-            make.centerY.equalTo(roundTopView.snp.top)
-            make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
-            make.size.equalTo(buttonSize)
-        }
-
         roundTopView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(buttonSize.height / 2)
             make.height.equalTo(90)
@@ -48,6 +45,24 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+    }
+
+    func configure(isCurrentUser: Bool) {
+        if isCurrentUser {
+            contentView.addSubview(createListButton)
+            createListButton.snp.makeConstraints { make in
+                make.centerY.equalTo(roundTopView.snp.top)
+                make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
+                make.size.equalTo(buttonSize)
+            }
+        } else {
+            contentView.addSubview(friendButton)
+            friendButton.snp.makeConstraints { make in
+                make.centerY.equalTo(roundTopView.snp.top)
+                make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
+                make.size.equalTo(buttonSize)
+            }
         }
     }
 

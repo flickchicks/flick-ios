@@ -8,12 +8,19 @@
 
 import UIKit
 
+protocol DiscoverSearchResultDelegate: class {
+    func pushListViewController(listId: Int)
+    func pushMediaViewController(mediaId: Int)
+    func pushProfileViewController(userId: Int)
+}
+
 class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
 
     // MARK: - Private Data Vars
+    weak var delegate: DiscoverSearchResultDelegate?
     private var lists = [MediaList]()
     private var media = [Media]()
     private let searchResultCellReuseIdentifier = "SearchResultCellReuseIdentifier"
@@ -41,36 +48,50 @@ class DiscoverSearchResultViewController: UIViewController {
     }
 
     func updateSearchResult(query: String) {
+        if query == "" {
+            clearContent()
+            return
+        }
         switch searchType {
         case .movies:
             NetworkManager.searchMovies(query: query) { [weak self] movies in
                 guard let self = self else { return }
-                self.media = movies
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.media = movies
+                    self.resultsTableView.reloadData()
+                }
             }
         case .shows:
             NetworkManager.searchShows(query: query) { [weak self] shows in
                 guard let self = self else { return }
-                self.media = shows
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.media = shows
+                    self.resultsTableView.reloadData()
+                }
             }
         case .people:
             NetworkManager.searchUsers(query: query) { [weak self] users in
                 guard let self = self else { return }
-                self.users = users
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.users = users
+                    self.resultsTableView.reloadData()
+                }
             }
         case .tags:
             NetworkManager.searchTags(query: query) { [weak self] tags in
                 guard let self = self else { return }
-                self.tags = tags
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.tags = tags
+                    self.resultsTableView.reloadData()
+                }
             }
         case .lists:
             NetworkManager.searchLists(query: query) { [weak self] lists in
                 guard let self = self else { return }
-                self.lists = lists
-                self.resultsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.lists = lists
+                    self.resultsTableView.reloadData()
+                }
             }
         default:
             break
@@ -121,6 +142,19 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
             break
         }
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch searchType {
+        case .movies, .shows:
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
+        case .people:
+            delegate?.pushProfileViewController(userId: users[indexPath.row].id)
+        case .lists:
+            delegate?.pushListViewController(listId: lists[indexPath.row].id)
+        default:
+            break
+        }
     }
 
 }

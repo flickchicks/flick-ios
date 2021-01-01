@@ -54,7 +54,7 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTitleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(collaboratorsTitleLabel)
 
-        cancelButton = GrayRoundButton(title: "Cancel")
+        cancelButton = RoundedButton(style: .gray, title: "Cancel")
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
 

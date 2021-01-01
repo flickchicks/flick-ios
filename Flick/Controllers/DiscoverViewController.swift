@@ -13,19 +13,19 @@ class DiscoverViewController: UIViewController {
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
-    
+
     // MARK: - Private Data Vars
     private var discoverShows: [[SimpleMedia]] = [[], [], []]
 
     override func viewDidLoad() {
-        
+
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
         searchBar.placeholder = "Search movies, shows, people, genres"
         searchBar.delegate = self
         view.addSubview(searchBar)
-        
+
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
         discoverFeedTableView.backgroundColor = .clear
@@ -34,7 +34,7 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.register(DiscoverTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier)
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
         view.addSubview(discoverFeedTableView)
-        
+
         setupConstraints()
     }
 
@@ -42,15 +42,15 @@ class DiscoverViewController: UIViewController {
         searchBar.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(36)
+            make.height.equalTo(40)
         }
-        
+
         discoverFeedTableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(16)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         // Make network request to get top shows, movies, and playing shows
         super.viewDidAppear(animated)
@@ -66,16 +66,15 @@ class DiscoverViewController: UIViewController {
                 self.discoverFeedTableView.reloadData()
             }
         }
-        
     }
 }
 
 extension DiscoverViewController: UISearchBarDelegate {
 
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         let searchVC = DiscoverSearchViewController()
         navigationController?.pushViewController(searchVC, animated: true)
-        searchBar.endEditing(true)
+        return false
     }
 
 }

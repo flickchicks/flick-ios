@@ -168,7 +168,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupCollaborators(collaborators: [UserProfile]) {
-        collaborateLabel.text = collaborators.count <= 1 ? Constants.Collaboration.onlyICanEdit : Constants.Collaboration.numCanEdit(num: collaborators.count)
+        collaborateLabel.text = collaborators.count == 1 ? "\(collaborators[0].firstName) \(collaborators[0].lastName)" : Constants.Collaboration.numCanEdit(num: collaborators.count)
         collaboratorsPreviewView.users = collaborators
 
         let listInfoHeight = 20

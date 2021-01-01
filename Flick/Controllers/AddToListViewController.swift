@@ -46,6 +46,7 @@ class AddToListViewController: UIViewController {
     private var searchResultMedia: [Media] = []
     private var selectedMedia: [SimpleMedia] = []
     private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    private var timer: Timer?
 
     // Keeps track of current position of pan gesture
     private var viewTranslation = CGPoint(x: 0, y: 0)
@@ -226,7 +227,7 @@ class AddToListViewController: UIViewController {
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(labelLeadingOffset)
             make.top.equalTo(addToListLabel.snp.bottom).offset(12)
-            make.height.equalTo(36)
+            make.height.equalTo(40)
         }
     }
 
@@ -296,11 +297,21 @@ class AddToListViewController: UIViewController {
         }
     }
 
-    private func searchMediaByQuery(_ query: String) {
-        NetworkManager.searchMedia(query: query) { [weak self] media in
-            guard let self = self, self.isSearching else { return }
-            self.searchResultMedia = media
-            self.resultMediaTableView.reloadData()
+    @objc private func getMedia(timer: Timer) {
+        if let userInfo = timer.userInfo as? [String: String],
+            let searchText = userInfo["searchText"] {
+            NetworkManager.searchMedia(query: searchText) { [weak self] query, media in
+                guard let self = self, self.isSearching else { return }
+                // Update search result only if there's no query or query matches current searchText
+                if let query = query, query != self.searchBar.searchTextField.text {
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.searchResultMedia = media
+                    self.resultLabel.text = "\(self.searchResultMedia.count) Results"
+                    self.resultMediaTableView.reloadData()
+                }
+            }
         }
     }
 
@@ -423,7 +434,15 @@ extension AddToListViewController: UISearchBarDelegate {
             resultLabel.text = "\(searchResultMedia.count) Results"
             resultMediaTableView.isHidden = false
             suggestedMediaCollectionView.isHidden = true
-            searchMediaByQuery(searchText)
+
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(
+                timeInterval: 0.2,
+                target: self,
+                selector: #selector(getMedia),
+                userInfo: ["searchText": searchText],
+                repeats: false
+            )
         }
     }
 

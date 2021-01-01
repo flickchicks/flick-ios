@@ -9,6 +9,11 @@
 import UIKit
 import SnapKit
 
+protocol ListTableViewCellDelegate: class {
+    func pushListViewController(listId: Int)
+    func pushMediaViewController(mediaId: Int)
+}
+
 class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
@@ -18,10 +23,12 @@ class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
+    weak var delegate: ListTableViewCellDelegate?
     private var list: SimpleMediaList!
     private let lockImageView = UIImageView()
     private var media: [SimpleMedia]!
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
+    private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,9 +51,10 @@ class ListTableViewCell: UITableViewCell {
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
         mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
+        mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: seeAllCellReuseIdentifier)
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
-        mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 0)
+        mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
         mediaCollectionView.backgroundColor = .none
         mediaCollectionView.showsHorizontalScrollIndicator = false
         contentView.addSubview(mediaCollectionView)
@@ -82,10 +90,7 @@ class ListTableViewCell: UITableViewCell {
     }
 
     @objc private func seeAllMedia() {
-        // TODO: Implement see all media action
-//        let listViewController = ListViewController()
-//        self.navigationController?.pushViewController(listViewController, animated: true)
-
+        delegate?.pushListViewController(listId: list.id)
     }
 
     private func setupConstraints() {
@@ -98,9 +103,10 @@ class ListTableViewCell: UITableViewCell {
         }
 
         seeAllButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
-            make.bottom.equalTo(titleLabel)
-            make.height.equalTo(15)
+            make.top.equalToSuperview()
+            make.bottom.equalTo(mediaCollectionView.snp.top)
+            make.trailing.equalToSuperview().inset(10)
+            make.width.equalTo(80)
         }
 
         mediaCollectionView.snp.makeConstraints { make in
@@ -135,7 +141,12 @@ class ListTableViewCell: UITableViewCell {
 extension ListTableViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: Implement select movie action
+        if indexPath.item == 10 {
+            delegate?.pushListViewController(listId: list.id)
+        } else {
+            let media = self.media[indexPath.row]
+            delegate?.pushMediaViewController(mediaId: media.id)
+        }
     }
 
 }
@@ -144,17 +155,36 @@ extension ListTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // If list is empty, show 4 filler cells
-        return media.count == 0 ? 4 : media.count
+        if media.isEmpty {
+            return 4
+        } else {
+            return media.count == 10 ? media.count + 1 : media.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // TODO: Add left padding to first cell
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
-        if media.count != 0 {
-            let media = self.media[indexPath.row]
-            cell.configure(media: media)
+        if indexPath.item == 10 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seeAllCellReuseIdentifier, for: indexPath)
+            cell.backgroundColor = .lightGray2
+            cell.clipsToBounds = true
+            cell.layer.cornerRadius = 8
+            let seeAllLabel = UILabel()
+            seeAllLabel.text = "See All"
+            seeAllLabel.textColor = .darkBlueGray2
+            seeAllLabel.font = .systemFont(ofSize: 12)
+            cell.contentView.addSubview(seeAllLabel)
+            seeAllLabel.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
+            if media.count != 0 {
+                let media = self.media[indexPath.row]
+                cell.configure(media: media)
+            }
+            return cell
         }
-        return cell
     }
 
 }
