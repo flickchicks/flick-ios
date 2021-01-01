@@ -47,11 +47,3 @@ struct ActivityLike {
     let media: String
 }
 
-struct Suggestion {
-
-    let fromUser: String
-    let message: String
-    let media: Media
-    var liked: Bool
-
-}

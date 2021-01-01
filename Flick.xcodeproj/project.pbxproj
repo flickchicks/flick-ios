@@ -18,6 +18,9 @@
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA22596D92B004CF4B7 /* RoundedButton.swift */; };
+		803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */; };
+		803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */; };
+		803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F0A259D41B4004CF4B7 /* Suggestion.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
@@ -137,6 +140,9 @@
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		803E5EA22596D92B004CF4B7 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaModalView.swift; sourceTree = "<group>"; };
+		803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickToFriendModalView.swift; sourceTree = "<group>"; };
+		803E5F0A259D41B4004CF4B7 /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -499,6 +505,7 @@
 				D492728324DE5B8B00FA5F2A /* Notification.swift */,
 				80B3F9BB24EB67CD002891C4 /* Tag.swift */,
 				D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */,
+				803E5F0A259D41B4004CF4B7 /* Suggestion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -513,6 +520,8 @@
 				80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */,
 				D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */,
 				D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */,
+				803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */,
+				803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */,
 			);
 			path = ModalViews;
 			sourceTree = "<group>";
@@ -808,12 +817,15 @@
 				D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
 				80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */,
+				803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,
 				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
 				D425B99024E9B44200FB13A5 /* MediaCardVewController.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
+				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
 				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
+				803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */,
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */,
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,

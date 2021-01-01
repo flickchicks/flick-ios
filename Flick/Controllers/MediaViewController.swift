@@ -23,15 +23,17 @@ class MediaViewController: UIViewController {
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
+    private let shareButton = UIButton()
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
-    private let buttonSize = CGSize(width: 72, height: 72)
+    private let buttonSize = CGSize(width: 54, height: 54)
     private var cardExpanded = false
     private var expandedCardHeight: CGFloat!
     private var collapsedCardHeight: CGFloat!
-    private var mediaImageHeight: CGFloat!
+    private var media: Media?
     private var mediaId: Int!
+    private var mediaImageHeight: CGFloat!
     private var nextState: CardState {
         return cardExpanded ? .collapsed : .expanded
     }
@@ -96,13 +98,21 @@ class MediaViewController: UIViewController {
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
-        saveMediaButton.frame = CGRect(x: self.view.frame.width - 68 - buttonSize.width/2,
+        saveMediaButton.frame = CGRect(x: self.view.frame.width - 60 - buttonSize.width/2,
                                        y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
                                        width: buttonSize.width, height: buttonSize.height)
         saveMediaButton.setImage(UIImage(named: "saveButton"), for: .normal)
         saveMediaButton.layer.cornerRadius = buttonSize.width / 2
         saveMediaButton.addTarget(self, action: #selector(saveMediaTapped), for: .touchUpInside)
         view.addSubview(saveMediaButton)
+
+        shareButton.frame = CGRect(x: self.view.frame.width - 60 - 3*buttonSize.width/2,
+                                       y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
+                                       width: buttonSize.width, height: buttonSize.height)
+        shareButton.setImage(UIImage(named: "shareButton"), for: .normal)
+        shareButton.layer.cornerRadius = buttonSize.width / 2
+        shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        view.addSubview(shareButton)
 
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
@@ -118,6 +128,7 @@ class MediaViewController: UIViewController {
     private func getMediaInformation() {
         NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
             guard let self = self else { return }
+            self.media = media
             if let posterPic = media.posterPic {
                 let url = URL(string: posterPic)
                 self.mediaImageView.kf.setImage(with: url)
@@ -135,6 +146,13 @@ class MediaViewController: UIViewController {
         listsModalView.modalDelegate = self
         listsModalView.saveMediaDelegate = self
         showModalPopup(view: listsModalView)
+    }
+
+    @objc func shareButtonTapped() {
+        let shareMediaView = ShareMediaModalView()
+        shareMediaView.modalDelegate = self
+        shareMediaView.shareMediaDelegate = self
+        showModalPopup(view: shareMediaView)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -186,11 +204,12 @@ class MediaViewController: UIViewController {
                 if panDirection == "Up" {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+                    self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
                 else {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
-
+                    self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
             }
 
@@ -271,6 +290,30 @@ extension MediaViewController: CreateListDelegate {
             guard let self = self else { return }
 
             self.persentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
+        }
+    }
+
+}
+
+extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
+
+    func showFlickToFriendView() {
+        if let media = media {
+            let flickToFriendView = FlickToFriendModalView(media: media)
+            flickToFriendView.modalDelegate = self
+            flickToFriendView.flickToFriendDelegate = self
+            showModalPopup(view: flickToFriendView)
+        }
+    }
+
+    func flickMediaToFriend(mediaId: Int, friendId: Int, message: String) {
+        NetworkManager.flickMediaToFriend(friendId: friendId, mediaId: mediaId, message: message) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.persentInfoAlert(message: "Flicked to friend", completion: nil)
+            } else {
+                self.persentInfoAlert(message: "Failed to flick to friend", completion: nil)
+            }
         }
     }
 

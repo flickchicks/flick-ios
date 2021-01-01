@@ -610,5 +610,41 @@ class NetworkManager {
         }
     }
 
+    /// [Get] Get all suggestions [updated as of 12/30/20]
+    static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
+        AF.request("\(hostEndpoint)/api/suggest/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let suggestionsData = try? jsonDecoder.decode(Response<[Suggestion]>.self, from: data) {
+                    let suggestions = suggestionsData.data
+                    completion(suggestions)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Flick a show to friend [updated as of 12/29/20]
+    static func flickMediaToFriend(friendId: Int, mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "users": [friendId],
+            "show_id": mediaId,
+            "message": message
+        ]
+
+        AF.request("\(hostEndpoint)/api/suggest/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
 }
 

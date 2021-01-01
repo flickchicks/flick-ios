@@ -14,9 +14,7 @@ class SuggestionsViewController: UIViewController {
     private let suggestionsTableView = UITableView(frame: .zero)
 
     // MARK: - Private Data Vars
-    private var suggestions: [Suggestion] = [
-        Suggestion(fromUser: "Lucy Xu", message: "Hello There", media: Media(id: 1, title: "fsf", posterPic: "fdf", directors: "fsdf", isTv: false, dateReleased: "fsdf", status: "fdsf", language: "fsdf", duration: "fsdfsdf", plot: "fsdf", tags: [], seasons: "fsdf", audienceLevel: "dss", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: ""), liked: false)
-    ]
+    private var suggestions: [Suggestion] = []
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
 
     override func viewDidLoad() {
@@ -35,7 +33,17 @@ class SuggestionsViewController: UIViewController {
         suggestionsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getSuggestions { [weak self] suggestions in
+            guard let self = self else { return }
+            self.suggestions = suggestions
+            DispatchQueue.main.async {
+                self.suggestionsTableView.reloadData()
+            }
+        }
     }
 
 }
@@ -53,7 +61,8 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mediaViewController = MediaViewController(mediaId: 1)
+        let suggestion = suggestions[indexPath.row]
+        let mediaViewController = MediaViewController(mediaId: suggestion.show.id)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 
@@ -61,7 +70,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 
 extension SuggestionsViewController: SuggestionsDelegate {
     func likeSuggestion(index: Int) {
-        suggestions[index].liked.toggle()
-        suggestionsTableView.reloadData()
+//        suggestions[index].liked.toggle()
+//        suggestionsTableView.reloadData()
     }
 }
