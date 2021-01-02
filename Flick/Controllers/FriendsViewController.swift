@@ -83,7 +83,7 @@ class FriendsViewController: UIViewController {
         
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
-        friendsTableView.backgroundColor = .offWhite
+        friendsTableView.backgroundColor = .clear
         friendsTableView.separatorStyle = .none
         friendsTableView.register(FriendTableViewCell.self, forCellReuseIdentifier: FriendTableViewCell.reuseIdentifier)
         view.addSubview(friendsTableView)
@@ -128,7 +128,8 @@ class FriendsViewController: UIViewController {
     
     private func setupConstraints() {
         friendsTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(headerView.snp.bottom)
         }
     }
     
@@ -137,7 +138,7 @@ class FriendsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        // Comment out for now since no friends
+        // Comment out networking for now since no friends
 //        NetworkManager.getFriends { [weak self] friends in
 //            guard let self = self else { return }
 //            self.friends = friends
@@ -165,13 +166,18 @@ class FriendsViewController: UIViewController {
         super.viewWillAppear(animated)
         friendsTitleLabel.removeFromSuperview()
     }
-    
 }
 
 
 extension FriendsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let userId = friends[indexPath.row].id
+        let profileViewController = ProfileViewController(userId: userId)
+        navigationController?.pushViewController(profileViewController, animated: true)
     }
 }
 

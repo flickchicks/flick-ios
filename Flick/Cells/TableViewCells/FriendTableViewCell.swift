@@ -11,10 +11,12 @@ import UIKit
 
 class FriendTableViewCell: UITableViewCell {
     
-    private let userProfileImageView = UIImageView()
+    // MARK: - Private View Vars
     private let nameLabel = UILabel()
+    private let userProfileImageView = UIImageView()
     private let usernameLabel = UILabel()
 
+    // MARK: - Data Vars
     static let reuseIdentifier = "FriendsTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -44,7 +46,6 @@ class FriendTableViewCell: UITableViewCell {
         if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
             userProfileImageView.kf.setImage(with: imageUrl)
         }
-        
     }
     
     private func setupConstraints() {
