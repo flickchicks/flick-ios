@@ -221,6 +221,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         let allNotificationsViewController = AllNotificationsViewController()
         navigationController?.pushViewController(allNotificationsViewController, animated: true)
     }
+    
+    func pushFriendsView() {
+        let friendsViewController = FriendsViewController()
+        navigationController?.pushViewController(friendsViewController, animated: true)
+    }
 
     func showCreateListModal() {
         let createListModalView = EnterListNameModalView(type: .createList)

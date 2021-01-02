@@ -66,6 +66,8 @@
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
 		D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */; };
 		D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3924FC662600EC2FAE /* UIImage.swift */; };
+		D44BC12725A047F300D10DAB /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44BC12625A047F300D10DAB /* FriendsViewController.swift */; };
+		D44BC12C25A052DD00D10DAB /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44BC12B25A052DD00D10DAB /* FriendTableViewCell.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
 		D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */; };
 		D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */; };
@@ -196,6 +198,8 @@
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		D44B1C3924FC662600EC2FAE /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		D44BC12625A047F300D10DAB /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
+		D44BC12B25A052DD00D10DAB /* FriendTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
 		D45DC63024B9363C00838DBF /* MediaTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryInfoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -325,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				D40ED7DA25950E9E004C2F2C /* TrendingTableViewCell.swift */,
+				D44BC12B25A052DD00D10DAB /* FriendTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
+				D44BC12625A047F300D10DAB /* FriendsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -790,6 +796,7 @@
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */,
 				D492728824DED27600FA5F2A /* String.swift in Sources */,
+				D44BC12C25A052DD00D10DAB /* FriendTableViewCell.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D492727E24DE50A100FA5F2A /* NotificationsViewController.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
@@ -853,6 +860,7 @@
 				D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
+				D44BC12725A047F300D10DAB /* FriendsViewController.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,

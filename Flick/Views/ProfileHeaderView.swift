@@ -5,6 +5,7 @@ protocol ProfileDelegate: class {
     func showCreateListModal()
     func pushNotificationsView()
     func pushSettingsView()
+    func pushFriendsView()
 }
 
 class ProfileHeaderView: UITableViewHeaderFooterView {

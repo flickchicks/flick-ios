@@ -122,7 +122,7 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellReuseIdentifier, for: indexPath)
-        let user = users[indexPath.item]
+//        let user = users[indexPath.item]
         cell.backgroundColor = .deepPurple
         cell.clipsToBounds = true
         cell.layer.borderColor = UIColor.white.cgColor
@@ -140,9 +140,12 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
 
         if shouldShowEllipsis {
             cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
-        } else if let pictureUrl = URL(string: user.profilePic?.assetUrls.small ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
-            let pictureObject = UIImage(data: pictureData)
-            cell.backgroundView = UIImageView(image: pictureObject)
+        } else {
+            let user = users[indexPath.item]
+            if let pictureUrl = URL(string: user.profilePic?.assetUrls.small ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
+                let pictureObject = UIImage(data: pictureData)
+                cell.backgroundView = UIImageView(image: pictureObject)
+            }
         }
         return cell
     }

@@ -19,7 +19,22 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     // TODO: Update with backend values
-    private let friends: [UserProfile] = []
+    private let friends: [UserProfile] = [
+        UserProfile(
+            id: 2,
+            username: "username",
+            firstName: "Haiying",
+            lastName: "Weng",
+            profilePic: nil,
+            bio: nil,
+            phoneNumber: nil,
+            socialIdToken: nil,
+            socialIdTokenType: nil,
+            ownerLsts: nil,
+            collabLsts: nil,
+            numMutualFriends: nil
+        )
+    ]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,7 +55,9 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.textColor = .mediumGray
         userInfoView.addSubview(usernameLabel)
 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
         friendsPreviewView = UsersPreviewView(users: friends, usersLayoutMode: .friends)
+        friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
         userInfoView.addSubview(friendsPreviewView)
 
         contentView.addSubview(userInfoView)
@@ -65,6 +82,10 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     @objc func settingsButtonPressed() {
         delegate?.pushSettingsView()
+    }
+    
+    @objc func handleFriendsPreviewTap() {
+        delegate?.pushFriendsView()
     }
 
     private func calculateUserInfoViewWidth(friendsPreviewWidth: CGFloat) -> CGFloat {
