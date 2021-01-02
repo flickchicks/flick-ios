@@ -159,7 +159,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Renamed to \(self.list.name)") {
+            self.presentInfoAlert(message: "Renamed to \(self.list.name)") {
                 let controllers = self.navigationController?.viewControllers
                 for controller in controllers ?? [] {
                     if controller is HomeViewController {
@@ -176,7 +176,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Renamed to \(list.name)", completion: nil)
+            self.presentInfoAlert(message: "Renamed to \(list.name)", completion: nil)
         }
     }
 
@@ -186,7 +186,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Updated collaborators", completion: nil)
+            self.presentInfoAlert(message: "Updated collaborators", completion: nil)
         }
     }
 
@@ -196,7 +196,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
+            self.presentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
         }
     }
 

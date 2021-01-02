@@ -192,7 +192,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             return UIView()
         case .lists:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
-            headerView.configure(isCurrentUser: isCurrentUser)
+            headerView.configure(user: user, isCurrentUser: isCurrentUser)
             headerView.delegate = self
             return headerView
         }
@@ -230,6 +230,36 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
             // Add modal view to the window to also cover tab bar
             window.addSubview(createListModalView)
+        }
+    }
+
+    func createFriendRequest() {
+        guard let user = user else {
+            presentInfoAlert(message: "Cannot send request", completion: nil)
+            return
+        }
+        // Create friend request if not already friends and accept request if there's an incoming request
+        switch user.friendStatus {
+        case .notFriends:
+            NetworkManager.createFriendRequest(friendId: user.id) { success in
+                guard success else { return }
+                self.presentInfoAlert(message: "Friend request sent", completion: nil)
+                self.user?.friendStatus = .outgoingRequest
+                DispatchQueue.main.async {
+                    self.listsTableView.reloadData()
+                }
+            }
+        case .incomingRequest:
+            NetworkManager.acceptFriendRequest(friendId: user.id) { success in
+                guard success else { return }
+                self.presentInfoAlert(message: "Friend request accepted", completion: nil)
+                self.user?.friendStatus = .friends
+                DispatchQueue.main.async {
+                    self.listsTableView.reloadData()
+                }
+            }
+        default:
+            break
         }
     }
 
