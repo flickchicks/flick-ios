@@ -61,14 +61,15 @@ class DiscoverViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        discoverFeedTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
         NetworkManager.discoverShows { [weak self] mediaList in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.discoverShows[0] = mediaList.trendingTvs
                 self.discoverShows[1] = mediaList.trendingMovies
                 self.discoverShows[2] = mediaList.trendingAnimes
-                self.discoverFeedTableView.reloadData()
                 self.discoverFeedTableView.hideSkeleton()
+                self.discoverFeedTableView.reloadData()
             }
         }
     }
@@ -84,9 +85,13 @@ extension DiscoverViewController: UISearchBarDelegate {
 
 }
 
-extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
+extension DiscoverViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return TrendingTableViewCell.reuseIdentifier
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

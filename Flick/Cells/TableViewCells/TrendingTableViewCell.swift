@@ -28,6 +28,7 @@ class TrendingTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         isSkeletonable = true
+        contentView.isSkeletonable = true
         
         let discoverLayout = UICollectionViewFlowLayout()
         discoverLayout.scrollDirection = .horizontal
@@ -45,7 +46,7 @@ class TrendingTableViewCell: UITableViewCell {
         discoverCollectionView.isSkeletonable = true
         contentView.addSubview(discoverCollectionView)
         
-        discoverCollectionView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+//        discoverCollectionView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         setupConstraints()
     }
@@ -63,9 +64,9 @@ class TrendingTableViewCell: UITableViewCell {
     func configure(with shows: [SimpleMedia]) {
         discoverShows = shows
         self.discoverCollectionView.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.discoverCollectionView.hideSkeleton()
-        })
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//            self.discoverCollectionView.hideSkeleton()
+//        })
     }
 }
 
