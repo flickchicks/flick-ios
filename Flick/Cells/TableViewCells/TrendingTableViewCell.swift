@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MediaControllerDelegate: class {
     func showMediaViewController(id: Int)
@@ -26,7 +27,8 @@ class TrendingTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         backgroundColor = .clear
-                
+        isSkeletonable = true
+        
         let discoverLayout = UICollectionViewFlowLayout()
         discoverLayout.scrollDirection = .horizontal
         discoverLayout.minimumInteritemSpacing = 20
@@ -40,7 +42,10 @@ class TrendingTableViewCell: UITableViewCell {
         discoverCollectionView.register(TrendingContentCollectionViewCell.self, forCellWithReuseIdentifier: TrendingContentCollectionViewCell.reuseIdentifier)
         discoverCollectionView.showsHorizontalScrollIndicator = false
         discoverCollectionView.isScrollEnabled = true
+        discoverCollectionView.isSkeletonable = true
         contentView.addSubview(discoverCollectionView)
+        
+        discoverCollectionView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         setupConstraints()
     }
@@ -57,11 +62,22 @@ class TrendingTableViewCell: UITableViewCell {
     
     func configure(with shows: [SimpleMedia]) {
         discoverShows = shows
-        discoverCollectionView.reloadData()
+        self.discoverCollectionView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.discoverCollectionView.hideSkeleton()
+        })
     }
 }
 
-extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonTableViewDelegate {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return TrendingContentCollectionViewCell.reuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return discoverShows.count
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return discoverShows.count

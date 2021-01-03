@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class TrendingContentCollectionViewCell: UICollectionViewCell {
     
@@ -23,10 +24,12 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         backgroundColor = .clear
+        isSkeletonable = true
         
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
+        imageView.isSkeletonable = true
         imageView.contentMode = .scaleAspectFill
         contentView.addSubview(imageView)
         

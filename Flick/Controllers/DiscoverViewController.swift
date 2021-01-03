@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class DiscoverViewController: UIViewController {
 
@@ -22,6 +23,7 @@ class DiscoverViewController: UIViewController {
 
         super.viewDidLoad()
         view.backgroundColor = .offWhite
+        view.isSkeletonable = true
 
         searchBar.placeholder = "Search movies, shows, people, genres"
         searchBar.delegate = self
@@ -29,15 +31,18 @@ class DiscoverViewController: UIViewController {
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
+        discoverFeedTableView.isSkeletonable = true
         discoverFeedTableView.rowHeight = UITableView.automaticDimension
-        discoverFeedTableView.estimatedRowHeight = 120
+        discoverFeedTableView.sectionHeaderHeight = UITableView.automaticDimension
+        discoverFeedTableView.estimatedRowHeight = 500
+        discoverFeedTableView.estimatedSectionHeaderHeight = 15.0
         discoverFeedTableView.backgroundColor = .clear
         discoverFeedTableView.showsVerticalScrollIndicator = false
         discoverFeedTableView.separatorStyle = .none
         discoverFeedTableView.register(DiscoverTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier)
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
         view.addSubview(discoverFeedTableView)
-
+        
         setupConstraints()
     }
 
@@ -63,6 +68,7 @@ class DiscoverViewController: UIViewController {
                 self.discoverShows[1] = mediaList.trendingMovies
                 self.discoverShows[2] = mediaList.trendingAnimes
                 self.discoverFeedTableView.reloadData()
+                self.discoverFeedTableView.hideSkeleton()
             }
         }
     }
@@ -79,6 +85,9 @@ extension DiscoverViewController: UISearchBarDelegate {
 }
 
 extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendingTableViewCell.reuseIdentifier, for: indexPath) as? TrendingTableViewCell else { return UITableViewCell() }
@@ -86,13 +95,9 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         return cell
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return discoverShows.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -114,7 +119,7 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return headerView
     }
-    
+
 }
 
 extension DiscoverViewController: MediaControllerDelegate {

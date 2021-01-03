@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
@@ -17,9 +18,11 @@ class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .clear
+//        isSkeletonable = true
         
         titleLabel.textColor = .darkBlueGray2
         titleLabel.font = .boldSystemFont(ofSize: 12)
+//        titleLabel.isSkeletonable = true
         contentView.addSubview(titleLabel)
         
         setupConstraints()
