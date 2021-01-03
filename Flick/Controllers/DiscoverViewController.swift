@@ -16,6 +16,7 @@ class DiscoverViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var discoverShows: [[SimpleMedia]] = [[], [], []]
+    private var shouldAnimate = true
 
     override func viewDidLoad() {
 
@@ -28,6 +29,8 @@ class DiscoverViewController: UIViewController {
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
+        discoverFeedTableView.rowHeight = UITableView.automaticDimension
+        discoverFeedTableView.estimatedRowHeight = 120
         discoverFeedTableView.backgroundColor = .clear
         discoverFeedTableView.showsVerticalScrollIndicator = false
         discoverFeedTableView.separatorStyle = .none
@@ -52,17 +55,13 @@ class DiscoverViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        // Make network request to get top shows, movies, and playing shows
         super.viewDidAppear(animated)
-        print("Get top rated shows")
         NetworkManager.discoverShows { [weak self] mediaList in
-            print(mediaList)
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.discoverShows[0] = mediaList.trendingTvs
                 self.discoverShows[1] = mediaList.trendingMovies
                 self.discoverShows[2] = mediaList.trendingAnimes
-                // TODO: Do we want to shuffle this?
                 self.discoverFeedTableView.reloadData()
             }
         }
@@ -79,7 +78,7 @@ extension DiscoverViewController: UISearchBarDelegate {
 
 }
 
-extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
+extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendingTableViewCell.reuseIdentifier, for: indexPath) as? TrendingTableViewCell else { return UITableViewCell() }
@@ -87,7 +86,7 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
         cell.delegate = self
         return cell
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return discoverShows.count
     }

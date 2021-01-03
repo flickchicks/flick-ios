@@ -59,10 +59,10 @@ class TrendingTableViewCell: UITableViewCell {
         discoverShows = shows
         discoverCollectionView.reloadData()
     }
-    
 }
 
 extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return discoverShows.count
     }
@@ -80,13 +80,10 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         let show = discoverShows[indexPath.item]
         delegate?.showMediaViewController(id: show.id)
     }
-    
 }
 
 extension TrendingTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 312, height: 468)
     }
-
 }
-
