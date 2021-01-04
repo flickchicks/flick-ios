@@ -32,6 +32,7 @@ class ProfileViewController: UIViewController {
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
     private let userDefaults = UserDefaults()
 
+    private var friends: [UserProfile] = []
     private var isCurrentUser = false
     private var mediaLists: [SimpleMediaList] = []
     private var sections = [Section]()
@@ -80,10 +81,20 @@ class ProfileViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        // Get user info
         if let userId = userId, !isCurrentUser {
             getUser(userId: userId)
         } else {
             getCurrentUser()
+        }
+
+        // Get friends
+        NetworkManager.getFriends { friends in
+            if friends.isEmpty { return }
+            self.friends = friends
+            DispatchQueue.main.async {
+                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+            }
         }
     }
 
@@ -165,7 +176,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         switch section.type {
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
-            cell.configure(isCurrentUser: isCurrentUser, user: user, delegate: self)
+            cell.configure(isCurrentUser: isCurrentUser, user: user, friends: friends, delegate: self)
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
@@ -223,7 +234,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
     
     func pushFriendsView() {
-        let friendsViewController = FriendsViewController()
+        let friendsViewController = FriendsViewController(friends: friends)
         navigationController?.pushViewController(friendsViewController, animated: true)
     }
 
