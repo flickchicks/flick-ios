@@ -125,7 +125,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    private func updateUserInfoViewConstraints(friendsCount: Int) {
+    private func updateUserInfoViewConstraints() {
         let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
 
         friendsPreviewView.snp.updateConstraints { update in
@@ -149,7 +149,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         // Update friends preview
         if !friends.isEmpty {
             friendsPreviewView.users = friends
-            updateUserInfoViewConstraints(friendsCount: friends.count)
+            updateUserInfoViewConstraints()
         }
     }
 
