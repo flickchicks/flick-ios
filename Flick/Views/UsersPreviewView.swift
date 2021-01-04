@@ -103,9 +103,6 @@ class UsersPreviewView: UIView {
 
     func getUsersPreviewWidth() -> CGFloat {
         let numUsers = getNumUsers()
-        if numUsers == 0 {
-            return 0
-        }
         let fullUsersWidth = numUsers * 20
         let overlapUsersWidth = (numUsers - 1) * Int(cellSpacing) * -1
         var usersPreviewWidth = CGFloat(fullUsersWidth - overlapUsersWidth)
