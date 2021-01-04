@@ -70,14 +70,14 @@ class TrendingTableViewCell: UITableViewCell {
     }
 }
 
-extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonTableViewDelegate {
+extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonCollectionViewDelegate {
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return TrendingContentCollectionViewCell.reuseIdentifier
     }
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return discoverShows.count
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

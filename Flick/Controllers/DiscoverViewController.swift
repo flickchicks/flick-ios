@@ -69,8 +69,8 @@ class DiscoverViewController: UIViewController {
                 self.discoverShows[0] = mediaList.trendingTvs
                 self.discoverShows[1] = mediaList.trendingMovies
                 self.discoverShows[2] = mediaList.trendingAnimes
-                self.discoverFeedTableView.hideSkeleton()
                 self.discoverFeedTableView.reloadData()
+//                self.discoverFeedTableView.hideSkeleton()
             }
         }
     }
