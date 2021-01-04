@@ -1,6 +1,7 @@
 import UIKit
 
 protocol ProfileDelegate: class {
+    func createFriendRequest()
     func showCreateListModal()
     func pushNotificationsView()
     func pushSettingsView()
@@ -31,8 +32,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         createListButton.layer.cornerRadius = buttonSize.width / 2
         createListButton.addTarget(self, action: #selector(showCreateListModal), for: .touchUpInside)
 
-        friendButton.setImage(UIImage(named: "addFriendButton"), for: .normal)
         friendButton.layer.cornerRadius = buttonSize.width / 2
+        friendButton.addTarget(self, action: #selector(friendButtonTapped), for: .touchUpInside)
 
         setupConstraints()
     }
@@ -49,7 +50,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    func configure(isCurrentUser: Bool) {
+    func configure(user: UserProfile?, isCurrentUser: Bool) {
         if isCurrentUser {
             contentView.addSubview(createListButton)
             createListButton.snp.makeConstraints { make in
@@ -58,6 +59,17 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
                 make.size.equalTo(buttonSize)
             }
         } else {
+            switch user?.friendStatus {
+            case .friends:
+                friendButton.isUserInteractionEnabled = false
+                friendButton.setImage(UIImage(named: "friendsIcon"), for: .normal)
+            case .outgoingRequest:
+                friendButton.isUserInteractionEnabled = false
+                friendButton.setImage(UIImage(named: "addFriendButtonDisabled"), for: .normal)
+            default:
+                friendButton.isUserInteractionEnabled = true
+                friendButton.setImage(UIImage(named: "addFriendButton"), for: .normal)
+            }
             contentView.addSubview(friendButton)
             friendButton.snp.makeConstraints { make in
                 make.centerY.equalTo(roundTopView.snp.top)
@@ -69,6 +81,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
     @objc func showCreateListModal() {
         delegate?.showCreateListModal()
+    }
+
+    @objc func friendButtonTapped() {
+        delegate?.createFriendRequest()
     }
 
     required init?(coder aDecoder: NSCoder) {

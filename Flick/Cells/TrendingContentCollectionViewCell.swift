@@ -66,7 +66,7 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
     @objc func saveMedia() {
         NetworkManager.addToMediaList(listId: 1, mediaIds: [mediaId]) { [weak self] list in
             guard let self = self else { return }
-            self.delegate?.persentInfoAlert(message: "Saved")
+            self.delegate?.presentInfoAlert(message: "Saved")
         }
     }
     

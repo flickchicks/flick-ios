@@ -647,5 +647,55 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Create a friend request [updated as of 1/1/21]
+    static func createFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "ids": [friendId],
+        ]
+
+        AF.request("\(hostEndpoint)/api/friends/request/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [POST] Accept a friend request [updated as of 1/1/21]
+    static func acceptFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "ids": [friendId],
+        ]
+
+        AF.request("\(hostEndpoint)/api/friends/accept/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [POST] Reject a friend request [updated as of 1/1/21]
+    static func rejectFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "ids": [friendId],
+        ]
+
+        AF.request("\(hostEndpoint)/api/friends/reject/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
 }
 

@@ -21,6 +21,7 @@ struct UserProfile: Codable {
     var ownerLsts: [SimpleMediaList]?
     var collabLsts: [SimpleMediaList]?
     var numMutualFriends: Int?
+    var friendStatus: FriendStatus?
 }
 
 struct ProfilePicture: Codable {
@@ -37,4 +38,11 @@ struct AssetUrls: Codable {
     var original: String
     var large: String
     var small: String
+}
+
+enum FriendStatus: String, Codable {
+    case friends = "friends"
+    case incomingRequest = "incoming request"
+    case notFriends = "not friends"
+    case outgoingRequest = "outgoing request"
 }

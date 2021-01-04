@@ -272,7 +272,7 @@ extension MediaViewController: SaveMediaDelegate {
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Saved to \(selectedList.name)", completion: nil)
+            self.presentInfoAlert(message: "Saved to \(selectedList.name)", completion: nil)
         }
     }
 
@@ -291,7 +291,7 @@ extension MediaViewController: CreateListDelegate {
         NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
             guard let self = self else { return }
 
-            self.persentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
+            self.presentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
         }
     }
 
@@ -312,9 +312,9 @@ extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
         NetworkManager.flickMediaToFriend(friendId: friendId, mediaId: mediaId, message: message) { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.persentInfoAlert(message: "Flicked to friend", completion: nil)
+                self.presentInfoAlert(message: "Flicked to friend", completion: nil)
             } else {
-                self.persentInfoAlert(message: "Failed to flick to friend", completion: nil)
+                self.presentInfoAlert(message: "Failed to flick to friend", completion: nil)
             }
         }
     }

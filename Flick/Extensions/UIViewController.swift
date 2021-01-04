@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewController {
 
-    func persentInfoAlert(message: String, completion: (() -> Void)?) {
+    func presentInfoAlert(message: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         self.present(alert, animated: true)
         alert.dismiss(animated: true, completion: completion)

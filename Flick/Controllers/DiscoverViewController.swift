@@ -129,8 +129,8 @@ extension DiscoverViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
 }
 
 extension DiscoverViewController: MediaControllerDelegate {
-    func persentInfoAlert(message: String) {
-        persentInfoAlert(message: message, completion: nil)
+    func presentInfoAlert(message: String) {
+        presentInfoAlert(message: message, completion: nil)
     }
     
     func showMediaViewController(id: Int) {

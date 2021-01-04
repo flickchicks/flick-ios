@@ -11,7 +11,7 @@ import SkeletonView
 
 protocol MediaControllerDelegate: class {
     func showMediaViewController(id: Int)
-    func persentInfoAlert(message: String)
+    func presentInfoAlert(message: String)
 }
 
 class TrendingTableViewCell: UITableViewCell {

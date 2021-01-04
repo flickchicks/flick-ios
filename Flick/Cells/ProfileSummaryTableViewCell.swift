@@ -19,22 +19,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     // TODO: Update with backend values
-    private let friends: [UserProfile] = [
-        UserProfile(
-            id: 2,
-            username: "username",
-            firstName: "Haiying",
-            lastName: "Weng",
-            profilePic: nil,
-            bio: nil,
-            phoneNumber: nil,
-            socialIdToken: nil,
-            socialIdTokenType: nil,
-            ownerLsts: nil,
-            collabLsts: nil,
-            numMutualFriends: nil
-        )
-    ]
+    private let friends: [UserProfile] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -88,8 +73,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         delegate?.pushFriendsView()
     }
 
-    private func calculateUserInfoViewWidth(friendsPreviewWidth: CGFloat) -> CGFloat {
-        let padding = friends.count == 0 ? 0 : 20
+    private func calculateUserInfoViewWidth(friendsCount: Int, friendsPreviewWidth: CGFloat) -> CGFloat {
+        let padding = friendsCount == 0 ? 0 : 20
         let userNameLabelWidth = usernameLabel.frame.size.width
         let userInfoViewWidth = userNameLabelWidth + CGFloat(padding) + friendsPreviewWidth
         return userInfoViewWidth
@@ -97,8 +82,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         let padding = 20
-        let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -118,17 +101,18 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
 
         friendsPreviewView.snp.makeConstraints { make in
-            make.leading.equalTo(usernameLabel.snp.trailing).offset(padding)
+            make.leading.equalTo(usernameLabel.snp.trailing)
             make.top.bottom.height.equalToSuperview()
-            make.width.equalTo(friendsPreviewWidth)
+            make.width.equalTo(0)
             make.height.equalTo(20)
         }
 
         userInfoView.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(6)
-            make.centerX.equalToSuperview()
+            make.leading.equalTo(usernameLabel.snp.leading)
+            make.trailing.equalTo(friendsPreviewView.snp.trailing)
             make.height.equalTo(20)
-            make.width.equalTo(userInfoViewWidth)
+            make.centerX.equalToSuperview()
         }
 
         settingsButton.snp.makeConstraints { make in
@@ -146,28 +130,32 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     private func updateUserInfoViewConstraints() {
         let friendsPreviewWidth = friendsPreviewView.getUsersPreviewWidth()
-        let userInfoViewWidth = calculateUserInfoViewWidth(friendsPreviewWidth: friendsPreviewWidth)
 
-        userInfoView.snp.updateConstraints { update in
-            update.width.equalTo(userInfoViewWidth)
+        friendsPreviewView.snp.updateConstraints { update in
+            update.width.equalTo(friendsPreviewWidth)
+            update.leading.equalTo(usernameLabel.snp.trailing).offset(20)
         }
     }
 
-    func configure(isCurrentUser: Bool, user: UserProfile?, delegate: ProfileDelegate) {
+    func configure(isCurrentUser: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
         nameLabel.text = "\(user.firstName) \(user.lastName)"
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
-        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
-            let pictureObject = UIImage(data: pictureData)
-            profileImageView.image = pictureObject
+        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
+            profileImageView.kf.setImage(with: pictureUrl)
         }
-        updateUserInfoViewConstraints()
         notificationButton.isHidden = !isCurrentUser
         settingsButton.isHidden = !isCurrentUser
+
+        // Update friends preview
+        if !friends.isEmpty {
+            friendsPreviewView.users = friends
+            updateUserInfoViewConstraints()
+        }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
