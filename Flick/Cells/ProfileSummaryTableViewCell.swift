@@ -18,9 +18,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private let profileImageSize = CGSize(width: 70, height: 70)
     private let sideButtonsSize = CGSize(width: 24, height: 24)
 
-    // TODO: Update with backend values
-    private let friends: [UserProfile] = []
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .offWhite
@@ -41,7 +38,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         userInfoView.addSubview(usernameLabel)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
-        friendsPreviewView = UsersPreviewView(users: friends, usersLayoutMode: .friends)
+        friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
         userInfoView.addSubview(friendsPreviewView)
 
