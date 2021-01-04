@@ -43,6 +43,8 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
         view.addSubview(discoverFeedTableView)
         
+        discoverFeedTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+        
         setupConstraints()
     }
 
@@ -61,7 +63,6 @@ class DiscoverViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        discoverFeedTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
         NetworkManager.discoverShows { [weak self] mediaList in
             guard let self = self else { return }
             DispatchQueue.main.async {
