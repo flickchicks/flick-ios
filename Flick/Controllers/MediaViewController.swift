@@ -73,7 +73,6 @@ class MediaViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        getMediaInformation()
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
