@@ -1,4 +1,5 @@
 import UIKit
+import SkeletonView
 
 class ProfileSummaryTableViewCell: UITableViewCell {
 
@@ -23,25 +24,34 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         backgroundColor = .offWhite
 
         selectionStyle = .none
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
+        
         contentView.addSubview(profileImageView)
 
         nameLabel.font = .boldSystemFont(ofSize: 20)
         nameLabel.textColor = .darkBlue
+        nameLabel.text = "                      "
+        nameLabel.isSkeletonable = true
         contentView.addSubview(nameLabel)
 
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
+        usernameLabel.text = "                          "
+        usernameLabel.isSkeletonable = true
         userInfoView.addSubview(usernameLabel)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
         friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
+        friendsPreviewView.isSkeletonable = true
         userInfoView.addSubview(friendsPreviewView)
-
+ 
+        userInfoView.isSkeletonable = true
         contentView.addSubview(userInfoView)
 
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)

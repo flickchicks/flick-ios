@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SnapKit
+import SkeletonView
 
 protocol ListTableViewCellDelegate: class {
     func pushListViewController(listId: Int)
@@ -26,7 +26,7 @@ class ListTableViewCell: UITableViewCell {
     weak var delegate: ListTableViewCellDelegate?
     private var list: SimpleMediaList!
     private let lockImageView = UIImageView()
-    private var media: [SimpleMedia]!
+    private var media: [SimpleMedia] = []
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
     private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
 
@@ -34,6 +34,8 @@ class ListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
@@ -52,6 +54,7 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
         mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: seeAllCellReuseIdentifier)
+        mediaCollectionView.isSkeletonable = true
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
@@ -138,7 +141,7 @@ class ListTableViewCell: UITableViewCell {
 }
 
 
-extension ListTableViewCell: UICollectionViewDelegate {
+extension ListTableViewCell: SkeletonCollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == 10 {
@@ -151,7 +154,14 @@ extension ListTableViewCell: UICollectionViewDelegate {
 
 }
 
-extension ListTableViewCell: UICollectionViewDataSource {
+extension ListTableViewCell: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return indexPath.item == 10 ? seeAllCellReuseIdentifier : mediaCellReuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // If list is empty, show 4 filler cells

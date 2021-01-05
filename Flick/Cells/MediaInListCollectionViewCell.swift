@@ -6,7 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import SnapKit
+import SkeletonView
 import UIKit
 
 class MediaInListCollectionViewCell: UICollectionViewCell {
@@ -15,11 +15,20 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         clipsToBounds = true
-        layer.cornerRadius = 8
+        layer.masksToBounds = true
         backgroundColor = .lightGray3
-
+        isSkeletonable = true
+        layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 8
+        contentView.isSkeletonable = true
+        contentView.layer.masksToBounds = true
+        contentView.clipsToBounds = true
+        
+//        mediaImageView.layer.cornerRadius = 8
         contentView.addSubview(mediaImageView)
+        
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

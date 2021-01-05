@@ -1,4 +1,5 @@
 import UIKit
+import SkeletonView
 
 protocol ProfileDelegate: class {
     func createFriendRequest()
@@ -22,10 +23,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
+        isSkeletonable = true
+        contentView.isSkeletonable = true
         contentView.backgroundColor = .offWhite
+        
+        roundTopView.isSkeletonable = true
 
         containerView.addSubview(roundTopView)
         containerView.clipsToBounds = true
+//        containerView.isSkeletonable = true
         contentView.addSubview(containerView)
 
         createListButton.setImage(UIImage(named: "newList"), for: .normal)

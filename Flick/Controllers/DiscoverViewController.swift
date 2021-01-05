@@ -32,8 +32,6 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
         discoverFeedTableView.isSkeletonable = true
-//        discoverFeedTableView.rowHeight = UITableView.automaticDimension
-//        discoverFeedTableView.sectionHeaderHeight = UITableView.automaticDimension
         discoverFeedTableView.estimatedRowHeight = 500.0
         discoverFeedTableView.estimatedSectionHeaderHeight = 15.0
         discoverFeedTableView.backgroundColor = .clear
@@ -103,6 +101,10 @@ extension DiscoverViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        return discoverShows.count
+    }
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
         return discoverShows.count
     }
     
