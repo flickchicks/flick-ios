@@ -17,12 +17,10 @@ class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .clear
-        isSkeletonable = true
+        contentView.backgroundColor = .clear
         
         titleLabel.textColor = .darkBlueGray2
         titleLabel.font = .boldSystemFont(ofSize: 12)
-        titleLabel.isSkeletonable = true
         contentView.addSubview(titleLabel)
         
         setupConstraints()
@@ -34,8 +32,8 @@ class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.trailing.bottom.equalToSuperview()
-            make.leading.equalToSuperview().offset(24)
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(24)
         }
     }
     
