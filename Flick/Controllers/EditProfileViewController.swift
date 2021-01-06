@@ -300,7 +300,7 @@ class EditProfileViewController: UIViewController {
         bioTextLimitLabel.snp.makeConstraints { make in
             make.trailing.equalTo(lastNameTextField)
             make.top.equalTo(bioFieldLabel)
-            make.width.equalTo(38)
+            make.width.equalTo(45)
         }
 
         bioTextView.snp.makeConstraints { make in
