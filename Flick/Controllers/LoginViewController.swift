@@ -67,9 +67,8 @@ class LoginViewController: UIViewController {
                             let homeViewController = HomeViewController()
                             self.navigationController?.pushViewController(homeViewController, animated: true)
                         }
-                    }
+                }
             }
-            
         }
     }
 
