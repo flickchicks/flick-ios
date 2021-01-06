@@ -186,16 +186,6 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        switch section.type {
-        case .profileSummary:
-            return 160
-        case .lists:
-            return 174
-        }
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = sections[section]
         switch section.type {
@@ -224,7 +214,8 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
     func pushSettingsView() {
-        let settingsViewController = SettingsViewController()
+        guard let user = user else { return }
+        let settingsViewController = SettingsViewController(user: user)
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
