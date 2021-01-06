@@ -35,33 +35,8 @@ class NetworkManager {
         return urlComp?.url?.absoluteString
     }
 
-    /// [POST] Register new user [updated as of 7/3/20]
-    static func registerUser(user: User, completion: @escaping (User) -> Void) {
-        let parameters: [String: Any] = [
-            "username": user.username,
-            "first_name": user.firstName,
-            "last_name": user.lastName,
-            "social_id_token_type": user.socialIdTokenType,
-            "social_id_token": user.socialIdToken,
-            "profile_pic": "data:image/png;base64,\(user.profilePic)"
-        ]
-
-        AF.request("\(hostEndpoint)/api/auth/register/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let userData = try? jsonDecoder.decode(Response<User>.self, from: data) {
-                    completion(userData.data)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-
-    static func authenticateUser(firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
+    static func authenticateUser(username: String, firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "username": "",
             "first_name": firstName,
@@ -72,6 +47,7 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

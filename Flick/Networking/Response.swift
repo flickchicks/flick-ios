@@ -18,7 +18,7 @@ struct Response<T: Codable>: Codable {
 
 struct Authorization: Codable {
     var authToken: String
-    var userName: String
+    var username: String
     var firstName: String
     var lastName: String
     var profilePic: ProfilePicture?

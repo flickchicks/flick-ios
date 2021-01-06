@@ -54,42 +54,28 @@ class LoginViewController: UIViewController {
                 if  let profile = profile,
                     let accessToken = AccessToken.current?.tokenString,
                     let firstName = profile.firstName,
-                    let lastName = profile.lastName,
-                    let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
-                        let pictureData = try? Data(contentsOf: profileURL)
-                        if let pictureData = pictureData {
-                            let pictureObject = UIImage(data: pictureData)
-                            let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
-                            let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString)
-                            NetworkManager.authenticateUser(firstName: firstName, lastName: lastName, socialId: "", socialIdToken: "") { [weak self] authorizationToken in
-                                guard let self = self else { return }
-                                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                                let homeViewController = HomeViewController()
-                                self.navigationController?.pushViewController(homeViewController, animated: true)
-                                
-                            }
+                    let lastName = profile.lastName {
+                        NetworkManager.authenticateUser(
+                            username: "",
+                            firstName: firstName,
+                            lastName: lastName,
+                            socialId: profile.userID,
+                            socialIdToken: accessToken) { [weak self] authorizationToken in
+                            guard let self = self else { return }
+                            print(authorizationToken)
+                            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                            let homeViewController = HomeViewController()
+                            self.navigationController?.pushViewController(homeViewController, animated: true)
                         }
-                }
+                    }
             }
+            
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-
-}
-
-extension LoginViewController {
-
-    private func authenticateUser(username: String, socialIdToken: String) {
-        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { [weak self] (authorizationToken) in
-            guard let self = self else { return }
-            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-            let homeViewController = HomeViewController()
-            self.navigationController?.pushViewController(homeViewController, animated: true)
-        }
     }
 
 }
