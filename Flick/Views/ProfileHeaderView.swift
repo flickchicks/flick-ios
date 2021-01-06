@@ -1,5 +1,5 @@
 import UIKit
-import SkeletonView
+//import SkeletonView
 
 protocol ProfileDelegate: class {
     func createFriendRequest()
@@ -23,11 +23,11 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        isSkeletonable = true
-        contentView.isSkeletonable = true
+//        isSkeletonable = true
+//        contentView.isSkeletonable = true
         contentView.backgroundColor = .offWhite
         
-        roundTopView.isSkeletonable = true
+//        roundTopView.isSkeletonable = true
 
         containerView.addSubview(roundTopView)
         containerView.clipsToBounds = true

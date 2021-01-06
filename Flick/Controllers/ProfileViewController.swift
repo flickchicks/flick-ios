@@ -68,7 +68,7 @@ class ProfileViewController: UIViewController {
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
-        listsTableView.estimatedRowHeight = 150
+        listsTableView.estimatedRowHeight = 190
         listsTableView.rowHeight = UITableView.automaticDimension
         listsTableView.separatorStyle = .none
         listsTableView.estimatedSectionHeaderHeight = 0

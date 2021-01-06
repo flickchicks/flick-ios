@@ -34,11 +34,14 @@ class ListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
+        backgroundColor = .clear
         isSkeletonable = true
         contentView.isSkeletonable = true
 
+        titleLabel.text = "                   "
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
+        titleLabel.isSkeletonable = true
         contentView.addSubview(titleLabel)
 
         seeAllButton.setTitle("See all", for: .normal)
@@ -54,12 +57,12 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
         mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
         mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: seeAllCellReuseIdentifier)
-        mediaCollectionView.isSkeletonable = true
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
-        mediaCollectionView.backgroundColor = .none
+        mediaCollectionView.backgroundColor = .clear
         mediaCollectionView.showsHorizontalScrollIndicator = false
+        mediaCollectionView.isSkeletonable = true
         contentView.addSubview(mediaCollectionView)
 
         contentView.addSubview(lockImageView)
@@ -142,7 +145,6 @@ class ListTableViewCell: UITableViewCell {
 
 
 extension ListTableViewCell: SkeletonCollectionViewDelegate {
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item == 10 {
             delegate?.pushListViewController(listId: list.id)
@@ -151,7 +153,6 @@ extension ListTableViewCell: SkeletonCollectionViewDelegate {
             delegate?.pushMediaViewController(mediaId: media.id)
         }
     }
-
 }
 
 extension ListTableViewCell: SkeletonCollectionViewDataSource {
@@ -200,9 +201,7 @@ extension ListTableViewCell: SkeletonCollectionViewDataSource {
 }
 
 extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 120)
     }
-
 }

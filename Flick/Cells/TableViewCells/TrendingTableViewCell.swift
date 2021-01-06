@@ -51,7 +51,7 @@ class TrendingTableViewCell: UITableViewCell {
     
     func setupConstraints() {
         discoverCollectionView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     

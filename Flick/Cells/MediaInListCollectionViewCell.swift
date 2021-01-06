@@ -11,22 +11,23 @@ import UIKit
 
 class MediaInListCollectionViewCell: UICollectionViewCell {
 
-    let mediaImageView = UIImageView()
+    private let mediaImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        backgroundColor = .lightGray
+        isSkeletonable = true
+        
+        layer.cornerRadius = 8
         clipsToBounds = true
         layer.masksToBounds = true
-        backgroundColor = .lightGray3
-        isSkeletonable = true
-        layer.cornerRadius = 8
-        contentView.layer.cornerRadius = 8
-        contentView.isSkeletonable = true
-        contentView.layer.masksToBounds = true
-        contentView.clipsToBounds = true
         
-//        mediaImageView.layer.cornerRadius = 8
+        mediaImageView.layer.cornerRadius = 8
+        mediaImageView.layer.masksToBounds = true
+        mediaImageView.clipsToBounds = true
+        mediaImageView.contentMode = .scaleAspectFill
+        mediaImageView.isSkeletonable = true
         contentView.addSubview(mediaImageView)
         
         mediaImageView.snp.makeConstraints { make in
@@ -35,9 +36,8 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(media: SimpleMedia) {
-        if let pictureUrl = URL(string: media.posterPic ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
-            let pictureObject = UIImage(data: pictureData)
-            mediaImageView.image = pictureObject
+        if let posterPic = media.posterPic, let imageUrl = URL(string: posterPic) {
+            mediaImageView.kf.setImage(with: imageUrl)
         }
     }
 
