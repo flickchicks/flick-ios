@@ -35,13 +35,13 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         nameLabel.font = .boldSystemFont(ofSize: 20)
         nameLabel.textColor = .darkBlue
-        nameLabel.text = "                      "
+        nameLabel.text = "                      " // Add spaces for skeleton view
         nameLabel.isSkeletonable = true
         contentView.addSubview(nameLabel)
 
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
-        usernameLabel.text = "                          "
+        usernameLabel.text = "                          " // Add spaces for skeleton view
         usernameLabel.isSkeletonable = true
         userInfoView.addSubview(usernameLabel)
 

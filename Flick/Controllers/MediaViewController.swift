@@ -41,7 +41,6 @@ class MediaViewController: UIViewController {
 
     init(mediaId: Int) {
         super.init(nibName: nil, bundle: nil)
-        print(mediaId)
         self.mediaId = mediaId
         getMediaInformation()
     }

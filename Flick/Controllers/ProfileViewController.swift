@@ -82,7 +82,7 @@ class ProfileViewController: UIViewController {
             make.top.equalToSuperview().offset(10)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         setupSections()
         
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))

@@ -16,7 +16,7 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .lightGray
+        backgroundColor = .lightGray3
         isSkeletonable = true
         
         layer.cornerRadius = 8

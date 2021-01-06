@@ -38,7 +38,7 @@ class ListTableViewCell: UITableViewCell {
         isSkeletonable = true
         contentView.isSkeletonable = true
 
-        titleLabel.text = "                   "
+        titleLabel.text = "                   " // Setting empty spaces for skeleton view
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
         titleLabel.isSkeletonable = true

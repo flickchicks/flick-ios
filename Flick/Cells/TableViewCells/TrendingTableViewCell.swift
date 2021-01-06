@@ -61,7 +61,7 @@ class TrendingTableViewCell: UITableViewCell {
     
     func configure(with shows: [SimpleMedia]) {
         discoverShows = shows
-        self.discoverCollectionView.reloadData()
+        discoverCollectionView.reloadData()
     }
 }
 
