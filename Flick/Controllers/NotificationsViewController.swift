@@ -16,21 +16,21 @@ class NotificationsViewController: UIViewController {
     // MARK: - Private Data Vars
     // TODO: Replace with backend values
     private let friendRequests: [Notification] = [
-        .FriendRequest(fromUser: "Lucy Xu", type: .received),
-        .FriendRequest(fromUser: "Lucy Xu", type: .received)
+//        .FriendRequest(fromUser: "Lucy Xu", type: .received),
+//        .FriendRequest(fromUser: "Lucy Xu", type: .received)
     ]
     private let friendRequestCellReuseIdentifier = "FriendRequestCellReuseIdentifier"
-    private let notifications: [Notification] = [
-        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
-        .FriendRequest(fromUser: "Haiying Weng", type: .sent),
-        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
-        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
-        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies"),
-        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
-        .FriendRequest(fromUser: "Alanna Zhou", type: .sent),
-        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
-        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
-        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies")
+    private var notifications: [Notification] = [
+//        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
+//        .FriendRequest(fromUser: "Haiying Weng", type: .sent),
+//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
+//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
+//        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies"),
+//        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
+//        .FriendRequest(fromUser: "Alanna Zhou", type: .sent),
+//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
+//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
+//        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies")
     ]
     private let notificationCellReuseIdentifier = "NotificationCellReuseIdentifier"
 
@@ -53,7 +53,23 @@ class NotificationsViewController: UIViewController {
             make.top.equalToSuperview().offset(8)
             make.leading.trailing.bottom.equalToSuperview()
         }
-
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getNotifications { [weak self] notifications in
+            guard let self = self else { return }
+            let newNotifs: [Notification] = notifications.map {
+                if $0.notifType == "list_invite" {
+                    return .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You")
+                } else if $0.notifType == "friend_request" {
+                    return .FriendRequest(fromUser: "Haiying Weng", type: .sent)
+                } else {
+                    return .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You")
+                }
+            }
+            self.notifications = newNotifs
+        }
     }
 }
 

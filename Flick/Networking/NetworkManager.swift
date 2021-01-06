@@ -610,6 +610,23 @@ class NetworkManager {
             }
         }
     }
+    
+    static func getNotifications(completion: @escaping ([BackendNotification]) -> Void) {
+        AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let notificationsData = try? jsonDecoder.decode(Response<[BackendNotification]>.self, from: data) {
+                    let notifications = notificationsData.data
+                    completion(notifications)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
 
     /// [Get] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {

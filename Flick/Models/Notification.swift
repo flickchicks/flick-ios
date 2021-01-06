@@ -6,6 +6,21 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+
+struct BackendNotification: Codable {
+    var notifType: String
+    var fromUser: UserProfile
+    var toUser: UserProfile
+    var lst: MediaList // Double check this object!
+    var numShowsAdded: String
+    var numShowsRemoved: String
+    var collaboratorAdded: String
+    var collaboratorRemoved: String
+    var friendRequestAccepted: String
+    var createdAt: String
+}
+
+
 enum Notification {
     case FriendRequest(fromUser: String, type: FriendRequest.FriendRequestType)
     case CollaborationInvite(fromUser: String, media: String)
