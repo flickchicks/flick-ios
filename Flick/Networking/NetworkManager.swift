@@ -59,15 +59,19 @@ class NetworkManager {
             }
         }
     }
+    
 
-    /// [POST] Login user [updated as of 7/3/20]
-    static func loginUser(username: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    static func authenticateUser(firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
-            "username": username,
+            "username": "",
+            "first_name": firstName,
+            "last_name": lastName,
+            "social_id": socialId,
             "social_id_token": socialIdToken,
+            "social_id_token_type": "facebook"
         ]
 
-        AF.request("\(hostEndpoint)/api/auth/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

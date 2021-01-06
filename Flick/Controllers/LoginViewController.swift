@@ -61,16 +61,12 @@ class LoginViewController: UIViewController {
                             let pictureObject = UIImage(data: pictureData)
                             let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
                             let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString)
-                            NetworkManager.registerUser(user: user) { [weak self] (registeredUser) in
+                            NetworkManager.authenticateUser(firstName: firstName, lastName: lastName, socialId: "", socialIdToken: "") { [weak self] authorizationToken in
                                 guard let self = self else { return }
-                                let encoder = JSONEncoder()
-                                if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
-                                    // Upon successful registration of user, save user to user defaults
-                                    self.userDefaults.set(encodedRegisteredUser, forKey: Constants.UserDefaults.authorizationToken)
-                                }
-                                let username = registeredUser.username
-                                let socialIdToken = registeredUser.socialIdToken
-                                self.loginUser(username: username, socialIdToken: socialIdToken!)
+                                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                                let homeViewController = HomeViewController()
+                                self.navigationController?.pushViewController(homeViewController, animated: true)
+                                
                             }
                         }
                 }
@@ -87,7 +83,7 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController {
 
-    private func loginUser(username: String, socialIdToken: String) {
+    private func authenticateUser(username: String, socialIdToken: String) {
         NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { [weak self] (authorizationToken) in
             guard let self = self else { return }
             self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
