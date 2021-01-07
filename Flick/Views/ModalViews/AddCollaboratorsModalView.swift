@@ -233,7 +233,6 @@ class AddCollaboratorModalView: UIView {
 
     func updateCollaborators(updatedList: MediaList) {
         collaborators = [updatedList.owner] + updatedList.collaborators
-        inviteSearchBar.isUserInteractionEnabled = true
         collaboratorsTableView.reloadData()
         inviteCollaboratorsTableView.reloadData()
     }
@@ -284,14 +283,10 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
 extension AddCollaboratorModalView: EditCollaboratorCellDelegate {
 
     func addCollaboratorTapped(user: UserProfile) {
-        // Temporarily disable search
-        inviteSearchBar.isUserInteractionEnabled = false
         listSettingsDelegate?.addCollaborator(collaborator: user)
     }
 
     func removeCollaboratorTapped(user: UserProfile) {
-        // Temporarily disable search
-        inviteSearchBar.isUserInteractionEnabled = false
         listSettingsDelegate?.removeCollaborator(collaborator: user)
     }
 
