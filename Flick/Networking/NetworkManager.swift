@@ -211,7 +211,6 @@ class NetworkManager {
     static func updateMediaList(listId: Int, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "name": list.name,
-            "collaborators": list.collaborators.map { $0.id },
             "owner": list.owner.id,
             "is_private": list.isPrivate
         ]

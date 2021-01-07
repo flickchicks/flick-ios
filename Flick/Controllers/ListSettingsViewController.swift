@@ -9,9 +9,10 @@
 import UIKit
 
 protocol ListSettingsDelegate: class {
+    func addCollaborator(collaborator: UserProfile)
     func deleteList()
+    func removeCollaborator(collaborator: UserProfile)
     func renameList(to name: String)
-    func updateCollaborators(to collaborators: [UserProfile])
     func updatePrivacy(to isPrivate: Bool)
 }
 
@@ -25,6 +26,7 @@ enum ListSetting: String {
 class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private var addCollaboratorModalView: AddCollaboratorModalView!
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
@@ -91,7 +93,7 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showAddCollaboratorsModal() {
-        let addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
+        addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
         addCollaboratorModalView.modalDelegate = self
         addCollaboratorModalView.listSettingsDelegate = self
         showModalPopup(view: addCollaboratorModalView)
@@ -155,6 +157,22 @@ extension ListSettingsViewController: ModalDelegate {
 
 extension ListSettingsViewController: ListSettingsDelegate {
 
+    func addCollaborator(collaborator: UserProfile) {
+        NetworkManager.addToMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
+            guard let self = self else { return }
+            self.list = list
+            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
+        }
+    }
+
+    func removeCollaborator(collaborator: UserProfile) {
+        NetworkManager.removeFromMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
+            guard let self = self else { return }
+            self.list = list
+            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
+        }
+    }
+
     func deleteList() {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
@@ -175,18 +193,8 @@ extension ListSettingsViewController: ListSettingsDelegate {
         updatedList.name = name
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
-
+            self.list = list
             self.presentInfoAlert(message: "Renamed to \(list.name)", completion: nil)
-        }
-    }
-
-    func updateCollaborators(to collaborators: [UserProfile]) {
-        var updatedList = list
-        updatedList.collaborators = collaborators
-        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
-            guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Updated collaborators", completion: nil)
         }
     }
 
@@ -195,7 +203,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         updatedList.isPrivate = isPrivate
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
-
+            self.list = list
             self.presentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
         }
     }
