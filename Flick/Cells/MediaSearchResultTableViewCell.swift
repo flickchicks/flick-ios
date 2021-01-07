@@ -89,4 +89,9 @@ class MediaSearchResultTableViewCell: UITableViewCell {
         }
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
+    }
+
 }
