@@ -127,16 +127,18 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Check if a username exists [updated as of 1/5/20]
-    static func checkUsernameExists(username: String, completion: @escaping (Bool) -> Void) {
+    /// [POST] Check if a username does not exists [updated as of 1/5/20]
+    static func checkUsernameNotExists(username: String, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
             "username": username
         ]
 
         AF.request("\(hostEndpoint)/api/username/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
+            // completion true if username does not exists
             case .success:
                 completion(true)
+            // completion false if username already exists
             case .failure(let error):
                 print(error.localizedDescription)
                 completion(false)

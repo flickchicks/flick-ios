@@ -343,9 +343,10 @@ class EditProfileViewController: UIViewController {
     @objc func saveProfileInformation() {
         // If username changed, check if username exists before updating user information
         if let username = userNameTextField.text, username != user.username {
-            NetworkManager.checkUsernameExists(username: username) { [weak self] success in
+            NetworkManager.checkUsernameNotExists(username: username) { [weak self] success in
                 guard let self = self else { return }
                 if success {
+                    // Username does not yet exists so we can update user info
                     self.updateUserInfo()
                 } else {
                     self.presentInfoAlert(message: "Username invalid or already taken", completion: nil)
@@ -360,9 +361,7 @@ class EditProfileViewController: UIViewController {
         if let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
             let username = userNameTextField.text,
-            let bio = bioTextView.text,
-            // Check at least one element was updated
-            firstName != user.firstName || lastName != user.lastName || username != user.username || bio != user.bio || didChangeProfilePic {
+            let bio = bioTextView.text {
             // Only update profilePic if it's changed
             let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.toBase64() : nil
             let updatedUser = User(username: username, firstName: firstName, lastName: lastName, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
