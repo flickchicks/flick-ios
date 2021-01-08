@@ -13,7 +13,9 @@ extension UIViewController {
     func presentInfoAlert(message: String, completion: (() -> Void)?) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         self.present(alert, animated: true)
-        alert.dismiss(animated: true, completion: completion)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            alert.dismiss(animated: true, completion: completion)
+        }
     }
 
     func showModalPopup(view: UIView) {
