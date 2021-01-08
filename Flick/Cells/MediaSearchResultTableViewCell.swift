@@ -32,6 +32,8 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         nameLabel.textColor = .darkBlue
         nameLabel.font = .systemFont(ofSize: 16)
+        nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.minimumScaleFactor = 0.75
         containerView.addSubview(nameLabel)
 
         containerView.addSubview(selectView)
@@ -57,6 +59,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
         nameLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(posterImageView.snp.trailing).offset(16)
+            make.trailing.equalTo(selectView.snp.leading).offset(-10)
         }
 
         selectView.snp.makeConstraints { make in
