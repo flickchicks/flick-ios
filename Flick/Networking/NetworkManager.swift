@@ -595,6 +595,7 @@ class NetworkManager {
         AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                debugPrint(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let notificationsData = try? jsonDecoder.decode(Response<[BackendNotification]>.self, from: data) {

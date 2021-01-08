@@ -15,10 +15,7 @@ class NotificationsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     // TODO: Replace with backend values
-    private var friendRequests: [Notification] = [
-//        .FriendRequest(fromUser: "Lucy Xu", type: .received),
-//        .FriendRequest(fromUser: "Lucy Xu", type: .received)
-    ]
+    private var friendRequests: [Notification] = [] // Only requests that have been sent to user
     private let friendRequestCellReuseIdentifier = "FriendRequestCellReuseIdentifier"
     private var notifications: [Notification] = [
 //        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
@@ -55,30 +52,47 @@ class NotificationsViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        NetworkManager.getNotifications { [weak self] notifications in
-            guard let self = self else { return }
-            let newNotifs: [Notification] = notifications.map {
-                if $0.notifType == "list_invite" {
-                    return .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You")
-                } else if $0.notifType == "friend_request" {
-                    return .FriendRequest(fromUser: "Haiying Weng", type: .sent)
-                } else {
-                    return .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You")
-                }
-            }
-            self.notifications = newNotifs
-        }
-        
+    private func getFriendRequests() {
         NetworkManager.getFriendRequests { [weak self] fr in
             guard let self = self else { return }
-            let requests: [Notification] = fr.map {
-                return .FriendRequest(fromUser: $0.fromUser.name, type: .received)
+            DispatchQueue.main.async {
+                let requests: [Notification] = fr.map {
+                    return .FriendRequest(fromUser: $0.fromUser, type: .received)
+                }
+                self.friendRequests = requests
+//                self.notificationsTableView.reloadData()
             }
-            self.friendRequests = requests
-            self.notificationsTableView.reloadData()
         }
+    }
+    
+    private func getAllNotifications() {
+        
+//        getFriendRequests()
+        
+        NetworkManager.getNotifications { [weak self] notifications in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                let newNotifs: [Notification] = notifications.map {
+                    if $0.notifType == "list_invite" {
+                        return .CollaborationInvite(fromUser: $0.fromUser, media: "Crash Landing On You")
+                    } else if $0.notifType == "friend_request" {
+                        return .FriendRequest(fromUser: $0.fromUser, type: .sent)
+                    } else {
+                        return .CollaborationInvite(fromUser: $0.fromUser, media: "Crash Landing On You")
+                    }
+                }
+                self.notifications = newNotifs
+                self.getFriendRequests()
+                self.notificationsTableView.reloadData()
+            }
+        }
+    }
+    
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getAllNotifications()
     }
 }
 
@@ -90,6 +104,27 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friendRequests.count > 0 && section == 0 ? friendRequests.count : notifications.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if friendRequests.count > 0 && indexPath.section == 0 {
+            // Incoming friend request
+            switch friendRequests[indexPath.row] {
+            case .FriendRequest(let fromUser, _):
+                let profileViewController = ProfileViewController(userId: fromUser.id)
+                navigationController?.pushViewController(profileViewController, animated: true)
+            default:
+                break
+            }
+        } else {
+            switch notifications[indexPath.row] {
+            case .FriendRequest(let fromUser, _):
+                let profileViewController = ProfileViewController(userId: fromUser.id)
+                navigationController?.pushViewController(profileViewController, animated: true)
+            default:
+                break
+            }
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -126,6 +161,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
         if friendRequests.count > 0 && indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: friendRequestCellReuseIdentifier, for: indexPath) as? FriendRequestTableViewCell else { return UITableViewCell() }
             cell.configure(with: friendRequests[indexPath.row])
+            cell.delegate = self
             return cell
         }
         else {
@@ -134,6 +170,11 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
             return cell
         }
     }
+}
 
-
+extension NotificationsViewController: NotificationDelegate {
+    func refreshNotifications(message: String) {
+        presentInfoAlert(message: message, completion: nil)
+        getAllNotifications()
+    }
 }

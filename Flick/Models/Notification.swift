@@ -8,24 +8,26 @@
 
 
 struct BackendNotification: Codable {
+    var id: Int
     var notifType: String
     var fromUser: UserProfile
     var toUser: UserProfile
-    var lst: MediaList // Double check this object!
-    var numShowsAdded: String
-    var numShowsRemoved: String
-    var collaboratorAdded: String
-    var collaboratorRemoved: String
-    var friendRequestAccepted: String
+    var lst: MediaList? // Double check this object!
+    var newOwner: UserProfile?
+    var numShowsAdded: String?
+    var numShowsRemoved: String?
+    var collaboratorsAdded: [UserProfile]
+    var collaboratorsRemoved: [UserProfile]
+    var friendRequestAccepted: Bool
     var createdAt: String
 }
 
 
 enum Notification {
-    case FriendRequest(fromUser: String, type: FriendRequest.FriendRequestType)
-    case CollaborationInvite(fromUser: String, media: String)
-    case ListActivity(fromUser: String, list: String)
-    case ActivityLike(fromUser: String, likedContent: ActivityLike.ActivityLikeType, media: String)
+    case FriendRequest(fromUser: UserProfile, type: FriendRequest.FriendRequestType)
+    case CollaborationInvite(fromUser: UserProfile, media: String)
+    case ListActivity(fromUser: UserProfile, list: String)
+    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
 }
 
 

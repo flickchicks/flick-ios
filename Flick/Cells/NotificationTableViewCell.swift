@@ -62,33 +62,33 @@ class NotificationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupFriendAcceptCell(fromUser: String) {
+    private func setupFriendAcceptCell(fromUser: UserProfile) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
-                .boldFont14(fromUser)
+            .boldFont14(fromUser.name)
                 .normalFont14(" accepted your friend request ")
     }
 
-    private func setupCollaborationInviteCell(fromUser: String, media: String) {
+    private func setupCollaborationInviteCell(fromUser: UserProfile, media: String) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
-                .boldFont14(fromUser)
+            .boldFont14(fromUser.name)
                 .normalFont14(" invited you to collaborate on ")
                 .boldFont14(media)
     }
 
-    private func setupActivityLikeCell(fromUser: String, likedContent: ActivityLike.ActivityLikeType, media: String) {
+    private func setupActivityLikeCell(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
-                .boldFont14(fromUser)
+            .boldFont14(fromUser.name)
                 .normalFont14(" liked your \(String(likedContent)) on ")
                 .boldFont14(media)
     }
 
-    private func setupListActivityCell(fromUser: String, list: String) {
+    private func setupListActivityCell(fromUser: UserProfile, list: String) {
         notificationLabel.attributedText =
         NSMutableAttributedString()
-            .boldFont14(fromUser)
+            .boldFont14(fromUser.name)
             .normalFont14(" added 3 items to ")
             .boldFont14(list)
     }
