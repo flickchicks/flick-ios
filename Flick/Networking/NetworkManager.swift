@@ -39,8 +39,7 @@ class NetworkManager {
     static func authenticateUser(username: String, firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "username": "",
-            "first_name": firstName,
-            "last_name": lastName,
+            "name": "\(firstName) \(lastName)",
             "social_id": socialId,
             "social_id_token": socialIdToken,
             "social_id_token_type": "facebook"
@@ -63,7 +62,7 @@ class NetworkManager {
     }
 
     /// [GET] Get a user with token [updated as of 8/11/20]
-    static func getUserProfile(completion: @escaping (UserProfile) -> Void) {
+    static func getUserProfile(completion: @escaping (UserProfile?, Bool) -> Void) {
         AF.request("\(hostEndpoint)/api/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -71,10 +70,11 @@ class NetworkManager {
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
-                    completion(user)
+                    completion(user, true)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(nil, false)
             }
         }
     }

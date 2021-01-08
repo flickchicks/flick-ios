@@ -176,9 +176,9 @@ class MediaListsModalView: UIView {
     }
 
     private func getLists() {
-        NetworkManager.getUserProfile { [weak self] user in
-            guard let self = self else { return }
-            self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
+        NetworkManager.getUserProfile { [weak self] user, success in
+            guard let self = self, success else { return }
+            self.lists = (user!.ownerLsts ?? []) + (user!.collabLsts ?? [])
             self.listsTableView.reloadData()
         }
     }

@@ -128,10 +128,10 @@ class ProfileViewController: UIViewController {
     }
 
     private func getCurrentUser() {
-        NetworkManager.getUserProfile { [weak self] userProfile in
-            guard let self = self else { return }
+        NetworkManager.getUserProfile { [weak self] userProfile, success in
+            guard let self = self, success else { return }
             DispatchQueue.main.async {
-                self.updateUserInfo(user: userProfile)
+                self.updateUserInfo(user: userProfile!)
             }
         }
     }

@@ -27,27 +27,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
-        let loginViewController = LoginViewController()
-        let homeViewController = HomeViewController()
-        var rootViewController: UIViewController
-        if let token = AccessToken.current,
-            !token.isExpired,
-            let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
-            // User is logged in and we have the necessary authorization token to make backend requets for user.
-            rootViewController = homeViewController
-        } else {
-            // User is logged out.
-            LoginManager().logOut()
-            rootViewController = loginViewController
-        }
-
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-
-        window.rootViewController = navigationController
         self.window = window
         window.makeKeyAndVisible()
-
-
+        let loginViewController = LoginViewController()
+        let navigationController = UINavigationController(rootViewController: loginViewController)
+        window.rootViewController = navigationController
+        guard let token = AccessToken.current, !token.isExpired else {
+            LoginManager().logOut()
+            return
+        }
+        // User is logged in and we have correct authorization token.
+        NetworkManager.getUserProfile { profile, success in
+            DispatchQueue.main.async {
+                print(success)
+                let rootViewController = success ? HomeViewController() : loginViewController
+                window.rootViewController = UINavigationController(rootViewController: rootViewController)
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
