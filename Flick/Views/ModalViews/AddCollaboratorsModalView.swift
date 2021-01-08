@@ -302,7 +302,7 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
             if searchText == "" {
                 friends = allFriends
             } else {
-                friends = allFriends.filter { "\($0.firstName) \($0.lastName)".contains(searchText) }
+                friends = allFriends.filter { $0.name.contains(searchText) }
             }
             inviteCollaboratorsTableView.reloadData()
         }

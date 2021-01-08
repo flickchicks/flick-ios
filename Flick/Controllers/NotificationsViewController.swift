@@ -15,7 +15,7 @@ class NotificationsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     // TODO: Replace with backend values
-    private let friendRequests: [Notification] = [
+    private var friendRequests: [Notification] = [
 //        .FriendRequest(fromUser: "Lucy Xu", type: .received),
 //        .FriendRequest(fromUser: "Lucy Xu", type: .received)
     ]
@@ -69,6 +69,15 @@ class NotificationsViewController: UIViewController {
                 }
             }
             self.notifications = newNotifs
+        }
+        
+        NetworkManager.getFriendRequests { [weak self] fr in
+            guard let self = self else { return }
+            let requests: [Notification] = fr.map {
+                return .FriendRequest(fromUser: $0.fromUser.name, type: .received)
+            }
+            self.friendRequests = requests
+            self.notificationsTableView.reloadData()
         }
     }
 }
