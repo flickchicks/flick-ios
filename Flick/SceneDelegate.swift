@@ -28,10 +28,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        window.makeKeyAndVisible()
         let loginViewController = LoginViewController()
         let navigationController = UINavigationController(rootViewController: loginViewController)
+        // TODO: Let's make another launch screen we show before navigating to either login or home
         window.rootViewController = navigationController
+        window.makeKeyAndVisible()
         guard let token = AccessToken.current, !token.isExpired else {
             LoginManager().logOut()
             return
