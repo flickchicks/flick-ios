@@ -158,4 +158,10 @@ class CommentTableViewCell: UITableViewCell {
         }
         viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+    }
+
 }
