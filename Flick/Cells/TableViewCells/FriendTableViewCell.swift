@@ -41,7 +41,7 @@ class FriendTableViewCell: UITableViewCell {
     }
     
     func configure(user: UserProfile) {
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
             userProfileImageView.kf.setImage(with: imageUrl)

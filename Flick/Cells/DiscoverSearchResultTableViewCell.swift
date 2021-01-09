@@ -77,7 +77,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         listPreviewView.isHidden = false
         listPreviewView.firstThreeMedia = Array(list.shows.prefix(3))
         setupConstraintsForListPreview()
-        subtitleLabel.text = "by \(list.owner.firstName) \(list.owner.lastName)"
+        subtitleLabel.text = "by \(list.owner.name)"
     }
 
     func configureMovie(movie: Media) {
@@ -98,7 +98,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     }
 
     func configureUser(user: UserProfile) {
-        titleLabel.text = "\(user.firstName) \(user.lastName)"
+        titleLabel.text = user.name
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
         subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"

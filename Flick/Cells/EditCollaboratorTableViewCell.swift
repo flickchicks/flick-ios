@@ -59,7 +59,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
     func configureFriend(for user: UserProfile, isAdded: Bool) {
         self.user = user
         self.isCollaborator = false
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
             userImageView.kf.setImage(with: imageUrl)
@@ -83,7 +83,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
 
     func configureCollaborator(for user: UserProfile, isOwner: Bool) {
         self.user = user
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
             userImageView.kf.setImage(with: imageUrl)
         }

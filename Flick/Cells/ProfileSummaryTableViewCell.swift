@@ -150,7 +150,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     func configure(isCurrentUser: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio

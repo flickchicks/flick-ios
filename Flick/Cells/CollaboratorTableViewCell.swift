@@ -50,7 +50,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
-        nameLabel.text = "\(collaborator.firstName) \(collaborator.lastName)"
+        nameLabel.text = collaborator.name
         if let imageUrl = URL(string: collaborator.profilePic?.assetUrls.original ?? "") {
             userImageView.kf.setImage(with: imageUrl)
         }

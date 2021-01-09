@@ -145,9 +145,7 @@ class CommentTableViewCell: UITableViewCell {
         self.commentIndex = index
         self.delegate = delegate
         commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
-        let firstName = comment.owner.firstName
-        let lastName = comment.owner.lastName
-        nameLabel.text = "\(firstName) \(lastName.prefix(1))."
+        nameLabel.text = comment.owner.name
         let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
         // TODO: Complete logic to detect if comment has been liked

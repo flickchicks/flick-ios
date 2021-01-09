@@ -172,9 +172,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let comment = comments[0]
         commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         viewSpoilerButton.isHidden = !comment.isSpoiler
-        let firstName = comment.owner.firstName
-        let lastName = comment.owner.lastName
-        commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
+        commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
         commentDateLabel.text = "1d"
         // TODO: Add logic to discover if comment has been liked by user
