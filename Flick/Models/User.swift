@@ -13,9 +13,9 @@ struct User: Codable {
     var username: String
     var firstName: String
     var lastName: String
-    var profilePic: String?
     var bio: String?
+    var profilePic: String?
     var phoneNumber: String?
-    var socialIdToken: String? = AccessToken.current?.tokenString
-    var socialIdTokenType: String = "facebook"
+    var socialIdToken: String?
+    var socialIdTokenType: String?
 }

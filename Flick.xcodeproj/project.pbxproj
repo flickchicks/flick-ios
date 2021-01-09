@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FCAD1DBEB133A70E299D807 /* Pods_FlickTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */; };
+		0FCAD1DBEB133A70E299D807 /* Pods_FlickTests.framework in Frameworks */ = {isa = PBXBuildFlick.xcodeproj/project.pbxprojFile; fileRef = FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */; };
 		25B7162BF6C14E7A1225DD01 /* Pods_Flick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB53720A824B4207A2982A0A /* Pods_Flick.framework */; };
 		3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF012479CC3900F08C60 /* ListViewController.swift */; };
 		3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */; };
@@ -22,6 +22,7 @@
 		803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */; };
 		803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F0A259D41B4004CF4B7 /* Suggestion.swift */; };
 		803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */; };
+		803E5F5825A67966004CF4B7 /* EditCollaboratorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
@@ -147,6 +148,7 @@
 		803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickToFriendModalView.swift; sourceTree = "<group>"; };
 		803E5F0A259D41B4004CF4B7 /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCollaboratorTableViewCell.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 				802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */,
 				D40ED7D3259471D7004C2F2C /* TrendingContentCollectionViewCell.swift */,
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
+				803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -850,6 +853,7 @@
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				D40ED7DB25950E9E004C2F2C /* TrendingTableViewCell.swift in Sources */,
+				803E5F5825A67966004CF4B7 /* EditCollaboratorTableViewCell.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
 				D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */,

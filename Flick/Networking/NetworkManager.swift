@@ -105,14 +105,14 @@ class NetworkManager {
             "username": user.username,
             "first_name": user.firstName,
             "last_name": user.lastName,
-            "bio": user.bio!,
-            "profile_pic": user.profilePic!,
-            "phone_number": user.phoneNumber!,
+            "bio": user.bio,
+            "profile_pic": user.profilePic,
+            "phone_number": user.phoneNumber,
             "social_id_token_type": user.socialIdTokenType,
-            "social_id_token": user.socialIdToken!
+            "social_id_token": user.socialIdToken
         ]
 
-        AF.request("\(hostEndpoint)/api/auth/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -127,9 +127,28 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Check if a username does not exists [updated as of 1/5/20]
+    static func checkUsernameNotExists(username: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "username": username
+        ]
+
+        AF.request("\(hostEndpoint)/api/username/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            switch response.result {
+            // completion true if username does not exists
+            case .success:
+                completion(true)
+            // completion false if username already exists
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)", method: .get, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
             debugPrint(response)
             switch response.result {
             case .success(let data):
@@ -211,7 +230,6 @@ class NetworkManager {
     static func updateMediaList(listId: Int, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "name": list.name,
-            "collaborators": list.collaborators.map { $0.id },
             "owner": list.owner.id,
             "is_private": list.isPrivate
         ]
@@ -244,7 +262,6 @@ class NetworkManager {
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
