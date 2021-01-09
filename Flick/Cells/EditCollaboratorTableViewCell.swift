@@ -127,8 +127,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         editButton.snp.makeConstraints { make in
             make.width.equalTo(74)
             make.height.equalTo(22)
-            make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.trailing.centerY.equalToSuperview()
         }
     }
 
