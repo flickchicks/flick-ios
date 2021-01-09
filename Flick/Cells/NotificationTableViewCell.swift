@@ -108,13 +108,25 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     private func setupListOwnershipEditCell(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile) {
-        let newOwnerText = newOwner.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) ? NSMutableAttributedString().normalFont14("you") : NSMutableAttributedString().boldFont14(newOwner.name)
+        let newOwnerText = newOwner.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) ? "you" : newOwner.name
         notificationLabel.attributedText =
         NSMutableAttributedString()
             .boldFont14(fromUser.name)
             .normalFont14(" made ")
-            newOwnerText
+            .boldFont14(newOwnerText)
             .normalFont14(" owner of ")
+            .boldFont14(list.name)
+            .normalFont14(".")
+    }
+    
+    private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, collaborators: [UserProfile]) {
+        let collaboratorNames = collaborators.map { $0.name }
+        notificationLabel.attributedText =
+        NSMutableAttributedString()
+            .boldFont14(fromUser.name)
+            .normalFont14(" \(type.rawValue) ")
+            .boldFont14(collaboratorNames.joined(separator: ","))
+            .normalFont14(" as collaborators on ")
             .boldFont14(list.name)
             .normalFont14(".")
     }
@@ -127,6 +139,8 @@ class NotificationTableViewCell: UITableViewCell {
             setupListShowsEditCell(fromUser: fromUser, list: list, type: type, numChanged: numChanged)
         case .ListOwnershipEdit(let fromUser, let list, let newOwner):
             setupListOwnershipEditCell(fromUser: fromUser, list: list, newOwner: newOwner)
+        case .ListCollaboratorsEdit(let fromUser, let list, let type, let collaborators):
+            setupListCollaboratorsEdit(fromUser: fromUser, list: list, type: type, collaborators: collaborators)
         case .FriendRequest(let fromUser, let toUser):
             if toUser.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
                 setupAcceptedIncomingRequestCell(from: fromUser)

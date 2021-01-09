@@ -29,7 +29,7 @@ enum Notification {
     case FriendRequest(fromUser: UserProfile, toUser: UserProfile)
     case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
     case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, numChanged: Int)
-    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList)
+    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, collaborators: [UserProfile])
     case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile)
     case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
 }

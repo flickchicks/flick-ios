@@ -85,9 +85,11 @@ class NotificationsViewController: UIViewController {
                             return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved)
                         } else if let newOwner = $0.newOwner, let list = $0.lst {
                             return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner)
+                        } else if let list = $0.lst, $0.collaboratorsAdded.count > 0 {
+                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: list, type: .added, collaborators: $0.collaboratorsAdded)
                         }
                         else {
-                            return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
+                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved)
                         }
                     } else {
                         return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
@@ -142,7 +144,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .ListShowsEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-            case .ListCollaboratorsEdit(_, let list):
+            case .ListCollaboratorsEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .ListOwnershipEdit(_, let list, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
