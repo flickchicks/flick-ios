@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class NotificationsViewController: UIViewController {
 
@@ -14,37 +15,29 @@ class NotificationsViewController: UIViewController {
     private let notificationsTableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - Private Data Vars
-    // TODO: Replace with backend values
-    private var friendRequests: [Notification] = [] // Only requests that have been sent to user
-    private let friendRequestCellReuseIdentifier = "FriendRequestCellReuseIdentifier"
-    private var notifications: [Notification] = [
-//        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
-//        .FriendRequest(fromUser: "Haiying Weng", type: .sent),
-//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
-//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
-//        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies"),
-//        .CollaborationInvite(fromUser: "Lucy Xu", media: "Crash Landing On You"),
-//        .FriendRequest(fromUser: "Alanna Zhou", type: .sent),
-//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .comment, media: "Falling For You"),
-//        .ActivityLike(fromUser: "Alanna Zou", likedContent: .suggestion, media: "Love from Another Star"),
-//        .ListActivity(fromUser: "Haiying Weng", list: "Love Movies")
-    ]
-    private let notificationCellReuseIdentifier = "NotificationCellReuseIdentifier"
+    private var friendRequests: [Notification] = []
+    private var notifications: [Notification] = []
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         view.backgroundColor = .offWhite
+        view.isSkeletonable = true
         
         notificationsTableView.delegate = self
         notificationsTableView.dataSource = self
         notificationsTableView.isScrollEnabled = true
+        notificationsTableView.isSkeletonable = true
         notificationsTableView.backgroundColor = .offWhite
-        notificationsTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: notificationCellReuseIdentifier)
-        notificationsTableView.register(FriendRequestTableViewCell.self, forCellReuseIdentifier: friendRequestCellReuseIdentifier)
+        notificationsTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
+        notificationsTableView.register(FriendRequestTableViewCell.self, forCellReuseIdentifier: FriendRequestTableViewCell.reuseIdentifier)
         notificationsTableView.separatorStyle = .none
         notificationsTableView.rowHeight = UITableView.automaticDimension
-        notificationsTableView.estimatedRowHeight = 140
+        notificationsTableView.estimatedRowHeight = 80
         notificationsTableView.sizeToFit()
         view.addSubview(notificationsTableView)
+        
+        // Commenting out skeleton view for now because network request seems really fast so no need for skeleton view
+//        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         notificationsTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -60,15 +53,12 @@ class NotificationsViewController: UIViewController {
                     return .IncomingFriendRequest(fromUser: $0.fromUser)
                 }
                 self.friendRequests = requests
-//                self.notificationsTableView.reloadData()
+                self.notificationsTableView.reloadData()
             }
         }
     }
     
-    private func getAllNotifications() {
-        
-//        getFriendRequests()
-        
+    private func getNotifications() {
         NetworkManager.getNotifications { [weak self] notifications in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -78,7 +68,6 @@ class NotificationsViewController: UIViewController {
                     } else if $0.notifType == "friend_request" {
                         return .FriendRequest(fromUser: $0.fromUser, toUser: $0.toUser)
                     } else if $0.notifType == "list_edit" {
-                        // TODO: Are these notifications cumulative?
                         if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
                             return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded)
                         } else if let numShowsRemoved = $0.numShowsRemoved, let list = $0.lst  {
@@ -97,12 +86,15 @@ class NotificationsViewController: UIViewController {
                 }
                 self.notifications = newNotifs
                 self.getFriendRequests()
-                self.notificationsTableView.reloadData()
+//                self.notificationsTableView.hideSkeleton()
             }
         }
     }
     
-    
+    private func getAllNotifications() {
+//        getFriendRequests()
+        getNotifications()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -110,10 +102,22 @@ class NotificationsViewController: UIViewController {
     }
 }
 
-extension NotificationsViewController: UITableViewDelegate, UITableViewDataSource {
+extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return NotificationTableViewCell.reuseIdentifier
+    }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return friendRequests.count > 0 ? 2 : 1
+    }
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -186,13 +190,13 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if friendRequests.count > 0 && indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: friendRequestCellReuseIdentifier, for: indexPath) as? FriendRequestTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendRequestTableViewCell.reuseIdentifier, for: indexPath) as? FriendRequestTableViewCell else { return UITableViewCell() }
             cell.configure(with: friendRequests[indexPath.row])
             cell.delegate = self
             return cell
         }
         else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: notificationCellReuseIdentifier, for: indexPath) as? NotificationTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.reuseIdentifier, for: indexPath) as? NotificationTableViewCell else { return UITableViewCell() }
             cell.configure(with: notifications[indexPath.row])
             return cell
         }

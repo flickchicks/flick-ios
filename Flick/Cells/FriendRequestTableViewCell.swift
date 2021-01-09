@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol NotificationDelegate: class {
     func refreshNotifications(message: String)
@@ -24,13 +25,17 @@ class FriendRequestTableViewCell: UITableViewCell {
     // MARK: - Private Data Vars
     weak var delegate: NotificationDelegate?
     private let padding = 12
-    private var fromUserId: Int?
+    private var fromUser: UserProfile?
+    
+    static let reuseIdentifier = "FriendRequestCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
         backgroundColor = .offWhite
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
@@ -38,14 +43,17 @@ class FriendRequestTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.07
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
         containerView.layer.shadowRadius = 8
+        containerView.isSkeletonable = true
         contentView.addSubview(containerView)
 
         profileImageView.layer.cornerRadius = 20
+        profileImageView.isSkeletonable = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
         notificationLabel.textColor = .black
+        notificationLabel.isSkeletonable = true
         notificationLabel.numberOfLines = 0
         containerView.addSubview(notificationLabel)
 
@@ -54,6 +62,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         acceptButton.layer.backgroundColor = UIColor.lightPurple.cgColor
         acceptButton.setTitleColor(.gradientPurple, for: .normal)
         acceptButton.layer.cornerRadius = 17
+        acceptButton.isSkeletonable = true
         acceptButton.addTarget(self, action: #selector(acceptButtonClicked), for: .touchUpInside)
         contentView.addSubview(acceptButton)
 
@@ -61,6 +70,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         ignoreButton.titleLabel?.font = .systemFont(ofSize: 14)
         ignoreButton.layer.backgroundColor = UIColor.lightGray2.cgColor
         ignoreButton.addTarget(self, action: #selector(ignoreButtonClicked), for: .touchUpInside)
+        ignoreButton.isSkeletonable = true
         ignoreButton.setTitleColor(.darkBlueGray2, for: .normal)
         ignoreButton.layer.cornerRadius = 17
         contentView.addSubview(ignoreButton)
@@ -104,21 +114,23 @@ class FriendRequestTableViewCell: UITableViewCell {
     }
     
     @objc func acceptButtonClicked() {
-        guard let fromUserId = fromUserId else { return }
-        NetworkManager.acceptFriendRequest(friendId: fromUserId) { [weak self] success in
+        guard let fromUser = fromUser else { return }
+        NetworkManager.acceptFriendRequest(friendId: fromUser.id) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.delegate?.refreshNotifications(message: "Accepted \(success)")
+                if success {
+                    self.delegate?.refreshNotifications(message: "Accepted \(fromUser.name)'s request.")
+                }
             }
         }
     }
     
     @objc func ignoreButtonClicked() {
-        guard let fromUserId = fromUserId else { return }
-        NetworkManager.rejectFriendRequest(friendId: fromUserId) { [weak self] success in
+        guard let fromUser = fromUser else { return }
+        NetworkManager.rejectFriendRequest(friendId: fromUser.id) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.delegate?.refreshNotifications(message: "Ignored \(success)")
+                self.delegate?.refreshNotifications(message: "Ignored \(fromUser.name)'s request.")
             }
         }
     }
@@ -137,7 +149,7 @@ class FriendRequestTableViewCell: UITableViewCell {
     func configure(with notification: Notification) {
             switch notification {
             case .IncomingFriendRequest(let fromUser):
-                fromUserId = fromUser.id
+                self.fromUser = fromUser
                 setupFriendRequestCell(fromUser: fromUser)
             default:
                 break

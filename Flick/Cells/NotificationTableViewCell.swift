@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class NotificationTableViewCell: UITableViewCell {
 
@@ -17,11 +18,15 @@ class NotificationTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     private let padding = 12
+    
+    static var reuseIdentifier = "NotificationCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .offWhite
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
@@ -29,13 +34,16 @@ class NotificationTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.07
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
         containerView.layer.shadowRadius = 8
+        containerView.isSkeletonable = true
         contentView.addSubview(containerView)
 
         profileImageView.layer.cornerRadius = 20
+        profileImageView.isSkeletonable = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
+        notificationLabel.isSkeletonable = true
         notificationLabel.textColor = .black
         notificationLabel.numberOfLines = 0
         containerView.addSubview(notificationLabel)
