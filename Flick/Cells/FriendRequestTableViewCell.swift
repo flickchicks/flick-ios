@@ -136,7 +136,7 @@ class FriendRequestTableViewCell: UITableViewCell {
 
     func configure(with notification: Notification) {
             switch notification {
-            case .FriendRequest(let fromUser, _):
+            case .IncomingFriendRequest(let fromUser):
                 fromUserId = fromUser.id
                 setupFriendRequestCell(fromUser: fromUser)
             default:

@@ -53,11 +53,11 @@ class NotificationsViewController: UIViewController {
     }
     
     private func getFriendRequests() {
-        NetworkManager.getFriendRequests { [weak self] fr in
+        NetworkManager.getFriendRequests { [weak self] requests in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                let requests: [Notification] = fr.map {
-                    return .FriendRequest(fromUser: $0.fromUser, type: .received)
+                let requests: [Notification] = requests.map {
+                    return .IncomingFriendRequest(fromUser: $0.fromUser)
                 }
                 self.friendRequests = requests
 //                self.notificationsTableView.reloadData()
@@ -74,11 +74,23 @@ class NotificationsViewController: UIViewController {
             DispatchQueue.main.async {
                 let newNotifs: [Notification] = notifications.map {
                     if $0.notifType == "list_invite" {
-                        return .CollaborationInvite(fromUser: $0.fromUser, media: "Crash Landing On You")
+                        return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!)
                     } else if $0.notifType == "friend_request" {
-                        return .FriendRequest(fromUser: $0.fromUser, type: .sent)
+                        return .FriendRequest(fromUser: $0.fromUser, toUser: $0.toUser)
+                    } else if $0.notifType == "list_edit" {
+                        // TODO: Are these notifications cumulative?
+                        if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
+                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded)
+                        } else if let numShowsRemoved = $0.numShowsRemoved, let list = $0.lst  {
+                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved)
+                        } else if let newOwner = $0.newOwner, let list = $0.lst {
+                            return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner)
+                        }
+                        else {
+                            return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
+                        }
                     } else {
-                        return .CollaborationInvite(fromUser: $0.fromUser, media: "Crash Landing On You")
+                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
                     }
                 }
                 self.notifications = newNotifs
@@ -110,7 +122,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
         if friendRequests.count > 0 && indexPath.section == 0 {
             // Incoming friend request
             switch friendRequests[indexPath.row] {
-            case .FriendRequest(let fromUser, _):
+            case .IncomingFriendRequest(let fromUser):
                 let profileViewController = ProfileViewController(userId: fromUser.id)
                 navigationController?.pushViewController(profileViewController, animated: true)
             default:
@@ -118,9 +130,22 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
             }
         } else {
             switch notifications[indexPath.row] {
-            case .FriendRequest(let fromUser, _):
-                let profileViewController = ProfileViewController(userId: fromUser.id)
-                navigationController?.pushViewController(profileViewController, animated: true)
+            case .FriendRequest(let fromUser, let toUser):
+                if toUser.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
+                    // Friend request was sent to fromUser and accepted by the current user
+                    navigationController?.pushViewController(ProfileViewController(userId: fromUser.id), animated: true)
+                } else {
+                    // Friend request was sent by the current user and accepted by toUser
+                    navigationController?.pushViewController(ProfileViewController(userId: toUser.id), animated: true)
+                }
+            case .CollaborationInvite(_, let list):
+                navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+            case .ListShowsEdit(_, let list, _, _):
+                navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+            case .ListCollaboratorsEdit(_, let list):
+                navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+            case .ListOwnershipEdit(_, let list, _):
+                navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             default:
                 break
             }

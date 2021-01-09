@@ -62,7 +62,7 @@ class NetworkManager {
     }
 
     /// [GET] Get a user with token [updated as of 8/11/20]
-    static func getUserProfile(completion: @escaping (UserProfile?, Bool) -> Void) {
+    static func getUserProfile(completion: @escaping (UserProfile?) -> Void) {
         AF.request("\(hostEndpoint)/api/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -70,11 +70,11 @@ class NetworkManager {
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
-                    completion(user, true)
+                    completion(user)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(nil, false)
+                completion(nil)
             }
         }
     }

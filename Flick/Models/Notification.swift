@@ -12,44 +12,32 @@ struct BackendNotification: Codable {
     var notifType: String
     var fromUser: UserProfile
     var toUser: UserProfile
-    var lst: MediaList? // Double check this object!
+    var lst: NotificationMediaList? // Double check this object!
     var newOwner: UserProfile?
-    var numShowsAdded: String?
-    var numShowsRemoved: String?
+    var numShowsAdded: Int?
+    var numShowsRemoved: Int?
     var collaboratorsAdded: [UserProfile]
     var collaboratorsRemoved: [UserProfile]
-    var friendRequestAccepted: Bool
+    var friendRequestAccepted: Bool?
     var createdAt: String
 }
 
 
 enum Notification {
-    case FriendRequest(fromUser: UserProfile, type: FriendRequest.FriendRequestType)
-    case CollaborationInvite(fromUser: UserProfile, media: String)
-    case ListActivity(fromUser: UserProfile, list: String)
+    case IncomingFriendRequest(fromUser: UserProfile)
+    // Question: is accepted always true?
+    case FriendRequest(fromUser: UserProfile, toUser: UserProfile)
+    case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
+    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, numChanged: Int)
+    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList)
+    case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile)
     case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
 }
 
 
-struct FriendRequest {
-
-    enum FriendRequestType {
-        case sent
-        case received
-    }
-
-    let fromUser: String
-    let type: FriendRequestType
-}
-
-struct CollaborationInvite {
-    let fromUser: String
-    let media: String
-}
-
-struct ListActivity {
-    let fromUser: String
-    let list: String
+enum ListShowsEditType: String {
+    case added = "added"
+    case removed = "removed"
 }
 
 struct ActivityLike {
@@ -63,4 +51,3 @@ struct ActivityLike {
     let likedContent: ActivityLikeType
     let media: String
 }
-
