@@ -161,7 +161,7 @@ extension NotificationsViewController: UITableViewDelegate, UITableViewDataSourc
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
         headerLabel.font = .boldSystemFont(ofSize: 12)
-        headerLabel.text = section == 0 && friendRequests.count > 0 ? "New Friend Requests" : "Other Notifications"
+        headerLabel.text = section == 0 && friendRequests.count > 0 ? "Friend Requests" : "Notifications"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
