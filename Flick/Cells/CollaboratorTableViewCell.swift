@@ -41,6 +41,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
         if selected {
             selectIndicatorView.select()
         } else {
@@ -49,7 +50,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
-        nameLabel.text = "\(collaborator.firstName) \(collaborator.lastName)"
+        nameLabel.text = collaborator.name
         if let imageUrl = URL(string: collaborator.profilePic?.assetUrls.original ?? "") {
             userImageView.kf.setImage(with: imageUrl)
         }
@@ -100,6 +101,11 @@ class CollaboratorTableViewCell: UITableViewCell {
             make.leading.equalTo(userImageView.snp.trailing).offset(16)
             make.centerY.equalToSuperview()
         }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userImageView.image = nil
     }
 
 }

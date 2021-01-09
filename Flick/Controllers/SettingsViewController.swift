@@ -20,6 +20,18 @@ class SettingsViewController: UIViewController {
     private let settingsTitleLabel = UILabel()
     private let userDefaults = UserDefaults.standard
 
+    // MARK: - Private Data Vars
+    private var user: UserProfile
+
+    init(user: UserProfile) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -63,7 +75,8 @@ class SettingsViewController: UIViewController {
     }
 
     @objc func showEditProfile() {
-        let editProfileViewController = EditProfileViewController()
+        let editProfileViewController = EditProfileViewController(user: user)
+        editProfileViewController.delegate = self
         navigationController?.pushViewController(editProfileViewController, animated: true)
     }
 
@@ -149,6 +162,14 @@ class SettingsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         settingsTitleLabel.removeFromSuperview()
+    }
+
+}
+
+extension SettingsViewController: EditProfileDelegate {
+
+    func updateUser(user: UserProfile) {
+        self.user = user
     }
 
 }

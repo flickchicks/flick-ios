@@ -137,8 +137,8 @@ class ProfileViewController: UIViewController {
     }
 
     private func getCurrentUser() {
-        NetworkManager.getUserProfile { [weak self] userProfile in
-            guard let self = self else { return }
+        NetworkManager.getUserProfile { [weak self] userProfile, success in
+            guard let self = self, success, let userProfile = userProfile else { return }
             DispatchQueue.main.async {
                 self.updateUserInfo(user: userProfile)
             }
@@ -268,7 +268,8 @@ extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDat
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
     func pushSettingsView() {
-        let settingsViewController = SettingsViewController()
+        guard let user = user else { return }
+        let settingsViewController = SettingsViewController(user: user)
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 

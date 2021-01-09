@@ -4,6 +4,7 @@ import SkeletonView
 class ProfileSummaryTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
+    private let bioLabel = UILabel()
     private var friendsPreviewView: UsersPreviewView!
     private let nameLabel = UILabel()
     private let notificationButton = UIButton()
@@ -53,6 +54,12 @@ class ProfileSummaryTableViewCell: UITableViewCell {
  
         userInfoView.isSkeletonable = true
         contentView.addSubview(userInfoView)
+
+        bioLabel.font = .systemFont(ofSize: 12)
+        bioLabel.textColor = .darkBlueGray2
+        bioLabel.numberOfLines = 0
+        bioLabel.textAlignment = .center
+        contentView.addSubview(bioLabel)
 
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
         notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
@@ -116,10 +123,16 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         userInfoView.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(6)
+            make.bottom.equalTo(bioLabel.snp.top).offset(-8)
             make.leading.equalTo(usernameLabel.snp.leading)
             make.trailing.equalTo(friendsPreviewView.snp.trailing)
             make.height.equalTo(20)
             make.centerX.equalToSuperview()
+        }
+
+        bioLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(38)
+            make.bottom.equalToSuperview().inset(8)
         }
 
         settingsButton.snp.makeConstraints { make in
@@ -147,9 +160,10 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     func configure(isCurrentUser: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
+        bioLabel.text = user.bio
         if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
             profileImageView.kf.setImage(with: pictureUrl)
         }

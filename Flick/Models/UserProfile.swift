@@ -11,8 +11,7 @@ import Foundation
 struct UserProfile: Codable {
     var id: Int
     var username: String
-    var firstName: String
-    var lastName: String
+    var name: String
     var profilePic: ProfilePicture?
     var bio: String?
     var phoneNumber: String?

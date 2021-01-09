@@ -12,7 +12,7 @@ class ProfileInputTextField: UITextField {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        font = .systemFont(ofSize: 12)
+        font = .systemFont(ofSize: 14)
         textColor = .black
         borderStyle = .none
         layer.backgroundColor = UIColor.offWhite.cgColor
@@ -29,6 +29,10 @@ class ProfileInputTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
 
+}
+
+protocol EditProfileDelegate: class {
+    func updateUser(user: UserProfile)
 }
 
 class EditProfileViewController: UIViewController {
@@ -55,8 +59,20 @@ class EditProfileViewController: UIViewController {
     private let userNameTextField = ProfileInputTextField()
 
     // MARK: - Private Data Vars
-    private let userDefaults = UserDefaults.standard
+    weak var delegate: EditProfileDelegate?
+    private var didChangeProfilePic = false
     private let profileImageSize = CGSize(width: 100, height: 100)
+    private var user: UserProfile
+    private let userDefaults = UserDefaults.standard
+
+    init(user: UserProfile) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         view.backgroundColor = .offWhite
@@ -69,6 +85,9 @@ class EditProfileViewController: UIViewController {
         imagePickerController.allowsEditing = false
         imagePickerController.mediaTypes = ["public.image"]
 
+        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
+            profileImageView.kf.setImage(with: pictureUrl)
+        }
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
@@ -87,41 +106,46 @@ class EditProfileViewController: UIViewController {
         view.addSubview(selectImageButton)
 
         firstNameFieldLabel.text = "First Name"
-        firstNameFieldLabel.font = .systemFont(ofSize: 8)
+        firstNameFieldLabel.font = .systemFont(ofSize: 10)
         firstNameFieldLabel.textColor = .mediumGray
         view.addSubview(firstNameFieldLabel)
 
+        // TODO: Change this to one single name field later?
+        firstNameTextField.text = String(user.name.split(separator: " ")[0])
         view.addSubview(firstNameTextField)
 
         lastNameFieldLabel.text = "Last Name"
-        lastNameFieldLabel.font = .systemFont(ofSize: 8)
+        lastNameFieldLabel.font = .systemFont(ofSize: 10)
         lastNameFieldLabel.textColor = .mediumGray
         view.addSubview(lastNameFieldLabel)
 
+        lastNameTextField.text = String(user.name.split(separator: " ")[1])
         view.addSubview(lastNameTextField)
 
         userNameFieldLabel.text = "Username"
-        userNameFieldLabel.font = .systemFont(ofSize: 8)
+        userNameFieldLabel.font = .systemFont(ofSize: 10)
         userNameFieldLabel.textColor = .mediumGray
         view.addSubview(userNameFieldLabel)
 
+        userNameTextField.text = user.username
         view.addSubview(userNameTextField)
 
         bioFieldLabel.text = "Bio"
-        bioFieldLabel.font = .systemFont(ofSize: 8)
+        bioFieldLabel.font = .systemFont(ofSize: 10)
         bioFieldLabel.textColor = .mediumGray
         view.addSubview(bioFieldLabel)
 
-        bioTextLimitLabel.text = "0 / 100"
+        bioTextLimitLabel.text = "0 / 150"
         bioTextLimitLabel.textAlignment = .right
-        bioTextLimitLabel.font = .systemFont(ofSize: 8)
+        bioTextLimitLabel.font = .systemFont(ofSize: 10)
         bioTextLimitLabel.textColor = .mediumGray
         view.addSubview(bioTextLimitLabel)
 
+        bioTextView.text = user.bio
         bioTextView.delegate = self
         bioTextView.sizeToFit()
         bioTextView.isScrollEnabled = false
-        bioTextView.font = .systemFont(ofSize: 12)
+        bioTextView.font = .systemFont(ofSize: 14)
         bioTextView.textColor = .black
         bioTextView.layer.backgroundColor = UIColor.offWhite.cgColor
         bioTextView.layer.masksToBounds = false
@@ -134,23 +158,23 @@ class EditProfileViewController: UIViewController {
         accountInfoTitleLabel.text = "Linked Accounts and Information"
         accountInfoTitleLabel.font = .systemFont(ofSize: 16)
         accountInfoTitleLabel.textColor = .black
-        view.addSubview(accountInfoTitleLabel)
+//        view.addSubview(accountInfoTitleLabel)
 
         accountInfoDescriptionLabel.text = "Linked Accounts allow you to find friends you know but won't post to other accounts."
         accountInfoDescriptionLabel.textColor = .mediumGray
         accountInfoDescriptionLabel.font = .systemFont(ofSize: 10)
         accountInfoDescriptionLabel.numberOfLines = 0
-        view.addSubview(accountInfoDescriptionLabel)
+//        view.addSubview(accountInfoDescriptionLabel)
 
         facebookFieldLabel.text = "Facebook"
-        facebookFieldLabel.font = .systemFont(ofSize: 8)
+        facebookFieldLabel.font = .systemFont(ofSize: 10)
         facebookFieldLabel.textColor = .mediumGray
-        view.addSubview(facebookFieldLabel)
+//        view.addSubview(facebookFieldLabel)
 
         facebookAccountLabel.text = "Alanna Zhou"
         facebookAccountLabel.font = .systemFont(ofSize: 12)
         facebookAccountLabel.textColor = .black
-        view.addSubview(facebookAccountLabel)
+//        view.addSubview(facebookAccountLabel)
 
         setupConstraints()
     }
@@ -215,12 +239,11 @@ class EditProfileViewController: UIViewController {
     }
 
     private func setupConstraints() {
-
         let editButtonSize = CGSize(width: 24, height: 24)
         let horizontalPadding = 24
         let profileImageSize = CGSize(width: 100, height: 100)
         let smallFieldSize = CGSize(width: 152, height: 17)
-        let verticalPadding = 20
+        let verticalPadding = 30
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
@@ -278,7 +301,7 @@ class EditProfileViewController: UIViewController {
         bioTextLimitLabel.snp.makeConstraints { make in
             make.trailing.equalTo(lastNameTextField)
             make.top.equalTo(bioFieldLabel)
-            make.width.equalTo(38)
+            make.width.equalTo(45)
         }
 
         bioTextView.snp.makeConstraints { make in
@@ -287,25 +310,25 @@ class EditProfileViewController: UIViewController {
             make.trailing.equalTo(bioTextLimitLabel)
         }
 
-        accountInfoTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(bioTextView.snp.bottom).offset(36)
-            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-        }
-
-        accountInfoDescriptionLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(accountInfoTitleLabel)
-            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
-        }
-
-        facebookFieldLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(accountInfoTitleLabel)
-            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
-        }
-
-        facebookAccountLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(accountInfoTitleLabel)
-            make.top.equalTo(facebookFieldLabel.snp.bottom).offset(4)
-        }
+//        accountInfoTitleLabel.snp.makeConstraints { make in
+//            make.top.equalTo(bioTextView.snp.bottom).offset(36)
+//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+//        }
+//
+//        accountInfoDescriptionLabel.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(accountInfoTitleLabel)
+//            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
+//        }
+//
+//        facebookFieldLabel.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(accountInfoTitleLabel)
+//            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
+//        }
+//
+//        facebookAccountLabel.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(accountInfoTitleLabel)
+//            make.top.equalTo(facebookFieldLabel.snp.bottom).offset(4)
+//        }
 
     }
 
@@ -319,14 +342,35 @@ class EditProfileViewController: UIViewController {
     }
 
     @objc func saveProfileInformation() {
+        // If username changed, check if username exists before updating user information
+        if let username = userNameTextField.text, username != user.username {
+            NetworkManager.checkUsernameNotExists(username: username) { [weak self] success in
+                guard let self = self else { return }
+                if success {
+                    // Username does not yet exists so we can update user info
+                    self.updateUserInfo()
+                } else {
+                    self.presentInfoAlert(message: "Username invalid or already taken", completion: nil)
+                }
+            }
+        } else {
+            self.updateUserInfo()
+        }
+    }
+
+    private func updateUserInfo() {
         if let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
             let username = userNameTextField.text,
-            let bio = bioTextView.text,
-            let base64ProfileImage = profileImageView.image?.toBase64()
-        {
-            let user = User(username: username, firstName: firstName, lastName: lastName, profilePic: base64ProfileImage, bio: bio, phoneNumber: "7812289951")
-            NetworkManager.updateUserProfile(user: user) { [weak self] userProfile in
+            let bio = bioTextView.text {
+            // Only update profilePic if it's changed
+            let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.toBase64() : nil
+            let updatedUser = User(username: username, firstName: firstName, lastName: lastName, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
+            NetworkManager.updateUserProfile(user: updatedUser) { [ weak self] user in
+                guard let self = self else { return }
+                self.user = user
+                self.presentInfoAlert(message: "Profile updated", completion: nil)
+                self.delegate?.updateUser(user: user)
             }
         }
     }
@@ -360,12 +404,13 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         let resizedImage = image.resize(toSize: profileImageSize, scale: UIScreen.main.scale)
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
+        didChangeProfilePic = true
         dismiss(animated: true, completion: nil)
-
     }
 }
 
 extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
+
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
     }
@@ -380,6 +425,5 @@ extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
         imagePickerController.sourceType = .camera
         present(imagePickerController, animated: true, completion: nil)
     }
-
 
 }

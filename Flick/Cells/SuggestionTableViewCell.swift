@@ -184,7 +184,7 @@ class SuggestionTableViewCell: UITableViewCell {
         self.index = index
         notificationLabel.attributedText =
             NSMutableAttributedString()
-            .boldFont14("\(suggestion.fromUser.firstName) \(suggestion.fromUser.lastName)")
+            .boldFont14(suggestion.fromUser.name)
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
         if let profileImageUrl = URL(string: suggestion.fromUser.profilePic?.assetUrls.small ?? "") {
             profileImageView.kf.setImage(with: profileImageUrl)
@@ -203,5 +203,12 @@ class SuggestionTableViewCell: UITableViewCell {
 //        let heartImage = suggestion.liked ? "filledHeart" : "heart"
 //        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        mediaImageView.image = nil
+    }
+
 }
 
