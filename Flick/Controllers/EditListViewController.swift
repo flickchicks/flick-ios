@@ -304,8 +304,15 @@ extension EditListViewController: EditListDelegate {
             guard let self = self else { return }
 
             self.presentInfoAlert(message: "Moved \(self.selectedMedia.count) items to \(selectedList.name)", completion: nil)
-            self.mediaCollectionView.reloadData()
             self.selectedMedia = []
+        }
+
+        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+            guard let self = self else { return }
+
+            self.list = list
+            self.media = list.shows
+            self.mediaCollectionView.reloadData()
         }
     }
 

@@ -119,4 +119,10 @@ class FriendRequestTableViewCell: UITableViewCell {
                 break
             }
         }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+    }
+
 }

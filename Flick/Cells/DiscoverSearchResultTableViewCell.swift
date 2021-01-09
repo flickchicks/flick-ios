@@ -179,4 +179,10 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
             remake.centerY.equalToSuperview()
         }
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resultImageView.image = nil
+    }
+
 }

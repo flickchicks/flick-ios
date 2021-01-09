@@ -113,6 +113,7 @@ class ListTableViewCell: UITableViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(padding)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(padding)
+            make.height.equalTo(120)
         }
     }
 
