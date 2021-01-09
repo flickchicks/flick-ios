@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0FCAD1DBEB133A70E299D807 /* Pods_FlickTests.framework in Frameworks */ = {isa = PBXBuildFlick.xcodeproj/project.pbxprojFile; fileRef = FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */; };
+		0FCAD1DBEB133A70E299D807 /* Pods_FlickTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */; };
 		25B7162BF6C14E7A1225DD01 /* Pods_Flick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB53720A824B4207A2982A0A /* Pods_Flick.framework */; };
 		3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF012479CC3900F08C60 /* ListViewController.swift */; };
 		3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */; };
