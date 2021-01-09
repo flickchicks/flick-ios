@@ -16,20 +16,21 @@ class NotificationTableViewCell: UITableViewCell {
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
     private let padding = 12
-    
     static var reuseIdentifier = "NotificationCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         selectionStyle = .none
         backgroundColor = .offWhite
         isSkeletonable = true
+        
         contentView.isSkeletonable = true
 
-        containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
+        containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         containerView.layer.shadowOpacity = 0.07
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
@@ -48,6 +49,10 @@ class NotificationTableViewCell: UITableViewCell {
         notificationLabel.numberOfLines = 0
         containerView.addSubview(notificationLabel)
 
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         containerView.snp.makeConstraints { make in
             make.top.equalTo(contentView).inset(padding)
             make.bottom.equalTo(contentView)
@@ -70,7 +75,7 @@ class NotificationTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // Current user accepted incoming friend request
+    /// setupAcceptedIncomingRequestCell sets notificationLabel for accepted incoming friend requests
     private func setupAcceptedIncomingRequestCell(from user: UserProfile) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -79,7 +84,7 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14("'s friend request.")
     }
     
-    // User accepted current user's outgoing friend request
+    /// setupAcceptedOutgoingRequestCell sets notificationLabel for accepted outgoing friend requests
     private func setupAcceptedOutgoingRequestCell(to user: UserProfile) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -87,6 +92,7 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14(" accepted your friend request.")
     }
 
+    /// setupCollaborationInviteCell sets notificationLabel for list collaboration invites
     private func setupCollaborationInviteCell(fromUser: UserProfile, list: NotificationMediaList) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -96,6 +102,8 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14(".")
     }
 
+    /// setupActivityLikeCell sets notificationLabel for liked activities
+    //  TODO: Revisit this function after updates on backend
     private func setupActivityLikeCell(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String) {
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -105,16 +113,18 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14(".")
     }
 
-    private func setupListShowsEditCell(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, numChanged: Int) {
-        let editConjunctionTerm = type.rawValue == "added" ? "to" : "from"
-        let editPluralTerm = numChanged > 1 ? "s": ""
+    /// setupListShowsEditCell sets up notificationLabel from changes to shows in collaborated lists
+    private func setupListShowsEditCell(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int) {
+        let conjunction = type.rawValue == "added" ? "to" : "from"
+        let posessiveTense = numChanged > 1 ? "s": ""
         notificationLabel.attributedText =
         NSMutableAttributedString()
             .boldFont14(fromUser.name)
-            .normalFont14(" \(type) \(numChanged) item\(editPluralTerm) \(editConjunctionTerm) ")
+            .normalFont14(" \(type) \(numChanged) item\(posessiveTense) \(conjunction) ")
             .boldFont14(list.name)
     }
     
+    /// setupListOwnershipEditCell sets up notificationLabel for changes in collaborated lists' ownership
     private func setupListOwnershipEditCell(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile) {
         let newOwnerText = newOwner.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) ? "you" : newOwner.name
         notificationLabel.attributedText =
@@ -127,7 +137,8 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14(".")
     }
     
-    private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, collaborators: [UserProfile]) {
+    /// setupListCollaboratorsEdit sets up notificationLabel from changes to collaborators in collaborated lists
+    private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile]) {
         let collaboratorNames = collaborators.map { $0.name }
         notificationLabel.attributedText =
         NSMutableAttributedString()
@@ -139,7 +150,7 @@ class NotificationTableViewCell: UITableViewCell {
             .normalFont14(".")
     }
 
-    func configure(with notification: Notification) {
+    func configure(with notification: NotificationEnum) {
         switch notification {
         case .ActivityLike(let fromUser, let likedContent, let media):
             setupActivityLikeCell(fromUser: fromUser, likedContent: likedContent, media: media)

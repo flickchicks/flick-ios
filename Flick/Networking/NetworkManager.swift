@@ -608,14 +608,14 @@ class NetworkManager {
         }
     }
     
-    static func getNotifications(completion: @escaping ([BackendNotification]) -> Void) {
+    static func getNotifications(completion: @escaping ([Notification]) -> Void) {
         AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 debugPrint(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let notificationsData = try? jsonDecoder.decode(Response<[BackendNotification]>.self, from: data) {
+                if let notificationsData = try? jsonDecoder.decode(Response<[Notification]>.self, from: data) {
                     let notifications = notificationsData.data
                     completion(notifications)
                 }
@@ -625,7 +625,6 @@ class NetworkManager {
         }
     }
     
-
     /// [Get] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
         AF.request("\(hostEndpoint)/api/suggest/", method: .get, headers: headers).validate().responseData { response in
@@ -680,13 +679,13 @@ class NetworkManager {
     }
     
     /// [GET] View friend requests [updated as of 1/8/21]
-    static func getFriendRequests(completion: @escaping ([BackendFriendRequest]) -> Void) {
+    static func getFriendRequests(completion: @escaping ([FriendRequest]) -> Void) {
         AF.request("\(hostEndpoint)/api/friends/accept/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let friendRequestsData = try? jsonDecoder.decode(Response<[BackendFriendRequest]>.self, from: data) {
+                if let friendRequestsData = try? jsonDecoder.decode(Response<[FriendRequest]>.self, from: data) {
                     let friendRequests = friendRequestsData.data
                     completion(friendRequests)
                 }

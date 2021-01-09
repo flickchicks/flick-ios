@@ -15,11 +15,12 @@ class NotificationsViewController: UIViewController {
     private let notificationsTableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - Private Data Vars
-    private var friendRequests: [Notification] = []
-    private var notifications: [Notification] = []
+    private var friendRequests: [NotificationEnum] = []
+    private var notifications: [NotificationEnum] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
         
@@ -46,13 +47,12 @@ class NotificationsViewController: UIViewController {
     }
     
     private func getFriendRequests() {
-        NetworkManager.getFriendRequests { [weak self] requests in
+        NetworkManager.getFriendRequests { [weak self] friendRequests in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                let requests: [Notification] = requests.map {
+                self.friendRequests = friendRequests.map {
                     return .IncomingFriendRequest(fromUser: $0.fromUser)
                 }
-                self.friendRequests = requests
                 self.notificationsTableView.reloadData()
             }
         }
@@ -62,7 +62,9 @@ class NotificationsViewController: UIViewController {
         NetworkManager.getNotifications { [weak self] notifications in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                let newNotifs: [Notification] = notifications.map {
+                /* Note: Every element in returned notifications needs to be mapped to a corresponding object in our notifications array so depending on mistakes on the backend or frontend, there might be some inconsistencies in mapping the objects. I also make assumptions on the presence of values for optionals depending on the notification type, which may cause issues. For the most part this shouldn't be an issue. We can also revisit this later if need be.
+                */
+                self.notifications = notifications.map {
                     if $0.notifType == "list_invite" {
                         return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!)
                     } else if $0.notifType == "friend_request" {
@@ -81,10 +83,10 @@ class NotificationsViewController: UIViewController {
                             return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved)
                         }
                     } else {
+                        // TODO: Revisit after backend finishes notifications
                         return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
                     }
                 }
-                self.notifications = newNotifs
                 self.getFriendRequests()
 //                self.notificationsTableView.hideSkeleton()
             }
@@ -92,7 +94,6 @@ class NotificationsViewController: UIViewController {
     }
     
     private func getAllNotifications() {
-//        getFriendRequests()
         getNotifications()
     }
     

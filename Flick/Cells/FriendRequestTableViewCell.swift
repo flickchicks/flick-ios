@@ -16,17 +16,16 @@ protocol NotificationDelegate: class {
 class FriendRequestTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
+    private let acceptButton = UIButton()
     private let containerView = UIView()
+    private let ignoreButton = UIButton()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
-    private let acceptButton = UIButton()
-    private let ignoreButton = UIButton()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
     weak var delegate: NotificationDelegate?
-    private let padding = 12
     private var fromUser: UserProfile?
-    
+    private let padding = 12
     static let reuseIdentifier = "FriendRequestCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -35,10 +34,11 @@ class FriendRequestTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .offWhite
         isSkeletonable = true
+        
         contentView.isSkeletonable = true
 
-        containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
+        containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         containerView.layer.shadowOpacity = 0.07
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
@@ -130,7 +130,9 @@ class FriendRequestTableViewCell: UITableViewCell {
         NetworkManager.rejectFriendRequest(friendId: fromUser.id) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.delegate?.refreshNotifications(message: "Ignored \(fromUser.name)'s request.")
+                if success {
+                    self.delegate?.refreshNotifications(message: "Ignored \(fromUser.name)'s request.")
+                }
             }
         }
     }
@@ -146,7 +148,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         notificationLabel.attributedText = friendLabelString
     }
 
-    func configure(with notification: Notification) {
+    func configure(with notification: NotificationEnum) {
             switch notification {
             case .IncomingFriendRequest(let fromUser):
                 self.fromUser = fromUser

@@ -7,12 +7,12 @@
 //
 
 
-struct BackendNotification: Codable {
+struct Notification: Codable {
     var id: Int
     var notifType: String
     var fromUser: UserProfile
     var toUser: UserProfile
-    var lst: NotificationMediaList? // Double check this object!
+    var lst: NotificationMediaList?
     var newOwner: UserProfile?
     var numShowsAdded: Int?
     var numShowsRemoved: Int?
@@ -23,19 +23,19 @@ struct BackendNotification: Codable {
 }
 
 
-enum Notification {
+enum NotificationEnum {
     case IncomingFriendRequest(fromUser: UserProfile)
     // Question: is accepted always true?
     case FriendRequest(fromUser: UserProfile, toUser: UserProfile)
     case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
-    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, numChanged: Int)
-    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListShowsEditType, collaborators: [UserProfile])
+    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int)
+    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile])
     case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile)
     case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
 }
 
 
-enum ListShowsEditType: String {
+enum ListEditType: String {
     case added = "added"
     case removed = "removed"
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
-struct BackendFriendRequest: Codable {
+struct FriendRequest: Codable {
     var fromUser: UserProfile
     var created: String
     var rejected: Bool?
