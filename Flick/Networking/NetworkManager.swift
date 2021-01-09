@@ -230,7 +230,6 @@ class NetworkManager {
     static func updateMediaList(listId: Int, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "name": list.name,
-            "collaborators": list.collaborators.map { $0.id },
             "owner": list.owner.id,
             "is_private": list.isPrivate
         ]
@@ -263,7 +262,6 @@ class NetworkManager {
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
