@@ -147,11 +147,10 @@ class ListTableViewCell: UITableViewCell {
 
 extension ListTableViewCell: SkeletonCollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item == 10 {
+        if indexPath.item == 10 || indexPath.row >= media.count {
             delegate?.pushListViewController(listId: list.id)
         } else {
-            let media = self.media[indexPath.row]
-            delegate?.pushMediaViewController(mediaId: media.id)
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
         }
     }
 }
