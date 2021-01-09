@@ -12,7 +12,6 @@ import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    private let userDefaults = UserDefaults.standard
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -35,14 +34,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         guard let token = AccessToken.current, !token.isExpired else {
             LoginManager().logOut()
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
             return
         }
         // User is logged in and we have correct authorization token.
-        NetworkManager.getUserProfile { profile, success in
+        NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
-                print(success)
-                let rootViewController = success ? HomeViewController() : loginViewController
-                window.rootViewController = UINavigationController(rootViewController: rootViewController)
+                guard let profile = profile else {
+                    window.rootViewController = UINavigationController(rootViewController: loginViewController)
+                    return
+                }
+                UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
+                window.rootViewController = UINavigationController(rootViewController: HomeViewController())
             }
         }
     }

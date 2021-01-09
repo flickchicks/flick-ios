@@ -62,10 +62,11 @@ class LoginViewController: UIViewController {
                             socialId: profile.userID,
                             socialIdToken: accessToken) { [weak self] authorizationToken in
                             guard let self = self else { return }
-                            print(authorizationToken)
-                            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                            let homeViewController = HomeViewController()
-                            self.navigationController?.pushViewController(homeViewController, animated: true)
+                            DispatchQueue.main.async {
+                                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                                let homeViewController = HomeViewController()
+                                self.navigationController?.pushViewController(homeViewController, animated: true)
+                            }
                         }
                 }
             }

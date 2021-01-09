@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController {
     private let logoutButton = UIButton()
     private let sendFeedbackButton = UIButton()
     private let settingsTitleLabel = UILabel()
-    private let userDefaults = UserDefaults.standard
 
     // MARK: - Private Data Vars
     private var user: UserProfile
@@ -69,7 +68,8 @@ class SettingsViewController: UIViewController {
 
     @objc func logout() {
         LoginManager().logOut()
-        userDefaults.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
         let loginViewController = LoginViewController()
         navigationController?.pushViewController(loginViewController, animated: true)
     }

@@ -28,3 +28,12 @@ struct MediaList: Codable {
     var shows: [SimpleMedia]
     var tags: [Tag]
 }
+
+struct NotificationMediaList: Codable {
+    var id: Int
+    var name: String
+    var pic: String?
+    var isSaved: Bool
+    var isPrivate: Bool
+    var isWatchLater: Bool
+}
