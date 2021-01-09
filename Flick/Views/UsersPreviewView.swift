@@ -55,7 +55,7 @@ class UsersPreviewView: UIView {
         usersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: usersLayout)
         usersCollectionView.delegate = self
         usersCollectionView.dataSource = self
-        usersCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: usersCellReuseIdentifier)
+        usersCollectionView.register(UserPreviewCollectionViewCell.self, forCellWithReuseIdentifier: usersCellReuseIdentifier)
         usersCollectionView.backgroundColor = .none
         addSubview(usersCollectionView)
 
@@ -121,13 +121,7 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellReuseIdentifier, for: indexPath)
-//        let user = users[indexPath.item]
-        cell.backgroundColor = .deepPurple
-        cell.clipsToBounds = true
-        cell.layer.borderColor = UIColor.white.cgColor
-        cell.layer.borderWidth = 0.5
-        cell.layer.cornerRadius = 10
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: usersCellReuseIdentifier, for: indexPath) as? UserPreviewCollectionViewCell else { return UICollectionViewCell() }
 
         var shouldShowEllipsis: Bool {
             switch usersLayoutMode {
@@ -139,14 +133,11 @@ extension UsersPreviewView: UICollectionViewDelegate, UICollectionViewDataSource
         }
 
         if shouldShowEllipsis {
-            cell.backgroundView = UIImageView(image: UIImage(named: "ellipsis"))
+            cell.configure(user: nil, shouldShowEllipsis: true)
         } else {
-            let user = users[indexPath.item]
-            if let pictureUrl = URL(string: user.profilePic?.assetUrls.small ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
-                let pictureObject = UIImage(data: pictureData)
-                cell.backgroundView = UIImageView(image: pictureObject)
-            }
+            cell.configure(user: users[indexPath.row], shouldShowEllipsis: false)
         }
+
         return cell
     }
 

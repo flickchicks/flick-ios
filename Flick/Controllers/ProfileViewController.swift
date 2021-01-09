@@ -268,7 +268,8 @@ extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDat
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
     func pushSettingsView() {
-        let settingsViewController = SettingsViewController()
+        guard let user = user else { return }
+        let settingsViewController = SettingsViewController(user: user)
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 

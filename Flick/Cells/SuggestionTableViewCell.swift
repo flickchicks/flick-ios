@@ -203,5 +203,12 @@ class SuggestionTableViewCell: UITableViewCell {
 //        let heartImage = suggestion.liked ? "filledHeart" : "heart"
 //        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        mediaImageView.image = nil
+    }
+
 }
 

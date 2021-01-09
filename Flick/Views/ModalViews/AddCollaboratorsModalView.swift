@@ -17,7 +17,6 @@ class AddCollaboratorModalView: UIView {
     private let collaboratorsTitleLabel = UILabel()
     private let containerView = UIView()
     private let copyLinkButton = UIButton()
-    private var doneButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
@@ -26,10 +25,10 @@ class AddCollaboratorModalView: UIView {
 
     // MARK: - Private Data Vars
     private var allFriends: [UserProfile] = []
+    private let collaboratorCellHeight = 57
     private var collaborators: [UserProfile]
     private var friends: [UserProfile] = []
     private var owner: UserProfile
-    private var selectedCollaborators: [UserProfile] = []
 
     private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
     private let inviteCollaboratorCellReuseIdentifier = "InviteCollaboratorCellReuseIdentifier"
@@ -40,7 +39,6 @@ class AddCollaboratorModalView: UIView {
     init(owner: UserProfile, collaborators: [UserProfile]) {
         self.owner = owner
         self.collaborators = [owner] + collaborators
-        self.selectedCollaborators = collaborators
         super.init(frame: .zero)
         setupViews()
     }
@@ -54,13 +52,11 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTitleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(collaboratorsTitleLabel)
 
-        cancelButton = RoundedButton(style: .gray, title: "Cancel")
+        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitleColor(.mediumGray, for: .normal)
+        cancelButton.titleLabel?.font = .systemFont(ofSize: 14)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
-
-        doneButton = RoundedButton(style: .purple, title: "Done")
-        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
-        containerView.addSubview(doneButton)
 
         subtitleLabel.text = "Collaborators can add or remove media and collaborators. The owner can edit privacy settings."
         subtitleLabel.numberOfLines = 0
@@ -75,7 +71,7 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTableView.isScrollEnabled = true
         collaboratorsTableView.alwaysBounceVertical = false
         collaboratorsTableView.showsVerticalScrollIndicator = false
-        collaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
+        collaboratorsTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
         collaboratorsTableView.separatorStyle = .none
         containerView.addSubview(collaboratorsTableView)
 
@@ -88,11 +84,27 @@ class AddCollaboratorModalView: UIView {
         copyLinkButton.setTitleColor(.mediumGray, for: .normal)
         copyLinkButton.titleLabel?.font = .systemFont(ofSize: 10)
         copyLinkButton.addTarget(self, action: #selector(copyLink), for: .touchUpInside)
-        containerView.addSubview(copyLinkButton)
+//        containerView.addSubview(copyLinkButton)
 
         inviteSearchBar.placeholder = "Search friends"
         inviteSearchBar.delegate = self
         containerView.addSubview(inviteSearchBar)
+
+        inviteCollaboratorsTableView = UITableView(frame: .zero, style: .plain)
+        inviteCollaboratorsTableView.dataSource = self
+        inviteCollaboratorsTableView.delegate = self
+        inviteCollaboratorsTableView.allowsMultipleSelection = true
+        inviteCollaboratorsTableView.isScrollEnabled = true
+        inviteCollaboratorsTableView.alwaysBounceVertical = false
+        inviteCollaboratorsTableView.showsVerticalScrollIndicator = false
+        inviteCollaboratorsTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
+        inviteCollaboratorsTableView.separatorStyle = .none
+
+        noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
+        noFriendsLabel.textColor = .darkBlue
+        noFriendsLabel.numberOfLines = 0
+        noFriendsLabel.font = .systemFont(ofSize: 12)
+        noFriendsLabel.textAlignment = .center
 
         containerView.backgroundColor = .white
         containerView.layer.cornerRadius = 24
@@ -102,28 +114,23 @@ class AddCollaboratorModalView: UIView {
 
         NetworkManager.getFriends { [weak self] friends in
             guard let self = self else { return }
+            self.allFriends = friends
             self.friends = friends
             self.setupFriendsView()
         }
     }
 
     private func setupConstraints() {
-        let collaboratorCellHeight = 57
         let collaboratorsTitleLabelSize = CGSize(width: 117, height: 22)
         let copyLinkButtonSize = CGSize(width: 48, height: 12)
         let horizontalPadding = 24
         let inviteTitleLabelSize = CGSize(width: 48, height: 22)
-        let noFriendsSectionViewHeight = 193
+        let noFriendsSectionViewHeight = 3 * collaboratorCellHeight
         let roundButtonSize = CGSize(width: 84, height: 40)
         let verticalPadding = 36
 
-        let collaboratorsTableViewHeight = min(collaborators.count, 4) * collaboratorCellHeight
-        let friendsTableViewHeight = min(friends.count, 4) * collaboratorCellHeight
-
-        let inviteSectionHeight = friends.count > 0 ? friendsTableViewHeight : noFriendsSectionViewHeight
-        // 227 is manually calculated height for container
-        let containerHeight = inviteSectionHeight + collaboratorsTableViewHeight + Int(roundButtonSize.height) + 287
-
+        let collaboratorsTableViewHeight = min(collaborators.count, 3) * collaboratorCellHeight
+        let containerHeight = noFriendsSectionViewHeight + collaboratorsTableViewHeight + Int(roundButtonSize.height) + 287
         let containerViewSize = CGSize(width: 325, height: containerHeight)
 
         containerView.snp.makeConstraints { make in
@@ -137,16 +144,10 @@ class AddCollaboratorModalView: UIView {
             make.size.equalTo(collaboratorsTitleLabelSize)
         }
 
-        doneButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(62.5)
-            make.size.equalTo(roundButtonSize)
-            make.bottom.equalToSuperview().inset(verticalPadding)
-        }
-
         cancelButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(62.5)
+            make.centerX.equalToSuperview()
             make.size.equalTo(roundButtonSize)
-            make.bottom.equalToSuperview().inset(verticalPadding)
+            make.bottom.equalToSuperview().inset(20)
         }
 
         subtitleLabel.snp.makeConstraints { make in
@@ -168,15 +169,15 @@ class AddCollaboratorModalView: UIView {
             make.size.equalTo(inviteTitleLabelSize)
         }
 
-        copyLinkButton.snp.makeConstraints { make in
-            make.trailing.equalTo(containerView).inset(horizontalPadding)
-            make.centerY.equalTo(inviteTitleLabel)
-            make.size.equalTo(copyLinkButtonSize)
-        }
+//        copyLinkButton.snp.makeConstraints { make in
+//            make.trailing.equalTo(containerView).inset(horizontalPadding)
+//            make.centerY.equalTo(inviteTitleLabel)
+//            make.size.equalTo(copyLinkButtonSize)
+//        }
 
         inviteSearchBar.snp.makeConstraints { make in
             make.leading.trailing.equalTo(collaboratorsTableView)
-            make.height.equalTo(36)
+            make.height.equalTo(40)
             make.top.equalTo(inviteTitleLabel.snp.bottom).offset(18)
         }
 
@@ -190,55 +191,30 @@ class AddCollaboratorModalView: UIView {
     }
 
     private func setupFriendsView() {
+        let inviteHeight = 3 * collaboratorCellHeight
         if friends.count > 0 {
-            inviteCollaboratorsTableView = UITableView(frame: .zero, style: .plain)
-            inviteCollaboratorsTableView.dataSource = self
-            inviteCollaboratorsTableView.delegate = self
-            inviteCollaboratorsTableView.allowsMultipleSelection = true
-            inviteCollaboratorsTableView.isScrollEnabled = true
-            inviteCollaboratorsTableView.alwaysBounceVertical = false
-            inviteCollaboratorsTableView.showsVerticalScrollIndicator = false
-            inviteCollaboratorsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
-            inviteCollaboratorsTableView.separatorStyle = .none
             containerView.addSubview(inviteCollaboratorsTableView)
 
-            let inviteCollaboratorsTableViewHeight = min(4, friends.count) * 57
             inviteCollaboratorsTableView.snp.makeConstraints { make in
                 make.leading.equalTo(collaboratorsTitleLabel)
                 make.trailing.equalTo(subtitleLabel)
-                make.height.equalTo(inviteCollaboratorsTableViewHeight)
+                make.height.equalTo(inviteHeight)
                 make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
             }
         } else {
-            noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
-            noFriendsLabel.textColor = .darkBlue
-            noFriendsLabel.numberOfLines = 0
-            noFriendsLabel.font = .systemFont(ofSize: 12)
-            noFriendsLabel.textAlignment = .center
             containerView.addSubview(noFriendsLabel)
 
             noFriendsLabel.snp.makeConstraints { make in
                 make.leading.equalTo(collaboratorsTitleLabel)
                 make.trailing.equalTo(subtitleLabel)
                 make.top.equalTo(inviteSearchBar.snp.bottom).offset(17)
-                make.height.equalTo(193)
+                make.height.equalTo(inviteHeight)
             }
         }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc func doneTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-            self.listSettingsDelegate?.updateCollaborators(to: self.selectedCollaborators)
-        }
     }
 
     @objc func cancelTapped() {
@@ -255,6 +231,11 @@ class AddCollaboratorModalView: UIView {
 
     }
 
+    func updateCollaborators(updatedList: MediaList) {
+        collaborators = [updatedList.owner] + updatedList.collaborators
+        collaboratorsTableView.reloadData()
+        inviteCollaboratorsTableView.reloadData()
+    }
 }
 
 extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
@@ -268,30 +249,18 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? CollaboratorTableViewCell else { return UITableViewCell() }
-        let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        cell.configure(for: collaborator, isOwner: collaborator.id == owner.id)
-        if selectedCollaborators.contains(where: { $0.id == collaborator.id }) {
-            cell.isSelected = true
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? EditCollaboratorTableViewCell else { return UITableViewCell() }
+        if tableView == collaboratorsTableView {
+            let collaborator = collaborators[indexPath.row]
+            cell.configureCollaborator(for: collaborator, isOwner: owner.id == collaborator.id)
+            cell.delegate = self
+        } else {
+            let friend = friends[indexPath.row]
+            let isAdded = collaborators.contains { $0.id == friend.id }
+            cell.configureFriend(for: friend, isAdded: isAdded)
+            cell.delegate = self
         }
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = true
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-        let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        selectedCollaborators.append(collaborator)
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = false
-        tableView.deselectRow(at: indexPath, animated: true)
-        let collaborator = tableView == collaboratorsTableView ? collaborators[indexPath.row] : friends[indexPath.row]
-        selectedCollaborators.removeAll { $0.id == collaborator.id }
     }
 }
 
@@ -302,9 +271,23 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
             if searchText == "" {
                 friends = allFriends
             } else {
-                friends = allFriends.filter { $0.name.contains(searchText) }
+                friends = allFriends.filter {
+                    "\($0.name)".contains(searchText) || $0.username.contains(searchText)
+                }
             }
             inviteCollaboratorsTableView.reloadData()
         }
     }
+}
+
+extension AddCollaboratorModalView: EditCollaboratorCellDelegate {
+
+    func addCollaboratorTapped(user: UserProfile) {
+        listSettingsDelegate?.addCollaborator(collaborator: user)
+    }
+
+    func removeCollaboratorTapped(user: UserProfile) {
+        listSettingsDelegate?.removeCollaborator(collaborator: user)
+    }
+
 }
