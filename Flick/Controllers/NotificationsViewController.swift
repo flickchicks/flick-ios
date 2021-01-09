@@ -93,13 +93,9 @@ class NotificationsViewController: UIViewController {
         }
     }
     
-    private func getAllNotifications() {
-        getNotifications()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getAllNotifications()
+        getNotifications()
     }
 }
 
@@ -207,6 +203,6 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
 extension NotificationsViewController: NotificationDelegate {
     func refreshNotifications(message: String) {
         presentInfoAlert(message: message, completion: nil)
-        getAllNotifications()
+        getNotifications()
     }
 }
