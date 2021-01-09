@@ -134,15 +134,22 @@
 
 /* Begin PBXFileReference section */
 		06887911EDAD906CA17C4F2C /* Pods-Flick-FlickUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.release.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.release.xcconfig"; sourceTree = "<group>"; };
+		10BD790B6B6702C79F421A9B /* Pods-Flick-FlickUITests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.prod debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.prod debug.xcconfig"; sourceTree = "<group>"; };
 		22B7223526D81FE8EB4483A3 /* Pods-Flick.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.debug.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.debug.xcconfig"; sourceTree = "<group>"; };
+		275CAE0FE30131625A119722 /* Pods-FlickTests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.dev release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.dev release.xcconfig"; sourceTree = "<group>"; };
 		3095FF012479CC3900F08C60 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaInListCollectionViewCell.swift; sourceTree = "<group>"; };
 		3095FF07247B93D700F08C60 /* RoundTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundTopView.swift; sourceTree = "<group>"; };
 		309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSummaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		309F287024956FB400A670B0 /* MediaListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListHeaderView.swift; sourceTree = "<group>"; };
+		3B2B17B582B171050C376A95 /* Pods-FlickTests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.prod release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.prod release.xcconfig"; sourceTree = "<group>"; };
+		3F2C57C9770876632F7C63B8 /* Pods-Flick-FlickUITests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.dev release.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.dev release.xcconfig"; sourceTree = "<group>"; };
+		461A64CE7F67CF86FDBA42A6 /* Pods-Flick-FlickUITests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.prod release.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.prod release.xcconfig"; sourceTree = "<group>"; };
+		51A19615C18A5D15395C884C /* Pods-Flick.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.prod debug.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.prod debug.xcconfig"; sourceTree = "<group>"; };
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
+		74EDFCD858A4F4E8205153C6 /* Pods-FlickTests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.dev debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		803E5EA22596D92B004CF4B7 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaModalView.swift; sourceTree = "<group>"; };
@@ -171,8 +178,10 @@
 		80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsViewController.swift; sourceTree = "<group>"; };
 		80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationModalView.swift; sourceTree = "<group>"; };
 		80F00F7924C296460051B8FF /* EditListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewController.swift; sourceTree = "<group>"; };
+		84AF939B817505E40155FEAD /* Pods-Flick.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.dev debug.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.dev debug.xcconfig"; sourceTree = "<group>"; };
 		BB53720A824B4207A2982A0A /* Pods_Flick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.release.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.release.xcconfig"; sourceTree = "<group>"; };
+		CEF8447FDC5FC05795FB47F0 /* Pods-Flick.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.dev release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.dev release.xcconfig"; sourceTree = "<group>"; };
 		D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSpoilerModalView.swift; sourceTree = "<group>"; };
 		D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
 		D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverContent.swift; sourceTree = "<group>"; };
@@ -230,6 +239,7 @@
 		D478669E247C57D2009E42FE /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		D47866A0247C57F8009E42FE /* MediaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaList.swift; sourceTree = "<group>"; };
 		D47866A2247C5805009E42FE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D48DEAB7170FEEB58E08EC8A /* Pods-Flick-FlickUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotificationsViewController.swift; sourceTree = "<group>"; };
 		D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
 		D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -248,9 +258,11 @@
 		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPreviewView.swift; sourceTree = "<group>"; };
 		D4FB449124B11CB7003CA71A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		D8CF2A5833C57F7087C0FB81 /* Pods-FlickTests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.prod debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.prod debug.xcconfig"; sourceTree = "<group>"; };
 		F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flick_FlickUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1515C015F7DB77D04B34A7 /* Pods_FlickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE41D81201E339910DEED284 /* Pods-Flick.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.prod release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.prod release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +302,18 @@
 				06887911EDAD906CA17C4F2C /* Pods-Flick-FlickUITests.release.xcconfig */,
 				70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */,
 				C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */,
+				84AF939B817505E40155FEAD /* Pods-Flick.dev debug.xcconfig */,
+				51A19615C18A5D15395C884C /* Pods-Flick.prod debug.xcconfig */,
+				CEF8447FDC5FC05795FB47F0 /* Pods-Flick.dev release.xcconfig */,
+				FE41D81201E339910DEED284 /* Pods-Flick.prod release.xcconfig */,
+				D48DEAB7170FEEB58E08EC8A /* Pods-Flick-FlickUITests.dev debug.xcconfig */,
+				10BD790B6B6702C79F421A9B /* Pods-Flick-FlickUITests.prod debug.xcconfig */,
+				3F2C57C9770876632F7C63B8 /* Pods-Flick-FlickUITests.dev release.xcconfig */,
+				461A64CE7F67CF86FDBA42A6 /* Pods-Flick-FlickUITests.prod release.xcconfig */,
+				74EDFCD858A4F4E8205153C6 /* Pods-FlickTests.dev debug.xcconfig */,
+				D8CF2A5833C57F7087C0FB81 /* Pods-FlickTests.prod debug.xcconfig */,
+				275CAE0FE30131625A119722 /* Pods-FlickTests.dev release.xcconfig */,
+				3B2B17B582B171050C376A95 /* Pods-FlickTests.prod release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1056,7 +1080,7 @@
 		};
 		D41FE8D92477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22B7223526D81FE8EB4483A3 /* Pods-Flick.debug.xcconfig */;
+			baseConfigurationReference = 84AF939B817505E40155FEAD /* Pods-Flick.dev debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1076,7 +1100,7 @@
 		};
 		D41FE8DA2477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */;
+			baseConfigurationReference = CEF8447FDC5FC05795FB47F0 /* Pods-Flick.dev release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1096,7 +1120,7 @@
 		};
 		D41FE8DC2477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */;
+			baseConfigurationReference = 74EDFCD858A4F4E8205153C6 /* Pods-FlickTests.dev debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1118,7 +1142,7 @@
 		};
 		D41FE8DD2477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */;
+			baseConfigurationReference = 275CAE0FE30131625A119722 /* Pods-FlickTests.dev release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1140,7 +1164,7 @@
 		};
 		D41FE8DF2477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */;
+			baseConfigurationReference = D48DEAB7170FEEB58E08EC8A /* Pods-Flick-FlickUITests.dev debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1160,7 +1184,7 @@
 		};
 		D41FE8E02477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06887911EDAD906CA17C4F2C /* Pods-Flick-FlickUITests.release.xcconfig */;
+			baseConfigurationReference = 3F2C57C9770876632F7C63B8 /* Pods-Flick-FlickUITests.dev release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1240,7 +1264,7 @@
 		};
 		D45A3DAF25A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22B7223526D81FE8EB4483A3 /* Pods-Flick.debug.xcconfig */;
+			baseConfigurationReference = 51A19615C18A5D15395C884C /* Pods-Flick.prod debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1260,7 +1284,7 @@
 		};
 		D45A3DB025A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */;
+			baseConfigurationReference = D8CF2A5833C57F7087C0FB81 /* Pods-FlickTests.prod debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1282,7 +1306,7 @@
 		};
 		D45A3DB125A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3052F6A8A8F596B0C0B6754 /* Pods-Flick-FlickUITests.debug.xcconfig */;
+			baseConfigurationReference = 10BD790B6B6702C79F421A9B /* Pods-Flick-FlickUITests.prod debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1356,7 +1380,7 @@
 		};
 		D45A3DB325A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */;
+			baseConfigurationReference = FE41D81201E339910DEED284 /* Pods-Flick.prod release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1376,7 +1400,7 @@
 		};
 		D45A3DB425A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C323FE328D995E2FC9E169B2 /* Pods-FlickTests.release.xcconfig */;
+			baseConfigurationReference = 3B2B17B582B171050C376A95 /* Pods-FlickTests.prod release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1398,7 +1422,7 @@
 		};
 		D45A3DB525A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06887911EDAD906CA17C4F2C /* Pods-Flick-FlickUITests.release.xcconfig */;
+			baseConfigurationReference = 461A64CE7F67CF86FDBA42A6 /* Pods-Flick-FlickUITests.prod release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;

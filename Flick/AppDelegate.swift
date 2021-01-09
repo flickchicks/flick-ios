@@ -18,6 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
+        
+        
+        #if LOCAL
+        print("LOCAL")
+        
+        #elseif DEV
+        print("DEV")
+        
+        #else
+        print("PROD")
+        
+        #endif
+        
         return true
     }
 
