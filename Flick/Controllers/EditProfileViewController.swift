@@ -110,6 +110,7 @@ class EditProfileViewController: UIViewController {
         firstNameFieldLabel.textColor = .mediumGray
         view.addSubview(firstNameFieldLabel)
 
+        // TODO: Change this to one single name field later?
         firstNameTextField.text = String(user.name.split(separator: " ")[0])
         view.addSubview(firstNameTextField)
 
