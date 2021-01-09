@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 enum FriendsLayoutMode { case expanded, condensed }
 
@@ -55,6 +56,7 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .offWhite
+        view.isSkeletonable = true
 
         if !isCurrentUser {
             setupNavigationBar()
@@ -66,9 +68,14 @@ class ProfileViewController: UIViewController {
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
+        listsTableView.estimatedRowHeight = 190
+        listsTableView.rowHeight = UITableView.automaticDimension
         listsTableView.separatorStyle = .none
+        listsTableView.estimatedSectionHeaderHeight = 0
+        listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
         listsTableView.bounces = false
+        listsTableView.isSkeletonable = true
         view.addSubview(listsTableView)
 
         listsTableView.snp.makeConstraints { make in
@@ -77,6 +84,8 @@ class ProfileViewController: UIViewController {
         }
 
         setupSections()
+        
+        listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -152,11 +161,32 @@ class ProfileViewController: UIViewController {
             self.mediaLists = ownerLists + collabLists
         }
         self.listsTableView.reloadData()
+        self.listsTableView.hideSkeleton()
     }
 }
 
-extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
+extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
 
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .profileSummary:
+            return profileCellReuseIdentifier
+        case .lists:
+            return listCellReuseIdentifier
+        }
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let section = sections[section]
+        switch section.type {
+        case .profileSummary:
+            return 1
+        case .lists:
+            return 4
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -183,6 +213,30 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             cell.configure(for: mediaLists[indexPath.item])
             cell.delegate = self
             return cell
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .profileSummary:
+            return 160
+        case .lists:
+            return 174
+        }
+    }
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
+        let section = sections[section]
+        switch section.type {
+        case .lists:
+            return headerReuseIdentifier
+        default:
+            return nil
         }
     }
 

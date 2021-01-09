@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol MediaControllerDelegate: class {
     func showMediaViewController(id: Int)
@@ -26,7 +27,9 @@ class TrendingTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         backgroundColor = .clear
-                
+        isSkeletonable = true
+        contentView.isSkeletonable = true
+        
         let discoverLayout = UICollectionViewFlowLayout()
         discoverLayout.scrollDirection = .horizontal
         discoverLayout.minimumInteritemSpacing = 20
@@ -40,6 +43,7 @@ class TrendingTableViewCell: UITableViewCell {
         discoverCollectionView.register(TrendingContentCollectionViewCell.self, forCellWithReuseIdentifier: TrendingContentCollectionViewCell.reuseIdentifier)
         discoverCollectionView.showsHorizontalScrollIndicator = false
         discoverCollectionView.isScrollEnabled = true
+        discoverCollectionView.isSkeletonable = true
         contentView.addSubview(discoverCollectionView)
 
         setupConstraints()
@@ -47,7 +51,7 @@ class TrendingTableViewCell: UITableViewCell {
     
     func setupConstraints() {
         discoverCollectionView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     
@@ -59,10 +63,18 @@ class TrendingTableViewCell: UITableViewCell {
         discoverShows = shows
         discoverCollectionView.reloadData()
     }
-    
 }
 
-extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonCollectionViewDelegate {
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return TrendingContentCollectionViewCell.reuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return discoverShows.count
     }
@@ -80,13 +92,10 @@ extension TrendingTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         let show = discoverShows[indexPath.item]
         delegate?.showMediaViewController(id: show.id)
     }
-    
 }
 
 extension TrendingTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 312, height: 468)
     }
-
 }
-

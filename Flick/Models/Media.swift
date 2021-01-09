@@ -24,7 +24,7 @@ struct Media: Codable {
     var status: String?
     var language: String?
     var duration: String?
-    var plot: String
+    var plot: String?
     var tags: [Tag]?
     var seasons: String?
     var audienceLevel: String?

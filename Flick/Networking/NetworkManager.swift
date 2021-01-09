@@ -380,6 +380,7 @@ class NetworkManager {
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

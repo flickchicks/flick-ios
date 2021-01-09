@@ -23,7 +23,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .offWhite
-
+        
         containerView.addSubview(roundTopView)
         containerView.clipsToBounds = true
         contentView.addSubview(containerView)
