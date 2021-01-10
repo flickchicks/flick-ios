@@ -24,7 +24,8 @@ class FriendTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         backgroundColor = .clear
-        
+
+        userProfileImageView.clipsToBounds = true
         userProfileImageView.layer.cornerRadius = 20
         userProfileImageView.layer.backgroundColor = UIColor.darkPurple.cgColor
         contentView.addSubview(userProfileImageView)
