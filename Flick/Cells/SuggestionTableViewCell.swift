@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol SuggestionsDelegate: class {
     func likeSuggestion(index: Int)
@@ -186,8 +187,8 @@ class SuggestionTableViewCell: UITableViewCell {
             NSMutableAttributedString()
             .boldFont14(suggestion.fromUser.name)
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
-        if let pictureUrl = suggestion.fromUser.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
-            profileImageView.image = UIImage(data: decodedData as Data)
+        if let profilePic = suggestion.fromUser.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "suggestorProfilePicture"))
         }
         messageLabel.text = suggestion.message
         mediaTitleLabel.text = suggestion.show.title

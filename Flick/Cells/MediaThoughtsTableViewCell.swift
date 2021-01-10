@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MediaThoughtsTableViewCell: UITableViewCell {
 
@@ -177,8 +178,8 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentDateLabel.text = "1d"
         // TODO: Add logic to discover if comment has been liked by user
         commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
-        if let pictureUrl = comment.owner.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
-            commentProfileImageView.image = UIImage(data: decodedData as Data)
+        if let profilePic = comment.owner.profilePic {
+            commentProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
         }
         seeAllCommentsButton.isHidden = false
     }

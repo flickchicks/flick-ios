@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DiscoverSearchResultTableViewCell: UITableViewCell {
 
@@ -105,8 +106,8 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
-        if let pictureUrl = user.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
-            resultImageView.image = UIImage(data: decodedData as Data)
+        if let profilePic = user.profilePic {
+            resultImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "discoverUserProfilePicture"))
         } else {
             resultImageView.image = nil
         }

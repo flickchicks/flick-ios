@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ProfileInputTextField: UITextField {
 
@@ -85,8 +86,8 @@ class EditProfileViewController: UIViewController {
         imagePickerController.allowsEditing = false
         imagePickerController.mediaTypes = ["public.image"]
 
-        if let pictureUrl = user.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
-            profileImageView.image = UIImage(data: decodedData as Data)
+        if let profilePic = user.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "editUserProfilePicture"))
         }
         
         profileImageView.layer.cornerRadius = 50

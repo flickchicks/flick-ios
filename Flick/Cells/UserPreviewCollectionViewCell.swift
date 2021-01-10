@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class UserPreviewCollectionViewCell: UICollectionViewCell {
 
@@ -33,8 +34,8 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
         if shouldShowEllipsis {
             profileImageView.image = UIImage(named: "ellipsis")
         } else {
-            if let user = user, let pictureUrl = user.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
-                profileImageView.image = UIImage(data: decodedData as Data)
+            if let user = user, let profilePic = user.profilePic {
+                profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userPreviewProfilePicture"))
             }
         }
     }
