@@ -126,7 +126,7 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
             // Incoming friend request
             switch friendRequests[indexPath.row] {
             case .IncomingFriendRequest(let fromUser):
-                let profileViewController = ProfileViewController(userId: fromUser.id)
+                let profileViewController = ProfileViewController(isHome: false, userId: fromUser.id)
                 navigationController?.pushViewController(profileViewController, animated: true)
             default:
                 break
@@ -136,10 +136,10 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
             case .FriendRequest(let fromUser, let toUser):
                 if toUser.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
                     // Friend request was sent to fromUser and accepted by the current user
-                    navigationController?.pushViewController(ProfileViewController(userId: fromUser.id), animated: true)
+                    navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
                 } else {
                     // Friend request was sent by the current user and accepted by toUser
-                    navigationController?.pushViewController(ProfileViewController(userId: toUser.id), animated: true)
+                    navigationController?.pushViewController(ProfileViewController(isHome: false, userId: toUser.id), animated: true)
                 }
             case .CollaborationInvite(_, let list):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)

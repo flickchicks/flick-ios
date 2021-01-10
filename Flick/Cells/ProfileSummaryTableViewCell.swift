@@ -157,7 +157,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(isCurrentUser: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
+    func configure(isHome: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
         nameLabel.text = user.name
@@ -167,8 +167,9 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
             profileImageView.kf.setImage(with: pictureUrl)
         }
-        notificationButton.isHidden = !isCurrentUser
-        settingsButton.isHidden = !isCurrentUser
+        // Notification and settings buttons only show if is at Home
+        notificationButton.isHidden = !isHome
+        settingsButton.isHidden = !isHome
 
         // Update friends preview
         if !friends.isEmpty {

@@ -92,7 +92,7 @@ class FriendsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        friendsTitleLabel.text = "My Friends"
+        friendsTitleLabel.text = "Friends"
         friendsTitleLabel.font = .systemFont(ofSize: 18)
         friendsTitleLabel.textColor = .black
         navigationController?.navigationBar.addSubview(friendsTitleLabel)
@@ -116,7 +116,7 @@ extension FriendsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userId = friends[indexPath.row].id
-        let profileViewController = ProfileViewController(userId: userId)
+        let profileViewController = ProfileViewController(isHome: false, userId: userId)
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 }

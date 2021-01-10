@@ -299,9 +299,26 @@ class NetworkManager {
         }
     }
 
-    /// [GET] Get all friends of a user [updated as of 8/7/20]
+    /// [GET] Get all friends of current user [updated as of 8/7/20]
     static func getFriends(completion: @escaping ([UserProfile]) -> Void) {
         AF.request("\(hostEndpoint)/api/friends/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendsData = try? jsonDecoder.decode(Response<[UserProfile]>.self, from: data) {
+                    let friendsList = friendsData.data
+                    completion(friendsList)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get all friends of an user by user id [updated as of 1/9/21]
+    static func getFriendsOfUser(userId: Int, completion: @escaping ([UserProfile]) -> Void) {
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
