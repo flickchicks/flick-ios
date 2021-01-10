@@ -203,6 +203,10 @@ extension DiscoverSearchViewController: UISearchBarDelegate {
         )
     }
 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
 }
 
 extension DiscoverSearchViewController: DiscoverSearchResultDelegate {

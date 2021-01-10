@@ -84,7 +84,7 @@ class ProfileViewController: UIViewController {
         }
 
         setupSections()
-        
+
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
 

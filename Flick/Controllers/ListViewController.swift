@@ -35,6 +35,7 @@ class ListViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
+    private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private let edgeInsets: CGFloat = 28
     private let listId: Int
     private var listSummaryHeight: CGFloat = 80
@@ -104,6 +105,12 @@ class ListViewController: UIViewController {
             }
             self.setupSections()
             self.mediaCollectionView.reloadData()
+
+            // Show settings button and set up empty state only if current user is owner or collaborator of list
+            guard list.owner.id == self.currentUserId ||
+                    list.collaborators.contains(where: { $0.id == self.currentUserId }) else  { return}
+
+            self.setupSettingsButton()
 
             if list.shows.isEmpty {
                 self.setupEmptyStateViews()
@@ -177,7 +184,6 @@ class ListViewController: UIViewController {
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
-        let settingsButtonSize = CGSize(width: 22, height: 22)
 
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
@@ -189,15 +195,19 @@ class ListViewController: UIViewController {
             make.size.equalTo(backButtonSize)
         }
 
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    }
+
+    private func setupSettingsButton() {
+        let settingsButtonSize = CGSize(width: 22, height: 22)
+
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.tintColor = .mediumGray
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(settingsButtonSize)
         }
-
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
 
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
@@ -271,7 +281,10 @@ extension ListViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         case .mediaList:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
-            headerView.configure(isEmptyList: section.items.count == 0)
+            // An user can modify media of this list if is owner or a collaborator
+            let canModifyMedia: Bool = list?.owner.id == currentUserId || list?.collaborators.contains { $0.id == currentUserId } ?? false
+            headerView.configure(isEmptyList: section.items.count == 0,
+                                 canModifyMedia: canModifyMedia)
             headerView.delegate = self
             return headerView
         }

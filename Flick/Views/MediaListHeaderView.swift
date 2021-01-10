@@ -40,10 +40,12 @@ class MediaListHeaderView: UICollectionReusableView {
         addButton.setImage(UIImage(named: "addButton"), for: .normal)
         addButton.addTarget(self, action: #selector(addMedia), for: .touchUpInside)
         addButton.layer.cornerRadius = buttonSize.width / 2
+        addButton.isHidden = true
         addSubview(addButton)
 
         editButton.addTarget(self, action: #selector(editMedia), for: .touchUpInside)
         editButton.layer.cornerRadius = buttonSize.width / 2
+        editButton.isHidden = true
         addSubview(editButton)
 
 //        sortButton.addTarget(self, action: #selector(sortMedia), for: .touchUpInside)
@@ -85,10 +87,12 @@ class MediaListHeaderView: UICollectionReusableView {
 
     }
 
-    func configure(isEmptyList: Bool) {
+    func configure(isEmptyList: Bool, canModifyMedia: Bool) {
         self.isEmptyList = isEmptyList
         editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
 //        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)
+        addButton.isHidden = !canModifyMedia
+        editButton.isHidden = !canModifyMedia
     }
 
     @objc func addMedia() {
