@@ -119,7 +119,6 @@ class MediaSummaryTableViewCell: UITableViewCell {
         }
         mediaSummaryInfo.removeLast()
         summaryInfo = mediaSummaryInfo
-
         summaryItemsCollectionView.reloadData()
         tagsCollectionView.reloadData()
         providers = media.providers ?? []
