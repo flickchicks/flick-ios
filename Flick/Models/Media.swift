@@ -21,12 +21,13 @@ struct Media: Codable {
     var directors: String?
     var isTv: Bool
     var dateReleased: String?
+    var providers: [Provider]?
     var status: String?
     var language: String?
     var duration: String?
     var plot: String?
     var tags: [Tag]?
-    var seasons: String?
+    var seasons: Int?
     var audienceLevel: String?
     var imdbRating: Int?
     var tomatoRating: Int?
