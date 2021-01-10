@@ -35,7 +35,7 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
             profileImageView.image = UIImage(named: "ellipsis")
         } else {
             if let user = user, let profilePic = user.profilePic {
-                profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userPreviewProfilePicture"))
+                profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
             }
         }
     }

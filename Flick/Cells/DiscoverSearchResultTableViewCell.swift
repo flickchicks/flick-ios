@@ -107,7 +107,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
         if let profilePic = user.profilePic {
-            resultImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "discoverUserProfilePicture"))
+            resultImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         } else {
             resultImageView.image = nil
         }

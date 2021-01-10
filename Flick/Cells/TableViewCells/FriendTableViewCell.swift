@@ -25,6 +25,8 @@ class FriendTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         
+        userProfileImageView.layer.masksToBounds = true
+        userProfileImageView.clipsToBounds = true
         userProfileImageView.layer.cornerRadius = 20
         userProfileImageView.layer.backgroundColor = UIColor.darkPurple.cgColor
         contentView.addSubview(userProfileImageView)
@@ -44,7 +46,7 @@ class FriendTableViewCell: UITableViewCell {
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let profilePic = user.profilePic {
-            userProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid\(user.id)"))
+            userProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
     }
     

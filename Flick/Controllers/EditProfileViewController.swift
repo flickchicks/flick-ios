@@ -87,7 +87,7 @@ class EditProfileViewController: UIViewController {
         imagePickerController.mediaTypes = ["public.image"]
 
         if let profilePic = user.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "editUserProfilePicture"))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         
         profileImageView.layer.cornerRadius = 50

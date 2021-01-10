@@ -153,7 +153,7 @@ class CommentTableViewCell: UITableViewCell {
         let heartImage = "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let profilePic = comment.owner.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))
         }
         viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }

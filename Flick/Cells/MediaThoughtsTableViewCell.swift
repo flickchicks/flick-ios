@@ -179,7 +179,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         // TODO: Add logic to discover if comment has been liked by user
         commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
         if let profilePic = comment.owner.profilePic {
-            commentProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
+            commentProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))
         }
         seeAllCommentsButton.isHidden = false
     }

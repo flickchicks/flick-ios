@@ -150,7 +150,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         friendLabelString.append(friendRequestString)
         notificationLabel.attributedText = friendLabelString
         if let profilePic = fromUser.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: fromUser.username))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(fromUser.id)"))
         }
     }
 

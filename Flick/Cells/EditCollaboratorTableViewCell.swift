@@ -86,7 +86,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         self.user = user
         nameLabel.text = user.name
         if let profilePic = user.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePicture"))
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         if isOwner {
             usernameLabel.text = "Owner"
