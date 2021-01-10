@@ -215,16 +215,6 @@ extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDat
             return cell
         }
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        switch section.type {
-        case .profileSummary:
-            return 160
-        case .lists:
-            return 174
-        }
-    }
     
     func numSections(in collectionSkeletonView: UITableView) -> Int {
         return sections.count

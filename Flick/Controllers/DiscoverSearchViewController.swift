@@ -59,6 +59,12 @@ class DiscoverSearchViewController: UIViewController {
         setupViewControllers()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        searchBar.resignFirstResponder()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
