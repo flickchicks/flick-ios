@@ -17,8 +17,13 @@ class NetworkManager {
         "Authorization": "Token \(UserDefaults().string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
         "Accept": "application/json"
     ]
-
+    
+    #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
+    #else
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    #endif
+    
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
     private static let discoverBaseUrl = "\(hostEndpoint)/api/discover/show/"
 
@@ -36,10 +41,11 @@ class NetworkManager {
     }
 
     /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
-    static func authenticateUser(username: String, firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "username": "",
             "name": "\(firstName) \(lastName)",
+            "profile_pic": profilePic,
             "social_id": socialId,
             "social_id_token": socialIdToken,
             "social_id_token_type": "facebook"

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol EditCollaboratorCellDelegate: class {
     func addCollaboratorTapped(user: UserProfile)
@@ -61,8 +62,8 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         self.isCollaborator = false
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+        if let profilePic = user.profilePic {
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePicture"))
         }
         if isAdded {
             editButton.isEnabled = false
@@ -84,8 +85,8 @@ class EditCollaboratorTableViewCell: UITableViewCell {
     func configureCollaborator(for user: UserProfile, isOwner: Bool) {
         self.user = user
         nameLabel.text = user.name
-        if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+        if let profilePic = user.profilePic {
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePicture"))
         }
         if isOwner {
             usernameLabel.text = "Owner"

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CollaboratorTableViewCell: UITableViewCell {
 
@@ -51,9 +52,10 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
         nameLabel.text = collaborator.name
-        if let imageUrl = URL(string: collaborator.profilePic?.assetUrls.original ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+        if let profilePic = collaborator.profilePic {
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePic"))
         }
+        
         if isOwner {
             addSubview(ownerLabel)
             setupOwnerConstraints()

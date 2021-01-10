@@ -21,7 +21,7 @@ target 'Flick' do
 
 	# Data Loading
 	pod 'SkeletonView'
-	pod 'Kingfisher', '~> 5.0'
+	pod 'Kingfisher', '~> 5.15.0'
 
 	# Debugging
 	pod 'FLEX', :configurations => ['Debug']
