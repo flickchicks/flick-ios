@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
                        let profileImagePngData = profileImage.pngData() {
                         base64Str = profileImagePngData.base64EncodedString()
                     }
-                    print(base64Str)
+
                     NetworkManager.authenticateUser(
                         username: "",
                         firstName: firstName,
