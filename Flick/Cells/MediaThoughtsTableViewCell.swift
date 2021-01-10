@@ -177,8 +177,8 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentDateLabel.text = "1d"
         // TODO: Add logic to discover if comment has been liked by user
         commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
-        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
-            commentProfileImageView.kf.setImage(with: profileImageUrl)
+        if let pictureUrl = comment.owner.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
+            commentProfileImageView.image = UIImage(data: decodedData as Data)
         }
         seeAllCommentsButton.isHidden = false
     }

@@ -41,11 +41,14 @@ class NetworkManager {
     }
 
     /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
-    static func authenticateUser(username: String, firstName: String, lastName: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         print(hostEndpoint)
+        print("this is the profile pic!!!!!")
+        print(profilePic)
         let parameters: [String: Any] = [
             "username": "",
             "name": "\(firstName) \(lastName)",
+            "profile_pic": profilePic,
             "social_id": socialId,
             "social_id_token": socialIdToken,
             "social_id_token_type": "facebook"

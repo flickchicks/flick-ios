@@ -85,9 +85,10 @@ class EditProfileViewController: UIViewController {
         imagePickerController.allowsEditing = false
         imagePickerController.mediaTypes = ["public.image"]
 
-        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
-            profileImageView.kf.setImage(with: pictureUrl)
+        if let pictureUrl = user.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
+            profileImageView.image = UIImage(data: decodedData as Data)
         }
+        
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true

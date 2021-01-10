@@ -51,8 +51,8 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
         nameLabel.text = collaborator.name
-        if let imageUrl = URL(string: collaborator.profilePic?.assetUrls.original ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+        if let pictureUrl = collaborator.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
+            userImageView.image = UIImage(data: decodedData as Data)
         }
         if isOwner {
             addSubview(ownerLabel)

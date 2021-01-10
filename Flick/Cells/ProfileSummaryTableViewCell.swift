@@ -164,8 +164,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
-        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
-            profileImageView.kf.setImage(with: pictureUrl)
+        if let pictureUrl = user.profilePic, let decodedData = NSData(base64Encoded: pictureUrl, options: []) {
+            profileImageView.image = UIImage(data: decodedData as Data)
         }
         notificationButton.isHidden = !isCurrentUser
         settingsButton.isHidden = !isCurrentUser
