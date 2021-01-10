@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
@@ -151,8 +152,8 @@ class CommentTableViewCell: UITableViewCell {
         // TODO: Complete logic to detect if comment has been liked
         let heartImage = "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
-        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
-            profileImageView.kf.setImage(with: profileImageUrl)
+        if let profilePic = comment.owner.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
         }
         viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }

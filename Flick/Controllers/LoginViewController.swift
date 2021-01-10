@@ -13,7 +13,7 @@ class LoginViewController: UIViewController {
 
     private let userDefaults = UserDefaults.standard
     private let loginButton = UIButton()
-    private let profileSize = CGSize(width: 400, height: 400)
+    private let profileSize = CGSize(width: 50, height: 50)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +26,13 @@ class LoginViewController: UIViewController {
         loginButton.titleLabel?.font = .systemFont(ofSize: 17)
         loginButton.addTarget(self, action: #selector(initiateFacebookLogin), for: .touchUpInside)
         view.addSubview(loginButton)
-
+        
         let loginButtonSize = CGSize(width: 240, height: 46)
 
         loginButton.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
             make.size.equalTo(loginButtonSize)
         }
-
     }
 
     @objc func initiateFacebookLogin() {
@@ -54,20 +53,30 @@ class LoginViewController: UIViewController {
                 if  let profile = profile,
                     let accessToken = AccessToken.current?.tokenString,
                     let firstName = profile.firstName,
-                    let lastName = profile.lastName {
-                        NetworkManager.authenticateUser(
-                            username: "",
-                            firstName: firstName,
-                            lastName: lastName,
-                            socialId: profile.userID,
-                            socialIdToken: accessToken) { [weak self] authorizationToken in
-                            guard let self = self else { return }
-                            DispatchQueue.main.async {
-                                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                                let homeViewController = HomeViewController()
-                                self.navigationController?.pushViewController(homeViewController, animated: true)
-                            }
+                    let lastName = profile.lastName,
+                    let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
+                    var base64Str = ""
+                    let profileURLData = try? Data(contentsOf: profileURL)
+                    if let profileURLData = profileURLData,
+                       let profileImage = UIImage(data: profileURLData),
+                       let profileImagePngData = profileImage.pngData() {
+                        base64Str = profileImagePngData.base64EncodedString()
+                    }
+                    
+                    NetworkManager.authenticateUser(
+                        username: "",
+                        firstName: firstName,
+                        lastName: lastName,
+                        profilePic: base64Str,
+                        socialId: profile.userID,
+                        socialIdToken: accessToken) { [weak self] authorizationToken in
+                        guard let self = self else { return }
+                        DispatchQueue.main.async {
+                            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                            let homeViewController = HomeViewController()
+                            self.navigationController?.pushViewController(homeViewController, animated: true)
                         }
+                    }
                 }
             }
         }

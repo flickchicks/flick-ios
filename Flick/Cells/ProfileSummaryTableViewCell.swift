@@ -1,5 +1,6 @@
 import UIKit
 import SkeletonView
+import Kingfisher
 
 class ProfileSummaryTableViewCell: UITableViewCell {
 
@@ -28,6 +29,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         isSkeletonable = true
         contentView.isSkeletonable = true
 
+        profileImageView.isSkeletonable = true
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
@@ -164,8 +166,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
-        if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
-            profileImageView.kf.setImage(with: pictureUrl)
+        if let profilePic = user.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userProfilePicture"))
         }
         notificationButton.isHidden = !isCurrentUser
         settingsButton.isHidden = !isCurrentUser
