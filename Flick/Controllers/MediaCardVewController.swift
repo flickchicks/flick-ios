@@ -109,7 +109,7 @@ class MediaCardViewController: UIViewController {
 extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -123,14 +123,16 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
             }
             cell.configure(with: media)
             return cell
-        } else if indexPath.section == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaRatingsReuseIdentifier, for: indexPath) as? MediaRatingsTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.configure(with: media)
-            cell.delegate = self
-            return cell
-        } else {
+        }
+//        else if indexPath.section == 1 {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaRatingsReuseIdentifier, for: indexPath) as? MediaRatingsTableViewCell else {
+//                return UITableViewCell()
+//            }
+//            cell.configure(with: media)
+//            cell.delegate = self
+//            return cell
+//        }
+        else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaThoughtsReuseIdentifier, for: indexPath) as? MediaThoughtsTableViewCell else {
                 return UITableViewCell()
             }
