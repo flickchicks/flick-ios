@@ -21,7 +21,7 @@ class MediaCardViewController: UIViewController {
     // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
     // Dummy Media Object (used before data is loaded)
-    private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: "", audienceLevel: "", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
+    private var media: Media = Media(id: 0, title: "", posterPic: "", directors: "", isTv: true, dateReleased: "", status: "", language: "", duration: "", plot: "", tags: [], seasons: 0, audienceLevel: "", imdbRating: 0, tomatoRating: 0, friendsRating: 0, userRating: 0, comments: [], platforms: [], keywords: [], cast: "")
     private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
     private let mediaThoughtsReuseIdentifier = "MediaThoughtsReuseIdentifier"
     private let mediaRatingsReuseIdentifier = "MediaRatingsReuseIdentifier"

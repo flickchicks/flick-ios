@@ -11,7 +11,7 @@ import UIKit
 class MediaSummaryTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private var platformCollectionView: SelfSizingCollectionView!
+    private var providersCollectionView: SelfSizingCollectionView!
     private let summaryLabel = UILabel()
     private var summaryItemsCollectionView: SelfSizingCollectionView!
     private let titleLabel = UILabel()
@@ -24,12 +24,11 @@ class MediaSummaryTableViewCell: UITableViewCell {
     private let spacerSummaryInfoCellReuseIdentifier = "SpacerSummaryInfoCellReuseIdentifier"
     private let summaryInfoCellReuseIdentifier = "SummaryInfoCellReuseIdentifier"
     private let tagCellReuseIdentifier = "TagCellReuseIdentifier"
-    private let platformCellReuseIdentifier = "PlatformCellReuseIdentifier"
+    private let providerCellReuseIdentifier = "ProviderCellReuseIdentifier"
 
     private var summaryInfo: [MediaSummary] = []
     private var tags: [Tag] = []
-    // TODO: Replace with platforms after backend is complete
-    private let platforms = ["Netflix", "Hulu"]
+    private var providers: [Provider] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -73,16 +72,16 @@ class MediaSummaryTableViewCell: UITableViewCell {
         tagsCollectionView.layoutIfNeeded()
         addSubview(tagsCollectionView)
 
-        let platformFlowLayout = UICollectionViewFlowLayout()
-        platformFlowLayout.minimumInteritemSpacing = 12
-        platformCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: platformFlowLayout)
-        platformCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
-        platformCollectionView.backgroundColor = .clear
-        platformCollectionView.register(MediaTagCollectionViewCell.self, forCellWithReuseIdentifier: platformCellReuseIdentifier)
-        platformCollectionView.dataSource = self
-        platformCollectionView.delegate = self
-        platformCollectionView.layoutIfNeeded()
-        addSubview(platformCollectionView)
+        let providersFlowLayout = UICollectionViewFlowLayout()
+        providersFlowLayout.minimumInteritemSpacing = 12
+        providersCollectionView = SelfSizingCollectionView(frame: .zero, collectionViewLayout: providersFlowLayout)
+        providersCollectionView.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
+        providersCollectionView.backgroundColor = .clear
+        providersCollectionView.register(ProviderCollectionViewCell.self, forCellWithReuseIdentifier: providerCellReuseIdentifier)
+        providersCollectionView.dataSource = self
+        providersCollectionView.delegate = self
+        providersCollectionView.layoutIfNeeded()
+        addSubview(providersCollectionView)
 
         setupConstraints()
     }
@@ -120,8 +119,13 @@ class MediaSummaryTableViewCell: UITableViewCell {
         }
         mediaSummaryInfo.removeLast()
         summaryInfo = mediaSummaryInfo
+
         summaryItemsCollectionView.reloadData()
         tagsCollectionView.reloadData()
+        providers = media.providers ?? []
+        if !providers.isEmpty {
+            providersCollectionView.reloadData()
+        }
     }
 
     private func setupConstraints() {
@@ -148,7 +152,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
-        platformCollectionView.snp.makeConstraints { make in
+        providersCollectionView.snp.makeConstraints { make in
             make.top.equalTo(tagsCollectionView.snp.bottom).offset(verticalPadding)
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.bottom.equalToSuperview().inset(horizontalPadding)
@@ -164,7 +168,7 @@ extension MediaSummaryTableViewCell: UICollectionViewDataSource, UICollectionVie
         } else if collectionView == tagsCollectionView {
             return tags.count
         } else {
-            return platforms.count
+            return providers.count
         }
     }
 
@@ -193,9 +197,8 @@ extension MediaSummaryTableViewCell: UICollectionViewDataSource, UICollectionVie
             cell.configure(with: tags[indexPath.item])
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: platformCellReuseIdentifier, for: indexPath)
-            cell.layer.cornerRadius = 5
-            cell.layer.backgroundColor = UIColor.gray.cgColor
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: providerCellReuseIdentifier, for: indexPath) as? ProviderCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(for: providers[indexPath.item])
             return cell
         }
     }
