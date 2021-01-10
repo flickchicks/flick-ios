@@ -167,7 +167,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         if let pictureUrl = URL(string: user.profilePic?.assetUrls.original ?? ""){
             profileImageView.kf.setImage(with: pictureUrl)
         }
-        // Notification and settings buttons only show if is at Home
+        // Show notification and settings buttons only if current user is at Home
         notificationButton.isHidden = !isHome
         settingsButton.isHidden = !isHome
 

@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController {
     private var userId: Int?
 
     // isHome is whether HomeViewController is displaying
-    // userId is nil is at HomeViewController
+    // userId is nil only if at HomeViewController
     init(isHome: Bool, userId: Int?) {
         super.init(nibName: nil, bundle: nil)
         self.isHome = isHome
@@ -139,8 +139,8 @@ class ProfileViewController: UIViewController {
         }
 
         // Get friends of current user
-        NetworkManager.getFriends { friends in
-            if friends.isEmpty { return }
+        NetworkManager.getFriends { [weak self] friends in
+            guard let self = self, !friends.isEmpty else { return }
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)
@@ -158,8 +158,8 @@ class ProfileViewController: UIViewController {
         }
 
         // Get friends of another user
-        NetworkManager.getFriendsOfUser(userId: userId) { friends in
-            if friends.isEmpty { return }
+        NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
+            guard let self = self, !friends.isEmpty else { return }
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)

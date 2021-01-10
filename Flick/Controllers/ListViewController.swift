@@ -108,7 +108,7 @@ class ListViewController: UIViewController {
 
             // Show settings button and set up empty state only if current user is owner or collaborator of list
             guard list.owner.id == self.currentUserId ||
-                    list.collaborators.contains(where: { $0.id == self.currentUserId }) else  { return}
+                    list.collaborators.contains(where: { $0.id == self.currentUserId }) else  { return }
 
             self.setupSettingsButton()
 
@@ -281,7 +281,7 @@ extension ListViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         case .mediaList:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
-            // An user can modify media of this list if is owner or a collaborator
+            // An user can modify media of this list if is the owner or a collaborator
             let canModifyMedia: Bool = list?.owner.id == currentUserId || list?.collaborators.contains { $0.id == currentUserId } ?? false
             headerView.configure(isEmptyList: section.items.count == 0,
                                  canModifyMedia: canModifyMedia)
