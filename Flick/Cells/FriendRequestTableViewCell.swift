@@ -8,6 +8,7 @@
 
 import UIKit
 import SkeletonView
+import Kingfisher
 
 protocol NotificationDelegate: class {
     func refreshNotifications(message: String)
@@ -46,6 +47,8 @@ class FriendRequestTableViewCell: UITableViewCell {
         containerView.isSkeletonable = true
         contentView.addSubview(containerView)
 
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.isSkeletonable = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
@@ -146,6 +149,9 @@ class FriendRequestTableViewCell: UITableViewCell {
         let friendRequestString = NSMutableAttributedString(string: " sent you a friend request")
         friendLabelString.append(friendRequestString)
         notificationLabel.attributedText = friendLabelString
+        if let profilePic = fromUser.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: fromUser.username))
+        }
     }
 
     func configure(with notification: NotificationEnum) {
