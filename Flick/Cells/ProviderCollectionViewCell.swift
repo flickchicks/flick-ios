@@ -27,12 +27,18 @@ class ProviderCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(for provider: Provider) {
-        let imageUrl = URL(string: provider.image)
-        providerImageView.kf.setImage(with: imageUrl)
+        if let imageUrl = URL(string: provider.image ?? "") {
+            providerImageView.kf.setImage(with: imageUrl)
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        providerImageView.image = nil
     }
 
 }
