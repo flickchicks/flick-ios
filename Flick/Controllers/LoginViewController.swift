@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
 
     private let appleLoginButton = ASAuthorizationAppleIDButton()
     private let facebookLoginButton = UIButton()
-    private let profileSize = CGSize(width: 400, height: 400)
+    private let profileSize = CGSize(width: 50, height: 50)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,23 +79,28 @@ class LoginViewController: UIViewController {
                     let firstName = profile.firstName,
                     let lastName = profile.lastName,
                     let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
-                        let pictureData = try? Data(contentsOf: profileURL)
-                        if let pictureData = pictureData {
-                            let pictureObject = UIImage(data: pictureData)
-                            let base64PictureString = pictureObject!.pngData()?.base64EncodedString()
-                            let user = User(username: profile.userID, firstName: firstName, lastName: lastName, profilePic: base64PictureString)
-                            NetworkManager.registerUser(user: user) { [weak self] (registeredUser) in
-                                guard let self = self else { return }
-                                let encoder = JSONEncoder()
-                                if let encodedRegisteredUser = try? encoder.encode(registeredUser) {
-                                    // Upon successful registration of user, save user to user defaults
-                                    self.userDefaults.set(encodedRegisteredUser, forKey: Constants.UserDefaults.authorizationToken)
-                                }
-                                let username = registeredUser.username
-                                let socialIdToken = registeredUser.socialIdToken
-                                self.loginUser(username: username, socialIdToken: socialIdToken!)
-                            }
+                    var base64Str = ""
+                    let profileURLData = try? Data(contentsOf: profileURL)
+                    if let profileURLData = profileURLData,
+                       let profileImage = UIImage(data: profileURLData),
+                       let profileImagePngData = profileImage.pngData() {
+                        base64Str = profileImagePngData.base64EncodedString()
+                    }
+                    
+                    NetworkManager.authenticateUser(
+                        username: "",
+                        firstName: firstName,
+                        lastName: lastName,
+                        profilePic: base64Str,
+                        socialId: profile.userID,
+                        socialIdToken: accessToken) { [weak self] authorizationToken in
+                        guard let self = self else { return }
+                        DispatchQueue.main.async {
+                            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                            let homeViewController = HomeViewController()
+                            self.navigationController?.pushViewController(homeViewController, animated: true)
                         }
+                    }
                 }
             }
         }
@@ -163,19 +168,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
          @unknown default:
              print("Default")
          }
-    }
-
-}
-
-extension LoginViewController {
-
-    private func loginUser(username: String, socialIdToken: String) {
-        NetworkManager.loginUser(username: username, socialIdToken: socialIdToken) { [weak self] (authorizationToken) in
-            guard let self = self else { return }
-            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-            let homeViewController = HomeViewController()
-            self.navigationController?.pushViewController(homeViewController, animated: true)
-        }
     }
 
 }

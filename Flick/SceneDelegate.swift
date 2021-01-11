@@ -12,7 +12,6 @@ import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-    private let userDefaults = UserDefaults.standard
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -27,27 +26,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
-        let loginViewController = LoginViewController()
-        let homeViewController = HomeViewController()
-        var rootViewController: UIViewController
-        if let token = AccessToken.current,
-            !token.isExpired,
-            let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) {
-            // User is logged in and we have the necessary authorization token to make backend requets for user.
-            rootViewController = homeViewController
-        } else {
-            // User is logged out.
-            LoginManager().logOut()
-            rootViewController = loginViewController
-        }
-
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-
-        window.rootViewController = navigationController
         self.window = window
+        let loginViewController = LoginViewController()
+        let navigationController = UINavigationController(rootViewController: loginViewController)
+        // TODO: Let's make another launch screen we show before navigating to either login or home
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
-
-
+        guard let token = AccessToken.current, !token.isExpired else {
+            LoginManager().logOut()
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+            return
+        }
+        // User is logged in and we have correct authorization token.
+        NetworkManager.getUserProfile { profile in
+            DispatchQueue.main.async {
+                guard let profile = profile else {
+                    window.rootViewController = UINavigationController(rootViewController: loginViewController)
+                    return
+                }
+                UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
+                window.rootViewController = UINavigationController(rootViewController: HomeViewController())
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

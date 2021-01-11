@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SnapKit
+import SkeletonView
 
 protocol ListTableViewCellDelegate: class {
     func pushListViewController(listId: Int)
@@ -26,7 +26,7 @@ class ListTableViewCell: UITableViewCell {
     weak var delegate: ListTableViewCellDelegate?
     private var list: SimpleMediaList!
     private let lockImageView = UIImageView()
-    private var media: [SimpleMedia]!
+    private var media: [SimpleMedia] = []
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
     private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
 
@@ -34,9 +34,14 @@ class ListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
+        backgroundColor = .clear
+        isSkeletonable = true
+        contentView.isSkeletonable = true
 
+        titleLabel.text = "                   " // Setting empty spaces for skeleton view
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
+        titleLabel.isSkeletonable = true
         contentView.addSubview(titleLabel)
 
         seeAllButton.setTitle("See all", for: .normal)
@@ -55,8 +60,9 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
-        mediaCollectionView.backgroundColor = .none
+        mediaCollectionView.backgroundColor = .clear
         mediaCollectionView.showsHorizontalScrollIndicator = false
+        mediaCollectionView.isSkeletonable = true
         contentView.addSubview(mediaCollectionView)
 
         contentView.addSubview(lockImageView)
@@ -113,6 +119,7 @@ class ListTableViewCell: UITableViewCell {
             make.top.equalTo(titleLabel.snp.bottom).offset(padding)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(padding)
+            make.height.equalTo(120)
         }
     }
 
@@ -138,20 +145,24 @@ class ListTableViewCell: UITableViewCell {
 }
 
 
-extension ListTableViewCell: UICollectionViewDelegate {
-
+extension ListTableViewCell: SkeletonCollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item == 10 {
+        if indexPath.item == 10 || indexPath.row >= media.count {
             delegate?.pushListViewController(listId: list.id)
         } else {
-            let media = self.media[indexPath.row]
-            delegate?.pushMediaViewController(mediaId: media.id)
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
         }
     }
-
 }
 
-extension ListTableViewCell: UICollectionViewDataSource {
+extension ListTableViewCell: SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return indexPath.item == 10 ? seeAllCellReuseIdentifier : mediaCellReuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 4
+    }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // If list is empty, show 4 filler cells
@@ -190,9 +201,7 @@ extension ListTableViewCell: UICollectionViewDataSource {
 }
 
 extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 120)
     }
-
 }

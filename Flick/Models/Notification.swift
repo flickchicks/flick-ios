@@ -6,33 +6,38 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-enum Notification {
-    case FriendRequest(fromUser: String, type: FriendRequest.FriendRequestType)
-    case CollaborationInvite(fromUser: String, media: String)
-    case ListActivity(fromUser: String, list: String)
-    case ActivityLike(fromUser: String, likedContent: ActivityLike.ActivityLikeType, media: String)
+
+struct Notification: Codable {
+    var id: Int
+    var notifType: String
+    var fromUser: UserProfile
+    var toUser: UserProfile
+    var lst: NotificationMediaList?
+    var newOwner: UserProfile?
+    var numShowsAdded: Int?
+    var numShowsRemoved: Int?
+    var collaboratorsAdded: [UserProfile]
+    var collaboratorsRemoved: [UserProfile]
+    var friendRequestAccepted: Bool?
+    var createdAt: String
 }
 
 
-struct FriendRequest {
-
-    enum FriendRequestType {
-        case sent
-        case received
-    }
-
-    let fromUser: String
-    let type: FriendRequestType
+enum NotificationEnum {
+    case IncomingFriendRequest(fromUser: UserProfile)
+    // Question: is accepted always true?
+    case FriendRequest(fromUser: UserProfile, toUser: UserProfile)
+    case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
+    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int)
+    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile])
+    case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile)
+    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
 }
 
-struct CollaborationInvite {
-    let fromUser: String
-    let media: String
-}
 
-struct ListActivity {
-    let fromUser: String
-    let list: String
+enum ListEditType: String {
+    case added = "added"
+    case removed = "removed"
 }
 
 struct ActivityLike {
@@ -46,4 +51,3 @@ struct ActivityLike {
     let likedContent: ActivityLikeType
     let media: String
 }
-

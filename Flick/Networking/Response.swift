@@ -17,8 +17,16 @@ struct Response<T: Codable>: Codable {
 }
 
 struct Authorization: Codable {
-
+    
     var authToken: String
+    var username: String
+    var name: String
+    var profilePic: String
+    var socialIdToken: String
+    var socialId: String
+    var socialIdTokenType: String
+    var dateJoined: String
+    
 }
 
 struct UsernamesDataResponse: Codable {

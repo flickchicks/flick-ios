@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class DiscoverViewController: UIViewController {
 
@@ -16,11 +17,13 @@ class DiscoverViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var discoverShows: [[SimpleMedia]] = [[], [], []]
+    private var shouldAnimate = true
 
     override func viewDidLoad() {
 
         super.viewDidLoad()
         view.backgroundColor = .offWhite
+        view.isSkeletonable = true
 
         searchBar.placeholder = "Search movies, shows, people, genres"
         searchBar.delegate = self
@@ -28,13 +31,18 @@ class DiscoverViewController: UIViewController {
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
+        discoverFeedTableView.isSkeletonable = true
+        discoverFeedTableView.estimatedRowHeight = 500.0
+        discoverFeedTableView.estimatedSectionHeaderHeight = 15.0
         discoverFeedTableView.backgroundColor = .clear
         discoverFeedTableView.showsVerticalScrollIndicator = false
         discoverFeedTableView.separatorStyle = .none
         discoverFeedTableView.register(DiscoverTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier)
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
         view.addSubview(discoverFeedTableView)
-
+        
+        discoverFeedTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+        
         setupConstraints()
     }
 
@@ -52,18 +60,15 @@ class DiscoverViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        // Make network request to get top shows, movies, and playing shows
         super.viewDidAppear(animated)
-        print("Get top rated shows")
         NetworkManager.discoverShows { [weak self] mediaList in
-            print(mediaList)
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.discoverShows[0] = mediaList.trendingTvs
                 self.discoverShows[1] = mediaList.trendingMovies
                 self.discoverShows[2] = mediaList.trendingAnimes
-                // TODO: Do we want to shuffle this?
                 self.discoverFeedTableView.reloadData()
+                self.discoverFeedTableView.hideSkeleton()
             }
         }
     }
@@ -79,7 +84,14 @@ extension DiscoverViewController: UISearchBarDelegate {
 
 }
 
-extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
+extension DiscoverViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return TrendingTableViewCell.reuseIdentifier
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TrendingTableViewCell.reuseIdentifier, for: indexPath) as? TrendingTableViewCell else { return UITableViewCell() }
@@ -92,8 +104,8 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
         return discoverShows.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return discoverShows.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -115,7 +127,7 @@ extension DiscoverViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return headerView
     }
-    
+
 }
 
 extension DiscoverViewController: MediaControllerDelegate {

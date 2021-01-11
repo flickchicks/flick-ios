@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MediaThoughtsTableViewCell: UITableViewCell {
 
@@ -172,15 +173,13 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let comment = comments[0]
         commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         viewSpoilerButton.isHidden = !comment.isSpoiler
-        let firstName = comment.owner.firstName
-        let lastName = comment.owner.lastName
-        commentOwnerLabel.text = "\(firstName) \(lastName.prefix(1))."
+        commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
         commentDateLabel.text = "1d"
         // TODO: Add logic to discover if comment has been liked by user
         commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
-        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
-            commentProfileImageView.kf.setImage(with: profileImageUrl)
+        if let profilePic = comment.owner.profilePic {
+            commentProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
         }
         seeAllCommentsButton.isHidden = false
     }
@@ -191,6 +190,11 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        commentProfileImageView.image = nil
     }
 
 }

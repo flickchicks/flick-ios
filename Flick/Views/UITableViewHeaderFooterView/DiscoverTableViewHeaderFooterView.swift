@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
@@ -16,7 +17,7 @@ class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         
         titleLabel.textColor = .darkBlueGray2
         titleLabel.font = .boldSystemFont(ofSize: 12)
@@ -31,8 +32,8 @@ class DiscoverTableViewHeaderFooterView: UITableViewHeaderFooterView {
     
     func setupConstraints() {
         titleLabel.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview()
-            make.leading.equalToSuperview().offset(24)
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(24)
         }
     }
     

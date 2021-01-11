@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CollaboratorTableViewCell: UITableViewCell {
 
@@ -41,6 +42,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
         if selected {
             selectIndicatorView.select()
         } else {
@@ -49,10 +51,11 @@ class CollaboratorTableViewCell: UITableViewCell {
     }
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
-        nameLabel.text = "\(collaborator.firstName) \(collaborator.lastName)"
-        if let imageUrl = URL(string: collaborator.profilePic?.assetUrls.original ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+        nameLabel.text = collaborator.name
+        if let profilePic = collaborator.profilePic {
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePic"))
         }
+        
         if isOwner {
             addSubview(ownerLabel)
             setupOwnerConstraints()
@@ -100,6 +103,11 @@ class CollaboratorTableViewCell: UITableViewCell {
             make.leading.equalTo(userImageView.snp.trailing).offset(16)
             make.centerY.equalToSuperview()
         }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userImageView.image = nil
     }
 
 }

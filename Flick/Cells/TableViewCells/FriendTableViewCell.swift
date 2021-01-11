@@ -41,10 +41,10 @@ class FriendTableViewCell: UITableViewCell {
     }
     
     func configure(user: UserProfile) {
-        nameLabel.text = "\(user.firstName) \(user.lastName)"
+        nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
-            userProfileImageView.kf.setImage(with: imageUrl)
+        if let profilePic = user.profilePic {
+            userProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "friendProfilePicture"))
         }
     }
     
@@ -69,6 +69,11 @@ class FriendTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userProfileImageView.image = nil
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DiscoverSearchResultTableViewCell: UITableViewCell {
 
@@ -77,7 +78,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         listPreviewView.isHidden = false
         listPreviewView.firstThreeMedia = Array(list.shows.prefix(3))
         setupConstraintsForListPreview()
-        subtitleLabel.text = "by \(list.owner.firstName) \(list.owner.lastName)"
+        subtitleLabel.text = "by \(list.owner.name)"
     }
 
     func configureMovie(movie: Media) {
@@ -98,15 +99,15 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     }
 
     func configureUser(user: UserProfile) {
-        titleLabel.text = "\(user.firstName) \(user.lastName)"
+        titleLabel.text = user.name
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
         subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
-        if let imageUrl = URL(string: user.profilePic?.assetUrls.original ?? "") {
-            resultImageView.kf.setImage(with: imageUrl)
+        if let profilePic = user.profilePic {
+            resultImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "discoverUserProfilePicture"))
         } else {
             resultImageView.image = nil
         }
@@ -179,4 +180,10 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
             remake.centerY.equalToSuperview()
         }
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resultImageView.image = nil
+    }
+
 }

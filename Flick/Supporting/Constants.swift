@@ -24,7 +24,7 @@ struct Constants {
 
     struct UserDefaults {
         static let authorizationToken = "authorizationToken"
-        static let user = "user"
+        static let userId = "userId"
     }
 
 }

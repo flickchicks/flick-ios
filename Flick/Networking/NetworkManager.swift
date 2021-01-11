@@ -17,8 +17,13 @@ class NetworkManager {
         "Authorization": "Token \(UserDefaults().string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
         "Accept": "application/json"
     ]
-
+    
+    #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
+    #else
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    #endif
+    
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
     private static let discoverBaseUrl = "\(hostEndpoint)/api/discover/show/"
 
@@ -35,39 +40,19 @@ class NetworkManager {
         return urlComp?.url?.absoluteString
     }
 
-    /// [POST] Register new user [updated as of 7/3/20]
-    static func registerUser(user: User, completion: @escaping (User) -> Void) {
+    /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
+    static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
-            "username": user.username,
-            "first_name": user.firstName,
-            "last_name": user.lastName,
-            "social_id_token_type": user.socialIdTokenType,
-            "social_id_token": user.socialIdToken,
-            "profile_pic": "data:image/png;base64,\(user.profilePic)"
-        ]
-
-        AF.request("\(hostEndpoint)/api/auth/register/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let userData = try? jsonDecoder.decode(Response<User>.self, from: data) {
-                    completion(userData.data)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    /// [POST] Login user [updated as of 7/3/20]
-    static func loginUser(username: String, socialIdToken: String, completion: @escaping (String) -> Void) {
-        let parameters: [String: Any] = [
-            "username": username,
+            "username": "",
+            "name": "\(firstName) \(lastName)",
+            "profile_pic": profilePic,
+            "social_id": socialId,
             "social_id_token": socialIdToken,
+            "social_id_token_type": "facebook"
         ]
 
-        AF.request("\(hostEndpoint)/api/auth/login/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -83,7 +68,7 @@ class NetworkManager {
     }
 
     /// [GET] Get a user with token [updated as of 8/11/20]
-    static func getUserProfile(completion: @escaping (UserProfile) -> Void) {
+    static func getUserProfile(completion: @escaping (UserProfile?) -> Void) {
         AF.request("\(hostEndpoint)/api/me/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -95,6 +80,7 @@ class NetworkManager {
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(nil)
             }
         }
     }
@@ -105,14 +91,14 @@ class NetworkManager {
             "username": user.username,
             "first_name": user.firstName,
             "last_name": user.lastName,
-            "bio": user.bio!,
-            "profile_pic": user.profilePic!,
-            "phone_number": user.phoneNumber!,
+            "bio": user.bio,
+            "profile_pic": user.profilePic,
+            "phone_number": user.phoneNumber,
             "social_id_token_type": user.socialIdTokenType,
-            "social_id_token": user.socialIdToken!
+            "social_id_token": user.socialIdToken
         ]
 
-        AF.request("\(hostEndpoint)/api/auth/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -127,9 +113,28 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Check if a username does not exists [updated as of 1/5/20]
+    static func checkUsernameNotExists(username: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "username": username
+        ]
+
+        AF.request("\(hostEndpoint)/api/username/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+            switch response.result {
+            // completion true if username does not exists
+            case .success:
+                completion(true)
+            // completion false if username already exists
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)", method: .get, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
             debugPrint(response)
             switch response.result {
             case .success(let data):
@@ -211,7 +216,6 @@ class NetworkManager {
     static func updateMediaList(listId: Int, list: MediaList, completion: @escaping (MediaList) -> Void) {
         let parameters: [String: Any] = [
             "name": list.name,
-            "collaborators": list.collaborators.map { $0.id },
             "owner": list.owner.id,
             "is_private": list.isPrivate
         ]
@@ -244,7 +248,6 @@ class NetworkManager {
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -383,6 +386,7 @@ class NetworkManager {
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -609,7 +613,24 @@ class NetworkManager {
             }
         }
     }
-
+    
+    static func getNotifications(completion: @escaping ([Notification]) -> Void) {
+        AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                debugPrint(data)
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let notificationsData = try? jsonDecoder.decode(Response<[Notification]>.self, from: data) {
+                    let notifications = notificationsData.data
+                    completion(notifications)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
     /// [Get] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
         AF.request("\(hostEndpoint)/api/suggest/", method: .get, headers: headers).validate().responseData { response in
@@ -659,6 +680,23 @@ class NetworkManager {
             case .failure(let error):
                 print(error.localizedDescription)
                 completion(false)
+            }
+        }
+    }
+    
+    /// [GET] View friend requests [updated as of 1/8/21]
+    static func getFriendRequests(completion: @escaping ([FriendRequest]) -> Void) {
+        AF.request("\(hostEndpoint)/api/friends/accept/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendRequestsData = try? jsonDecoder.decode(Response<[FriendRequest]>.self, from: data) {
+                    let friendRequests = friendRequestsData.data
+                    completion(friendRequests)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

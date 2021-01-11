@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
@@ -145,17 +146,21 @@ class CommentTableViewCell: UITableViewCell {
         self.commentIndex = index
         self.delegate = delegate
         commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
-        let firstName = comment.owner.firstName
-        let lastName = comment.owner.lastName
-        nameLabel.text = "\(firstName) \(lastName.prefix(1))."
+        nameLabel.text = comment.owner.name
         let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
         // TODO: Complete logic to detect if comment has been liked
         let heartImage = "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
-        if let profileImageUrl = URL(string: comment.owner.profilePic?.assetUrls.original ?? "") {
-            profileImageView.kf.setImage(with: profileImageUrl)
+        if let profilePic = comment.owner.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "commenterProfilePicture"))
         }
         viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+    }
+
 }
