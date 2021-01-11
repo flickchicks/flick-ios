@@ -633,7 +633,7 @@ class NetworkManager {
     
     /// [Get] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
-        AF.request("\(hostEndpoint)/api/suggest/", method: .get, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/suggestions/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
