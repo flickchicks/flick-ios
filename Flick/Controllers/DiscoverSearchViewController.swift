@@ -61,7 +61,6 @@ class DiscoverSearchViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
         searchBar.resignFirstResponder()
     }
 
