@@ -135,6 +135,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let userIdentifier = appleIDCredential.user
             let fullName = appleIDCredential.fullName
             let email = appleIDCredential.email
+            let authCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8)
 
             // Save a full name and email since you can't retrieve it later, e.g., save it in the key chain
             // Create an account in your system.
@@ -145,6 +146,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             print(userIdentifier)
             print(fullName)
             print(email)
+            print(authCode)
         }
     }
 
