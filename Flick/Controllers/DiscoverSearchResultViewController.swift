@@ -19,7 +19,8 @@ class DiscoverSearchResultViewController: UIViewController {
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
+    private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     weak var delegate: DiscoverSearchResultDelegate?
     private var lists = [MediaList]()
     private var media = [Media]()
@@ -133,7 +134,9 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
         case .shows:
             cell.configureShow(show: media[indexPath.item])
         case .people:
-            cell.configureUser(user: users[indexPath.item])
+            let user = users[indexPath.item]
+            cell.configureUser(isCurrentUser: currentUserId == user.id,
+                               user: user)
         case .tags:
             cell.configureTag(tag: tags[indexPath.item])
         case .lists:
