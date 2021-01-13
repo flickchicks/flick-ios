@@ -30,7 +30,7 @@ class TabPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        profileViewController = ProfileViewController(userId: nil)
+        profileViewController = ProfileViewController(isHome: true, userId: nil)
         discoverViewController = DiscoverViewController()
         pages = [discoverViewController, profileViewController]
 

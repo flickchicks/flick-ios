@@ -278,6 +278,10 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
             inviteCollaboratorsTableView.reloadData()
         }
     }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
 
 extension AddCollaboratorModalView: EditCollaboratorCellDelegate {

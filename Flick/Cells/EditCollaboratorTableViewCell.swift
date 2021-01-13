@@ -42,6 +42,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         usernameLabel.sizeToFit()
         contentView.addSubview(usernameLabel)
 
+        userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = 20
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(userImageView)

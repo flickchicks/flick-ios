@@ -31,19 +31,22 @@ class ProfileViewController: UIViewController {
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
     private let listCellReuseIdentifier = "ListCellReuseIdentifier"
     private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
-    private let userDefaults = UserDefaults()
 
+    private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private var friends: [UserProfile] = []
-    private var isCurrentUser = false
+    private var isCurrentUser: Bool = false
+    private var isHome: Bool = false
     private var mediaLists: [SimpleMediaList] = []
     private var sections = [Section]()
     private var user: UserProfile?
     private var userId: Int?
 
-    // Use nil as userId if getting profile for current user
-    init(userId: Int?) {
+    // isHome is whether HomeViewController is displaying
+    // userId is nil only if at HomeViewController
+    init(isHome: Bool, userId: Int?) {
         super.init(nibName: nil, bundle: nil)
-        self.isCurrentUser = userId == nil
+        self.isHome = isHome
+        self.isCurrentUser = isHome || userId == currentUserId
         self.userId = userId
     }
 
@@ -58,7 +61,7 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
 
-        if !isCurrentUser {
+        if !isHome {
             setupNavigationBar()
         }
 
@@ -84,26 +87,16 @@ class ProfileViewController: UIViewController {
         }
 
         setupSections()
-        
+
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        // Get user info
-        if let userId = userId, !isCurrentUser {
-            getUser(userId: userId)
-        } else {
+        if isCurrentUser {
             getCurrentUser()
-        }
-
-        // Get friends
-        NetworkManager.getFriends { friends in
-            if friends.isEmpty { return }
-            self.friends = friends
-            DispatchQueue.main.async {
-                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
-            }
+        } else if let userId = userId {
+            getUser(userId: userId)
         }
     }
 
@@ -137,19 +130,39 @@ class ProfileViewController: UIViewController {
     }
 
     private func getCurrentUser() {
+        // Get profile of current user
         NetworkManager.getUserProfile { [weak self] userProfile in
             guard let self = self, let userProfile = userProfile else { return }
             DispatchQueue.main.async {
                 self.updateUserInfo(user: userProfile)
             }
         }
+
+        // Get friends of current user
+        NetworkManager.getFriends { [weak self] friends in
+            guard let self = self, !friends.isEmpty else { return }
+            self.friends = friends
+            DispatchQueue.main.async {
+                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+            }
+        }
     }
 
     private func getUser(userId: Int) {
+        // Get profile of another user
         NetworkManager.getUser(userId: userId) { [weak self] user in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.updateUserInfo(user: user)
+            }
+        }
+
+        // Get friends of another user
+        NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
+            guard let self = self, !friends.isEmpty else { return }
+            self.friends = friends
+            DispatchQueue.main.async {
+                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
             }
         }
     }
@@ -206,23 +219,16 @@ extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDat
         switch section.type {
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
-            cell.configure(isCurrentUser: isCurrentUser, user: user, friends: friends, delegate: self)
+            cell.configure(isHome: isHome,
+                           user: user,
+                           friends: friends,
+                           delegate: self)
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
             cell.configure(for: mediaLists[indexPath.item])
             cell.delegate = self
             return cell
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        switch section.type {
-        case .profileSummary:
-            return 160
-        case .lists:
-            return 174
         }
     }
     
@@ -247,7 +253,8 @@ extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDat
             return UIView()
         case .lists:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
-            headerView.configure(user: user, isCurrentUser: isCurrentUser)
+            headerView.configure(user: user,
+                                 isCurrentUser: isCurrentUser)
             headerView.delegate = self
             return headerView
         }
@@ -287,11 +294,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         let createListModalView = EnterListNameModalView(type: .createList)
         createListModalView.modalDelegate = self
         createListModalView.createListDelegate = self
-        // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
-        if let window = UIApplication.shared.windows.first(where: { window -> Bool in window.isKeyWindow}) {
-            // Add modal view to the window to also cover tab bar
-            window.addSubview(createListModalView)
-        }
+        showModalPopup(view: createListModalView)
     }
 
     func createFriendRequest() {

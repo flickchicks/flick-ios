@@ -30,6 +30,7 @@ class ListSettingsViewController: UIViewController {
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
+    private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private var list: MediaList
     private let listSettingsCellReuseIdentifier = "ListSettingsCellReuseIdentifier"
     private var settings = [ListSetting]()
@@ -38,10 +39,15 @@ class ListSettingsViewController: UIViewController {
         self.list = list
         super.init(nibName: nil, bundle: nil)
 
-        if list.isSaved || list.isWatchLater {
-            settings = [.privacy]
-        } else {
-            settings = [.collaboration, .privacy, .rename, .deleteList] // TODO: Only show collaboration if user is not owner
+        // Show all settings for owner of list and show only collaboration for collaborators
+        if list.owner.id == currentUserId {
+            if list.isSaved || list.isWatchLater {
+                settings = [.privacy]
+            } else {
+                settings = [.collaboration, .privacy, .rename, .deleteList]
+            }
+        } else if list.collaborators.contains(where: { $0.id == currentUserId }) {
+            settings = [.collaboration]
         }
     }
 
