@@ -87,17 +87,17 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Update user profile [updated as of 8/20/20]
+    /// [POST] Update user profile [updated as of 1/10/21]
     static func updateUserProfile(user: User, completion: @escaping (UserProfile) -> Void) {
         let parameters: [String: Any] = [
             "username": user.username,
-            "first_name": user.firstName,
-            "last_name": user.lastName,
+            "name": "\(user.firstName) \(user.lastName)",
             "bio": user.bio,
             "profile_pic": user.profilePic,
             "phone_number": user.phoneNumber,
-            "social_id_token_type": user.socialIdTokenType,
-            "social_id_token": user.socialIdToken
+            "social_id_token_type": "facebook",
+            "social_id_token": user.socialIdToken,
+            "social_id": user.socialIdToken
         ]
 
         AF.request("\(hostEndpoint)/api/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in

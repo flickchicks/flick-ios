@@ -188,7 +188,7 @@ class SuggestionTableViewCell: UITableViewCell {
             .boldFont14(suggestion.fromUser.name)
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
         if let profilePic = suggestion.fromUser.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "suggestorProfilePicture"))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(suggestion.fromUser.id)"))
         }
         messageLabel.text = suggestion.message
         mediaTitleLabel.text = suggestion.show.title

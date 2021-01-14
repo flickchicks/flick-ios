@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
                        let profileImagePngData = profileImage.pngData() {
                         base64Str = profileImagePngData.base64EncodedString()
                     }
-                    
+
                     NetworkManager.authenticateUser(
                         username: "",
                         firstName: firstName,
@@ -73,8 +73,7 @@ class LoginViewController: UIViewController {
                         guard let self = self else { return }
                         DispatchQueue.main.async {
                             self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                            let homeViewController = HomeViewController()
-                            self.navigationController?.pushViewController(homeViewController, animated: true)
+                            self.navigationController?.pushViewController(HomeViewController(), animated: true)
                         }
                     }
                 }
