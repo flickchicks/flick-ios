@@ -19,7 +19,8 @@ class NetworkManager {
     ]
     
     #if LOCAL
-    private static let hostEndpoint = "http://localhost:8000"
+//    private static let hostEndpoint = "http://localhost:8000"
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #else
     private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif

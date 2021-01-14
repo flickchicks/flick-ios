@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController {
 
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
-
+        
         if !isCurrentUser {
             setupNavigationBar()
         }
@@ -106,6 +106,13 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if !isCurrentUser {
+//            setupNavigationBar()
+//        }
+//    }
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
