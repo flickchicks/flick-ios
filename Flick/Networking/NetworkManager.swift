@@ -99,7 +99,7 @@ class NetworkManager {
             "social_id_token": user.socialIdToken,
             "social_id": user.socialIdToken
         ]
-        
+
         AF.request("\(hostEndpoint)/api/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):

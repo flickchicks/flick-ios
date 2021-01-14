@@ -99,13 +99,6 @@ class ProfileViewController: UIViewController {
             getUser(userId: userId)
         }
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if !isCurrentUser {
-//            setupNavigationBar()
-//        }
-//    }
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
