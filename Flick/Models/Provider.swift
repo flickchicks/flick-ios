@@ -11,5 +11,5 @@ import Foundation
 struct Provider: Codable {
     var id: Int
     var name: String
-    var image: String
+    var image: String?
 }

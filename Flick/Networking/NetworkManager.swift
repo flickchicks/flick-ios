@@ -19,8 +19,7 @@ class NetworkManager {
     ]
     
     #if LOCAL
-//    private static let hostEndpoint = "http://localhost:8000"
-    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "http://localhost:8000"
     #else
     private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif
@@ -40,6 +39,8 @@ class NetworkManager {
 
         return urlComp?.url?.absoluteString
     }
+
+    // MARK: - Users
 
     /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
     static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
@@ -150,6 +151,8 @@ class NetworkManager {
             }
         }
     }
+
+    // MARK: - List
 
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
     static func createNewMediaList(listName: String, mediaIds: [Int] = [], completion: @escaping (MediaList) -> Void) {
@@ -306,6 +309,8 @@ class NetworkManager {
         }
     }
 
+    // MARK: - Friends
+
     /// [GET] Get all friends of a user [updated as of 8/7/20]
     static func getFriends(completion: @escaping ([UserProfile]) -> Void) {
         AF.request("\(hostEndpoint)/api/friends/", method: .get, headers: headers).validate().responseData { response in
@@ -323,19 +328,16 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Send invites to friends by usernames
-    static func sendFriendInvites(userId: String, usernames: [String], completion: @escaping ([String]) -> Void) {
-        let parameters: [String: Any] = [
-            "usernames": usernames
-        ]
-
-        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/invite", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+    /// [GET] Get all friends of an user by user id [updated as of 1/9/21]
+    static func getFriendsOfUser(userId: Int, completion: @escaping ([UserProfile]) -> Void) {
+        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let friendsData = try? jsonDecoder.decode(Response<UsernamesDataResponse>.self, from: data) {
-                    let friendsUsernames = friendsData.data.usernames
-                    completion(friendsUsernames)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendsData = try? jsonDecoder.decode(Response<[UserProfile]>.self, from: data) {
+                    let friendsList = friendsData.data
+                    completion(friendsList)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -343,20 +345,33 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Accept invites from friends by usernames
-    static func acceptFriendInvites(userId: String, usernames: [String], completion: @escaping ([String]) -> Void) {
+    /// [POST] Create a friend request [updated as of 1/1/21]
+    static func createFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
-            "usernames": usernames
+            "ids": [friendId],
         ]
 
-        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/accept", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/friends/request/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [GET] View friend requests [updated as of 1/8/21]
+    static func getFriendRequests(completion: @escaping ([FriendRequest]) -> Void) {
+        AF.request("\(hostEndpoint)/api/friends/accept/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
-                if let friendsData = try? jsonDecoder.decode(Response<UsernamesDataResponse>.self, from: data) {
-                    // TODO: Double check array field key in API
-                    let friendsUsernames = friendsData.data.usernames
-                    completion(friendsUsernames)
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let friendRequestsData = try? jsonDecoder.decode(Response<[FriendRequest]>.self, from: data) {
+                    let friendRequests = friendRequestsData.data
+                    completion(friendRequests)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -364,25 +379,41 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Send invites to friends by usernames
-    static func cancelFriendInvites(userId: String, usernames: [String], completion: @escaping ([String]) -> Void) {
+    /// [POST] Accept a friend request [updated as of 1/1/21]
+    static func acceptFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
-            "usernames": usernames
+            "ids": [friendId],
         ]
 
-        AF.request("\(hostEndpoint)/api/user/\(userId)/friends/cancel", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/friends/accept/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                if let friendsData = try? jsonDecoder.decode(Response<UsernamesDataResponse>.self, from: data) {
-                    let friendsUsernames = friendsData.data.usernames
-                    completion(friendsUsernames)
-                }
+            case .success:
+                completion(true)
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(false)
             }
         }
     }
+
+    /// [POST] Reject a friend request [updated as of 1/1/21]
+    static func rejectFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "ids": [friendId],
+        ]
+
+        AF.request("\(hostEndpoint)/api/friends/reject/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    // MARK: - Media
 
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
@@ -463,6 +494,8 @@ class NetworkManager {
             }
         }
     }
+
+    // MARK: - Search
 
     /// [GET] Get media search result by query
     static func searchMedia(query: String, completion: @escaping (String?, [Media]) -> Void) {
@@ -597,6 +630,8 @@ class NetworkManager {
             }
         }
     }
+
+    // MARK: - Discover
     
     /// [GET] Get lists search result by query [updated as of 9/3/20]
     static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
@@ -614,6 +649,8 @@ class NetworkManager {
             }
         }
     }
+
+    // MARK: - Notifications
     
     static func getNotifications(completion: @escaping ([Notification]) -> Void) {
         AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
@@ -631,10 +668,12 @@ class NetworkManager {
             }
         }
     }
+
+    // MARK: - Suggestions
     
     /// [Get] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
-        AF.request("\(hostEndpoint)/api/suggest/", method: .get, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/suggestions/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -668,72 +707,5 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Create a friend request [updated as of 1/1/21]
-    static func createFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
-        let parameters: [String: Any] = [
-            "ids": [friendId],
-        ]
-
-        AF.request("\(hostEndpoint)/api/friends/request/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            switch response.result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion(false)
-            }
-        }
-    }
-    
-    /// [GET] View friend requests [updated as of 1/8/21]
-    static func getFriendRequests(completion: @escaping ([FriendRequest]) -> Void) {
-        AF.request("\(hostEndpoint)/api/friends/accept/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let friendRequestsData = try? jsonDecoder.decode(Response<[FriendRequest]>.self, from: data) {
-                    let friendRequests = friendRequestsData.data
-                    completion(friendRequests)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-
-    /// [POST] Accept a friend request [updated as of 1/1/21]
-    static func acceptFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
-        let parameters: [String: Any] = [
-            "ids": [friendId],
-        ]
-
-        AF.request("\(hostEndpoint)/api/friends/accept/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            switch response.result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion(false)
-            }
-        }
-    }
-
-    /// [POST] Reject a friend request [updated as of 1/1/21]
-    static func rejectFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
-        let parameters: [String: Any] = [
-            "ids": [friendId],
-        ]
-
-        AF.request("\(hostEndpoint)/api/friends/reject/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            switch response.result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                print(error.localizedDescription)
-                completion(false)
-            }
-        }
-    }
 }
 

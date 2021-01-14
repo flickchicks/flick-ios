@@ -98,10 +98,11 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         }
     }
 
-    func configureUser(user: UserProfile) {
+    func configureUser(isCurrentUser: Bool, user: UserProfile) {
         titleLabel.text = user.name
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
+        subtitleLabel.isHidden = isCurrentUser
         subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false

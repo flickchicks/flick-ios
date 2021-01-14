@@ -59,6 +59,11 @@ class DiscoverSearchViewController: UIViewController {
         setupViewControllers()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchBar.resignFirstResponder()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
@@ -203,6 +208,10 @@ extension DiscoverSearchViewController: UISearchBarDelegate {
         )
     }
 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
 }
 
 extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
@@ -218,7 +227,7 @@ extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
     }
 
     func pushProfileViewController(userId: Int) {
-        navigationController?.pushViewController(ProfileViewController(userId: userId), animated: true)
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
     }
 
 }
