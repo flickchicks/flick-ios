@@ -24,6 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // TODO: Double check with design and test on actual device
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
 
+        let userDefaults = UserDefaults.standard
+
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
@@ -32,12 +34,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // TODO: Let's make another launch screen we show before navigating to either login or home
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        guard let token = AccessToken.current, !token.isExpired else {
-            LoginManager().logOut()
-            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
-            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+        // Check authorizationToken is in user default
+        guard let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) else {
+            window.rootViewController = navigationController
             return
         }
+
+//        guard let token = AccessToken.current, !token.isExpired else {
+//            LoginManager().logOut()
+//            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+//            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+//            return
+//        }
+
+        // need check when get user profile fails
         // User is logged in and we have correct authorization token.
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {

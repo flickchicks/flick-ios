@@ -43,14 +43,15 @@ class NetworkManager {
     // MARK: - Users
 
     /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
-    static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    static func authenticateUser(firstName: String, lastName: String, email: String?, profilePic: String, socialId: String, socialIdToken: String, socialIdTokenType: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "username": "",
             "name": "\(firstName) \(lastName)",
+            "email": email,
             "profile_pic": profilePic,
             "social_id": socialId,
             "social_id_token": socialIdToken,
-            "social_id_token_type": "facebook"
+            "social_id_token_type": socialIdTokenType
         ]
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in

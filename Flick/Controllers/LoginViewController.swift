@@ -48,6 +48,11 @@ class LoginViewController: UIViewController {
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
     @objc func handleAuthorizationAppleIDButtonPress() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
@@ -61,7 +66,7 @@ class LoginViewController: UIViewController {
 
     @objc func initiateFacebookLogin() {
         let loginManager = LoginManager()
-        loginManager.logIn(permissions: [], from: self) { [weak self] (result, error) in
+        loginManager.logIn(permissions: ["public_profile", "email"], from: self) { [weak self] (result, error) in
             guard let self = self else { return }
 
             guard error == nil else {
@@ -73,42 +78,75 @@ class LoginViewController: UIViewController {
                 return
             }
 
-            Profile.loadCurrentProfile { (profile, error) in
-                if  let profile = profile,
-                    let accessToken = AccessToken.current?.tokenString,
-                    let firstName = profile.firstName,
-                    let lastName = profile.lastName,
-                    let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
-                    var base64Str = ""
+            // Get user email from graph request
+            GraphRequest(graphPath: "me", parameters: ["fields": "email"], tokenString: AccessToken.current?.tokenString, version: nil, httpMethod: .get).start { (connection, result, error) -> Void in
+                var email: String?
+                if error != nil {
+                    print(error?.localizedDescription)
+                } else {
+                    if let result = result,
+                       let user = result as? [String: Any],
+                       let userEmail = user["email"] as? String {
+                        email = userEmail
+                    }
+                }
+                self.loadFBProfile(email: email)
+            }
+        }
+    }
+
+    private func loadFBProfile(email: String?) {
+        Profile.loadCurrentProfile { (profile, error) in
+            if let accessToken = AccessToken.current?.tokenString,
+               let profile = profile,
+               let firstName = profile.firstName,
+               let lastName = profile.lastName {
+                // Get profile image in base64
+                var base64Str = ""
+                if let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
                     let profileURLData = try? Data(contentsOf: profileURL)
                     if let profileURLData = profileURLData,
                        let profileImage = UIImage(data: profileURLData),
                        let profileImagePngData = profileImage.pngData() {
                         base64Str = profileImagePngData.base64EncodedString()
                     }
-                    
-                    NetworkManager.authenticateUser(
-                        username: "",
-                        firstName: firstName,
-                        lastName: lastName,
-                        profilePic: base64Str,
-                        socialId: profile.userID,
-                        socialIdToken: accessToken) { [weak self] authorizationToken in
-                        guard let self = self else { return }
-                        DispatchQueue.main.async {
-                            self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                            let homeViewController = HomeViewController()
-                            self.navigationController?.pushViewController(homeViewController, animated: true)
-                        }
-                    }
                 }
+
+                self.authenticateUser(
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    profilePic: base64Str,
+                    socialId: profile.userID,
+                    socialIdToken: accessToken,
+                    socialIdTokenType: "facebook"
+                )
             }
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+    private func authenticateUser(firstName: String,
+                                  lastName: String,
+                                  email: String?,
+                                  profilePic: String,
+                                  socialId: String,
+                                  socialIdToken: String,
+                                  socialIdTokenType: String) {
+        NetworkManager.authenticateUser(
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            profilePic: profilePic,
+            socialId: socialId,
+            socialIdToken: socialIdToken,
+            socialIdTokenType: socialIdTokenType) { [weak self] authorizationToken in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                let homeViewController = HomeViewController()
+                self.navigationController?.pushViewController(homeViewController, animated: true)
+            }
+        }
     }
 
 }
@@ -120,33 +158,42 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        print("didCompleteWithAuthorization")
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            guard let appleIDToken = appleIDCredential.identityToken else {
-                print("Unable to fetch identity token")
-                return
-            }
+//            guard let appleIDToken = appleIDCredential.identityToken else {
+//                print("Unable to fetch identity token")
+//                return
+//            }
+//
+//            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+//                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+//                return
+//            }
 
-            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+            guard let authorizationCode = appleIDCredential.authorizationCode,
+                  let authCode = String(data: authorizationCode, encoding: .utf8) else {
+                print("Problem with the authorizationCode")
                 return
             }
 
             let userIdentifier = appleIDCredential.user
             let fullName = appleIDCredential.fullName
             let email = appleIDCredential.email
-            let authCode = String(data: appleIDCredential.authorizationCode!, encoding: .utf8)
 
-            // Save a full name and email since you can't retrieve it later, e.g., save it in the key chain
-            // Create an account in your system.
-            // On success, remove the key
-            // On fail, recover full name and email from the keychain and retry registration
-
-            print(idTokenString)
+//            print(idTokenString)
             print(userIdentifier)
             print(fullName)
             print(email)
             print(authCode)
+
+            authenticateUser(
+                firstName: fullName?.givenName ?? "",
+                lastName: fullName?.familyName ?? "",
+                email: email,
+                profilePic: "",
+                socialId: userIdentifier,
+                socialIdToken: "some token \(userIdentifier)",
+                socialIdTokenType: "apple"
+            )
         }
     }
 
