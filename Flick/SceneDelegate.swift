@@ -39,8 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 guard let profile = profile else {
                     window.rootViewController = UINavigationController(rootViewController: LoginViewController())
                     return
-                }gFlick/SceneDelegate.swift
-                
+                }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
                 window.rootViewController = UINavigationController(rootViewController: HomeViewController())
             }
