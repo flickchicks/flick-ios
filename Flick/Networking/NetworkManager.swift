@@ -13,11 +13,14 @@ class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
 
-    static let headers: HTTPHeaders = [
-        "Authorization": "Token \(UserDefaults().string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
-        "Accept": "application/json"
-    ]
-    
+    static var headers: HTTPHeaders {
+        let headers: HTTPHeaders = [
+            "Authorization": "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
+            "Accept": "application/json"
+        ]
+        return headers
+    }
+
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
     #else
@@ -43,14 +46,15 @@ class NetworkManager {
     // MARK: - Users
 
     /// [POST] Authenticate a user  on register and login[updated as of 1/26/21]
-    static func authenticateUser(username: String, firstName: String, lastName: String, profilePic: String, socialId: String, socialIdToken: String, completion: @escaping (String) -> Void) {
+    static func authenticateUser(firstName: String, lastName: String, email: String?, profilePic: String, socialId: String, socialIdToken: String, socialIdTokenType: String, completion: @escaping (String) -> Void) {
         let parameters: [String: Any] = [
             "username": "",
             "name": "\(firstName) \(lastName)",
+            "email": email,
             "profile_pic": profilePic,
             "social_id": socialId,
             "social_id_token": socialIdToken,
-            "social_id_token_type": "facebook"
+            "social_id_token_type": socialIdTokenType
         ]
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
@@ -95,7 +99,7 @@ class NetworkManager {
             "bio": user.bio,
             "profile_pic": user.profilePic,
             "phone_number": user.phoneNumber,
-            "social_id_token_type": "facebook",
+            "social_id_token_type": user.socialIdTokenType,
             "social_id_token": user.socialIdToken,
             "social_id": user.socialIdToken
         ]

@@ -64,7 +64,6 @@ class EditProfileViewController: UIViewController {
     private var didChangeProfilePic = false
     private let profileImageSize = CGSize(width: 50, height: 50)
     private var user: UserProfile
-    private let userDefaults = UserDefaults.standard
 
     init(user: UserProfile) {
         self.user = user

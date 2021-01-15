@@ -133,6 +133,7 @@ class ProfileViewController: UIViewController {
         // Get profile of current user
         NetworkManager.getUserProfile { [weak self] userProfile in
             guard let self = self, let userProfile = userProfile else { return }
+            UserDefaults.standard.set(userProfile.id, forKey: Constants.UserDefaults.userId)
             DispatchQueue.main.async {
                 self.updateUserInfo(user: userProfile)
             }

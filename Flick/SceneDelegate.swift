@@ -29,14 +29,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.rootViewController = LaunchViewController()
         window.makeKeyAndVisible()
-        guard let token = AccessToken.current, !token.isExpired else {
-            LoginManager().logOut()
-            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
-            UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
-            window.rootViewController = UINavigationController(rootViewController: LoginViewController())
+        // Check authorizationToken is in userDefaults
+        guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
             return
         }
-        // User is logged in and we have correct authorization token.
+        // We have correct authorization token
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
                 guard let profile = profile else {

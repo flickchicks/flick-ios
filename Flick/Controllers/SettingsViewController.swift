@@ -67,7 +67,9 @@ class SettingsViewController: UIViewController {
     }
 
     @objc func logout() {
-        LoginManager().logOut()
+        if user.socialIdTokenType == "facebook" {
+            LoginManager().logOut()
+        }
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
         let loginViewController = LoginViewController()

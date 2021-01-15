@@ -78,6 +78,7 @@ class FlickToFriendModalView: UIView {
         containerView.addSubview(mediaPosterImageView)
 
         mediaNameLabel.text = media.title
+        mediaNameLabel.numberOfLines = 0
         mediaNameLabel.font = .boldSystemFont(ofSize: 14)
         containerView.addSubview(mediaNameLabel)
 
@@ -142,7 +143,7 @@ class FlickToFriendModalView: UIView {
         }
 
         mediaPosterImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(53)
+            make.leading.equalToSuperview().offset(40)
             make.top.equalTo(onlyFriendSeeLabel.snp.bottom).offset(verticalPadding)
             make.height.equalTo(90)
             make.width.equalTo(60)
@@ -150,6 +151,7 @@ class FlickToFriendModalView: UIView {
 
         mediaNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(mediaPosterImageView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().inset(40)
             make.top.equalTo(mediaPosterImageView.snp.top).offset(9)
         }
 
