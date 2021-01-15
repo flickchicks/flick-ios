@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "unlock1x.png",
+      "filename" : "unlocked1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "unlocked2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "unlocked3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
