@@ -10,7 +10,7 @@ import UIKit
 
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)
-    func pushMediaViewController(mediaId: Int)
+    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?)
     func pushProfileViewController(userId: Int)
 }
 
@@ -150,7 +150,7 @@ extension DiscoverSearchResultViewController: UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch searchType {
         case .movies, .shows:
-            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id)
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic)
         case .people:
             delegate?.pushProfileViewController(userId: users[indexPath.row].id)
         case .lists:

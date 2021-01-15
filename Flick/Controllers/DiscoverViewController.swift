@@ -135,8 +135,8 @@ extension DiscoverViewController: MediaControllerDelegate {
         presentInfoAlert(message: message, completion: nil)
     }
     
-    func showMediaViewController(id: Int) {
-        let mediaViewController = MediaViewController(mediaId: id)
+    func showMediaViewController(id: Int, mediaImageUrl: String?) {
+        let mediaViewController = MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 }
