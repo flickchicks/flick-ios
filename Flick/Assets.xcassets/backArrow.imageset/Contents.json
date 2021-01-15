@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "backArrow.png",
+      "filename" : "backArrow1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "backArrow2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "backArrow3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

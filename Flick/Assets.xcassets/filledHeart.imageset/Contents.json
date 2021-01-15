@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "filledHeart.png",
+      "filename" : "filledHeart1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "filledHeart2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "filledHeart3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

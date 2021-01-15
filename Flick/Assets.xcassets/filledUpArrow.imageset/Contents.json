@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "filledUpArrow.png",
+      "filename" : "filledUpArrow1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "filledUpArrow2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "filledUpArrow3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

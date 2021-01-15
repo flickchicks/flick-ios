@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "editButtonInactive.png",
+      "filename" : "editButtonInactive1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "editButtonInactive2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "editButtonInactive3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

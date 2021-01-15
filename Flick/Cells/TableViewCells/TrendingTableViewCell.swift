@@ -84,7 +84,6 @@ extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonColle
         }
         let show = discoverShows[indexPath.row]
         cell.configure(with: show)
-        cell.delegate = delegate
         return cell
     }
     
