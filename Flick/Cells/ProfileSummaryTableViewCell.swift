@@ -167,7 +167,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
         if let profilePic = user.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userProfilePicture"))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         // Show notification and settings buttons only if current user is at Home
         notificationButton.isHidden = !isHome

@@ -14,6 +14,7 @@ extension UIColor {
     static let darkBlueGray2 = colorFromCode(0x3F3A58)
     static let darkPurple = colorFromCode(0x2B25A6)
     static let deepPurple = colorFromCode(0x2B254A)
+    static let facebookBlue = colorFromCode(0x3b5998)
     // TODO: Update name and add gradient
     static let gradientPurple = colorFromCode(0x5A1C97)
     static let lightPurple = colorFromCode(0xE8E2FF)

@@ -26,7 +26,6 @@ class AllNotificationsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .offWhite
-        setupNavigationBar()
 
         tabPageViewController = NotificationsTabPageViewController()
         addChild(tabPageViewController)
@@ -96,6 +95,7 @@ class AllNotificationsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        setupNavigationBar()
     }
 
 }

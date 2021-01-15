@@ -62,7 +62,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Private Data Vars
     weak var delegate: EditProfileDelegate?
     private var didChangeProfilePic = false
-    private let profileImageSize = CGSize(width: 100, height: 100)
+    private let profileImageSize = CGSize(width: 50, height: 50)
     private var user: UserProfile
     private let userDefaults = UserDefaults.standard
 
@@ -87,7 +87,7 @@ class EditProfileViewController: UIViewController {
         imagePickerController.mediaTypes = ["public.image"]
 
         if let profilePic = user.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "editUserProfilePicture"))
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         
         profileImageView.layer.cornerRadius = 50
@@ -366,7 +366,7 @@ class EditProfileViewController: UIViewController {
             let username = userNameTextField.text,
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
-            let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.toBase64() : nil
+            let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.pngData()?.base64EncodedString() : nil
             let updatedUser = User(username: username, firstName: firstName, lastName: lastName, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
             NetworkManager.updateUserProfile(user: updatedUser) { [ weak self] user in
                 guard let self = self else { return }
@@ -407,6 +407,8 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
+        print("herererer")
+        print(profileImageView.image?.pngData()?.base64EncodedString())
         dismiss(animated: true, completion: nil)
     }
 }

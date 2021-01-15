@@ -7,29 +7,25 @@
 //
 
 import AuthenticationServices
-import UIKit
 import FBSDKLoginKit
+import UIKit
 
 class LoginViewController: UIViewController {
 
     private let userDefaults = UserDefaults.standard
 
-    private let appleLoginButton = ASAuthorizationAppleIDButton()
-    private let facebookLoginButton = UIButton()
+    private let appleLoginButton = LoginButton(type: .apple, backgroundColor: .black)
+    private let facebookLoginButton = LoginButton(type: .facebook, backgroundColor: .facebookBlue)
     private let profileSize = CGSize(width: 50, height: 50)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .lightPurple
         navigationController?.navigationBar.isHidden = true
 
         appleLoginButton.addTarget(self, action: #selector(handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
         view.addSubview(appleLoginButton)
 
-        facebookLoginButton.setTitle("Continue with Facebook", for: .normal)
-        facebookLoginButton.setTitleColor(.gradientPurple, for: .normal)
-        facebookLoginButton.layer.backgroundColor = UIColor.lightPurple.cgColor
-        facebookLoginButton.titleLabel?.font = .systemFont(ofSize: 17)
         facebookLoginButton.addTarget(self, action: #selector(initiateFacebookLogin), for: .touchUpInside)
         view.addSubview(facebookLoginButton)
 

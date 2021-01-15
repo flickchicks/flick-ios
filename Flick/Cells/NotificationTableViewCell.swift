@@ -8,6 +8,7 @@
 
 import UIKit
 import SkeletonView
+import Kingfisher
 
 class NotificationTableViewCell: UITableViewCell {
 
@@ -38,6 +39,8 @@ class NotificationTableViewCell: UITableViewCell {
         containerView.isSkeletonable = true
         contentView.addSubview(containerView)
 
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.isSkeletonable = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
@@ -74,9 +77,16 @@ class NotificationTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func setupProfileImageView(user: UserProfile) {
+        if let profilePic = user.profilePic {
+            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+        }
+    }
 
     /// setupAcceptedIncomingRequestCell sets notificationLabel for accepted incoming friend requests
     private func setupAcceptedIncomingRequestCell(from user: UserProfile) {
+        setupProfileImageView(user: user)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .normalFont14("You accepted ")
@@ -86,6 +96,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     /// setupAcceptedOutgoingRequestCell sets notificationLabel for accepted outgoing friend requests
     private func setupAcceptedOutgoingRequestCell(to user: UserProfile) {
+        setupProfileImageView(user: user)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(user.name)
@@ -94,6 +105,7 @@ class NotificationTableViewCell: UITableViewCell {
 
     /// setupCollaborationInviteCell sets notificationLabel for list collaboration invites
     private func setupCollaborationInviteCell(fromUser: UserProfile, list: NotificationMediaList) {
+        setupProfileImageView(user: fromUser)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(fromUser.name)
@@ -105,6 +117,7 @@ class NotificationTableViewCell: UITableViewCell {
     /// setupActivityLikeCell sets notificationLabel for liked activities
     //  TODO: Revisit this function after updates on backend
     private func setupActivityLikeCell(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String) {
+        setupProfileImageView(user: fromUser)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(fromUser.name)
@@ -115,6 +128,7 @@ class NotificationTableViewCell: UITableViewCell {
 
     /// setupListShowsEditCell sets up notificationLabel from changes to shows in collaborated lists
     private func setupListShowsEditCell(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int) {
+        setupProfileImageView(user: fromUser)
         let conjunction = type.rawValue == "added" ? "to" : "from"
         let posessiveTense = numChanged > 1 ? "s": ""
         notificationLabel.attributedText =
@@ -126,6 +140,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     /// setupListOwnershipEditCell sets up notificationLabel for changes in collaborated lists' ownership
     private func setupListOwnershipEditCell(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile) {
+        setupProfileImageView(user: fromUser)
         let newOwnerText = newOwner.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) ? "you" : newOwner.name
         notificationLabel.attributedText =
         NSMutableAttributedString()
@@ -139,6 +154,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     /// setupListCollaboratorsEdit sets up notificationLabel from changes to collaborators in collaborated lists
     private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile]) {
+        setupProfileImageView(user: fromUser)
         let collaboratorNames = collaborators.map { $0.name }
         notificationLabel.attributedText =
         NSMutableAttributedString()
