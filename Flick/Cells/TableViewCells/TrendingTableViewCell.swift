@@ -10,7 +10,7 @@ import UIKit
 import SkeletonView
 
 protocol MediaControllerDelegate: class {
-    func showMediaViewController(id: Int)
+    func showMediaViewController(id: Int, mediaImageUrl: String?)
     func presentInfoAlert(message: String)
 }
 
@@ -84,13 +84,12 @@ extension TrendingTableViewCell: SkeletonCollectionViewDataSource, SkeletonColle
         }
         let show = discoverShows[indexPath.row]
         cell.configure(with: show)
-        cell.delegate = delegate
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let show = discoverShows[indexPath.item]
-        delegate?.showMediaViewController(id: show.id)
+        delegate?.showMediaViewController(id: show.id, mediaImageUrl: show.posterPic)
     }
 }
 

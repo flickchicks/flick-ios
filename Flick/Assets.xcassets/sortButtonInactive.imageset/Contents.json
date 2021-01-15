@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sortButtonInactive.png",
+      "filename" : "sortButtonInactive1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "sortButtonInactive2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "sortButtonInactive3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -27,22 +27,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
-        let loginViewController = LoginViewController()
-        let navigationController = UINavigationController(rootViewController: loginViewController)
-        // TODO: Let's make another launch screen we show before navigating to either login or home
-        window.rootViewController = navigationController
+        window.rootViewController = LaunchViewController()
         window.makeKeyAndVisible()
         guard let token = AccessToken.current, !token.isExpired else {
             LoginManager().logOut()
             UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
             UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+            window.rootViewController = UINavigationController(rootViewController: LoginViewController())
             return
         }
         // User is logged in and we have correct authorization token.
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
                 guard let profile = profile else {
-                    window.rootViewController = UINavigationController(rootViewController: loginViewController)
+                    window.rootViewController = UINavigationController(rootViewController: LoginViewController())
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
