@@ -13,11 +13,14 @@ class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
 
-    static let headers: HTTPHeaders = [
-        "Authorization": "Token \(UserDefaults().string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
-        "Accept": "application/json"
-    ]
-    
+    static var headers: HTTPHeaders {
+        let headers: HTTPHeaders = [
+            "Authorization": "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
+            "Accept": "application/json"
+        ]
+        return headers
+    }
+
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
     #else
