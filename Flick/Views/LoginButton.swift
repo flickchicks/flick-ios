@@ -11,6 +11,33 @@ import UIKit
 enum LoginButtonType: String {
     case apple = "Apple"
     case facebook = "Facebook"
+
+    var backgroundColor: UIColor {
+        switch self {
+        case .apple:
+            return .black
+        case .facebook:
+            return .facebookBlue
+        }
+    }
+
+    var iconImageName: String {
+        switch self {
+        case .apple:
+            return "appleIcon"
+        case .facebook:
+            return "facebookIcon"
+        }
+    }
+
+    var iconSize: CGSize {
+        switch self {
+        case .apple:
+            return CGSize(width: 48, height: 48)
+        case .facebook:
+            return CGSize(width: 30, height: 30)
+        }
+    }
 }
 
 class LoginButton: UIButton {
@@ -18,21 +45,13 @@ class LoginButton: UIButton {
     private let iconImageView = UIImageView()
     private let label = UILabel()
 
-    init(type: LoginButtonType, backgroundColor: UIColor) {
+    init(type: LoginButtonType) {
         super.init(frame: .zero)
-        self.backgroundColor = backgroundColor
+        self.backgroundColor = type.backgroundColor
         clipsToBounds = true
         layer.cornerRadius = 23
 
-        var iconImageName: String {
-            switch type {
-            case .apple:
-                return "appleIcon"
-            case .facebook:
-                return "facebookIcon"
-            }
-        }
-        iconImageView.image = UIImage(named: iconImageName)
+        iconImageView.image = UIImage(named: type.iconImageName)
         addSubview(iconImageView)
 
         label.attributedText =
@@ -42,19 +61,10 @@ class LoginButton: UIButton {
         label.textAlignment = .center
         addSubview(label)
 
-        var iconSize: CGSize {
-            switch type {
-            case .apple:
-                return CGSize(width: 48, height: 48)
-            case .facebook:
-                return CGSize(width: 30, height: 30)
-            }
-        }
-
         iconImageView.snp.makeConstraints { make in
             make.centerX.equalTo(self.snp.leading).offset(35)
             make.centerY.equalToSuperview()
-            make.size.equalTo(iconSize)
+            make.size.equalTo(type.iconSize)
         }
 
         label.snp.makeConstraints { make in

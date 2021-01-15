@@ -24,8 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // TODO: Double check with design and test on actual device
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
 
-        let userDefaults = UserDefaults.standard
-
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
@@ -35,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         // Check authorizationToken is in userDefaults
-        guard let _ = userDefaults.string(forKey: Constants.UserDefaults.authorizationToken) else {
+        guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
             return
         }
         // We have correct authorization token

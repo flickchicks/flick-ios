@@ -13,14 +13,13 @@ import UIKit
 class LoginViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let appleLoginButton = LoginButton(type: .apple, backgroundColor: .black)
-    private let facebookLoginButton = LoginButton(type: .facebook, backgroundColor: .facebookBlue)
+    private let appleLoginButton = LoginButton(type: .apple)
+    private let facebookLoginButton = LoginButton(type: .facebook)
     private let introLabel = UILabel()
     private let logoImageView = UIImageView()
 
     // MARK: - Private Data Vars
     private let profileSize = CGSize(width: 50, height: 50)
-    private let userDefaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,12 +51,11 @@ class LoginViewController: UIViewController {
 
     private func setupConstraints() {
         let loginButtonSize = CGSize(width: 240, height: 46)
-        let logoSize = CGSize(width: 75, height: 30)
 
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(60)
             make.centerX.equalToSuperview()
-            make.size.equalTo(logoSize)
+            make.size.equalTo(CGSize(width: 75, height: 30))
         }
 
         introLabel.snp.makeConstraints { make in
@@ -168,9 +166,8 @@ class LoginViewController: UIViewController {
             socialIdTokenType: socialIdTokenType) { [weak self] authorizationToken in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.userDefaults.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
-                let homeViewController = HomeViewController()
-                self.navigationController?.pushViewController(homeViewController, animated: true)
+                UserDefaults.standard.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
+                self.navigationController?.pushViewController(HomeViewController(), animated: true)
             }
         }
     }
