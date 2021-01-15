@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "emptyList.png",
+      "filename" : "emptyList1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "emptyList2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "emptyList3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

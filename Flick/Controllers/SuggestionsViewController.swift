@@ -62,7 +62,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let suggestion = suggestions[indexPath.row]
-        let mediaViewController = MediaViewController(mediaId: suggestion.show.id)
+        let mediaViewController = MediaViewController(mediaId: suggestion.show.id, mediaImageUrl: suggestion.show.posterPic)
         navigationController?.pushViewController(mediaViewController, animated: true)
     }
 

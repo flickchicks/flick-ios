@@ -39,9 +39,13 @@ class MediaViewController: UIViewController {
     }
     private var runningAnimations = [UIViewPropertyAnimator]()
 
-    init(mediaId: Int) {
+    init(mediaId: Int, mediaImageUrl: String?) {
         super.init(nibName: nil, bundle: nil)
         self.mediaId = mediaId
+        if let mediaImageUrl = mediaImageUrl {
+            let url = URL(string: mediaImageUrl)
+            self.mediaImageView.kf.setImage(with: url)
+        }
         getMediaInformation()
     }
 
@@ -129,10 +133,6 @@ class MediaViewController: UIViewController {
         NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
             guard let self = self else { return }
             self.media = media
-            if let posterPic = media.posterPic {
-                let url = URL(string: posterPic)
-                self.mediaImageView.kf.setImage(with: url)
-            }
             self.mediaCardViewController.setupMedia(media: media)
         }
     }

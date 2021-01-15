@@ -108,6 +108,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
         criticRatingLabel.numberOfLines = 0
         addSubview(criticRatingLabel)
 
+        // NOTE: All of this is shelved for now so images also don't exist
         // TODO: Replace with actual raters
         friendsRatingLabel.text = "Me, Lucy, and 4 others"
         friendsRatingLabel.font = .systemFont(ofSize: 12)
