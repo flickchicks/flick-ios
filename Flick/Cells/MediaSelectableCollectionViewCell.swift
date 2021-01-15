@@ -37,6 +37,7 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
 
         posterImageView.backgroundColor = .lightGray2
         posterImageView.layer.cornerRadius = 10
+        posterImageView.layer.masksToBounds = true
         contentView.addSubview(posterImageView)
 
         overlayView.isHidden = true

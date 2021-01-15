@@ -23,7 +23,7 @@ class AddToListViewController: UIViewController {
     private let searchBar = SearchBar()
     private let selectedLabel = UILabel()
     private var selectedMediaCollectionView: UICollectionView!
-    private var suggestedMediaCollectionView: UICollectionView!
+//    private var suggestedMediaCollectionView: UICollectionView!
     private let resultLabel = UILabel()
     private var resultMediaTableView = UITableView()
     private let roundTopView = RoundTopView(hasShadow: true)
@@ -45,7 +45,7 @@ class AddToListViewController: UIViewController {
     // TODO: Get result from backend. Media are string for now
     private var searchResultMedia: [Media] = []
     private var selectedMedia: [SimpleMedia] = []
-    private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+//    private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var timer: Timer?
 
     // Keeps track of current position of pan gesture
@@ -89,7 +89,6 @@ class AddToListViewController: UIViewController {
         selectedLabel.font = .systemFont(ofSize: 16, weight: .medium)
         view.addSubview(selectedLabel)
 
-        resultLabel.text = "Suggested"
         resultLabel.textColor = .darkBlueGray2
         resultLabel.font = .systemFont(ofSize: 16, weight: .medium)
         view.addSubview(resultLabel)
@@ -104,20 +103,20 @@ class AddToListViewController: UIViewController {
         resultMediaTableView.showsVerticalScrollIndicator = false
         view.addSubview(resultMediaTableView)
 
-        let suggestedMediaCollectionViewLayout = UICollectionViewFlowLayout()
-        suggestedMediaCollectionViewLayout.minimumInteritemSpacing = mediaCellPadding
-        suggestedMediaCollectionViewLayout.minimumLineSpacing = mediaCellPadding
-        suggestedMediaCollectionViewLayout.scrollDirection = .vertical
-
-        suggestedMediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: suggestedMediaCollectionViewLayout)
-        suggestedMediaCollectionView.backgroundColor = .white
-        suggestedMediaCollectionView.register(MediaSelectableCollectionViewCell.self, forCellWithReuseIdentifier: mediaSelectableCellReuseIdentifier)
-        suggestedMediaCollectionView.dataSource = self
-        suggestedMediaCollectionView.delegate = self
-        suggestedMediaCollectionView.showsVerticalScrollIndicator = false
-        suggestedMediaCollectionView.bounces = false
-        suggestedMediaCollectionView.allowsMultipleSelection = true
-        view.addSubview(suggestedMediaCollectionView)
+//        let suggestedMediaCollectionViewLayout = UICollectionViewFlowLayout()
+//        suggestedMediaCollectionViewLayout.minimumInteritemSpacing = mediaCellPadding
+//        suggestedMediaCollectionViewLayout.minimumLineSpacing = mediaCellPadding
+//        suggestedMediaCollectionViewLayout.scrollDirection = .vertical
+//
+//        suggestedMediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: suggestedMediaCollectionViewLayout)
+//        suggestedMediaCollectionView.backgroundColor = .white
+//        suggestedMediaCollectionView.register(MediaSelectableCollectionViewCell.self, forCellWithReuseIdentifier: mediaSelectableCellReuseIdentifier)
+//        suggestedMediaCollectionView.dataSource = self
+//        suggestedMediaCollectionView.delegate = self
+//        suggestedMediaCollectionView.showsVerticalScrollIndicator = false
+//        suggestedMediaCollectionView.bounces = false
+//        suggestedMediaCollectionView.allowsMultipleSelection = true
+//        view.addSubview(suggestedMediaCollectionView)
 
         let selectedMediaCollectionViewLayout = UICollectionViewFlowLayout()
         selectedMediaCollectionViewLayout.minimumInteritemSpacing = mediaCellPadding
@@ -212,11 +211,11 @@ class AddToListViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
 
-        suggestedMediaCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
-            make.top.equalTo(resultLabel.snp.bottom).offset(verticalOffset)
-            make.bottom.equalToSuperview()
-        }
+//        suggestedMediaCollectionView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview().inset(tableHorizontalOffset)
+//            make.top.equalTo(resultLabel.snp.bottom).offset(verticalOffset)
+//            make.bottom.equalToSuperview()
+//        }
 
         selectedMediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(selectedLabel.snp.bottom).offset(15)
@@ -377,7 +376,8 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
 extension AddToListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == selectedMediaCollectionView ? selectedMedia.count : suggestedMedia.count
+//        return collectionView == selectedMediaCollectionView ? selectedMedia.count : suggestedMedia.count
+        return selectedMedia.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -426,14 +426,14 @@ extension AddToListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             isSearching = false
-            resultLabel.text = "Suggested"
+            resultLabel.text = ""
             resultMediaTableView.isHidden = true
-            suggestedMediaCollectionView.isHidden = false
+//            suggestedMediaCollectionView.isHidden = false
         } else {
             isSearching = true
             resultLabel.text = "\(searchResultMedia.count) Results"
             resultMediaTableView.isHidden = false
-            suggestedMediaCollectionView.isHidden = true
+//            suggestedMediaCollectionView.isHidden = true
 
             timer?.invalidate()
             timer = Timer.scheduledTimer(

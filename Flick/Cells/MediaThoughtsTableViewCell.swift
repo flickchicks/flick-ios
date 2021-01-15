@@ -52,6 +52,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         commentProfileImageView.contentMode = .scaleAspectFit
         commentProfileImageView.layer.cornerRadius = 20
+        commentProfileImageView.layer.masksToBounds = true
         commentCellView.addSubview(commentProfileImageView)
 
         commentTextView.isEditable = false

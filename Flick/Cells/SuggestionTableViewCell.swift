@@ -65,6 +65,7 @@ class SuggestionTableViewCell: UITableViewCell {
         messageLabel.numberOfLines = 0
         containerView.addSubview(messageLabel)
 
+        mediaImageView.layer.masksToBounds = true
         mediaImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         mediaImageView.layer.cornerRadius = 8
         containerView.addSubview(mediaImageView)

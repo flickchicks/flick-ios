@@ -38,6 +38,7 @@ class CommentTableViewCell: UITableViewCell {
 
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
+        profileImageView.layer.masksToBounds = true
         addSubview(profileImageView)
 
         commentTextView.isEditable = false
