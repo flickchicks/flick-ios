@@ -96,7 +96,7 @@ class NetworkManager {
             "bio": user.bio,
             "profile_pic": user.profilePic,
             "phone_number": user.phoneNumber,
-            "social_id_token_type": "facebook",
+            "social_id_token_type": user.socialIdTokenType,
             "social_id_token": user.socialIdToken,
             "social_id": user.socialIdToken
         ]

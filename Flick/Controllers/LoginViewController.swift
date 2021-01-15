@@ -12,16 +12,29 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    private let userDefaults = UserDefaults.standard
-
+    // MARK: - Private View Vars
     private let appleLoginButton = LoginButton(type: .apple, backgroundColor: .black)
     private let facebookLoginButton = LoginButton(type: .facebook, backgroundColor: .facebookBlue)
+    private let introLabel = UILabel()
+    private let logoImageView = UIImageView()
+
+    // MARK: - Private Data Vars
     private let profileSize = CGSize(width: 50, height: 50)
+    private let userDefaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightPurple
+        view.backgroundColor = .offWhite
         navigationController?.navigationBar.isHidden = true
+
+        logoImageView.image = UIImage(named: "flickLogo")
+        view.addSubview(logoImageView)
+
+        introLabel.text = "Save your favorite movies and shows, flick them to your friends"
+        introLabel.textColor = .grayPurple
+        introLabel.font = .boldSystemFont(ofSize: 30)
+        introLabel.numberOfLines = 0
+        view.addSubview(introLabel)
 
         appleLoginButton.addTarget(self, action: #selector(handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
         view.addSubview(appleLoginButton)
@@ -29,24 +42,41 @@ class LoginViewController: UIViewController {
         facebookLoginButton.addTarget(self, action: #selector(initiateFacebookLogin), for: .touchUpInside)
         view.addSubview(facebookLoginButton)
 
-        let loginButtonSize = CGSize(width: 240, height: 46)
-
-        facebookLoginButton.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.size.equalTo(loginButtonSize)
-        }
-
-        appleLoginButton.snp.makeConstraints { make in
-            make.top.equalTo(facebookLoginButton.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
-            make.size.equalTo(loginButtonSize)
-        }
-
+        setupConstraints()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
+    private func setupConstraints() {
+        let loginButtonSize = CGSize(width: 240, height: 46)
+        let logoSize = CGSize(width: 75, height: 30)
+
+        logoImageView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(60)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(logoSize)
+        }
+
+        introLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(125)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(275)
+        }
+
+        facebookLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(appleLoginButton.snp.top).offset(-15)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(loginButtonSize)
+        }
+
+        appleLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(loginButtonSize)
+        }
     }
 
     @objc func handleAuthorizationAppleIDButtonPress() {
@@ -155,16 +185,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-//            guard let appleIDToken = appleIDCredential.identityToken else {
-//                print("Unable to fetch identity token")
-//                return
-//            }
-//
-//            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-//                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-//                return
-//            }
-
             guard let authorizationCode = appleIDCredential.authorizationCode,
                   let authCode = String(data: authorizationCode, encoding: .utf8) else {
                 print("Problem with the authorizationCode")
@@ -174,12 +194,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let userIdentifier = appleIDCredential.user
             let fullName = appleIDCredential.fullName
             let email = appleIDCredential.email
-
-//            print(idTokenString)
-            print(userIdentifier)
-            print(fullName)
-            print(email)
-            print(authCode)
 
             authenticateUser(
                 firstName: fullName?.givenName ?? "",
