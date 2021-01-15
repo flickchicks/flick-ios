@@ -31,6 +31,7 @@ class CollaboratorTableViewCell: UITableViewCell {
         ownerLabel.textColor = .mediumGray
 
         userImageView.layer.cornerRadius = 20
+        userImageView.layer.masksToBounds = true
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         addSubview(userImageView)
 
