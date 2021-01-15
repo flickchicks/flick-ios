@@ -69,6 +69,8 @@ class NotificationsViewController: UIViewController {
                         return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!)
                     } else if $0.notifType == "friend_request" {
                         return .FriendRequest(fromUser: $0.fromUser, toUser: $0.toUser)
+                    } else if $0.notifType == "accepted_request" {
+                        return .FriendRequest(fromUser: $0.fromUser, toUser: $0.toUser)
                     } else if $0.notifType == "list_edit" {
                         if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
                             return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded)
