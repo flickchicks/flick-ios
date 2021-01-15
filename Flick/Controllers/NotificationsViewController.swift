@@ -54,6 +54,7 @@ class NotificationsViewController: UIViewController {
                     return .IncomingFriendRequest(fromUser: $0.fromUser)
                 }
                 self.notificationsTableView.reloadData()
+                self.updateNotificationViewedTime()
             }
         }
     }
@@ -99,6 +100,18 @@ class NotificationsViewController: UIViewController {
         super.viewDidAppear(animated)
         getNotifications()
     }
+
+    private func updateNotificationViewedTime() {
+        let currentTime = Date().iso8601withFractionalSeconds
+        NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { success in
+            if success {
+                print("Updated notification viewed time")
+            } else {
+                print("Failed to update notification viewed time")
+            }
+        }
+    }
+
 }
 
 extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
