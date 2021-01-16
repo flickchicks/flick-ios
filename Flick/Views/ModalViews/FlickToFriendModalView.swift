@@ -62,7 +62,7 @@ class FlickToFriendModalView: UIView {
         mediaIconImageView.image = UIImage(named: media.isTv ? "tv" : "film")
         containerView.addSubview(mediaIconImageView)
 
-        if let duration = media.duration, let dateReleased = media.dateReleased {
+        if let duration = media.duration?.inHourMinute, let dateReleased = media.dateReleased {
             mediaInfoLabel.text = "\(duration) • \(dateReleased)"
         }
         mediaInfoLabel.textColor = .mediumGray

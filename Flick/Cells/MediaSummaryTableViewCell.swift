@@ -98,7 +98,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
         }
         var mediaSummaryInfo: [MediaSummary] = []
         if let duration = media.duration {
-            mediaSummaryInfo.append(MediaSummary(text: duration, type: .duration))
+            mediaSummaryInfo.append(MediaSummary(text: duration.inHourMinute, type: .duration))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let releaseYear = media.dateReleased {
@@ -113,7 +113,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
             mediaSummaryInfo.append(MediaSummary(text: language.uppercased(), type: .language))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
-        if let director = media.directors {
+        if let director = media.directors, director != "" {
             mediaSummaryInfo.append(MediaSummary(text: director, type: .director))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
@@ -216,7 +216,7 @@ extension MediaSummaryTableViewCell: UICollectionViewDelegateFlowLayout {
         if collectionView == summaryItemsCollectionView {
             let textWidth = calculateNecessaryWidth(text: summaryInfo[indexPath.item].text)
             let height: CGFloat = 15
-            let iconSpacerWidth: CGFloat = 19
+            let iconSpacerWidth: CGFloat = 23
             switch summaryInfo[indexPath.item].type {
             case .spacer:
                 return CGSize(width: 10, height: height)
