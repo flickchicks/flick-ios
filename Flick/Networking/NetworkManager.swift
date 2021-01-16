@@ -464,7 +464,8 @@ class NetworkManager {
     /// [POST] Like comment by id [updated as of 8/21/20]
     static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
         let parameters: [String: Any] = [:]
-        AF.request("\(hostEndpoint)/api/comment/\(String(commentId))/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

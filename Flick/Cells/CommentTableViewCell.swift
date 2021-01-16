@@ -72,7 +72,6 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     @objc func likeComment() {
-        print("list")
         delegate?.likeComment(index: commentIndex)
     }
 
@@ -153,7 +152,7 @@ class CommentTableViewCell: UITableViewCell {
         let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
         // TODO: Complete logic to detect if comment has been liked
-        let heartImage = "heart"
+        let heartImage = comment.hasLiked ? "filledHeart" : "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let profilePic = comment.owner.profilePic {
             profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))

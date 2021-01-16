@@ -153,12 +153,13 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func likeComment(index: Int) {
-        guard let comments = media.comments else { return }
+        guard var comments = media.comments else { return }
         let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
             guard let self = self else { return }
-            print("Like Success")
-            //TODO: Reload thoughts table view cell comment
+            comments[index] = comment
+            self.media.comments = comments
+            self.mediaInformationTableView.reloadData()
        }
     }
 

@@ -131,7 +131,6 @@ extension MediaCommentsViewController: CommentDelegate {
         let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
             guard let self = self else { return }
-            print("Like Success")
             self.comments[index] = comment
             self.commentsTableView.reloadData()
         }

@@ -46,7 +46,6 @@ class MediaViewController: UIViewController {
             let url = URL(string: mediaImageUrl)
             self.mediaImageView.kf.setImage(with: url)
         }
-        getMediaInformation()
     }
 
     required init?(coder: NSCoder) {
@@ -70,12 +69,13 @@ class MediaViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(mediaImageHeight)
         }
-
+        
         setupMediaCard()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        getMediaInformation()
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
