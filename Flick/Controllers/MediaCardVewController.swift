@@ -38,6 +38,7 @@ class MediaCardViewController: UIViewController {
 
         mediaInformationTableView.backgroundColor = .movieWhite
         mediaInformationTableView.allowsSelection = false
+        mediaInformationTableView.isUserInteractionEnabled = true
         mediaInformationTableView.delegate = self
         mediaInformationTableView.dataSource = self
         mediaInformationTableView.isScrollEnabled = false
@@ -171,6 +172,7 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func seeAllComments() {
+        print("see all comments")
         guard let comments = media.comments else { return }
         let mediaCommentsViewController = MediaCommentsViewController(comments: comments, mediaId: media.id)
         navigationController?.pushViewController(mediaCommentsViewController, animated: true)

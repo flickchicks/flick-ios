@@ -37,17 +37,17 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         titleLabel.textColor = .darkBlue
         titleLabel.numberOfLines = 0
         titleLabel.sizeToFit()
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
 
         separatorView.backgroundColor = .lightGray2
-        addSubview(separatorView)
+        contentView.addSubview(separatorView)
 
         seeAllCommentsButton.contentHorizontalAlignment = .right
         seeAllCommentsButton.isHidden = true
         seeAllCommentsButton.addTarget(self, action: #selector(seeAllComments), for: .touchUpInside)
         seeAllCommentsButton.setTitleColor(.darkBlueGray2, for: .normal)
         seeAllCommentsButton.titleLabel?.font = .systemFont(ofSize: 12)
-        addSubview(seeAllCommentsButton)
+        contentView.addSubview(seeAllCommentsButton)
 
         commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         commentProfileImageView.contentMode = .scaleAspectFit
@@ -85,7 +85,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
         commentCellView.sizeToFit()
         commentCellView.addGestureRecognizer(tapGestureRecognizer)
-        addSubview(commentCellView)
+        contentView.addSubview(commentCellView)
 
         setupConstraints()
     }
@@ -163,6 +163,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     @objc func seeAllComments() {
+        print("no delegate is the problem")
         delegate?.seeAllComments()
     }
 
@@ -172,11 +173,13 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         if numComments == 0 { return }
         let comment = comments[0]
-        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
-        viewSpoilerButton.isHidden = !comment.isSpoiler
+//        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
+        commentTextView.text = comment.message
+        viewSpoilerButton.isHidden = true
+//        viewSpoilerButton.isHidden = !comment.isSpoiler
         commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
-        commentDateLabel.text = "1d"
+        commentDateLabel.text = "8d"
         // TODO: Add logic to discover if comment has been liked by user
         commentLikeButton.setImage(UIImage(named: "heart"), for: .normal)
         if let profilePic = comment.owner.profilePic {

@@ -45,7 +45,8 @@ class CommentAreaView: UIView {
 
     @objc func addComment() {
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
-            delegate?.showSpoilerModal(commentText: commentText)
+            delegate?.addComment(commentText: commentText, isSpoiler: false)
+//            delegate?.showSpoilerModal(commentText: commentText)
         }
     }
 

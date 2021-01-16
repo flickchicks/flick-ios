@@ -42,7 +42,7 @@ class MediaCommentsViewController: UIViewController {
         view.addSubview(commentAreaView)
 
         commentsTableView = UITableView(frame: .zero)
-        commentsTableView.backgroundColor = .none
+        commentsTableView.backgroundColor = .clear
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
         commentsTableView.isScrollEnabled = true

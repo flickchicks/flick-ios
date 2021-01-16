@@ -106,7 +106,7 @@ class LoginViewController: UIViewController {
             GraphRequest(graphPath: "me", parameters: ["fields": "email"], tokenString: AccessToken.current?.tokenString, version: nil, httpMethod: .get).start { (connection, result, error) -> Void in
                 var email: String?
                 if error != nil {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription ?? "Facebook login failed.")
                 } else {
                     if let result = result,
                        let user = result as? [String: Any],

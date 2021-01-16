@@ -34,12 +34,12 @@ class CommentTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = .none
+        backgroundColor = .clear
 
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.masksToBounds = true
-        addSubview(profileImageView)
+        contentView.addSubview(profileImageView)
 
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
@@ -48,30 +48,31 @@ class CommentTableViewCell: UITableViewCell {
         commentTextView.font = .systemFont(ofSize: 12)
         commentTextView.textColor = .black
         commentTextView.layer.cornerRadius = 16
-        addSubview(commentTextView)
+        contentView.addSubview(commentTextView)
 
         nameLabel.font = .systemFont(ofSize: 10)
         nameLabel.textColor = .mediumGray
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
 
         dateLabel.textAlignment = .right
         dateLabel.font = .systemFont(ofSize: 10)
         dateLabel.textColor = .mediumGray
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
 
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
-        addSubview(likeButton)
+        contentView.addSubview(likeButton)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
         viewSpoilerButton.setTitleColor(.darkBlue, for: .normal)
         viewSpoilerButton.isHidden = true
-        addSubview(viewSpoilerButton)
+        contentView.addSubview(viewSpoilerButton)
 
         setupConstraints()
     }
 
     @objc func likeComment() {
+        print("list")
         delegate?.likeComment(index: commentIndex)
     }
 
@@ -140,13 +141,14 @@ class CommentTableViewCell: UITableViewCell {
             [.year, .month, .day, .hour, .minute, .second],
             from:  createdAtDate!, to: currentDate)
         // TODO: Complete logic to get date string
-        return "1d"
+        return "8d"
     }
 
     func configure(for comment: Comment, index: Int, hideSpoiler: Bool, delegate: CommentDelegate) {
         self.commentIndex = index
         self.delegate = delegate
-        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
+//        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
+        commentTextView.text = comment.message
         nameLabel.text = comment.owner.name
         let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
@@ -156,7 +158,8 @@ class CommentTableViewCell: UITableViewCell {
         if let profilePic = comment.owner.profilePic {
             profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))
         }
-        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
+        viewSpoilerButton.isHidden = true
+//        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
 
     override func prepareForReuse() {
