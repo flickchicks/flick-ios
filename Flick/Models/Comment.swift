@@ -12,9 +12,10 @@ struct Comment: Codable {
 
     var createdAt: String
     var id: Int
-    var isSpoiler: Bool
+    var isSpoiler: Bool?
     var numLikes: Int
-    var likers: [Likers]
+    var hasLiked: Bool
+    var isReadable: Bool
     var owner: UserProfile
     var message: String
 

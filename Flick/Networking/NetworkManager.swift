@@ -23,6 +23,7 @@ class NetworkManager {
 
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
+//    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #else
     private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif
@@ -58,7 +59,7 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
-            debugPrint(response)
+//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -140,7 +141,7 @@ class NetworkManager {
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
         AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
-            debugPrint(response)
+//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -228,7 +229,7 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-            debugPrint(response)
+//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -281,7 +282,7 @@ class NetworkManager {
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-            debugPrint(response)
+//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -421,7 +422,7 @@ class NetworkManager {
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
+//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -462,7 +463,8 @@ class NetworkManager {
     /// [POST] Like comment by id [updated as of 8/21/20]
     static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
         let parameters: [String: Any] = [:]
-        AF.request("\(hostEndpoint)/api/comment/\(String(commentId))/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+        AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

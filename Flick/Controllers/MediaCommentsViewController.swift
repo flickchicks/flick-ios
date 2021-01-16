@@ -42,7 +42,7 @@ class MediaCommentsViewController: UIViewController {
         view.addSubview(commentAreaView)
 
         commentsTableView = UITableView(frame: .zero)
-        commentsTableView.backgroundColor = .none
+        commentsTableView.backgroundColor = .clear
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
         commentsTableView.isScrollEnabled = true
@@ -131,10 +131,13 @@ extension MediaCommentsViewController: CommentDelegate {
         let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
             guard let self = self else { return }
-            print("Like Success")
             self.comments[index] = comment
             self.commentsTableView.reloadData()
         }
+    }
+    
+    func showProfile(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {

@@ -38,6 +38,7 @@ class MediaCardViewController: UIViewController {
 
         mediaInformationTableView.backgroundColor = .movieWhite
         mediaInformationTableView.allowsSelection = false
+        mediaInformationTableView.isUserInteractionEnabled = true
         mediaInformationTableView.delegate = self
         mediaInformationTableView.dataSource = self
         mediaInformationTableView.isScrollEnabled = false
@@ -150,14 +151,19 @@ extension MediaCardViewController: CommentDelegate {
         commentSpoilerModalView.commentDelegate = self
         showModalPopup(view: commentSpoilerModalView)
     }
+    
+    func showProfile(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
+    }
 
     func likeComment(index: Int) {
-        guard let comments = media.comments else { return }
+        guard var comments = media.comments else { return }
         let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
             guard let self = self else { return }
-            print("Like Success")
-            //TODO: Reload thoughts table view cell comment
+            comments[index] = comment
+            self.media.comments = comments
+            self.mediaInformationTableView.reloadData()
        }
     }
 
