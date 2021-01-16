@@ -9,10 +9,12 @@
 import Foundation
 
 extension Date {
+    // ISO 8601 representation of date with fractional seconds
     var iso8601withFractionalSeconds: String { return Formatter.iso8601withFractionalSeconds.string(from: self) }
 }
 
 extension Formatter {
+    // DateFormatter for ISO 8601 with fractional seconds
     static let iso8601withFractionalSeconds = ISO8601DateFormatter([.withInternetDateTime, .withFractionalSeconds])
 }
 
