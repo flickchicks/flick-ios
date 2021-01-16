@@ -19,9 +19,9 @@ class RoundTopView: UIView {
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 
         if hasShadow {
-            layer.shadowColor = UIColor.black.cgColor
+            layer.shadowColor = UIColor.blueGrayShadow.cgColor
             layer.shadowOffset = CGSize(width: 0, height: -4)
-            layer.shadowOpacity = 0.1
+            layer.shadowOpacity = 0.07
             layer.shadowRadius = 8
         }
     }

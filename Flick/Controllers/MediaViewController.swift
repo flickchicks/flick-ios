@@ -79,6 +79,11 @@ class MediaViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 

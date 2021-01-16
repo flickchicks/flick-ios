@@ -32,11 +32,10 @@ class ProfileSelectionModalView: UIView {
 
         containerView.backgroundColor = .movieWhite
         containerView.layer.cornerRadius = 24
-        // TODO: Double check shadows
         containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         containerView.layer.shadowOpacity = 0.07
-        containerView.layer.shadowOffset = .init(width: 0, height: 4)
-        containerView.layer.shadowRadius = 8
+        containerView.layer.shadowOffset = .init(width: 0, height: 2)
+        containerView.layer.shadowRadius = 20
         
         addSubview(containerView)
 

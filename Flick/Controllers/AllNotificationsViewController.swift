@@ -45,7 +45,6 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.backgroundColor = .movieWhite
         tabCollectionView.clipsToBounds = false
         tabCollectionView.layer.masksToBounds = false
-        // TODO: Double check tab bar shadows
         tabCollectionView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         tabCollectionView.layer.shadowOpacity = 0.07
         tabCollectionView.layer.shadowOffset = .init(width: 0, height: 4)

@@ -41,10 +41,10 @@ class PrivacySwitch: UIButton {
 
         backgroundColor = .white
         layer.cornerRadius = 14
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.1
-        layer.shadowRadius = 4
+        layer.shadowColor = UIColor.blueGrayShadow.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowOpacity = 0.29
+        layer.shadowRadius = 4
         layer.masksToBounds = false
 
         setupViews()

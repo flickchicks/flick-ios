@@ -128,7 +128,6 @@ class SettingsViewController: UIViewController {
         headerView.backgroundColor = .movieWhite
         headerView.clipsToBounds = false
         headerView.layer.masksToBounds = false
-        // TODO: Double check tab bar shadows
         headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         headerView.layer.shadowOpacity = 0.07
         headerView.layer.shadowOffset = .init(width: 0, height: 4)
