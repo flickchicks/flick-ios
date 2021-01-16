@@ -65,7 +65,10 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.isSkeletonable = true
         contentView.addSubview(mediaCollectionView)
 
+        lockImageView.image = UIImage(named: "lock")
+        lockImageView.isHidden = true
         contentView.addSubview(lockImageView)
+        collaboratorsPreviewView.isHidden = true
         contentView.addSubview(collaboratorsPreviewView)
 
         setupConstraints()
@@ -76,22 +79,8 @@ class ListTableViewCell: UITableViewCell {
 
         let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
 
-        collaboratorsPreviewView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(20)
-            make.width.equalTo(collaboratorsPreviewWidth)
-            make.bottom.equalTo(titleLabel)
-        }
-    }
-
-    func setupPrivateIcon() {
-        lockImageView.image = UIImage(named: "lock")
-
-        lockImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(13)
-            make.width.equalTo(10)
-            make.centerY.equalTo(titleLabel)
+        collaboratorsPreviewView.snp.updateConstraints { update in
+            update.width.equalTo(collaboratorsPreviewWidth)
         }
     }
 
@@ -121,6 +110,20 @@ class ListTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(padding)
             make.height.equalTo(120)
         }
+
+        lockImageView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
+            make.height.equalTo(13)
+            make.width.equalTo(10)
+            make.centerY.equalTo(titleLabel)
+        }
+
+        collaboratorsPreviewView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
+            make.height.equalTo(20)
+            make.width.equalTo(0) // Temporarily set as 0, but it will be updated when configuring the cell
+            make.bottom.equalTo(titleLabel)
+        }
     }
 
     func configure(for list: SimpleMediaList) {
@@ -130,9 +133,10 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.isScrollEnabled = self.media.count != 0
         titleLabel.text = list.name
         let listCollaborators = list.collaborators
-        if list.isPrivate {
-            setupPrivateIcon()
-        } else if listCollaborators.count > 0 {
+        lockImageView.isHidden = !list.isPrivate
+        // collaboratorsPreviewView does not show if list is private
+        collaboratorsPreviewView.isHidden = list.isPrivate
+        if listCollaborators.count > 0 {
             setupCollaborators(collaborators: listCollaborators)
         }
         mediaCollectionView.reloadData()

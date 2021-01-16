@@ -12,11 +12,11 @@ import SnapKit
 class AddCollaboratorModalView: UIView {
 
     // MARK: - Private View Vars
-    private var cancelButton = UIButton()
     private var collaboratorsTableView: UITableView!
     private let collaboratorsTitleLabel = UILabel()
     private let containerView = UIView()
     private let copyLinkButton = UIButton()
+    private var doneButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
@@ -52,11 +52,11 @@ class AddCollaboratorModalView: UIView {
         collaboratorsTitleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(collaboratorsTitleLabel)
 
-        cancelButton.setTitle("Cancel", for: .normal)
-        cancelButton.setTitleColor(.mediumGray, for: .normal)
-        cancelButton.titleLabel?.font = .systemFont(ofSize: 14)
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        containerView.addSubview(cancelButton)
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.setTitleColor(.mediumGray, for: .normal)
+        doneButton.titleLabel?.font = .systemFont(ofSize: 14)
+        doneButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        containerView.addSubview(doneButton)
 
         subtitleLabel.text = "Collaborators can add or remove media and collaborators. The owner can edit privacy settings."
         subtitleLabel.numberOfLines = 0
@@ -144,7 +144,7 @@ class AddCollaboratorModalView: UIView {
             make.size.equalTo(collaboratorsTitleLabelSize)
         }
 
-        cancelButton.snp.makeConstraints { make in
+        doneButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.size.equalTo(roundButtonSize)
             make.bottom.equalToSuperview().inset(20)

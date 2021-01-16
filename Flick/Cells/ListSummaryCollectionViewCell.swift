@@ -165,14 +165,6 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(10)
         }
-    }
-
-    private func setupCollaborators(collaborators: [UserProfile]) {
-        collaborateLabel.text = collaborators.count == 1 ? collaborators[0].name : Constants.Collaboration.numCanEdit(num: collaborators.count)
-        collaboratorsPreviewView.users = collaborators
-
-        let listInfoHeight = 20
-        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
 
         collaborateLabel.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview()
@@ -182,13 +174,24 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.centerY.leading.equalToSuperview()
             make.trailing.equalTo(collaborateLabel.snp.leading).offset(-8)
             make.height.equalTo(listInfoHeight)
-            make.width.equalTo(collaboratorsPreviewWidth)
+            make.width.equalTo(0) // Temporarily set as 0, but it will be updated when configuring the cell
         }
 
         collaborateView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(listInfoHeight)
+        }
+    }
+
+    private func setupCollaborators(collaborators: [UserProfile]) {
+        collaborateLabel.text = collaborators.count == 1 ? collaborators[0].name : Constants.Collaboration.numCanEdit(num: collaborators.count)
+        collaboratorsPreviewView.users = collaborators
+
+        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
+
+        collaboratorsPreviewView.snp.updateConstraints { update in
+            update.width.equalTo(collaboratorsPreviewWidth)
         }
     }
 
@@ -205,7 +208,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaborators.insert(list.owner, at: 0)
         setupCollaborators(collaborators: collaborators)
 
-        privacyLabel.text = list.isPrivate ? Constants.Privacy.onlyICanView : Constants.Privacy.anyoneCanView
+        privacyLabel.text = list.isPrivate ? Constants.Privacy.privateList : Constants.Privacy.publicList
         lockView.image = UIImage(named: list.isPrivate ? "lock" : "unlock")
     }
 

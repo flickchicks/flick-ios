@@ -240,7 +240,7 @@ class EditProfileViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let editButtonSize = CGSize(width: 24, height: 24)
+        let editButtonSize = CGSize(width: 30, height: 30)
         let horizontalPadding = 24
         let profileImageSize = CGSize(width: 100, height: 100)
         let smallFieldSize = CGSize(width: 152, height: 17)
@@ -372,6 +372,9 @@ class EditProfileViewController: UIViewController {
                 self.user = user
                 self.presentInfoAlert(message: "Profile updated", completion: nil)
                 self.delegate?.updateUser(user: user)
+                if self.didChangeProfilePic {
+                    ImageCache.default.removeImage(forKey: "userid-\(user.id)")
+                }
             }
         }
     }
@@ -406,8 +409,7 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
-        print("herererer")
-        print(profileImageView.image?.pngData()?.base64EncodedString())
+        print(resizedImage.pngData()?.base64EncodedString())
         dismiss(animated: true, completion: nil)
     }
 }

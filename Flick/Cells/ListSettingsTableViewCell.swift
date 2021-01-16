@@ -56,7 +56,7 @@ class ListSettingsTableViewCell: UITableViewCell {
             setupCollaboratorsConstraints()
         case .privacy:
             let isPrivate = list.isPrivate
-            privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+            privacyStatusLabel.text = isPrivate ? Constants.Privacy.privateList : Constants.Privacy.publicList
             privacySwitch.isPrivate = isPrivate
             contentView.addSubview(privacyStatusLabel)
             contentView.addSubview(privacySwitch)
@@ -102,7 +102,7 @@ class ListSettingsTableViewCell: UITableViewCell {
 extension ListSettingsTableViewCell: PrivacySwitchDelegate {
 
     func privacyChanged(isPrivate: Bool) {
-        privacyStatusLabel.text = isPrivate ? "Only I can view" : "Anyone can view"
+        privacyStatusLabel.text = isPrivate ? Constants.Privacy.privateList: Constants.Privacy.publicList
         listSettingsDelegate?.updatePrivacy(to: isPrivate)
     }
 
