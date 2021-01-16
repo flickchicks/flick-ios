@@ -151,6 +151,10 @@ extension MediaCardViewController: CommentDelegate {
         commentSpoilerModalView.commentDelegate = self
         showModalPopup(view: commentSpoilerModalView)
     }
+    
+    func showProfile(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
+    }
 
     func likeComment(index: Int) {
         guard var comments = media.comments else { return }
@@ -173,7 +177,6 @@ extension MediaCardViewController: CommentDelegate {
     }
 
     func seeAllComments() {
-        print("see all comments")
         guard let comments = media.comments else { return }
         let mediaCommentsViewController = MediaCommentsViewController(comments: comments, mediaId: media.id)
         navigationController?.pushViewController(mediaCommentsViewController, animated: true)

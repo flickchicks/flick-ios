@@ -11,6 +11,7 @@ import Kingfisher
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
+    func showProfile(userId: Int)
     func addComment(commentText: String, isSpoiler: Bool)
     func showSpoilerModal(commentText: String)
     func seeAllComments()
@@ -27,6 +28,7 @@ class CommentTableViewCell: UITableViewCell {
     private let viewSpoilerButton = UIButton()
 
     // MARK: - Private Data Vars
+    private var comment: Comment!
     private var commentIndex: Int!
     weak var delegate: CommentDelegate?
 
@@ -36,9 +38,12 @@ class CommentTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
 
+        profileImageView.isUserInteractionEnabled = true
+        let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.masksToBounds = true
+        profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
         contentView.addSubview(profileImageView)
 
         commentTextView.isEditable = false
@@ -73,6 +78,10 @@ class CommentTableViewCell: UITableViewCell {
 
     @objc func likeComment() {
         delegate?.likeComment(index: commentIndex)
+    }
+    
+    @objc func profileImageTapped() {
+        delegate?.showProfile(userId: comment.owner.id)
     }
 
     required init?(coder: NSCoder) {
@@ -127,29 +136,14 @@ class CommentTableViewCell: UITableViewCell {
         }
     }
 
-    /// Return the date label to be displayed given comment's created date
-    private func getDateLabelText(createdAt: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX"
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.locale = Locale.current
-        let createdAtDate = dateFormatter.date(from: createdAt)
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let components = calendar.dateComponents(
-            [.year, .month, .day, .hour, .minute, .second],
-            from:  createdAtDate!, to: currentDate)
-        // TODO: Complete logic to get date string
-        return "8d"
-    }
-
     func configure(for comment: Comment, index: Int, hideSpoiler: Bool, delegate: CommentDelegate) {
+        self.comment = comment
         self.commentIndex = index
         self.delegate = delegate
 //        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         nameLabel.text = comment.owner.name
-        let dateLabelText = getDateLabelText(createdAt: comment.createdAt)
+        let dateLabelText = Date().getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
         // TODO: Complete logic to detect if comment has been liked
         let heartImage = comment.hasLiked ? "filledHeart" : "heart"

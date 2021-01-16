@@ -49,12 +49,18 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         seeAllCommentsButton.titleLabel?.font = .systemFont(ofSize: 12)
         contentView.addSubview(seeAllCommentsButton)
 
+        let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        commentProfileImageView.isUserInteractionEnabled = true
+        commentProfileImageView.addGestureRecognizer(profileTapGestureRecognizer)
         commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         commentProfileImageView.contentMode = .scaleAspectFit
         commentProfileImageView.layer.cornerRadius = 20
         commentProfileImageView.layer.masksToBounds = true
         commentCellView.addSubview(commentProfileImageView)
 
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
+        commentTextView.isUserInteractionEnabled = true
+        commentTextView.addGestureRecognizer(tapGestureRecognizer)
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
         commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
@@ -82,9 +88,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         viewSpoilerButton.isHidden = true
         commentCellView.addSubview(viewSpoilerButton)
 
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
         commentCellView.sizeToFit()
-        commentCellView.addGestureRecognizer(tapGestureRecognizer)
         contentView.addSubview(commentCellView)
 
         setupConstraints()
@@ -163,12 +167,12 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     @objc func seeAllComments() {
-        print("no delegate is the problem")
         delegate?.seeAllComments()
     }
 
     func configure(with media: Media) {
         guard let comments = media.comments else { return }
+        self.comments = comments
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         if numComments == 0 { return }
@@ -179,7 +183,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 //        viewSpoilerButton.isHidden = !comment.isSpoiler
         commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
-        commentDateLabel.text = "8d"
+        commentDateLabel.text = Date().getDateLabelText(createdAt: comment.createdAt)
         // TODO: Add logic to discover if comment has been liked by user
         let heartImage = comment.hasLiked ? "filledHeart" : "heart"
         commentLikeButton.setImage(UIImage(named: heartImage), for: .normal)
@@ -190,8 +194,17 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     }
 
     @objc func likeComment() {
-        delegate?.likeComment(index: 0)
+        if comments.count > 0 {
+            delegate?.likeComment(index: 0)
+        }
     }
+    
+    @objc func profileImageTapped() {
+        if comments.count > 0 {
+            delegate?.showProfile(userId: comments[0].owner.id)
+        }
+    }
+
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

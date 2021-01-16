@@ -135,6 +135,10 @@ extension MediaCommentsViewController: CommentDelegate {
             self.commentsTableView.reloadData()
         }
     }
+    
+    func showProfile(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
+    }
 
     func addComment(commentText: String, isSpoiler: Bool) {
         NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { [weak self] media in
