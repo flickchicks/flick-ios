@@ -64,7 +64,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let profilePic = user.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "collaboratorProfilePicture"))
+            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         if isAdded {
             editButton.isEnabled = false
