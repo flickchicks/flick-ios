@@ -11,15 +11,14 @@ import Foundation
 struct Constants {
 
     struct Collaboration {
-        static let onlyICanEdit = "Only I can edit"
         static func numCanEdit(num: Int) -> String {
             return "\(num) can edit"
         }
     }
 
     struct Privacy {
-        static let anyoneCanView = "Anyone can view"
-        static let onlyICanView = "Only I can view"
+        static let privateList = "Private"
+        static let publicList = "Public"
     }
 
     struct UserDefaults {

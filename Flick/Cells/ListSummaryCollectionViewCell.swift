@@ -205,7 +205,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaborators.insert(list.owner, at: 0)
         setupCollaborators(collaborators: collaborators)
 
-        privacyLabel.text = list.isPrivate ? Constants.Privacy.onlyICanView : Constants.Privacy.anyoneCanView
+        privacyLabel.text = list.isPrivate ? Constants.Privacy.privateList : Constants.Privacy.publicList
         lockView.image = UIImage(named: list.isPrivate ? "lock" : "unlock")
     }
 
