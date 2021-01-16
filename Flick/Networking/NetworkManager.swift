@@ -655,7 +655,8 @@ class NetworkManager {
     }
 
     // MARK: - Notifications
-    
+
+    /// [GET] Get all notifications
     static func getNotifications(completion: @escaping ([Notification]) -> Void) {
         AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
@@ -673,9 +674,26 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Update notification viewed time [updated as of 1/15/21]
+    static func updateNotificationViewedTime(currentTime: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "notif_time_viewed": currentTime
+        ]
+
+        AF.request("\(hostEndpoint)/api/notifications/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - Suggestions
     
-    /// [Get] Get all suggestions [updated as of 12/30/20]
+    /// [GET] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
         AF.request("\(hostEndpoint)/api/suggestions/", method: .get, headers: headers).validate().responseData { response in
             switch response.result {
@@ -688,6 +706,23 @@ class NetworkManager {
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Update suggestion viewed time [updated as of 1/15/21]
+    static func updateSuggestionViewedTime(currentTime: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "suggest_time_viewed": currentTime
+        ]
+
+        AF.request("\(hostEndpoint)/api/suggestions/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
             }
         }
     }

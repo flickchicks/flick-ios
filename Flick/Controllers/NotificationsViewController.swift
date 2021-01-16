@@ -54,6 +54,7 @@ class NotificationsViewController: UIViewController {
                     return .IncomingFriendRequest(fromUser: $0.fromUser)
                 }
                 self.notificationsTableView.reloadData()
+                self.updateNotificationViewedTime()
             }
         }
     }
@@ -67,8 +68,10 @@ class NotificationsViewController: UIViewController {
                 self.notifications = notifications.map {
                     if $0.notifType == "list_invite" {
                         return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!)
-                    } else if $0.notifType == "friend_request" {
-                        return .FriendRequest(fromUser: $0.fromUser, toUser: $0.toUser)
+                    } else if $0.notifType == "incoming_friend_request_accepted" {
+                        return .AcceptedIncomingFriendRequest(fromUser: $0.fromUser)
+                    } else if $0.notifType == "outgoing_friend_request_accepted" {
+                        return .AcceptedOutgoingFriendRequest(fromUser: $0.fromUser)
                     } else if $0.notifType == "list_edit" {
                         if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
                             return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded)
@@ -97,6 +100,18 @@ class NotificationsViewController: UIViewController {
         super.viewDidAppear(animated)
         getNotifications()
     }
+
+    private func updateNotificationViewedTime() {
+        let currentTime = Date().iso8601withFractionalSeconds
+        NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { success in
+            if success {
+                print("Updated notification viewed time")
+            } else {
+                print("Failed to update notification viewed time")
+            }
+        }
+    }
+
 }
 
 extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
@@ -133,14 +148,10 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
             }
         } else {
             switch notifications[indexPath.row] {
-            case .FriendRequest(let fromUser, let toUser):
-                if toUser.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
-                    // Friend request was sent to fromUser and accepted by the current user
-                    navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
-                } else {
-                    // Friend request was sent by the current user and accepted by toUser
-                    navigationController?.pushViewController(ProfileViewController(isHome: false, userId: toUser.id), animated: true)
-                }
+            case .AcceptedIncomingFriendRequest(let fromUser):
+                navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
+            case .AcceptedOutgoingFriendRequest(let fromUser):
+                navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
             case .CollaborationInvite(_, let list):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .ListShowsEdit(_, let list, _, _):

@@ -95,7 +95,7 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     /// setupAcceptedOutgoingRequestCell sets notificationLabel for accepted outgoing friend requests
-    private func setupAcceptedOutgoingRequestCell(to user: UserProfile) {
+    private func setupAcceptedOutgoingRequestCell(from user: UserProfile) {
         setupProfileImageView(user: user)
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -136,6 +136,7 @@ class NotificationTableViewCell: UITableViewCell {
             .boldFont14(fromUser.name)
             .normalFont14(" \(type) \(numChanged) item\(posessiveTense) \(conjunction) ")
             .boldFont14(list.name)
+            .normalFont14(".")
     }
     
     /// setupListOwnershipEditCell sets up notificationLabel for changes in collaborated lists' ownership
@@ -168,6 +169,10 @@ class NotificationTableViewCell: UITableViewCell {
 
     func configure(with notification: NotificationEnum) {
         switch notification {
+        case .AcceptedIncomingFriendRequest(let fromUser):
+            setupAcceptedIncomingRequestCell(from: fromUser)
+        case .AcceptedOutgoingFriendRequest(let fromUser):
+            setupAcceptedOutgoingRequestCell(from: fromUser)
         case .ActivityLike(let fromUser, let likedContent, let media):
             setupActivityLikeCell(fromUser: fromUser, likedContent: likedContent, media: media)
         case .ListShowsEdit(let fromUser, let list, let type, let numChanged):
@@ -176,12 +181,6 @@ class NotificationTableViewCell: UITableViewCell {
             setupListOwnershipEditCell(fromUser: fromUser, list: list, newOwner: newOwner)
         case .ListCollaboratorsEdit(let fromUser, let list, let type, let collaborators):
             setupListCollaboratorsEdit(fromUser: fromUser, list: list, type: type, collaborators: collaborators)
-        case .FriendRequest(let fromUser, let toUser):
-            if toUser.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
-                setupAcceptedIncomingRequestCell(from: fromUser)
-            } else {
-                setupAcceptedOutgoingRequestCell(to: toUser)
-            }
         case .CollaborationInvite(let fromUser, let media):
             setupCollaborationInviteCell(fromUser: fromUser, list: media)
         default:

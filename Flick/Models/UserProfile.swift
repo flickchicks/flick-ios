@@ -15,8 +15,10 @@ struct UserProfile: Codable {
     var profilePic: String?
     var bio: String?
     var phoneNumber: String?
+    var socialId: String?
     var socialIdToken: String?
     var socialIdTokenType: String?
+    var numNotifs: Int?
     var ownerLsts: [SimpleMediaList]?
     var collabLsts: [SimpleMediaList]?
     var numMutualFriends: Int?
