@@ -24,9 +24,9 @@ struct Notification: Codable {
 
 
 enum NotificationEnum {
+    case AcceptedIncomingFriendRequest(fromUser: UserProfile)
+    case AcceptedOutgoingFriendRequest(fromUser: UserProfile)
     case IncomingFriendRequest(fromUser: UserProfile)
-    // Question: is accepted always true?
-    case FriendRequest(fromUser: UserProfile, toUser: UserProfile)
     case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
     case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int)
     case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile])

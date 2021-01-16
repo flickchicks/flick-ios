@@ -5,6 +5,7 @@ import Kingfisher
 class ProfileSummaryTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
+    private let activeNotificationIndicator = UIView()
     private let bioLabel = UILabel()
     private var friendsPreviewView: UsersPreviewView!
     private let nameLabel = UILabel()
@@ -62,6 +63,11 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.numberOfLines = 0
         bioLabel.textAlignment = .center
         contentView.addSubview(bioLabel)
+
+        activeNotificationIndicator.backgroundColor = .gradientPurple
+        activeNotificationIndicator.layer.cornerRadius = 2.5
+        activeNotificationIndicator.isHidden = true
+        contentView.addSubview(activeNotificationIndicator)
 
         notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
         notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
@@ -143,6 +149,12 @@ class ProfileSummaryTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().inset(padding)
         }
 
+        activeNotificationIndicator.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 5, height: 5))
+            make.top.equalTo(notificationButton.snp.top)
+            make.trailing.equalTo(notificationButton.snp.trailing)
+        }
+
         notificationButton.snp.makeConstraints { make in
             make.size.equalTo(sideButtonsSize)
             make.top.equalTo(settingsButton)
@@ -172,6 +184,9 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         // Show notification and settings buttons only if current user is at Home
         notificationButton.isHidden = !isHome
         settingsButton.isHidden = !isHome
+        if let numNotifs = user.numNotifs {
+            activeNotificationIndicator.isHidden = !isHome || numNotifs <= 0
+        }
 
         // Update friends preview
         if !friends.isEmpty {

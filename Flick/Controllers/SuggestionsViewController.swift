@@ -42,6 +42,19 @@ class SuggestionsViewController: UIViewController {
             self.suggestions = suggestions
             DispatchQueue.main.async {
                 self.suggestionsTableView.reloadData()
+                self.updateSuggestionViewedTime()
+            }
+        }
+    }
+
+
+    private func updateSuggestionViewedTime() {
+        let currentTime = Date().iso8601withFractionalSeconds
+        NetworkManager.updateSuggestionViewedTime(currentTime: currentTime) { success in
+            if success {
+                print("Updated suggestion viewed time")
+            } else {
+                print("Failed to update suggestion viewed time")
             }
         }
     }

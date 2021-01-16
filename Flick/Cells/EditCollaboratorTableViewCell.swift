@@ -138,4 +138,9 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         isCollaborator ? delegate?.removeCollaboratorTapped(user: user) : delegate?.addCollaboratorTapped(user: user)
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        userImageView.image = nil
+    }
+
 }

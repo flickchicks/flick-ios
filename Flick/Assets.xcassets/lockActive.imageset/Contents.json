@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "lockActive.png",
+      "filename" : "lockActive1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "lockActive2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "lockActive3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
