@@ -52,11 +52,10 @@ class HomeViewController: UIViewController {
         tabCollectionView.layer.cornerRadius = 24
         // Apply corner radius only to bottom left and bottom right corners
         tabCollectionView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        // TODO: Fix tab bar shadows
-        tabCollectionView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
-        tabCollectionView.layer.shadowOffset = CGSize(width: 4.0, height: 8.0)
+        tabCollectionView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        tabCollectionView.layer.shadowOffset = CGSize(width: 0, height: 4)
         tabCollectionView.layer.shadowOpacity = 0.07
-        tabCollectionView.layer.shadowRadius = 4.0
+        tabCollectionView.layer.shadowRadius = 8
         view.addSubview(tabCollectionView)
 
         setUpConstraints()

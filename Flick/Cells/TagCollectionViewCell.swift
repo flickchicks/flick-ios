@@ -35,7 +35,7 @@ class TagCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         clipsToBounds = false
         layer.cornerRadius = 12
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = UIColor.blueGrayShadow.cgColor
 
         tagLabel.textAlignment = .center
         tagLabel.font = .systemFont(ofSize: 12)

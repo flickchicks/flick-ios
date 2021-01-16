@@ -99,11 +99,10 @@ class EditProfileViewController: UIViewController {
         selectImageButton.setImage(UIImage(named: "editButton"), for: .normal)
         selectImageButton.clipsToBounds = false
         selectImageButton.layer.masksToBounds = false
-        // TODO: Double check shadows
         selectImageButton.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         selectImageButton.layer.shadowOpacity = 0.07
-        selectImageButton.layer.shadowOffset = .init(width: 0, height: 4)
-        selectImageButton.layer.shadowRadius = 8
+        selectImageButton.layer.shadowOffset = .init(width: 0, height: 1)
+        selectImageButton.layer.shadowRadius = 4
         view.addSubview(selectImageButton)
 
         firstNameFieldLabel.text = "First Name"
@@ -224,7 +223,6 @@ class EditProfileViewController: UIViewController {
         headerView.backgroundColor = .movieWhite
         headerView.clipsToBounds = false
         headerView.layer.masksToBounds = false
-        // TODO: Double check tab bar shadows
         headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
         headerView.layer.shadowOpacity = 0.07
         headerView.layer.shadowOffset = .init(width: 0, height: 4)
