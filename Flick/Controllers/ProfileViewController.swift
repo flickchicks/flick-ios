@@ -71,7 +71,8 @@ class ProfileViewController: UIViewController {
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
-        listsTableView.estimatedRowHeight = 190
+        // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
+//        listsTableView.estimatedRowHeight = 185
         listsTableView.rowHeight = UITableView.automaticDimension
         listsTableView.separatorStyle = .none
         listsTableView.estimatedSectionHeaderHeight = 0
