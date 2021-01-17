@@ -32,8 +32,6 @@ class MediaSearchResultTableViewCell: UITableViewCell {
 
         nameLabel.textColor = .darkBlue
         nameLabel.font = .systemFont(ofSize: 16)
-        nameLabel.adjustsFontSizeToFitWidth = true
-        nameLabel.minimumScaleFactor = 0.75
         containerView.addSubview(nameLabel)
 
         containerView.addSubview(selectView)

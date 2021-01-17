@@ -505,8 +505,7 @@ class NetworkManager {
     /// [GET] Get media search result by query
     static func searchMedia(query: String, completion: @escaping (String?, [Media]) -> Void) {
         guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
-            "is_movie" : "true",
-            "is_tv": "true",
+            "is_multi" : "true",
             "query": query
         ]) else { return }
 
