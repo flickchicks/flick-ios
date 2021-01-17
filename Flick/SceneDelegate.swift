@@ -75,6 +75,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        // Reference: https://fluffy.es/how-to-transition-from-login-screen-to-tab-bar-controller/
+        guard let window = self.window else {
+            return
+        }
+
+        // Change the root view controller to your specific view controller
+        window.rootViewController = vc
+
+        UIView.transition(with: window,
+                          duration: 0.5,
+                          options: [.transitionFlipFromLeft],
+                          animations: nil,
+                          completion: nil)
+    }
 
 }
 

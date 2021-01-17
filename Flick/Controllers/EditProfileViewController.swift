@@ -53,6 +53,7 @@ class EditProfileViewController: UIViewController {
     private let imagePickerController = UIImagePickerController()
     private let lastNameFieldLabel = UILabel()
     private let lastNameTextField = ProfileInputTextField()
+    private var popRecognizer: InteractivePopRecognizer?
     private let profileImageView = UIImageView()
     private let profileSelectionModalView = ProfileSelectionModalView()
     private let selectImageButton = UIButton()
@@ -177,6 +178,16 @@ class EditProfileViewController: UIViewController {
 //        view.addSubview(facebookAccountLabel)
 
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPopGesture()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        editProfileTitleLabel.removeFromSuperview()
     }
 
     private func setupNavigationBar() {
@@ -377,9 +388,10 @@ class EditProfileViewController: UIViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        editProfileTitleLabel.removeFromSuperview()
+    private func setupPopGesture() {
+        guard let navigationController = navigationController, popRecognizer == nil else { return }
+        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
+        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

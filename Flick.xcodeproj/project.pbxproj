@@ -19,6 +19,7 @@
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
 		8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0F825B4060F00F6BAEE /* TabBarController.swift */; };
+		8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */; };
 		803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA22596D92B004CF4B7 /* RoundedButton.swift */; };
 		803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */; };
 		803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */; };
@@ -161,6 +162,7 @@
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
 		8033C0F825B4060F00F6BAEE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePopRecognizer.swift; sourceTree = "<group>"; };
 		803E5EA22596D92B004CF4B7 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaModalView.swift; sourceTree = "<group>"; };
 		803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickToFriendModalView.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				D44BC12625A047F300D10DAB /* FriendsViewController.swift */,
 				D4E4E67725B13675000D8341 /* LaunchViewController.swift */,
 				8033C0F825B4060F00F6BAEE /* TabBarController.swift */,
+				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -851,6 +854,7 @@
 				803E5FF425AABEE1004CF4B7 /* Provider.swift in Sources */,
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
 				802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */,
+				8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */,
 				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,

@@ -27,6 +27,7 @@ class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var addCollaboratorModalView: AddCollaboratorModalView!
+    private var popRecognizer: InteractivePopRecognizer?
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
@@ -75,6 +76,11 @@ class ListSettingsViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPopGesture()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
             
@@ -117,6 +123,12 @@ class ListSettingsViewController: UIViewController {
         renameListModalView.modalDelegate = self
         renameListModalView.listSettingsDelegate = self
         showModalPopup(view: renameListModalView)
+    }
+
+    private func setupPopGesture() {
+        guard let navigationController = navigationController, popRecognizer == nil else { return }
+        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
+        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }
@@ -186,7 +198,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
             self.presentInfoAlert(message: "Renamed to \(self.list.name)") {
                 let controllers = self.navigationController?.viewControllers
                 for controller in controllers ?? [] {
-                    if controller is HomeViewController {
+                    if controller is ProfileViewController {
                         self.navigationController?.popToViewController(controller, animated: true)
                     }
                 }

@@ -16,6 +16,7 @@ class SettingsViewController: UIViewController {
     private let editProfileButton = UIButton()
     private let headerView = UIView()
     private let logoutButton = UIButton()
+    private var popRecognizer: InteractivePopRecognizer?
     private let sendFeedbackButton = UIButton()
     private let settingsTitleLabel = UILabel()
 
@@ -66,14 +67,34 @@ class SettingsViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        settingsTitleLabel.text = "Settings"
+        settingsTitleLabel.font = .systemFont(ofSize: 18)
+        settingsTitleLabel.textColor = .black
+        navigationController?.navigationBar.addSubview(settingsTitleLabel)
+
+        settingsTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(59)
+            make.top.bottom.trailing.equalToSuperview()
+        }
+
+        setupPopGesture()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        settingsTitleLabel.removeFromSuperview()
+    }
+
     @objc func logout() {
         if user.socialIdTokenType == "facebook" {
             LoginManager().logOut()
         }
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
-        let loginViewController = LoginViewController()
-        navigationController?.pushViewController(loginViewController, animated: true)
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 
     @objc func showEditProfile() {
@@ -146,23 +167,10 @@ class SettingsViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        settingsTitleLabel.text = "Settings"
-        settingsTitleLabel.font = .systemFont(ofSize: 18)
-        settingsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(settingsTitleLabel)
-
-        settingsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        settingsTitleLabel.removeFromSuperview()
+    private func setupPopGesture() {
+        guard let navigationController = navigationController, popRecognizer == nil else { return }
+        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
+        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

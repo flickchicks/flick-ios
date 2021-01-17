@@ -13,6 +13,7 @@ class MediaCommentsViewController: UIViewController {
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
     private let commentAreaView = CommentAreaView()
+    private var popRecognizer: InteractivePopRecognizer?
     private let sendCommentButton = UIButton()
     private let thoughtsTitleLabel = UILabel()
 
@@ -55,6 +56,16 @@ class MediaCommentsViewController: UIViewController {
         view.addSubview(commentsTableView)
 
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPopGesture()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        thoughtsTitleLabel.removeFromSuperview()
     }
 
     private func setupNavigationBar() {
@@ -105,8 +116,10 @@ class MediaCommentsViewController: UIViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        thoughtsTitleLabel.removeFromSuperview()
+    private func setupPopGesture() {
+        guard let navigationController = navigationController, popRecognizer == nil else { return }
+        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
+        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

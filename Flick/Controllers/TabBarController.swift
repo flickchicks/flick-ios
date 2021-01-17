@@ -12,10 +12,13 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tabBar.clipsToBounds = true
         tabBar.isTranslucent = false
         tabBar.barTintColor = .white
+//        tabBar.layer.shadowColor = UIColor.darkBlueGray2.cgColor
+//        tabBar.layer.shadowOpacity = 0.1
+//        tabBar.layer.shadowRadius = 4
+//        tabBar.layer.shadowOffset = CGSize(width: 0, height: -1)
 
         let discoverVC = DiscoverViewController()
         let searchIconImage = UIImage(named: "searchIcon")

@@ -14,6 +14,7 @@ class FriendsViewController: UIViewController {
     private let friendsTableView = UITableView(frame: .zero)
     private let friendsTitleLabel = UILabel()
     private let headerView = UIView()
+    private var popRecognizer: InteractivePopRecognizer?
 
     // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
@@ -100,12 +101,21 @@ class FriendsViewController: UIViewController {
             make.leading.equalToSuperview().offset(59)
             make.top.bottom.trailing.equalToSuperview()
         }
+
+        setupPopGesture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         friendsTitleLabel.removeFromSuperview()
     }
+
+    private func setupPopGesture() {
+        guard let navigationController = navigationController, popRecognizer == nil else { return }
+        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
+        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
+    }
+
 }
 
 extension FriendsViewController: UITableViewDelegate {
