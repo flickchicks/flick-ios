@@ -198,7 +198,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 email: email,
                 profilePic: "",
                 socialId: userIdentifier,
-                socialIdToken: "some token \(userIdentifier)",
+                socialIdToken: authCode,
                 socialIdTokenType: "apple"
             )
         }
