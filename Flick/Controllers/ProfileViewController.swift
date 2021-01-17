@@ -55,15 +55,11 @@ class ProfileViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
-
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
 
-        if !isHome {
-            setupNavigationBar()
-        }
+//        setupNavigationBar()
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
@@ -91,6 +87,11 @@ class ProfileViewController: UIViewController {
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         if isCurrentUser {
@@ -103,7 +104,7 @@ class ProfileViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 

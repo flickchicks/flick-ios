@@ -24,7 +24,6 @@ class AllNotificationsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .offWhite
 
         tabPageViewController = NotificationsTabPageViewController()
@@ -57,6 +56,7 @@ class AllNotificationsViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
+        navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -93,7 +93,6 @@ class AllNotificationsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
         setupNavigationBar()
     }
 

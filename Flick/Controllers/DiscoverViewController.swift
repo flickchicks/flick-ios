@@ -20,7 +20,6 @@ class DiscoverViewController: UIViewController {
     private var shouldAnimate = true
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
@@ -48,7 +47,7 @@ class DiscoverViewController: UIViewController {
 
     func setupConstraints() {
         searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(40)
         }
@@ -57,6 +56,11 @@ class DiscoverViewController: UIViewController {
             make.top.equalTo(searchBar.snp.bottom).offset(16)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
