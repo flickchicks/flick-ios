@@ -35,6 +35,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
+        profileImageView.skeletonCornerRadius = 35
         profileImageView.contentMode = .scaleAspectFill
         contentView.addSubview(profileImageView)
 
@@ -57,10 +58,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
         friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
-        friendsPreviewView.isSkeletonable = true
         userInfoView.addSubview(friendsPreviewView)
  
-        userInfoView.isSkeletonable = true
         contentView.addSubview(userInfoView)
 
         bioLabel.font = .systemFont(ofSize: 12)
