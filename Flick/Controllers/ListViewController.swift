@@ -300,7 +300,10 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         case .listSummary:
             return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
         case .mediaList:
-            let width = (mediaCollectionView.frame.width - 2 * (cellPadding + edgeInsets)) / 3.0
+            let numCellsInRow: CGFloat = 3
+            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+            let extraSpace = 2 * edgeInsets + (flowLayout.minimumInteritemSpacing * numCellsInRow)
+            let width = (mediaCollectionView.bounds.width - extraSpace) / numCellsInRow
             let height = width * 3 / 2
             return CGSize(width: width, height: height)
         }
