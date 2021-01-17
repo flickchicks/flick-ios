@@ -42,6 +42,7 @@ class CommentTableViewCell: UITableViewCell {
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
         profileImageView.addGestureRecognizer(profileTapGestureRecognizer)

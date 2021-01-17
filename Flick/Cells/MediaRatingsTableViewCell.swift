@@ -125,6 +125,7 @@ class MediaRatingsTableViewCell: UITableViewCell {
 
         personalIconImageView.image = UIImage(named: "dunkirk")
         personalIconImageView.layer.cornerRadius = 10
+        personalIconImageView.contentMode = .scaleAspectFill
         personalIconImageView.layer.masksToBounds = true
         personalIconImageView.clipsToBounds = true
         personalIconImageView.layer.borderColor = UIColor.gradientPurple.cgColor

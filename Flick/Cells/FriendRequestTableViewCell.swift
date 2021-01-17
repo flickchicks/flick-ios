@@ -53,6 +53,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         containerView.addSubview(dateLabel)
 
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20

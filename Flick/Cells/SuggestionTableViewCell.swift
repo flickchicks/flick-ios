@@ -61,6 +61,7 @@ class SuggestionTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         contentView.addSubview(dateLabel)
 
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20

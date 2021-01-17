@@ -30,6 +30,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         selectionStyle = .none
         isSkeletonable = true
 
+        profileImageView.contentMode = .scaleAspectFit
         profileImageView.isSkeletonable = true
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
