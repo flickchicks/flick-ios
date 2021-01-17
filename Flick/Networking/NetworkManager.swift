@@ -502,11 +502,10 @@ class NetworkManager {
 
     // MARK: - Search
 
-    /// [GET] Get media search result by query
+    /// [GET] Get media search result by query [updated as of 1/16/21]
     static func searchMedia(query: String, completion: @escaping (String?, [Media]) -> Void) {
         guard let url = getUrlWithQuery(baseUrl: searchBaseUrl, items: [
-            "is_movie" : "true",
-            "is_tv": "true",
+            "is_multi" : "true",
             "query": query
         ]) else { return }
 
@@ -728,10 +727,10 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Flick a show to friend [updated as of 12/29/20]
-    static func flickMediaToFriend(friendId: Int, mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
+    /// [POST] Flick a show to friends [updated as of 12/29/20]
+    static func flickMediaToFriends(friendIds: [Int], mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
-            "users": [friendId],
+            "users": friendIds,
             "show_id": mediaId,
             "message": message
         ]
