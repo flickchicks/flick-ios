@@ -100,9 +100,10 @@ class ListViewController: UIViewController {
             self.list = list
             self.listNameLabel.text = list.name
             // Set list summary height only if tags are not expanded
-            if self.listSummaryHeight <= 145 {
-                self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
-            }
+            // TODO: Uncomment when we want tags back
+//            if self.listSummaryHeight <= 145 {
+//                self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
+//            }
             self.setupSections()
             self.mediaCollectionView.reloadData()
 
