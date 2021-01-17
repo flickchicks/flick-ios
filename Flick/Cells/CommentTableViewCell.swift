@@ -43,6 +43,7 @@ class CommentTableViewCell: UITableViewCell {
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.masksToBounds = true
+        profileImageView.clipsToBounds = true
         profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
         contentView.addSubview(profileImageView)
 

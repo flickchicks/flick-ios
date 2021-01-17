@@ -47,6 +47,7 @@ class NotificationTableViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
+        profileImageView.clipsToBounds = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
 

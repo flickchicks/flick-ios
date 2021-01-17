@@ -179,7 +179,7 @@ class ProfileViewController: UIViewController {
     }
 }
 
-extension ProfileViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSource {
 
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         let section = sections[indexPath.section]

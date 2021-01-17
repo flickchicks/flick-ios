@@ -68,7 +68,7 @@ class SuggestionsViewController: UIViewController {
 
 }
 
-extension SuggestionsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+extension SuggestionsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return suggestionCellReuseIdentifier
@@ -76,10 +76,6 @@ extension SuggestionsViewController: SkeletonTableViewDelegate, SkeletonTableVie
     
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
-    }
-    
-    func numSections(in collectionSkeletonView: UITableView) -> Int {
-        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

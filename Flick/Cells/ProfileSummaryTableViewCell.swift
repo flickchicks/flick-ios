@@ -29,12 +29,12 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         selectionStyle = .none
         isSkeletonable = true
-        contentView.isSkeletonable = true
 
         profileImageView.isSkeletonable = true
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
+        profileImageView.clipsToBounds = true
         contentView.addSubview(profileImageView)
 
         nameLabel.text = "                   " // Add spaces for skeleton view
