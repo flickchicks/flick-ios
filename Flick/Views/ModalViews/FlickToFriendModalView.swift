@@ -203,11 +203,12 @@ class FlickToFriendModalView: UIView {
     }
 
     func clearSelectedFriends() {
+        messageTextField.text = ""
         for indexPath in selectedIndexPaths {
-            selectedFriends = []
-            selectedIndexPaths = []
             friendsTableView.deselectRow(at: indexPath, animated: false)
         }
+        selectedFriends = []
+        selectedIndexPaths = []
     }
 
     @objc private func shareTapped() {
