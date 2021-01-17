@@ -42,7 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
-                window.rootViewController = UINavigationController(rootViewController: HomeViewController())
+                window.rootViewController = UINavigationController(rootViewController: TabBarController())
             }
         }
     }
