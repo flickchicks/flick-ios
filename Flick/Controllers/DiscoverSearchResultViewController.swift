@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)
@@ -33,7 +34,10 @@ class DiscoverSearchResultViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.isSkeletonable = true
 
+        resultsTableView.isSkeletonable = true
         resultsTableView.backgroundColor = .offWhite
         resultsTableView.dataSource = self
         resultsTableView.delegate = self
@@ -42,6 +46,8 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.separatorStyle = .none
         resultsTableView.isDirectionalLockEnabled = true
         view.addSubview(resultsTableView)
+        
+//        resultsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         resultsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -60,6 +66,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.media = movies
                     self.resultsTableView.reloadData()
+//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .shows:
@@ -68,6 +75,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.media = shows
                     self.resultsTableView.reloadData()
+//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .people:
@@ -76,6 +84,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.users = users
                     self.resultsTableView.reloadData()
+//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .tags:
@@ -84,6 +93,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.tags = tags
                     self.resultsTableView.reloadData()
+//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .lists:
@@ -92,6 +102,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.lists = lists
                     self.resultsTableView.reloadData()
+//                    self.resultsTableView.hideSkeleton()
                 }
             }
         default:
@@ -108,7 +119,15 @@ class DiscoverSearchResultViewController: UIViewController {
     }
 }
 
-extension DiscoverSearchResultViewController: UITableViewDataSource, UITableViewDelegate {
+extension DiscoverSearchResultViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return searchResultCellReuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 20
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch searchType {
