@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FlickToFriendDelegate: class {
-    func flickMediaToFriend(mediaId: Int, friendId: Int, message: String)
+    func flickMediaToFriends(mediaId: Int, friendIds: [Int], message: String)
 }
 
 class FlickToFriendModalView: UIView {
@@ -31,8 +31,8 @@ class FlickToFriendModalView: UIView {
     private var friends: [UserProfile] = []
     private let friendsCellReuseIdentifier = "FriendsCellReuseIdentifier"
     private let media: Media
-    private var selectedFriend: UserProfile?
-    private var selectedIndexPath: IndexPath?
+    private var selectedFriends: [UserProfile] = []
+    private var selectedIndexPaths: [IndexPath] = []
 
     weak var flickToFriendDelegate: FlickToFriendDelegate?
     weak var modalDelegate: ModalDelegate?
@@ -95,6 +95,8 @@ class FlickToFriendModalView: UIView {
         friendsTableView.register(CollaboratorTableViewCell.self, forCellReuseIdentifier: friendsCellReuseIdentifier)
         friendsTableView.separatorStyle = .none
         friendsTableView.bounces = false
+        friendsTableView.allowsMultipleSelection = true
+        friendsTableView.showsVerticalScrollIndicator = false
         containerView.addSubview(friendsTableView)
 
         cancelButton = RoundedButton(style: .gray, title: "Cancel")
@@ -102,7 +104,6 @@ class FlickToFriendModalView: UIView {
         containerView.addSubview(cancelButton)
 
         shareButton = RoundedButton(style: .purple, title: "Share")
-        shareButton.isEnabled = false
         shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
         containerView.addSubview(shareButton)
 
@@ -201,10 +202,18 @@ class FlickToFriendModalView: UIView {
         }
     }
 
+    func clearSelectedFriends() {
+        for indexPath in selectedIndexPaths {
+            selectedFriends = []
+            selectedIndexPaths = []
+            friendsTableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+
     @objc private func shareTapped() {
-        if let selectedFriend = selectedFriend {
-            modalDelegate?.dismissModal(modalView: self)
-            flickToFriendDelegate?.flickMediaToFriend(mediaId: media.id, friendId: selectedFriend.id, message: messageTextField.text ?? "")
+        let selectedFriendIds = selectedFriends.map { $0.id }
+        if !selectedFriendIds.isEmpty {
+            flickToFriendDelegate?.flickMediaToFriends(mediaId: media.id, friendIds: selectedFriendIds, message: messageTextField.text ?? "")
         }
     }
 
@@ -238,17 +247,15 @@ extension FlickToFriendModalView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedIndexPath == indexPath {
-            // It was already selected
-            selectedIndexPath = nil
-            selectedFriend = nil
-            shareButton.isEnabled = false
-            tableView.deselectRow(at: indexPath, animated: false)
-        } else {
-            // It wasn't yet selected
-            selectedIndexPath = indexPath
-            shareButton.isEnabled = true
-            selectedFriend = friends[indexPath.row]
-        }
+        let friend = friends[indexPath.row]
+        selectedFriends.append(friend)
+        selectedIndexPaths.append(indexPath)
     }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let friend = friends[indexPath.row]
+        selectedFriends.removeAll { $0.id == friend.id }
+        selectedIndexPaths.removeAll { $0.section == indexPath.section && $0.row == indexPath.row }
+    }
+
 }
