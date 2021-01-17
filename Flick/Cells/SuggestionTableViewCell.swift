@@ -17,6 +17,7 @@ class SuggestionTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
+    private let dateLabel = UILabel()
     private let likeButton = UIButton()
     private let mediaDurationLabel = UILabel()
     private let mediaImageView = UIImageView()
@@ -50,7 +51,14 @@ class SuggestionTableViewCell: UITableViewCell {
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
         containerView.layer.shadowRadius = 8
         contentView.addSubview(containerView)
+        
+        dateLabel.textAlignment = .right
+        dateLabel.font = .systemFont(ofSize: 10)
+        dateLabel.textColor = .mediumGray
+        contentView.addSubview(dateLabel)
 
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
@@ -116,7 +124,7 @@ class SuggestionTableViewCell: UITableViewCell {
         }
 
         notificationLabel.snp.makeConstraints { make in
-           make.centerY.equalTo(profileImageView)
+            make.top.equalTo(profileImageView).offset(4)
            make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
            make.trailing.equalToSuperview().inset(padding)
         }
@@ -142,6 +150,13 @@ class SuggestionTableViewCell: UITableViewCell {
            make.top.equalTo(mediaImageView)
            make.leading.equalTo(mediaImageView.snp.trailing).offset(padding)
            make.trailing.equalTo(containerView).inset(padding)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView)
+            make.height.equalTo(padding)
+            make.trailing.equalTo(containerView).inset(padding)
+            make.width.equalTo(30)
         }
 
 //        spacerView.snp.makeConstraints { make in
@@ -202,6 +217,8 @@ class SuggestionTableViewCell: UITableViewCell {
         movieIconImageView.image = UIImage(named: suggestion.show.isTv ? "tv" : "film")
         releaseDateLabel.text = suggestion.show.dateReleased
         synopsisLabel.text = suggestion.show.plot
+        let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
+        dateLabel.text = dateLabelText
 //        let heartImage = suggestion.liked ? "filledHeart" : "heart"
 //        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }

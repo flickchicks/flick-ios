@@ -113,7 +113,7 @@ class CommentTableViewCell: UITableViewCell {
             make.top.equalTo(nameLabel)
             make.height.equalTo(labelHeight)
             make.trailing.equalTo(likeButton)
-            make.width.equalTo(horizontalPadding)
+            make.width.equalTo(30)
         }
 
         commentTextView.snp.makeConstraints { make in

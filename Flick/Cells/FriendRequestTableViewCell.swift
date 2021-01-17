@@ -19,6 +19,7 @@ class FriendRequestTableViewCell: UITableViewCell {
     // MARK: - Private View Vars
     private let acceptButton = UIButton()
     private let containerView = UIView()
+    private let dateLabel = UILabel()
     private let ignoreButton = UIButton()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
@@ -46,6 +47,11 @@ class FriendRequestTableViewCell: UITableViewCell {
         containerView.layer.shadowRadius = 8
         containerView.isSkeletonable = true
         contentView.addSubview(containerView)
+        
+        dateLabel.textAlignment = .right
+        dateLabel.font = .systemFont(ofSize: 10)
+        dateLabel.textColor = .mediumGray
+        containerView.addSubview(dateLabel)
 
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
@@ -101,6 +107,13 @@ class FriendRequestTableViewCell: UITableViewCell {
             make.leading.equalTo(acceptButton.snp.trailing).offset(48)
             make.top.bottom.equalTo(acceptButton)
         }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView)
+            make.height.equalTo(padding)
+            make.trailing.equalTo(containerView).inset(padding)
+            make.width.equalTo(30)
+        }
 
         containerView.snp.makeConstraints { make in
             make.top.equalTo(contentView).inset(padding)
@@ -111,7 +124,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         notificationLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
             make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
-            make.trailing.equalTo(containerView).inset(12)
+            make.trailing.equalTo(dateLabel.snp.leading).offset(-padding)
         }
 
     }
@@ -156,9 +169,11 @@ class FriendRequestTableViewCell: UITableViewCell {
 
     func configure(with notification: NotificationEnum) {
             switch notification {
-            case .IncomingFriendRequest(let fromUser):
+            case .IncomingFriendRequest(let fromUser, let createdAt):
                 self.fromUser = fromUser
                 setupFriendRequestCell(fromUser: fromUser)
+                let dateLabelText = Date().getDateLabelText(createdAt: createdAt)
+                dateLabel.text = dateLabelText
             default:
                 break
             }

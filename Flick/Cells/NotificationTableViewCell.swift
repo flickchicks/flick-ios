@@ -14,6 +14,7 @@ class NotificationTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
+    private let dateLabel = UILabel()
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
 
@@ -38,6 +39,11 @@ class NotificationTableViewCell: UITableViewCell {
         containerView.layer.shadowRadius = 8
         containerView.isSkeletonable = true
         contentView.addSubview(containerView)
+        
+        dateLabel.textAlignment = .right
+        dateLabel.font = .systemFont(ofSize: 10)
+        dateLabel.textColor = .mediumGray
+        containerView.addSubview(dateLabel)
 
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
@@ -70,7 +76,14 @@ class NotificationTableViewCell: UITableViewCell {
         notificationLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
             make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
+            make.trailing.equalTo(dateLabel.snp.leading).offset(-padding)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(profileImageView)
+            make.height.equalTo(padding)
             make.trailing.equalTo(containerView).inset(padding)
+            make.width.equalTo(30)
         }
     }
 
@@ -85,8 +98,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     /// setupAcceptedIncomingRequestCell sets notificationLabel for accepted incoming friend requests
-    private func setupAcceptedIncomingRequestCell(from user: UserProfile) {
+    private func setupAcceptedIncomingRequestCell(from user: UserProfile, createdAt: String) {
         setupProfileImageView(user: user)
+        setupDateLabel(createdAt: createdAt)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .normalFont14("You accepted ")
@@ -95,8 +109,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     /// setupAcceptedOutgoingRequestCell sets notificationLabel for accepted outgoing friend requests
-    private func setupAcceptedOutgoingRequestCell(from user: UserProfile) {
+    private func setupAcceptedOutgoingRequestCell(from user: UserProfile, createdAt: String) {
         setupProfileImageView(user: user)
+        setupDateLabel(createdAt: createdAt)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(user.name)
@@ -104,8 +119,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     /// setupCollaborationInviteCell sets notificationLabel for list collaboration invites
-    private func setupCollaborationInviteCell(fromUser: UserProfile, list: NotificationMediaList) {
+    private func setupCollaborationInviteCell(fromUser: UserProfile, list: NotificationMediaList, createdAt: String) {
         setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(fromUser.name)
@@ -116,8 +132,9 @@ class NotificationTableViewCell: UITableViewCell {
 
     /// setupActivityLikeCell sets notificationLabel for liked activities
     //  TODO: Revisit this function after updates on backend
-    private func setupActivityLikeCell(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String) {
+    private func setupActivityLikeCell(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String, createdAt: String) {
         setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(fromUser.name)
@@ -127,8 +144,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
 
     /// setupListShowsEditCell sets up notificationLabel from changes to shows in collaborated lists
-    private func setupListShowsEditCell(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int) {
+    private func setupListShowsEditCell(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int, createdAt: String) {
         setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
         let conjunction = type.rawValue == "added" ? "to" : "from"
         let posessiveTense = numChanged > 1 ? "s": ""
         notificationLabel.attributedText =
@@ -140,8 +158,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     /// setupListOwnershipEditCell sets up notificationLabel for changes in collaborated lists' ownership
-    private func setupListOwnershipEditCell(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile) {
+    private func setupListOwnershipEditCell(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile, createdAt: String) {
         setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
         let newOwnerText = newOwner.id == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) ? "you" : newOwner.name
         notificationLabel.attributedText =
         NSMutableAttributedString()
@@ -154,8 +173,9 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     /// setupListCollaboratorsEdit sets up notificationLabel from changes to collaborators in collaborated lists
-    private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile]) {
+    private func setupListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile], createdAt: String) {
         setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
         let collaboratorNames = collaborators.map { $0.name }
         notificationLabel.attributedText =
         NSMutableAttributedString()
@@ -166,23 +186,28 @@ class NotificationTableViewCell: UITableViewCell {
             .boldFont14(list.name)
             .normalFont14(".")
     }
+    
+    private func setupDateLabel(createdAt: String){
+        let dateLabelText = Date().getDateLabelText(createdAt: createdAt)
+        dateLabel.text = dateLabelText
+    }
 
     func configure(with notification: NotificationEnum) {
         switch notification {
-        case .AcceptedIncomingFriendRequest(let fromUser):
-            setupAcceptedIncomingRequestCell(from: fromUser)
-        case .AcceptedOutgoingFriendRequest(let fromUser):
-            setupAcceptedOutgoingRequestCell(from: fromUser)
-        case .ActivityLike(let fromUser, let likedContent, let media):
-            setupActivityLikeCell(fromUser: fromUser, likedContent: likedContent, media: media)
-        case .ListShowsEdit(let fromUser, let list, let type, let numChanged):
-            setupListShowsEditCell(fromUser: fromUser, list: list, type: type, numChanged: numChanged)
-        case .ListOwnershipEdit(let fromUser, let list, let newOwner):
-            setupListOwnershipEditCell(fromUser: fromUser, list: list, newOwner: newOwner)
-        case .ListCollaboratorsEdit(let fromUser, let list, let type, let collaborators):
-            setupListCollaboratorsEdit(fromUser: fromUser, list: list, type: type, collaborators: collaborators)
-        case .CollaborationInvite(let fromUser, let media):
-            setupCollaborationInviteCell(fromUser: fromUser, list: media)
+        case .AcceptedIncomingFriendRequest(let fromUser, let createdAt):
+            setupAcceptedIncomingRequestCell(from: fromUser, createdAt: createdAt)
+        case .AcceptedOutgoingFriendRequest(let fromUser, let createdAt):
+            setupAcceptedOutgoingRequestCell(from: fromUser, createdAt: createdAt)
+        case .ActivityLike(let fromUser, let likedContent, let media, let createdAt):
+            setupActivityLikeCell(fromUser: fromUser, likedContent: likedContent, media: media, createdAt: createdAt)
+        case .ListShowsEdit(let fromUser, let list, let type, let numChanged, let createdAt):
+            setupListShowsEditCell(fromUser: fromUser, list: list, type: type, numChanged: numChanged, createdAt: createdAt)
+        case .ListOwnershipEdit(let fromUser, let list, let newOwner, let createdAt):
+            setupListOwnershipEditCell(fromUser: fromUser, list: list, newOwner: newOwner, createdAt: createdAt)
+        case .ListCollaboratorsEdit(let fromUser, let list, let type, let collaborators, let createdAt):
+            setupListCollaboratorsEdit(fromUser: fromUser, list: list, type: type, collaborators: collaborators, createdAt: createdAt)
+        case .CollaborationInvite(let fromUser, let media, let createdAt):
+            setupCollaborationInviteCell(fromUser: fromUser, list: media, createdAt: createdAt)
         default:
             break
         }
