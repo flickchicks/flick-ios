@@ -37,8 +37,7 @@ class NotificationsViewController: UIViewController {
         notificationsTableView.sizeToFit()
         view.addSubview(notificationsTableView)
         
-        // Commenting out skeleton view for now because network request seems really fast so no need for skeleton view
-//        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         notificationsTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -91,7 +90,7 @@ class NotificationsViewController: UIViewController {
                     }
                 }
                 self.getFriendRequests()
-//                self.notificationsTableView.hideSkeleton()
+                self.notificationsTableView.hideSkeleton()
             }
         }
     }

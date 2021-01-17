@@ -28,9 +28,7 @@ class NotificationTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .offWhite
         isSkeletonable = true
-        
-        contentView.isSkeletonable = true
-
+    
         containerView.layer.cornerRadius = 16
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
@@ -38,6 +36,7 @@ class NotificationTableViewCell: UITableViewCell {
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
         containerView.layer.shadowRadius = 8
         containerView.isSkeletonable = true
+        containerView.skeletonCornerRadius = 10
         contentView.addSubview(containerView)
         
         dateLabel.textAlignment = .right
@@ -48,12 +47,10 @@ class NotificationTableViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
-        profileImageView.isSkeletonable = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
-        notificationLabel.isSkeletonable = true
         notificationLabel.textColor = .black
         notificationLabel.numberOfLines = 0
         containerView.addSubview(notificationLabel)

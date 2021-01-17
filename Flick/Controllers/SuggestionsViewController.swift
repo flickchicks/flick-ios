@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SkeletonView
 
 class SuggestionsViewController: UIViewController {
 
@@ -18,17 +19,23 @@ class SuggestionsViewController: UIViewController {
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.isSkeletonable = true
         view.backgroundColor = .offWhite
 
         suggestionsTableView.delegate = self
         suggestionsTableView.dataSource = self
         suggestionsTableView.isScrollEnabled = true
+        suggestionsTableView.isSkeletonable = true
         suggestionsTableView.backgroundColor = .offWhite
         suggestionsTableView.register(SuggestionTableViewCell.self, forCellReuseIdentifier: suggestionCellReuseIdentifier)
         suggestionsTableView.separatorStyle = .none
         suggestionsTableView.rowHeight = UITableView.automaticDimension
         suggestionsTableView.estimatedRowHeight = 140
         view.addSubview(suggestionsTableView)
+        
+        suggestionsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         suggestionsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -43,10 +50,10 @@ class SuggestionsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.suggestionsTableView.reloadData()
                 self.updateSuggestionViewedTime()
+                self.suggestionsTableView.hideSkeleton()
             }
         }
     }
-
 
     private func updateSuggestionViewedTime() {
         let currentTime = Date().iso8601withFractionalSeconds
@@ -61,7 +68,20 @@ class SuggestionsViewController: UIViewController {
 
 }
 
-extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource {
+extension SuggestionsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return suggestionCellReuseIdentifier
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return suggestions.count
     }
