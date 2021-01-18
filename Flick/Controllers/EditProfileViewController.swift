@@ -89,6 +89,7 @@ class EditProfileViewController: UIViewController {
             profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
         
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
@@ -407,7 +408,7 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
-        print(resizedImage.pngData()?.base64EncodedString())
+//        print(resizedImage.pngData()?.base64EncodedString())
         dismiss(animated: true, completion: nil)
     }
 }

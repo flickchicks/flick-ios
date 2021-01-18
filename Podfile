@@ -23,9 +23,6 @@ target 'Flick' do
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.15.0'
 
-	# Debugging
-	pod 'FLEX', :configurations => ['Debug']
-
   target 'FlickTests' do
     inherit! :search_paths
     # Pods for testing
