@@ -45,8 +45,8 @@ class EditProfileViewController: UIViewController {
     private let bioTextView = UITextView()
     private let bioTextLimitLabel = UILabel()
     private let editProfileTitleLabel = UILabel()
-    private let facebookAccountLabel = UILabel()
-    private let facebookFieldLabel = UILabel()
+    private let linkedAccountLabel = UILabel()
+    private let linkedAccountFieldLabel = UILabel()
     private let headerView = UIView()
     private let imagePickerController = UIImagePickerController()
     private let nameFieldLabel = UILabel()
@@ -109,7 +109,6 @@ class EditProfileViewController: UIViewController {
         nameFieldLabel.textColor = .mediumGray
         view.addSubview(nameFieldLabel)
 
-        // TODO: Change this to one single name field later?
         nameTextField.text = user.name
         nameTextField.delegate = self
         view.addSubview(nameTextField)
@@ -151,23 +150,23 @@ class EditProfileViewController: UIViewController {
         accountInfoTitleLabel.text = "Linked Accounts and Information"
         accountInfoTitleLabel.font = .systemFont(ofSize: 16)
         accountInfoTitleLabel.textColor = .black
-//        view.addSubview(accountInfoTitleLabel)
+        view.addSubview(accountInfoTitleLabel)
 
         accountInfoDescriptionLabel.text = "Linked Accounts allow you to find friends you know but won't post to other accounts."
         accountInfoDescriptionLabel.textColor = .mediumGray
         accountInfoDescriptionLabel.font = .systemFont(ofSize: 10)
         accountInfoDescriptionLabel.numberOfLines = 0
-//        view.addSubview(accountInfoDescriptionLabel)
+        view.addSubview(accountInfoDescriptionLabel)
 
-        facebookFieldLabel.text = "Facebook"
-        facebookFieldLabel.font = .systemFont(ofSize: 10)
-        facebookFieldLabel.textColor = .mediumGray
-//        view.addSubview(facebookFieldLabel)
+        linkedAccountFieldLabel.text = user.socialIdTokenType?.capitalized
+        linkedAccountFieldLabel.font = .systemFont(ofSize: 10)
+        linkedAccountFieldLabel.textColor = .mediumGray
+        view.addSubview(linkedAccountFieldLabel)
 
-        facebookAccountLabel.text = "Alanna Zhou"
-        facebookAccountLabel.font = .systemFont(ofSize: 12)
-        facebookAccountLabel.textColor = .black
-//        view.addSubview(facebookAccountLabel)
+        linkedAccountLabel.text = user.name
+        linkedAccountLabel.font = .systemFont(ofSize: 12)
+        linkedAccountLabel.textColor = .black
+        view.addSubview(linkedAccountLabel)
 
         setupConstraints()
     }
@@ -289,25 +288,25 @@ class EditProfileViewController: UIViewController {
             make.trailing.equalTo(bioTextLimitLabel)
         }
 
-//        accountInfoTitleLabel.snp.makeConstraints { make in
-//            make.top.equalTo(bioTextView.snp.bottom).offset(36)
-//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-//        }
-//
-//        accountInfoDescriptionLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
-//        }
-//
-//        facebookFieldLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
-//        }
-//
-//        facebookAccountLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(facebookFieldLabel.snp.bottom).offset(4)
-//        }
+        accountInfoTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(bioTextView.snp.bottom).offset(36)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+        }
+
+        accountInfoDescriptionLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
+        }
+
+        linkedAccountFieldLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
+        }
+
+        linkedAccountLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(linkedAccountFieldLabel.snp.bottom).offset(4)
+        }
 
     }
 
@@ -386,7 +385,6 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
-//        print(resizedImage.pngData()?.base64EncodedString())
         dismiss(animated: true, completion: nil)
     }
 }
