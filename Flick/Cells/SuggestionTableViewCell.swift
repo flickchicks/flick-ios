@@ -118,9 +118,9 @@ class SuggestionTableViewCell: UITableViewCell {
         let padding = 12
 
         containerView.snp.makeConstraints { make in
-           make.top.equalTo(contentView).inset(padding)
-           make.bottom.equalToSuperview()
-           make.leading.trailing.equalToSuperview().inset(20)
+            make.top.equalTo(contentView).inset(padding)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
         }
 
         profileImageView.snp.makeConstraints { make in
@@ -130,25 +130,25 @@ class SuggestionTableViewCell: UITableViewCell {
 
         notificationLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView).offset(4)
-           make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
-           make.trailing.equalToSuperview().inset(padding)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().inset(padding)
         }
 
         messageLabel.snp.makeConstraints { make in
-           make.leading.trailing.equalTo(notificationLabel)
-           make.top.equalTo(notificationLabel.snp.bottom).offset(padding)
+            make.leading.trailing.equalTo(notificationLabel)
+            make.top.equalTo(notificationLabel.snp.bottom).offset(padding)
         }
 
         mediaImageView.snp.makeConstraints { make in
-           make.leading.equalTo(notificationLabel)
-           make.size.equalTo(mediaImageSize)
-           make.top.equalTo(messageLabel.snp.bottom).offset(16)
-           make.bottom.equalTo(contentView).inset(padding)
+            make.leading.equalTo(notificationLabel)
+            make.size.equalTo(mediaImageSize)
+            make.top.equalTo(messageLabel.snp.bottom).offset(16)
+            make.bottom.equalTo(contentView).inset(padding)
         }
 
         likeButton.snp.makeConstraints { make in
-           make.centerY.equalTo(mediaImageView)
-           make.centerX.equalTo(profileImageView)
+            make.centerY.equalTo(mediaImageView)
+            make.centerX.equalTo(profileImageView)
         }
 
         mediaTitleLabel.snp.makeConstraints { make in

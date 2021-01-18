@@ -59,7 +59,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
         userInfoView.addSubview(friendsPreviewView)
-        
+
         userInfoView.isSkeletonable = true
         userInfoView.skeletonCornerRadius = 10
         contentView.addSubview(userInfoView)
@@ -88,7 +88,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         setupConstraints()
     }
-    
+
     @objc func notificationButtonPressed() {
         delegate?.pushNotificationsView()
     }
