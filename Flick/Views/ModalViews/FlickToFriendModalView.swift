@@ -88,6 +88,7 @@ class FlickToFriendModalView: UIView {
         messageTextField.layer.cornerRadius = 16
         messageTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 39))
         messageTextField.leftViewMode = .always
+        messageTextField.delegate = self
         containerView.addSubview(messageTextField)
 
         friendsTableView.dataSource = self
@@ -257,6 +258,15 @@ extension FlickToFriendModalView: UITableViewDelegate, UITableViewDataSource {
         let friend = friends[indexPath.row]
         selectedFriends.removeAll { $0.id == friend.id }
         selectedIndexPaths.removeAll { $0.section == indexPath.section && $0.row == indexPath.row }
+    }
+
+}
+
+extension FlickToFriendModalView: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
 }
