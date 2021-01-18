@@ -60,8 +60,6 @@ class ListSettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        setupNavigationBar()
-
         settingsTableView.separatorStyle = .none
         settingsTableView.backgroundColor = .offWhite
         settingsTableView.dataSource = self
@@ -78,6 +76,7 @@ class ListSettingsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBar()
         setupPopGesture()
     }
 

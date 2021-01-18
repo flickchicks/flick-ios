@@ -60,8 +60,6 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
 
-//        setupNavigationBar()
-
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self

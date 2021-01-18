@@ -36,8 +36,6 @@ class MediaCommentsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .movieWhite
 
-        setupNavigationBar()
-
         commentAreaView.delegate = self
         commentAreaView.sizeToFit()
         view.addSubview(commentAreaView)
@@ -60,6 +58,7 @@ class MediaCommentsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBar()
         setupPopGesture()
     }
 

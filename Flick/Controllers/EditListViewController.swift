@@ -53,8 +53,6 @@ class EditListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        navigationController?.isNavigationBarHidden = true
-
         backgroundView.backgroundColor = .white
         backgroundView.layer.backgroundColor = UIColor.backgroundOverlay.cgColor
         view.addSubview(backgroundView)
@@ -129,13 +127,13 @@ class EditListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setupPopGesture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        navigationController?.isNavigationBarHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     private func setupConstraints() {

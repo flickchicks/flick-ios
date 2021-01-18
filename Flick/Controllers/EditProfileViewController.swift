@@ -76,8 +76,8 @@ class EditProfileViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         view.backgroundColor = .offWhite
-        setupNavigationBar()
 
         profileSelectionModalView.modalDelegate = self
         profileSelectionModalView.profileSelectionDelegate = self
@@ -186,6 +186,7 @@ class EditProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBar()
         setupPopGesture()
     }
 

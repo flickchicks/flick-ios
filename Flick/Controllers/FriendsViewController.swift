@@ -32,7 +32,6 @@ class FriendsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .offWhite
-        setupNavigationBar()
 
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
@@ -47,6 +46,7 @@ class FriendsViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -91,7 +91,7 @@ class FriendsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupNavigationBar()
         friendsTitleLabel.text = "Friends"
         friendsTitleLabel.font = .systemFont(ofSize: 18)
         friendsTitleLabel.textColor = .black

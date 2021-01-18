@@ -36,7 +36,6 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .offWhite
-        setupNavigationBar()
 
         editProfileButton.setTitle("Edit Profile", for: .normal)
         editProfileButton.setTitleColor(.darkBlue, for: .normal)
@@ -69,7 +68,7 @@ class SettingsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupNavigationBar()
         settingsTitleLabel.text = "Settings"
         settingsTitleLabel.font = .systemFont(ofSize: 18)
         settingsTitleLabel.textColor = .black
@@ -132,6 +131,7 @@ class SettingsViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
