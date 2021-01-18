@@ -60,7 +60,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Private Data Vars
     weak var delegate: EditProfileDelegate?
     private var didChangeProfilePic = false
-    private let profileImageSize = CGSize(width: 50, height: 50)
+    private let profileImageSize = CGSize(width: 100, height: 100)
     private var user: UserProfile
 
     init(user: UserProfile) {
@@ -381,7 +381,7 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
 
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        let resizedImage = image.resize(toSize: profileImageSize, scale: UIScreen.main.scale)
+        let resizedImage = image.resize(toSize: profileImageSize)
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
