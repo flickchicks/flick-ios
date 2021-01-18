@@ -56,6 +56,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentProfileImageView.contentMode = .scaleAspectFit
         commentProfileImageView.layer.cornerRadius = 20
         commentProfileImageView.layer.masksToBounds = true
+        commentProfileImageView.clipsToBounds = true
         commentCellView.addSubview(commentProfileImageView)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))

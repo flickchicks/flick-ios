@@ -11,4 +11,6 @@ struct Suggestion: Codable {
     var fromUser: UserProfile
     var show: Media
     var message: String
+    var createdAt: String
+    var updatedAt: String
 }

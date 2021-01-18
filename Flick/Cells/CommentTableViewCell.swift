@@ -42,7 +42,9 @@ class CommentTableViewCell: UITableViewCell {
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         profileImageView.layer.cornerRadius = 20
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
+        profileImageView.clipsToBounds = true
         profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
         contentView.addSubview(profileImageView)
 
@@ -113,7 +115,7 @@ class CommentTableViewCell: UITableViewCell {
             make.top.equalTo(nameLabel)
             make.height.equalTo(labelHeight)
             make.trailing.equalTo(likeButton)
-            make.width.equalTo(horizontalPadding)
+            make.width.equalTo(30)
         }
 
         commentTextView.snp.makeConstraints { make in

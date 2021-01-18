@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '13.0'
+platform :ios, '12.0'
 # source 'https://github.com/CocoaPods/Specs.git'
 
 target 'Flick' do
@@ -22,9 +22,6 @@ target 'Flick' do
 	# Data Loading
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.15.0'
-
-	# Debugging
-	pod 'FLEX', :configurations => ['Debug']
 
   target 'FlickTests' do
     inherit! :search_paths

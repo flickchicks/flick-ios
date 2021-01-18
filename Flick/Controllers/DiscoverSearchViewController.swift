@@ -54,6 +54,8 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.isScrollEnabled = false
         view.addSubview(searchResultPageCollectionView)
 
+        searchBar.becomeFirstResponder()
+
         setupConstraints()
         setupViewControllers()
     }

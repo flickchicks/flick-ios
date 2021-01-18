@@ -37,8 +37,7 @@ class NotificationsViewController: UIViewController {
         notificationsTableView.sizeToFit()
         view.addSubview(notificationsTableView)
         
-        // Commenting out skeleton view for now because network request seems really fast so no need for skeleton view
-//        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         notificationsTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -51,7 +50,7 @@ class NotificationsViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.friendRequests = friendRequests.map {
-                    return .IncomingFriendRequest(fromUser: $0.fromUser)
+                    return .IncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.created)
                 }
                 self.notificationsTableView.reloadData()
                 self.updateNotificationViewedTime()
@@ -67,31 +66,31 @@ class NotificationsViewController: UIViewController {
                 */
                 self.notifications = notifications.map {
                     if $0.notifType == "list_invite" {
-                        return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!)
+                        return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!, createdAt: $0.createdAt)
                     } else if $0.notifType == "incoming_friend_request_accepted" {
-                        return .AcceptedIncomingFriendRequest(fromUser: $0.fromUser)
+                        return .AcceptedIncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
                     } else if $0.notifType == "outgoing_friend_request_accepted" {
-                        return .AcceptedOutgoingFriendRequest(fromUser: $0.fromUser)
+                        return .AcceptedOutgoingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
                     } else if $0.notifType == "list_edit" {
                         if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
-                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded)
+                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded, createdAt: $0.createdAt)
                         } else if let numShowsRemoved = $0.numShowsRemoved, let list = $0.lst  {
-                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved)
+                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved, createdAt: $0.createdAt)
                         } else if let newOwner = $0.newOwner, let list = $0.lst {
-                            return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner)
+                            return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner, createdAt: $0.createdAt)
                         } else if let list = $0.lst, $0.collaboratorsAdded.count > 0 {
-                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: list, type: .added, collaborators: $0.collaboratorsAdded)
+                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: list, type: .added, collaborators: $0.collaboratorsAdded, createdAt: $0.createdAt)
                         }
                         else {
-                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved)
+                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved, createdAt: $0.createdAt)
                         }
                     } else {
                         // TODO: Revisit after backend finishes notifications
-                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star")
+                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star", createdAt: $0.createdAt)
                     }
                 }
                 self.getFriendRequests()
-//                self.notificationsTableView.hideSkeleton()
+                self.notificationsTableView.hideSkeleton()
             }
         }
     }
@@ -140,7 +139,7 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
         if friendRequests.count > 0 && indexPath.section == 0 {
             // Incoming friend request
             switch friendRequests[indexPath.row] {
-            case .IncomingFriendRequest(let fromUser):
+            case .IncomingFriendRequest(let fromUser, _):
                 let profileViewController = ProfileViewController(isHome: false, userId: fromUser.id)
                 navigationController?.pushViewController(profileViewController, animated: true)
             default:
@@ -148,17 +147,17 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
             }
         } else {
             switch notifications[indexPath.row] {
-            case .AcceptedIncomingFriendRequest(let fromUser):
+            case .AcceptedIncomingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
-            case .AcceptedOutgoingFriendRequest(let fromUser):
+            case .AcceptedOutgoingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
-            case .CollaborationInvite(_, let list):
+            case .CollaborationInvite(_, let list, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-            case .ListShowsEdit(_, let list, _, _):
+            case .ListShowsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-            case .ListCollaboratorsEdit(_, let list, _, _):
+            case .ListCollaboratorsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-            case .ListOwnershipEdit(_, let list, _):
+            case .ListOwnershipEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             default:
                 break

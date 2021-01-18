@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import SkeletonView
 
 class DiscoverSearchResultTableViewCell: UITableViewCell {
 
@@ -29,11 +30,13 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .offWhite
         selectionStyle = .none
+        isSkeletonable = true
 
         infoStackView.axis = .vertical
         infoStackView.spacing = 5
         contentView.addSubview(infoStackView)
 
+        titleLabel.isSkeletonable = true
         titleLabel.font = .systemFont(ofSize: 16)
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(20)

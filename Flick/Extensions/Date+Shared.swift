@@ -42,7 +42,7 @@ extension Date {
                 }
             }
         }
-        return "" // Shouldn't happen because at least one of the above should return
+        return "now" // Comment was just posted
     }
 }
 
