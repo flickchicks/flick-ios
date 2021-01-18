@@ -8,27 +8,22 @@
 
 import UIKit
 
-class CommentSpoilerModalView: UIView {
+class CommentSpoilerModalView: ModalView {
 
     // MARK: - Private View Vars
-    private let containerView = UIView()
     private var noButton = UIButton()
     private var yesButton = UIButton()
     private let titleLabel = UILabel()
     private let commentTextView = UITextView()
 
     // MARK: - Private Data Var
-    weak var delegate: ModalDelegate?
     weak var commentDelegate: CommentDelegate?
 
     private var comment: String!
 
     init(comment: String) {
         self.comment = comment
-        super.init(frame: .zero)
-
-        frame = UIScreen.main.bounds
-        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
+        super.init()
 
         containerView.backgroundColor = .white
         containerView.layer.cornerRadius = 24
@@ -59,13 +54,6 @@ class CommentSpoilerModalView: UIView {
         containerView.addSubview(yesButton)
 
         setupConstraints()
-
-        // Animate the pop up of error alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
     }
 
     func setupConstraints() {
@@ -104,24 +92,12 @@ class CommentSpoilerModalView: UIView {
 
     @objc func noButtonPressed() {
         commentDelegate?.addComment(commentText: comment, isSpoiler: false)
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.delegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
     @objc func yesButtonPressed() {
         commentDelegate?.addComment(commentText: comment, isSpoiler: true)
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.delegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
     required init?(coder: NSCoder) {

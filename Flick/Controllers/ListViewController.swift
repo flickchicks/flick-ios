@@ -356,7 +356,7 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func sortMedia() {
         sortListModalView = SortListModalView()
-        sortListModalView.delegate = self
+        sortListModalView.modalDelegate = self
         // TODO: Sends navigation bar to the back, but gets covered by the main view
         navigationController?.navigationBar.layer.zPosition = -1
         view.addSubview(sortListModalView)

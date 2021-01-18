@@ -12,11 +12,10 @@ protocol FlickToFriendDelegate: class {
     func flickMediaToFriends(mediaId: Int, friendIds: [Int], message: String)
 }
 
-class FlickToFriendModalView: UIView {
+class FlickToFriendModalView: ModalView {
 
     // MARK: - Private View Vars
     private var cancelButton = UIButton()
-    private let containerView = UIView()
     private let flickToFriendLabel = UILabel()
     private let friendsTableView = UITableView()
     private let mediaIconImageView = UIImageView()
@@ -35,20 +34,10 @@ class FlickToFriendModalView: UIView {
     private var selectedIndexPaths: [IndexPath] = []
 
     weak var flickToFriendDelegate: FlickToFriendDelegate?
-    weak var modalDelegate: ModalDelegate?
 
     init(media: Media) {
         self.media = media
-
-        super.init(frame: .zero)
-
-        self.frame = UIScreen.main.bounds
-
-        backgroundColor = .backgroundOverlay
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
+        super.init()
 
         flickToFriendLabel.text = "Flick to a friend"
         flickToFriendLabel.font = .boldSystemFont(ofSize: 20)
@@ -109,13 +98,6 @@ class FlickToFriendModalView: UIView {
 
         setupConstraints()
         getFriends()
-
-        // Animate the pop up of alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
     }
 
     required init?(coder: NSCoder) {
@@ -219,13 +201,7 @@ class FlickToFriendModalView: UIView {
     }
 
     @objc private func cancelTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
 }

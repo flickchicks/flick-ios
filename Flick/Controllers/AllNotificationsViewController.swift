@@ -78,7 +78,6 @@ class AllNotificationsViewController: UIViewController {
     }
 
     private func setUpConstraints() {
-
         tabCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()

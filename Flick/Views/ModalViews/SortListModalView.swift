@@ -9,20 +9,15 @@
 import UIKit
 import SnapKit
 
-protocol ModalDelegate: class {
-    func dismissModal(modalView: UIView)
-}
 
-class SortListModalView: UIView {
+class SortListModalView: ModalView {
 
     // MARK: - Private View Vars
-    private let containerView = UIView()
     private let dismissButton = UIButton()
     private var sortOptionsTableView: UITableView!
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    weak var delegate: ModalDelegate?
     private let sortOptionCellReuseIdentifier = "SortOptionCellReuseIdentifier"
     // TODO: Get selected sort order from backend
     private var sortSelections: [SortSelection] = [
@@ -32,11 +27,8 @@ class SortListModalView: UIView {
         SortSelection(description: "Highest rating", sortDirection: .unselected)
     ]
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        self.frame = UIScreen.main.bounds
-        self.backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
+    override init() {
+        super.init()
 
         titleLabel.text = "Sort list"
         titleLabel.textColor = .black
@@ -58,10 +50,6 @@ class SortListModalView: UIView {
         sortOptionsTableView.register(SortOptionTableViewCell.self, forCellReuseIdentifier: sortOptionCellReuseIdentifier)
         sortOptionsTableView.separatorStyle = .none
         containerView.addSubview(sortOptionsTableView)
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
 
         setupConstraints()
     }
@@ -100,24 +88,10 @@ class SortListModalView: UIView {
             make.top.equalTo(titleLabel).offset(verticalPadding)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
-
-        // Animate the pop up of error alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
-
     }
 
     @objc func dismiss() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.delegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
 }
