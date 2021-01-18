@@ -17,9 +17,11 @@ class FriendsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
+    private var isCollaborators: Bool
 
-    init(friends: [UserProfile]) {
+    init(isCollaborators: Bool, friends: [UserProfile]) {
         self.friends = friends
+        self.isCollaborators = isCollaborators
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -91,7 +93,7 @@ class FriendsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        friendsTitleLabel.text = "Friends"
+        friendsTitleLabel.text = isCollaborators ? "Collaborators" : "Friends"
         friendsTitleLabel.font = .systemFont(ofSize: 18)
         friendsTitleLabel.textColor = .black
         navigationController?.navigationBar.addSubview(friendsTitleLabel)

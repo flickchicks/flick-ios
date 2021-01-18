@@ -376,6 +376,14 @@ extension ListViewController: ListSummaryDelegate {
         mediaCollectionView.reloadData()
     }
 
+    func pushCollaboratorsView() {
+        if let owner = list?.owner {
+            let users = [owner] + (list?.collaborators ?? [])
+            let friendsViewController = FriendsViewController(isCollaborators: true, friends: users)
+            navigationController?.pushViewController(friendsViewController, animated: true)
+        }
+    }
+
 }
 
 extension ListViewController: AddToListDelegate {
