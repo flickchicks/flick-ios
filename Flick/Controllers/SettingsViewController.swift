@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController {
     private let logoutButton = UIButton()
     private var popRecognizer: InteractivePopRecognizer?
     private let sendFeedbackButton = UIButton()
-    private let settingsTitleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var user: UserProfile
@@ -35,7 +34,17 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Settings"
         view.backgroundColor = .offWhite
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         editProfileButton.setTitle("Edit Profile", for: .normal)
         editProfileButton.setTitleColor(.black, for: .normal)
@@ -71,22 +80,7 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        settingsTitleLabel.text = "Settings"
-        settingsTitleLabel.font = .systemFont(ofSize: 18)
-        settingsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(settingsTitleLabel)
-
-        settingsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
         setupPopGesture()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        settingsTitleLabel.removeFromSuperview()
     }
 
     @objc func logout() {
@@ -105,6 +99,12 @@ class SettingsViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(10)
+        }
+
         editProfileButton.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
@@ -147,21 +147,6 @@ class SettingsViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
     }
 
     @objc func backButtonPressed() {

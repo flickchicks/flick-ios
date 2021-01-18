@@ -12,7 +12,6 @@ class FriendsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let friendsTableView = UITableView(frame: .zero)
-    private let friendsTitleLabel = UILabel()
     private let headerView = UIView()
     private var popRecognizer: InteractivePopRecognizer?
 
@@ -31,7 +30,17 @@ class FriendsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Friends"
         view.backgroundColor = .offWhite
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         friendsTableView.delegate = self
         friendsTableView.dataSource = self
@@ -41,6 +50,12 @@ class FriendsViewController: UIViewController {
         view.addSubview(friendsTableView)
 
         setupConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+        setupPopGesture()
     }
 
     private func setupNavigationBar() {
@@ -60,25 +75,15 @@ class FriendsViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
+    }
 
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
+    private func setupConstraints() {
         headerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.height.equalTo(10)
         }
 
-    }
-
-    private func setupConstraints() {
         friendsTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom)
@@ -87,27 +92,6 @@ class FriendsViewController: UIViewController {
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationBar()
-        friendsTitleLabel.text = "Friends"
-        friendsTitleLabel.font = .systemFont(ofSize: 18)
-        friendsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(friendsTitleLabel)
-
-        friendsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
-        setupPopGesture()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        friendsTitleLabel.removeFromSuperview()
     }
 
     private func setupPopGesture() {

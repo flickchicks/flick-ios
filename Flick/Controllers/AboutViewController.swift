@@ -11,7 +11,6 @@ import UIKit
 class AboutViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let aboutTitleLabel = UILabel()
     private let attributionsSubtitleLabel = UILabel()
     private let attributionsTitleLabel = UILabel()
     private let headerView = UIView()
@@ -22,8 +21,17 @@ class AboutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "About"
         view.backgroundColor = .offWhite
-        setupNavigationBar()
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         privacyPolicyLabel.text = "Privacy Policy"
         privacyPolicyLabel.textColor = .black
@@ -50,7 +58,19 @@ class AboutViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+        // set up pop gestrue
+    }
+
     private func setupConstraints() {
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(10)
+        }
+
         privacyPolicyLabel.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(16)
             make.leading.equalToSuperview().inset(24)
@@ -99,22 +119,6 @@ class AboutViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
-
     }
 
     @objc func backButtonPressed() {
@@ -124,25 +128,6 @@ class AboutViewController: UIViewController {
     @objc func showPrivacyPolicy() {
         //TODO: Add link later
         print("showPrivacyPolicy")
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        aboutTitleLabel.text = "About"
-        aboutTitleLabel.font = .systemFont(ofSize: 18)
-        aboutTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(aboutTitleLabel)
-
-        aboutTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        aboutTitleLabel.removeFromSuperview()
     }
 
 }

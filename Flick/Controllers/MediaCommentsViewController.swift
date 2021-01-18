@@ -15,7 +15,6 @@ class MediaCommentsViewController: UIViewController {
     private let commentAreaView = CommentAreaView()
     private var popRecognizer: InteractivePopRecognizer?
     private let sendCommentButton = UIButton()
-    private let thoughtsTitleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var comments: [Comment]!
@@ -34,6 +33,8 @@ class MediaCommentsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        title = "Thoughts"
         view.backgroundColor = .movieWhite
 
         commentAreaView.delegate = self
@@ -62,11 +63,6 @@ class MediaCommentsViewController: UIViewController {
         setupPopGesture()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        thoughtsTitleLabel.removeFromSuperview()
-    }
-
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
@@ -84,17 +80,6 @@ class MediaCommentsViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-
-        thoughtsTitleLabel.text = "Thoughts"
-        thoughtsTitleLabel.font = .boldSystemFont(ofSize: 18)
-        thoughtsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(thoughtsTitleLabel)
-
-        thoughtsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
     }
 
     @objc func backButtonPressed() {
@@ -102,7 +87,6 @@ class MediaCommentsViewController: UIViewController {
     }
 
     private func setupConstraints() {
-
         commentAreaView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
