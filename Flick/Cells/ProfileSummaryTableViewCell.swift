@@ -5,11 +5,9 @@ import Kingfisher
 class ProfileSummaryTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let activeNotificationIndicator = UIView()
     private let bioLabel = UILabel()
     private var friendsPreviewView: UsersPreviewView!
     private let nameLabel = UILabel()
-    private let notificationButton = UIButton()
     private let profileImageView = UIImageView()
     private let settingsButton = UIButton()
     private let userInfoView = UIView()
@@ -63,16 +61,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.numberOfLines = 0
         bioLabel.textAlignment = .center
         contentView.addSubview(bioLabel)
-
-        activeNotificationIndicator.backgroundColor = .gradientPurple
-        activeNotificationIndicator.layer.cornerRadius = 2.5
-        activeNotificationIndicator.isHidden = true
-        contentView.addSubview(activeNotificationIndicator)
-
-        notificationButton.setImage(UIImage(named: "notificationButton"), for: .normal)
-        notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
-        notificationButton.isHidden = true
-        contentView.addSubview(notificationButton)
 
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
@@ -148,18 +136,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().inset(padding)
         }
-
-        activeNotificationIndicator.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 5, height: 5))
-            make.top.equalTo(notificationButton.snp.top)
-            make.trailing.equalTo(notificationButton.snp.trailing)
-        }
-
-        notificationButton.snp.makeConstraints { make in
-            make.size.equalTo(sideButtonsSize)
-            make.top.equalTo(settingsButton)
-            make.trailing.equalTo(settingsButton.snp.leading).offset(-7)
-        }
     }
 
     private func updateUserInfoViewConstraints() {
@@ -181,12 +157,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         if let profilePic = user.profilePic {
             profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
         }
-        // Show notification and settings buttons only if current user is at Home
-        notificationButton.isHidden = !isHome
+        // Show settings buttons only if current user is at Home
         settingsButton.isHidden = !isHome
-        if let numNotifs = user.numNotifs {
-            activeNotificationIndicator.isHidden = !isHome || numNotifs <= 0
-        }
 
         // Update friends preview
         if !friends.isEmpty {
