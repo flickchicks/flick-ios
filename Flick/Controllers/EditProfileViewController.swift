@@ -45,14 +45,12 @@ class EditProfileViewController: UIViewController {
     private let bioTextView = UITextView()
     private let bioTextLimitLabel = UILabel()
     private let editProfileTitleLabel = UILabel()
-    private let facebookAccountLabel = UILabel()
-    private let facebookFieldLabel = UILabel()
-    private let firstNameFieldLabel = UILabel()
-    private let firstNameTextField = ProfileInputTextField()
+    private let linkedAccountLabel = UILabel()
+    private let linkedAccountFieldLabel = UILabel()
     private let headerView = UIView()
     private let imagePickerController = UIImagePickerController()
-    private let lastNameFieldLabel = UILabel()
-    private let lastNameTextField = ProfileInputTextField()
+    private let nameFieldLabel = UILabel()
+    private let nameTextField = ProfileInputTextField()
     private var popRecognizer: InteractivePopRecognizer?
     private let profileImageView = UIImageView()
     private let profileSelectionModalView = ProfileSelectionModalView()
@@ -63,7 +61,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Private Data Vars
     weak var delegate: EditProfileDelegate?
     private var didChangeProfilePic = false
-    private let profileImageSize = CGSize(width: 50, height: 50)
+    private let profileImageSize = CGSize(width: 100, height: 100)
     private var user: UserProfile
 
     init(user: UserProfile) {
@@ -107,24 +105,14 @@ class EditProfileViewController: UIViewController {
         selectImageButton.layer.shadowRadius = 4
         view.addSubview(selectImageButton)
 
-        firstNameFieldLabel.text = "First Name"
-        firstNameFieldLabel.font = .systemFont(ofSize: 10)
-        firstNameFieldLabel.textColor = .mediumGray
-        view.addSubview(firstNameFieldLabel)
+        nameFieldLabel.text = "Name"
+        nameFieldLabel.font = .systemFont(ofSize: 10)
+        nameFieldLabel.textColor = .mediumGray
+        view.addSubview(nameFieldLabel)
 
-        // TODO: Change this to one single name field later?
-        firstNameTextField.text = String(user.name.split(separator: " ")[0])
-        firstNameTextField.delegate = self
-        view.addSubview(firstNameTextField)
-
-        lastNameFieldLabel.text = "Last Name"
-        lastNameFieldLabel.font = .systemFont(ofSize: 10)
-        lastNameFieldLabel.textColor = .mediumGray
-        view.addSubview(lastNameFieldLabel)
-
-        lastNameTextField.text = String(user.name.split(separator: " ")[1])
-        lastNameTextField.delegate = self
-        view.addSubview(lastNameTextField)
+        nameTextField.text = user.name
+        nameTextField.delegate = self
+        view.addSubview(nameTextField)
 
         userNameFieldLabel.text = "Username"
         userNameFieldLabel.font = .systemFont(ofSize: 10)
@@ -163,23 +151,23 @@ class EditProfileViewController: UIViewController {
         accountInfoTitleLabel.text = "Linked Accounts and Information"
         accountInfoTitleLabel.font = .systemFont(ofSize: 16)
         accountInfoTitleLabel.textColor = .black
-//        view.addSubview(accountInfoTitleLabel)
+        view.addSubview(accountInfoTitleLabel)
 
         accountInfoDescriptionLabel.text = "Linked Accounts allow you to find friends you know but won't post to other accounts."
         accountInfoDescriptionLabel.textColor = .mediumGray
         accountInfoDescriptionLabel.font = .systemFont(ofSize: 10)
         accountInfoDescriptionLabel.numberOfLines = 0
-//        view.addSubview(accountInfoDescriptionLabel)
+        view.addSubview(accountInfoDescriptionLabel)
 
-        facebookFieldLabel.text = "Facebook"
-        facebookFieldLabel.font = .systemFont(ofSize: 10)
-        facebookFieldLabel.textColor = .mediumGray
-//        view.addSubview(facebookFieldLabel)
+        linkedAccountFieldLabel.text = user.socialIdTokenType?.capitalized
+        linkedAccountFieldLabel.font = .systemFont(ofSize: 10)
+        linkedAccountFieldLabel.textColor = .mediumGray
+        view.addSubview(linkedAccountFieldLabel)
 
-        facebookAccountLabel.text = "Alanna Zhou"
-        facebookAccountLabel.font = .systemFont(ofSize: 12)
-        facebookAccountLabel.textColor = .black
-//        view.addSubview(facebookAccountLabel)
+        linkedAccountLabel.text = user.name
+        linkedAccountLabel.font = .systemFont(ofSize: 12)
+        linkedAccountLabel.textColor = .black
+        view.addSubview(linkedAccountLabel)
 
         setupConstraints()
     }
@@ -272,33 +260,20 @@ class EditProfileViewController: UIViewController {
             make.leading.equalTo(profileImageView.snp.trailing).offset(horizontalPadding/2)
         }
 
-        firstNameFieldLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(horizontalPadding)
+        nameFieldLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(profileImageView.snp.bottom).offset(32)
-            make.trailing.equalTo(view.snp.centerX).offset(-horizontalPadding/2)
         }
 
-        firstNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(firstNameFieldLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(firstNameFieldLabel)
-            make.height.equalTo(smallFieldSize.height)
-        }
-
-        lastNameFieldLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.leading.equalTo(view.snp.centerX).offset(horizontalPadding/2)
-            make.top.equalTo(firstNameFieldLabel)
-        }
-
-        lastNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(lastNameFieldLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(lastNameFieldLabel)
+        nameTextField.snp.makeConstraints { make in
+            make.top.equalTo(nameFieldLabel.snp.bottom).offset(4)
+            make.leading.trailing.equalTo(nameFieldLabel)
             make.height.equalTo(smallFieldSize.height)
         }
 
         userNameFieldLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(firstNameFieldLabel)
-            make.top.equalTo(firstNameTextField.snp.bottom).offset(verticalPadding)
+            make.leading.trailing.equalTo(nameFieldLabel)
+            make.top.equalTo(nameTextField.snp.bottom).offset(verticalPadding)
         }
 
         userNameTextField.snp.makeConstraints { make in
@@ -309,12 +284,12 @@ class EditProfileViewController: UIViewController {
 
         bioFieldLabel.snp.makeConstraints { make in
             make.top.equalTo(userNameTextField.snp.bottom).offset(verticalPadding)
-            make.leading.equalTo(firstNameFieldLabel)
+            make.leading.equalTo(nameFieldLabel)
             make.trailing.equalTo(bioTextLimitLabel.snp.leading)
         }
 
         bioTextLimitLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(lastNameTextField)
+            make.trailing.equalTo(nameFieldLabel)
             make.top.equalTo(bioFieldLabel)
             make.width.equalTo(45)
         }
@@ -325,25 +300,25 @@ class EditProfileViewController: UIViewController {
             make.trailing.equalTo(bioTextLimitLabel)
         }
 
-//        accountInfoTitleLabel.snp.makeConstraints { make in
-//            make.top.equalTo(bioTextView.snp.bottom).offset(36)
-//            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-//        }
-//
-//        accountInfoDescriptionLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
-//        }
-//
-//        facebookFieldLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
-//        }
-//
-//        facebookAccountLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(accountInfoTitleLabel)
-//            make.top.equalTo(facebookFieldLabel.snp.bottom).offset(4)
-//        }
+        accountInfoTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(bioTextView.snp.bottom).offset(36)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+        }
+
+        accountInfoDescriptionLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(accountInfoTitleLabel.snp.bottom).offset(6)
+        }
+
+        linkedAccountFieldLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(accountInfoDescriptionLabel.snp.bottom).offset(verticalPadding)
+        }
+
+        linkedAccountLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(accountInfoTitleLabel)
+            make.top.equalTo(linkedAccountFieldLabel.snp.bottom).offset(4)
+        }
 
     }
 
@@ -374,13 +349,12 @@ class EditProfileViewController: UIViewController {
     }
 
     private func updateUserInfo() {
-        if let firstName = firstNameTextField.text,
-            let lastName = lastNameTextField.text,
+        if let name = nameTextField.text,
             let username = userNameTextField.text,
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
             let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.pngData()?.base64EncodedString() : nil
-            let updatedUser = User(username: username, firstName: firstName, lastName: lastName, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
+            let updatedUser = User(username: username, name: name, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
             NetworkManager.updateUserProfile(user: updatedUser) { [ weak self] user in
                 guard let self = self else { return }
                 self.user = user
@@ -420,11 +394,10 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
 
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        let resizedImage = image.resize(toSize: profileImageSize, scale: UIScreen.main.scale)
+        let resizedImage = image.resize(toSize: profileImageSize)
         profileImageView.image = resizedImage
         profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
-//        print(resizedImage.pngData()?.base64EncodedString())
         dismiss(animated: true, completion: nil)
     }
 }
