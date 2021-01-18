@@ -20,6 +20,7 @@ enum CardState {case collapsed, expanded }
 class MediaViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private var flickToFriendView: FlickToFriendModalView!
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
@@ -85,14 +86,14 @@ class MediaViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let backButtonSize = CGSize(width: 22, height: 18)
+        let backButtonSize = CGSize(width: 34, height: 34)
 
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
 
         let backButton = UIButton()
-        backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
+        backButton.setImage(UIImage(named: "backArrowCircle"), for: .normal)
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }
@@ -304,18 +305,19 @@ extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
 
     func showFlickToFriendView() {
         if let media = media {
-            let flickToFriendView = FlickToFriendModalView(media: media)
+            flickToFriendView = FlickToFriendModalView(media: media)
             flickToFriendView.modalDelegate = self
             flickToFriendView.flickToFriendDelegate = self
             showModalPopup(view: flickToFriendView)
         }
     }
 
-    func flickMediaToFriend(mediaId: Int, friendId: Int, message: String) {
-        NetworkManager.flickMediaToFriend(friendId: friendId, mediaId: mediaId, message: message) { [weak self] success in
+    func flickMediaToFriends(mediaId: Int, friendIds: [Int], message: String) {
+        NetworkManager.flickMediaToFriends(friendIds: friendIds, mediaId: mediaId, message: message) { [weak self] success in
             guard let self = self else { return }
             if success {
                 self.presentInfoAlert(message: "Flicked to friend", completion: nil)
+                self.flickToFriendView.clearSelectedFriends()
             } else {
                 self.presentInfoAlert(message: "Failed to flick to friend", completion: nil)
             }

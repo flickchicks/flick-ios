@@ -113,6 +113,7 @@ class EditProfileViewController: UIViewController {
 
         // TODO: Change this to one single name field later?
         firstNameTextField.text = String(user.name.split(separator: " ")[0])
+        firstNameTextField.delegate = self
         view.addSubview(firstNameTextField)
 
         lastNameFieldLabel.text = "Last Name"
@@ -121,6 +122,7 @@ class EditProfileViewController: UIViewController {
         view.addSubview(lastNameFieldLabel)
 
         lastNameTextField.text = String(user.name.split(separator: " ")[1])
+        lastNameTextField.delegate = self
         view.addSubview(lastNameTextField)
 
         userNameFieldLabel.text = "Username"
@@ -129,6 +131,7 @@ class EditProfileViewController: UIViewController {
         view.addSubview(userNameFieldLabel)
 
         userNameTextField.text = user.username
+        userNameTextField.delegate = self
         view.addSubview(userNameTextField)
 
         bioFieldLabel.text = "Bio"
@@ -428,6 +431,15 @@ extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
         profileSelectionModalView.removeFromSuperview()
         imagePickerController.sourceType = .camera
         present(imagePickerController, animated: true, completion: nil)
+    }
+
+}
+
+extension EditProfileViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 
 }

@@ -75,7 +75,7 @@ class AddToListViewController: UIViewController {
         view.addSubview(addToListLabel)
 
         chevronButton.setImage(UIImage(named: "downChevron"), for: .normal)
-        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 4, left: 7, bottom: 4, right: 7)
+        chevronButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
         chevronButton.addTarget(self, action: #selector(tappedChevron), for: .touchUpInside)
         view.addSubview(chevronButton)
 
@@ -168,7 +168,7 @@ class AddToListViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let chevronSize = CGSize(width: 30, height: 15)
+        let chevronSize = CGSize(width: 30, height: 30)
         let labelLeadingOffset = 36
         let verticalOffset = 20
 
@@ -197,7 +197,7 @@ class AddToListViewController: UIViewController {
         chevronButton.snp.makeConstraints { make in
             make.size.equalTo(chevronSize)
             make.centerY.equalTo(selectedLabel.snp.centerY)
-            make.leading.equalTo(selectedLabel.snp.trailing).offset(4)
+            make.leading.equalTo(selectedLabel.snp.trailing)
         }
 
         resultLabel.snp.makeConstraints { make in
@@ -266,7 +266,6 @@ class AddToListViewController: UIViewController {
     @objc private func tappedChevron() {
         isSelectedHidden.toggle()
         chevronButton.setImage(UIImage(named: isSelectedHidden ? "downChevron" : "upChevron"), for: .normal)
-        reloadSelectedMediaCollectionView()
         showSelectedMedia()
     }
 
@@ -317,13 +316,19 @@ class AddToListViewController: UIViewController {
     private func selectMedia(_ media: SimpleMedia) {
         selectedMedia.append(media)
         selectedLabel.text = "\(selectedMedia.count) Selected"
-        reloadSelectedMediaCollectionView()
+        let indexPath = IndexPath(item: selectedMedia.count-1, section: 0)
+        selectedMediaCollectionView.insertItems(at: [indexPath])
+        selectedMediaCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .right)
     }
 
     private func deselectMedia(_ media: SimpleMedia) {
-        selectedMedia.removeAll { $0.id == media.id }
-        selectedLabel.text = "\(selectedMedia.count) Selected"
-        reloadSelectedMediaCollectionView()
+        let mediaIndex = selectedMedia.firstIndex { $0.id == media.id }
+        if let index = mediaIndex {
+            selectedMedia.remove(at: index)
+            selectedLabel.text = "\(selectedMedia.count) Selected"
+            let indexPath = IndexPath(item: index, section: 0)
+            selectedMediaCollectionView.deleteItems(at: [indexPath])
+        }
     }
 
     private func reloadSelectedMediaCollectionView() {
