@@ -96,7 +96,7 @@ class NetworkManager {
     static func updateUserProfile(user: User, completion: @escaping (UserProfile) -> Void) {
         let parameters: [String: Any] = [
             "username": user.username,
-            "name": "\(user.firstName) \(user.lastName)",
+            "name": user.name,
             "bio": user.bio,
             "profile_pic": user.profilePic,
             "phone_number": user.phoneNumber,
