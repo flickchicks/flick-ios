@@ -112,6 +112,7 @@
 		D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */; };
 		D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */; };
 		D4E4E67825B13675000D8341 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4E67725B13675000D8341 /* LaunchViewController.swift */; };
+		D4E4E6DE25B60D53000D8341 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
 		D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB4A24CC544800DEF826 /* UILabel.swift */; };
 		D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */; };
@@ -265,6 +266,7 @@
 		D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
 		D4E4E67725B13675000D8341 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		D4F0FB4A24CC544800DEF826 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
 				D44BC12625A047F300D10DAB /* FriendsViewController.swift */,
 				D4E4E67725B13675000D8341 /* LaunchViewController.swift */,
+				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -839,6 +842,7 @@
 				D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */,
 				D4E4E67825B13675000D8341 /* LaunchViewController.swift in Sources */,
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
+				D4E4E6DE25B60D53000D8341 /* AboutViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
 				80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */,

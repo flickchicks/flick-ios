@@ -11,8 +11,7 @@ import FBSDKLoginKit
 
 struct User: Codable {
     var username: String
-    var firstName: String
-    var lastName: String
+    var name: String
     var bio: String?
     var profilePic: String?
     var phoneNumber: String?
