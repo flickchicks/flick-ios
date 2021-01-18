@@ -24,38 +24,44 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         backgroundColor = .offWhite
 
         selectionStyle = .none
         isSkeletonable = true
-        contentView.isSkeletonable = true
 
         profileImageView.isSkeletonable = true
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
-        
+        profileImageView.clipsToBounds = true
+        profileImageView.skeletonCornerRadius = 35
+        profileImageView.contentMode = .scaleAspectFill
         contentView.addSubview(profileImageView)
 
+        nameLabel.text = "                   " // Add spaces for skeleton view
+        nameLabel.skeletonCornerRadius = 10
+        nameLabel.linesCornerRadius = 10
         nameLabel.font = .boldSystemFont(ofSize: 20)
         nameLabel.textColor = .darkBlue
-        nameLabel.text = "                      " // Add spaces for skeleton view
         nameLabel.isSkeletonable = true
         contentView.addSubview(nameLabel)
 
+        usernameLabel.text = "                            " // Add spaces for skeleton view
         usernameLabel.font = .systemFont(ofSize: 12)
         usernameLabel.textColor = .mediumGray
-        usernameLabel.text = "                          " // Add spaces for skeleton view
+        usernameLabel.skeletonCornerRadius = 6
         usernameLabel.isSkeletonable = true
+        usernameLabel.linesCornerRadius = 6
         userInfoView.addSubview(usernameLabel)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
         friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
-        friendsPreviewView.isSkeletonable = true
         userInfoView.addSubview(friendsPreviewView)
- 
+
         userInfoView.isSkeletonable = true
+        userInfoView.skeletonCornerRadius = 10
         contentView.addSubview(userInfoView)
 
         bioLabel.font = .systemFont(ofSize: 12)
@@ -141,6 +147,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(38)
             make.bottom.equalToSuperview().inset(8)
+            make.height.equalTo(24)
         }
 
         settingsButton.snp.makeConstraints { make in

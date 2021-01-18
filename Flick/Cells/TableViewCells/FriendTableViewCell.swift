@@ -25,6 +25,7 @@ class FriendTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         
+        userProfileImageView.contentMode = .scaleAspectFill
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.clipsToBounds = true
         userProfileImageView.layer.cornerRadius = 20

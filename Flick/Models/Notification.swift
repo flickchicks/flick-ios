@@ -24,14 +24,14 @@ struct Notification: Codable {
 
 
 enum NotificationEnum {
-    case AcceptedIncomingFriendRequest(fromUser: UserProfile)
-    case AcceptedOutgoingFriendRequest(fromUser: UserProfile)
-    case IncomingFriendRequest(fromUser: UserProfile)
-    case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList)
-    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int)
-    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile])
-    case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile)
-    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String)
+    case AcceptedIncomingFriendRequest(fromUser: UserProfile, createdAt: String)
+    case AcceptedOutgoingFriendRequest(fromUser: UserProfile, createdAt: String)
+    case IncomingFriendRequest(fromUser: UserProfile, createdAt: String)
+    case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList, createdAt: String)
+    case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int, createdAt: String)
+    case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile], createdAt: String)
+    case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile, createdAt: String)
+    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String, createdAt: String)
 }
 
 
