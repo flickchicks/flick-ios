@@ -10,6 +10,7 @@ import UIKit
 
 protocol ListSummaryDelegate: class {
     func changeListSummaryHeight(height: Int)
+    func pushCollaboratorsView()
 }
 
 enum tagDisplay { case collapsed, expanded }
@@ -97,6 +98,9 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         collaborateLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(collaborateView)
         collaborateView.addSubview(collaborateLabel)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCollaboratorsPreviewTap))
+        collaborateView.addGestureRecognizer(tapGestureRecognizer)
         collaborateView.addSubview(collaboratorsPreviewView)
 
         privacyLabel.textColor = .mediumGray
@@ -257,6 +261,10 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         delegate?.changeListSummaryHeight(height: 145)
         tagDisplay = .collapsed
         tagCollectionView.reloadData()
+    }
+
+    @objc private func handleCollaboratorsPreviewTap() {
+        delegate?.pushCollaboratorsView()
     }
 
     required init?(coder: NSCoder) {

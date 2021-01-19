@@ -12,30 +12,20 @@ protocol ShareMediaDelegate: class {
     func showFlickToFriendView()
 }
 
-class ShareMediaModalView: UIView {
+class ShareMediaModalView: ModalView {
 
     // MARK: - Private View Vars
     private let cancelButton = UIButton()
-    private let containerView = UIView()
     private let flickToFriendButton = UIButton()
     private let flickToFriendLabel = UILabel()
     private let rightChevronImageView = UIImageView()
     private let shareLabel = UILabel()
 
     // MARK: - Private Data Vars
-    weak var modalDelegate: ModalDelegate?
     weak var shareMediaDelegate: ShareMediaDelegate?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        self.frame = UIScreen.main.bounds
-
-        backgroundColor = .backgroundOverlay
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
+    override init() {
+        super.init()
 
         shareLabel.text = "Share"
         shareLabel.font = .boldSystemFont(ofSize: 20)
@@ -60,13 +50,6 @@ class ShareMediaModalView: UIView {
         containerView.addSubview(cancelButton)
 
         setupConstraints()
-
-        // Animate the pop up of alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
     }
 
     required init?(coder: NSCoder) {
@@ -116,13 +99,7 @@ class ShareMediaModalView: UIView {
     }
 
     @objc private func cancelTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
 }

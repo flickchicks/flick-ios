@@ -45,13 +45,23 @@ class NewListButton: UIButton {
     }
 }
 
-enum MediaListsModalViewType { case moveMedia, saveMedia }
+enum MediaListsModalViewType {
+    case moveMedia, saveMedia
 
-class MediaListsModalView: UIView {
+    var titleText: String {
+        switch self {
+        case .moveMedia:
+            return "Move to"
+        case .saveMedia:
+            return "Save to"
+        }
+    }
+}
+
+class MediaListsModalView: ModalView {
 
     // MARK: - Private View Vars
     private var cancelButton = UIButton()
-    private let containerView = UIView()
     private var doneButton = UIButton()
     private let listsTableView = UITableView()
     private let newListButton = NewListButton()
@@ -64,29 +74,16 @@ class MediaListsModalView: UIView {
     private var type: MediaListsModalViewType
 
     weak var editListDelegate: EditListDelegate?
-    weak var modalDelegate: ModalDelegate?
     weak var saveMediaDelegate: SaveMediaDelegate?
 
     init(type: MediaListsModalViewType) {
         self.type = type
-        super.init(frame: .zero)
+        super.init()
 
-        frame = UIScreen.main.bounds
-        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
-
-        switch type {
-        case .moveMedia:
-            titleLabel.text  = "Move to"
-        case .saveMedia:
-            titleLabel.text = "Save to"
-        }
+        titleLabel.text = type.titleText
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 18)
         containerView.addSubview(titleLabel)
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
 
         doneButton = RoundedButton(style: .purple, title: "Done")
         doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
@@ -111,13 +108,6 @@ class MediaListsModalView: UIView {
             newListButton.addTarget(self, action: #selector(newListTapped), for: .touchUpInside)
             setupNewListButton()
         }
-
-        // Animate the pop up of error alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
     }
 
     private func setupConstraints() {
@@ -143,14 +133,14 @@ class MediaListsModalView: UIView {
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
         }
 
-        doneButton.snp.makeConstraints { make in
+        cancelButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(62.5)
             make.size.equalTo(buttonSize)
             make.top.equalTo(listsTableView.snp.bottom).offset(verticalPadding)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
-        cancelButton.snp.makeConstraints { make in
+        doneButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(62.5)
             make.size.equalTo(buttonSize)
             make.top.equalTo(listsTableView.snp.bottom).offset(verticalPadding)
@@ -184,36 +174,24 @@ class MediaListsModalView: UIView {
     }
 
     @objc func doneTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-            switch self.type {
-            case .moveMedia:
-                guard let selectedList = self.selectedList else { return }
-                self.editListDelegate?.moveMedia(selectedList: selectedList)
-            case .saveMedia:
-                guard let selectedList = self.selectedList else { return }
-                self.saveMediaDelegate?.saveMedia(selectedList: selectedList)
-            }
+        switch self.type {
+        case .moveMedia:
+            guard let selectedList = self.selectedList else { return }
+            self.editListDelegate?.moveMedia(selectedList: selectedList)
+        case .saveMedia:
+            guard let selectedList = self.selectedList else { return }
+            self.saveMediaDelegate?.saveMedia(selectedList: selectedList)
         }
+        dismissModal()
     }
 
     @objc func cancelTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
     @objc func newListTapped() {
-        self.modalDelegate?.dismissModal(modalView: self)
-        self.saveMediaDelegate?.presentCreateNewList()
+        modalDelegate?.dismissModal(modalView: self)
+        saveMediaDelegate?.presentCreateNewList()
     }
 
     required init?(coder: NSCoder) {

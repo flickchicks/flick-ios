@@ -147,7 +147,7 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 extension MediaCardViewController: CommentDelegate {
     func showSpoilerModal(commentText: String) {
         let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
-        commentSpoilerModalView.delegate = self
+        commentSpoilerModalView.modalDelegate = self
         commentSpoilerModalView.commentDelegate = self
         showModalPopup(view: commentSpoilerModalView)
     }

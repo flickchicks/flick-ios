@@ -1,5 +1,5 @@
 //
-//  FriendTableViewCell.swift
+//  UserTableViewCell.swift
 //  Flick
 //
 //  Created by Lucy Xu on 1/2/21.
@@ -9,7 +9,7 @@
 import Kingfisher
 import UIKit
 
-class FriendTableViewCell: UITableViewCell {
+class UserTableViewCell: UITableViewCell {
     
     // MARK: - Private View Vars
     private let nameLabel = UILabel()
@@ -17,7 +17,7 @@ class FriendTableViewCell: UITableViewCell {
     private let usernameLabel = UILabel()
 
     // MARK: - Data Vars
-    static let reuseIdentifier = "FriendsTableViewCell"
+    static let reuseIdentifier = "UsersTableViewCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
