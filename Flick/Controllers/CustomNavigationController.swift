@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Reference: https://stackoverflow.com/a/41248703/5078779
+
 class CustomNavigationController: UINavigationController {
 
     // MARK: - Properties

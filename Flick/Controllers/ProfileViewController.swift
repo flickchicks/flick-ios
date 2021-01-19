@@ -181,7 +181,7 @@ class ProfileViewController: UIViewController {
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
 
-        // Change notification tab if there's any notifications
+        // Change notification tab icon image if there's any notifications
         if isCurrentUser,
            let tabItems = tabBarController?.tabBar.items {
             let notificationItem = tabItems[2]
