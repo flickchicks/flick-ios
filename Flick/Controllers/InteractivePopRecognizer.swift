@@ -10,22 +10,30 @@ import UIKit
 
 // Reference: https://stackoverflow.com/a/41248703/5078779
 
-class InteractivePopRecognizer: NSObject, UIGestureRecognizerDelegate {
+class InteractivePopRecognizer: NSObject {
 
-    private var navigationController: UINavigationController
+    // MARK: - Properties
 
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    fileprivate weak var navigationController: UINavigationController?
+
+    // MARK: - Init
+
+    init(controller: UINavigationController) {
+        self.navigationController = controller
+
+        super.init()
+
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
+}
 
+extension InteractivePopRecognizer: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        navigationController.viewControllers.count > 1
+        return (navigationController?.viewControllers.count ?? 0) > 1
     }
 
-    // This is necessary because without it, subviews of your top controller can
-    // cancel out your gesture recognizer on the edge.
+    // This is necessary because without it, subviews of your top controller can cancel out your gesture recognizer on the edge.
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-
 }

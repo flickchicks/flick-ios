@@ -61,7 +61,6 @@ class AboutViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        // set up pop gestrue
     }
 
     private func setupConstraints() {

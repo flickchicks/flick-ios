@@ -27,7 +27,6 @@ class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var addCollaboratorModalView: AddCollaboratorModalView!
-    private var popRecognizer: InteractivePopRecognizer?
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
@@ -77,7 +76,6 @@ class ListSettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     private func setupNavigationBar() {
@@ -122,12 +120,6 @@ class ListSettingsViewController: UIViewController {
         renameListModalView.modalDelegate = self
         renameListModalView.listSettingsDelegate = self
         showModalPopup(view: renameListModalView)
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

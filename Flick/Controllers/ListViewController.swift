@@ -30,7 +30,6 @@ class ListViewController: UIViewController {
     private let emptyListImageView = UIImageView()
     private let listNameLabel = UILabel()
     private var mediaCollectionView: UICollectionView!
-    private var popRecognizer: InteractivePopRecognizer?
     private let settingsButton = UIButton()
     private var sortListModalView: SortListModalView!
 
@@ -84,7 +83,6 @@ class ListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -229,12 +227,6 @@ class ListViewController: UIViewController {
         guard let list = list else { return }
         let listSettingsVC = ListSettingsViewController(list: list)
         navigationController?.pushViewController(listSettingsVC, animated: true)
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

@@ -16,7 +16,6 @@ class SettingsViewController: UIViewController {
     private let editProfileButton = UIButton()
     private let headerView = UIView()
     private let logoutButton = UIButton()
-    private var popRecognizer: InteractivePopRecognizer?
     private let sendFeedbackButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -80,7 +79,6 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     @objc func logout() {
@@ -160,12 +158,6 @@ class SettingsViewController: UIViewController {
     @objc func sendFeedbackPressed() {
         //TODO: Add link later
         print("sendFeedbackPressed")
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

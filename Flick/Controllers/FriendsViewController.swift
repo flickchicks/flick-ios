@@ -13,7 +13,6 @@ class FriendsViewController: UIViewController {
     // MARK: - Private View Vars
     private let friendsTableView = UITableView(frame: .zero)
     private let headerView = UIView()
-    private var popRecognizer: InteractivePopRecognizer?
 
     // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
@@ -55,7 +54,6 @@ class FriendsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     private func setupNavigationBar() {
@@ -92,12 +90,6 @@ class FriendsViewController: UIViewController {
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

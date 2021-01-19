@@ -50,7 +50,6 @@ class EditProfileViewController: UIViewController {
     private let imagePickerController = UIImagePickerController()
     private let nameFieldLabel = UILabel()
     private let nameTextField = ProfileInputTextField()
-    private var popRecognizer: InteractivePopRecognizer?
     private let profileImageView = UIImageView()
     private let profileSelectionModalView = ProfileSelectionModalView()
     private let selectImageButton = UIButton()
@@ -185,7 +184,6 @@ class EditProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     private func setupNavigationBar() {
@@ -350,12 +348,6 @@ class EditProfileViewController: UIViewController {
                 }
             }
         }
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

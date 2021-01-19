@@ -13,7 +13,6 @@ class MediaCommentsViewController: UIViewController {
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
     private let commentAreaView = CommentAreaView()
-    private var popRecognizer: InteractivePopRecognizer?
     private let sendCommentButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -60,7 +59,6 @@ class MediaCommentsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     private func setupNavigationBar() {
@@ -97,12 +95,6 @@ class MediaCommentsViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(commentAreaView.snp.top)
         }
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

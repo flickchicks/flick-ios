@@ -26,7 +26,6 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var listsTableView: UITableView!
-    private var popRecognizer: InteractivePopRecognizer?
 
     // MARK: - Private Data Vars
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
@@ -94,7 +93,6 @@ class ProfileViewController: UIViewController {
         } else {
             setupNavigationBar()
         }
-        setupPopGesture()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -182,12 +180,6 @@ class ProfileViewController: UIViewController {
         }
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

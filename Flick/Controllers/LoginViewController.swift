@@ -170,7 +170,7 @@ class LoginViewController: UIViewController {
                 // This is to get the SceneDelegate object from your view controller
                 // then call the change root view controller function to change to main tab bar
                 // This assumes your app has only one scene (only applies to iPad)
-                let tabBarController = UINavigationController(rootViewController: TabBarController())
+                let tabBarController = CustomNavigationController(rootViewController: TabBarController())
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(tabBarController)
             }
         }

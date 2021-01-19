@@ -25,7 +25,6 @@ class EditListViewController: UIViewController {
     private var mediaCollectionView: UICollectionView!
     private let moveButton = UIButton()
     private let moveLabel = UILabel()
-    private var popRecognizer: InteractivePopRecognizer?
     private let roundTopView = RoundTopView(hasShadow: false)
     private let selectAllButton = UIButton()
     private let selectAllLabel = UILabel()
@@ -128,7 +127,6 @@ class EditListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        setupPopGesture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -254,12 +252,6 @@ class EditListViewController: UIViewController {
         deselectButton.isEnabled = isActive
         moveButton.isEnabled = isActive
         removeButton.isEnabled = isActive
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

@@ -135,7 +135,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(38)
             make.bottom.equalToSuperview().inset(8)
-            make.height.equalTo(24)
         }
 
         settingsButton.snp.makeConstraints { make in

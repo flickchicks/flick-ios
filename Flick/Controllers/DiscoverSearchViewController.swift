@@ -11,7 +11,6 @@ import UIKit
 class DiscoverSearchViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var popRecognizer: InteractivePopRecognizer?
     private let searchBar = SearchBar()
     private var searchResultPageCollectionView: UICollectionView!
     private var tabCollectionView: UICollectionView!
@@ -63,7 +62,6 @@ class DiscoverSearchViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,12 +140,6 @@ class DiscoverSearchViewController: UIViewController {
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

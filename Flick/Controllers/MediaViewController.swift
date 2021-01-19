@@ -23,7 +23,6 @@ class MediaViewController: UIViewController {
     private var flickToFriendView: FlickToFriendModalView!
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
-    private var popRecognizer: InteractivePopRecognizer?
     private let saveMediaButton = UIButton()
     private let shareButton = UIButton()
 
@@ -76,7 +75,6 @@ class MediaViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
-        setupPopGesture()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -255,12 +253,6 @@ class MediaViewController: UIViewController {
         for animator in runningAnimations {
             animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
         }
-    }
-
-    private func setupPopGesture() {
-        guard let navigationController = navigationController, popRecognizer == nil else { return }
-        popRecognizer = InteractivePopRecognizer(navigationController: navigationController)
-        navigationController.interactivePopGestureRecognizer?.delegate = popRecognizer
     }
 
 }

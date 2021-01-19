@@ -41,6 +41,7 @@
 		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
+		80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */; };
 		80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */; };
 		80F00F6524AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */; };
 		80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */; };
@@ -186,6 +187,7 @@
 		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToListViewController.swift; sourceTree = "<group>"; };
 		80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSelectableCollectionViewCell.swift; sourceTree = "<group>"; };
 		80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 				8033C0F825B4060F00F6BAEE /* TabBarController.swift */,
 				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
+				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -857,6 +860,7 @@
 				D40A06B624EE2F8100631E75 /* CommentSpoilerModalView.swift in Sources */,
 				803E5FF425AABEE1004CF4B7 /* Provider.swift in Sources */,
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
+				80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */,
 				802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */,
 				8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */,
 				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
