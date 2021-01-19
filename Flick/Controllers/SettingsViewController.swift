@@ -17,7 +17,6 @@ class SettingsViewController: UIViewController {
     private let headerView = UIView()
     private let logoutButton = UIButton()
     private let sendFeedbackButton = UIButton()
-    private let settingsTitleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var user: UserProfile
@@ -34,8 +33,17 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = "Settings"
         view.backgroundColor = .offWhite
-        setupNavigationBar()
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         editProfileButton.setTitle("Edit Profile", for: .normal)
         editProfileButton.setTitleColor(.black, for: .normal)
@@ -68,14 +76,18 @@ class SettingsViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     @objc func logout() {
         if user.socialIdTokenType == "facebook" {
             LoginManager().logOut()
         }
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
-        let loginViewController = LoginViewController()
-        navigationController?.pushViewController(loginViewController, animated: true)
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 
     @objc func showEditProfile() {
@@ -85,6 +97,12 @@ class SettingsViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(10)
+        }
+
         editProfileButton.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
@@ -113,6 +131,7 @@ class SettingsViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -126,21 +145,6 @@ class SettingsViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
     }
 
     @objc func backButtonPressed() {
@@ -154,25 +158,6 @@ class SettingsViewController: UIViewController {
     @objc func sendFeedbackPressed() {
         //TODO: Add link later
         print("sendFeedbackPressed")
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        settingsTitleLabel.text = "Settings"
-        settingsTitleLabel.font = .systemFont(ofSize: 18)
-        settingsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(settingsTitleLabel)
-
-        settingsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        settingsTitleLabel.removeFromSuperview()
     }
 
 }

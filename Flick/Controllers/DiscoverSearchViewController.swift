@@ -28,8 +28,6 @@ class DiscoverSearchViewController: UIViewController {
 
         view.backgroundColor = .offWhite
 
-        setupNavigationBar()
-
         let tabCollectionViewLayout = UICollectionViewFlowLayout()
         tabCollectionViewLayout.scrollDirection = .horizontal
 
@@ -59,6 +57,11 @@ class DiscoverSearchViewController: UIViewController {
 
         setupConstraints()
         setupViewControllers()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,6 +141,7 @@ class DiscoverSearchViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
+
 }
 
 extension DiscoverSearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {

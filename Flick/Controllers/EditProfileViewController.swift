@@ -44,7 +44,6 @@ class EditProfileViewController: UIViewController {
     private let bioFieldLabel = UILabel()
     private let bioTextView = UITextView()
     private let bioTextLimitLabel = UILabel()
-    private let editProfileTitleLabel = UILabel()
     private let linkedAccountLabel = UILabel()
     private let linkedAccountFieldLabel = UILabel()
     private let headerView = UIView()
@@ -73,8 +72,19 @@ class EditProfileViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        super.viewDidLoad()
+
+        title = "Edit Profile"
         view.backgroundColor = .offWhite
-        setupNavigationBar()
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         profileSelectionModalView.modalDelegate = self
         profileSelectionModalView.profileSelectionDelegate = self
@@ -171,6 +181,11 @@ class EditProfileViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
         // TODO: Update save button size
@@ -190,16 +205,6 @@ class EditProfileViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        editProfileTitleLabel.text = "Edit Profile"
-        editProfileTitleLabel.font = .systemFont(ofSize: 18)
-        editProfileTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(editProfileTitleLabel)
-
-        editProfileTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
         let saveButton = UIButton()
         saveButton.setTitle("Save", for: .normal)
         saveButton.setTitleColor(.gradientPurple, for: .normal)
@@ -211,22 +216,6 @@ class EditProfileViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveProfileInformation), for: .touchUpInside)
         let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
         navigationItem.rightBarButtonItem = saveBarButtonItem
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
-
     }
 
     private func setupConstraints() {
@@ -235,6 +224,12 @@ class EditProfileViewController: UIViewController {
         let profileImageSize = CGSize(width: 100, height: 100)
         let smallFieldSize = CGSize(width: 152, height: 17)
         let verticalPadding = 30
+
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.height.equalTo(10)
+        }
 
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(24)
@@ -353,11 +348,6 @@ class EditProfileViewController: UIViewController {
                 }
             }
         }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        editProfileTitleLabel.removeFromSuperview()
     }
 
 }

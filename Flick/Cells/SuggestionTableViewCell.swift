@@ -66,6 +66,7 @@ class SuggestionTableViewCell: UITableViewCell {
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        profileImageView.layer.masksToBounds = true
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)

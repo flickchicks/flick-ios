@@ -20,7 +20,7 @@ class SearchBar: UISearchBar {
         searchTextField.backgroundColor = .white
         searchTextField.textColor = .mediumGray
         searchTextField.font = .systemFont(ofSize: 14)
-        searchTextField.clearButtonMode = .never
+        searchTextField.clearButtonMode = .whileEditing
         searchTextField.layer.masksToBounds = true
         searchTextField.layer.cornerRadius = 18
         searchTextField.layer.borderWidth = 1

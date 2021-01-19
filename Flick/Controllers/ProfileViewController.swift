@@ -55,15 +55,9 @@ class ProfileViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
-
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
-
-        if !isHome {
-            setupNavigationBar()
-        }
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
@@ -83,13 +77,22 @@ class ProfileViewController: UIViewController {
         view.addSubview(listsTableView)
 
         listsTableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
 
         setupSections()
 
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isHome {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        } else {
+            setupNavigationBar()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -104,7 +107,7 @@ class ProfileViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -177,7 +180,18 @@ class ProfileViewController: UIViewController {
         }
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
+
+        // Change notification tab icon image if there's any notifications
+        if isCurrentUser,
+           let tabItems = tabBarController?.tabBar.items {
+            let notificationItem = tabItems[2]
+            if let numNotifs = user.numNotifs {
+                let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
+                notificationItem.image = UIImage(named: imageName)
+            }
+        }
     }
+
 }
 
 extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSource {

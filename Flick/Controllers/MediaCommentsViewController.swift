@@ -14,7 +14,6 @@ class MediaCommentsViewController: UIViewController {
     private var commentsTableView: UITableView!
     private let commentAreaView = CommentAreaView()
     private let sendCommentButton = UIButton()
-    private let thoughtsTitleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var comments: [Comment]!
@@ -33,9 +32,9 @@ class MediaCommentsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .movieWhite
 
-        setupNavigationBar()
+        title = "Thoughts"
+        view.backgroundColor = .movieWhite
 
         commentAreaView.delegate = self
         commentAreaView.sizeToFit()
@@ -57,6 +56,11 @@ class MediaCommentsViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
@@ -74,17 +78,6 @@ class MediaCommentsViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
-
-        thoughtsTitleLabel.text = "Thoughts"
-        thoughtsTitleLabel.font = .boldSystemFont(ofSize: 18)
-        thoughtsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(thoughtsTitleLabel)
-
-        thoughtsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
-
     }
 
     @objc func backButtonPressed() {
@@ -92,7 +85,6 @@ class MediaCommentsViewController: UIViewController {
     }
 
     private func setupConstraints() {
-
         commentAreaView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -103,10 +95,6 @@ class MediaCommentsViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(commentAreaView.snp.top)
         }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        thoughtsTitleLabel.removeFromSuperview()
     }
 
 }

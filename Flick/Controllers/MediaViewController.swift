@@ -60,8 +60,6 @@ class MediaViewController: UIViewController {
         collapsedCardHeight = 0.4 * view.frame.height
         mediaImageHeight = 0.6 * view.frame.height
 
-        setupNavigationBar()
-
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
@@ -74,10 +72,14 @@ class MediaViewController: UIViewController {
         setupMediaCard()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         getMediaInformation()
-        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -88,6 +90,7 @@ class MediaViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 34, height: 34)
 
+        navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true

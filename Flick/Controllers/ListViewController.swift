@@ -55,8 +55,6 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        setupNavigationBar()
-
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
         view.addSubview(listNameLabel)
@@ -84,7 +82,7 @@ class ListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupNavigationBar()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -186,7 +184,7 @@ class ListViewController: UIViewController {
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
-        navigationController?.navigationBar.isHidden = false
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -230,6 +228,7 @@ class ListViewController: UIViewController {
         let listSettingsVC = ListSettingsViewController(list: list)
         navigationController?.pushViewController(listSettingsVC, animated: true)
     }
+
 }
 
 extension ListViewController: UICollectionViewDataSource {

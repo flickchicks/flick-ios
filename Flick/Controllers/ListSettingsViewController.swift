@@ -59,8 +59,6 @@ class ListSettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        setupNavigationBar()
-
         settingsTableView.separatorStyle = .none
         settingsTableView.backgroundColor = .offWhite
         settingsTableView.dataSource = self
@@ -73,6 +71,11 @@ class ListSettingsViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
     }
 
     private func setupNavigationBar() {
@@ -186,7 +189,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
             self.presentInfoAlert(message: "Renamed to \(self.list.name)") {
                 let controllers = self.navigationController?.viewControllers
                 for controller in controllers ?? [] {
-                    if controller is HomeViewController {
+                    if controller is ProfileViewController {
                         self.navigationController?.popToViewController(controller, animated: true)
                     }
                 }

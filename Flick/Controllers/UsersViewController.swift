@@ -31,8 +31,17 @@ class UsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = isCollaborators ? "Collaborators" : "Friends"
         view.backgroundColor = .offWhite
-        setupNavigationBar()
+
+        headerView.backgroundColor = .movieWhite
+        headerView.clipsToBounds = false
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        headerView.layer.shadowOpacity = 0.07
+        headerView.layer.shadowOffset = .init(width: 0, height: 4)
+        headerView.layer.shadowRadius = 8
+        view.addSubview(headerView)
 
         usersTableView.delegate = self
         usersTableView.dataSource = self
@@ -44,9 +53,15 @@ class UsersViewController: UIViewController {
         setupConstraints()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
 
@@ -60,25 +75,15 @@ class UsersViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
+    }
 
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
+    private func setupConstraints() {
         headerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.height.equalTo(10)
         }
 
-    }
-
-    private func setupConstraints() {
         usersTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom)
@@ -87,11 +92,6 @@ class UsersViewController: UIViewController {
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
 }

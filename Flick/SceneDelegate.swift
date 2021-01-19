@@ -31,18 +31,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
-            window.rootViewController = UINavigationController(rootViewController: LoginViewController())
+            window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
             return
         }
         // We have correct authorization token
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
                 guard let profile = profile else {
-                    window.rootViewController = UINavigationController(rootViewController: LoginViewController())
+                    window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
-                window.rootViewController = UINavigationController(rootViewController: HomeViewController())
+                window.rootViewController = CustomNavigationController(rootViewController: TabBarController())
             }
         }
     }
@@ -75,6 +75,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        // Reference: https://fluffy.es/how-to-transition-from-login-screen-to-tab-bar-controller/
+        guard let window = self.window else {
+            return
+        }
+
+        // Change the root view controller to your specific view controller
+        window.rootViewController = vc
+
+        UIView.transition(with: window,
+                          duration: 0.5,
+                          options: [.transitionFlipFromLeft],
+                          animations: nil,
+                          completion: nil)
+    }
 
 }
 
