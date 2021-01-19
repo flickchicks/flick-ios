@@ -1,5 +1,5 @@
 //
-//  FriendsViewController.swift
+//  UsersViewController.swift
 //  Flick
 //
 //  Created by Lucy Xu on 1/2/21.
@@ -8,19 +8,18 @@
 
 import UIKit
 
-class FriendsViewController: UIViewController {
+class UsersViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let friendsTableView = UITableView(frame: .zero)
-    private let friendsTitleLabel = UILabel()
     private let headerView = UIView()
+    private let usersTableView = UITableView(frame: .zero)
 
     // MARK: - Private Data Vars
-    private var friends: [UserProfile] = []
+    private var users: [UserProfile] = []
     private var isCollaborators: Bool
 
-    init(isCollaborators: Bool, friends: [UserProfile]) {
-        self.friends = friends
+    init(isCollaborators: Bool, users: [UserProfile]) {
+        self.users = users
         self.isCollaborators = isCollaborators
         super.init(nibName: nil, bundle: nil)
     }
@@ -35,12 +34,12 @@ class FriendsViewController: UIViewController {
         view.backgroundColor = .offWhite
         setupNavigationBar()
 
-        friendsTableView.delegate = self
-        friendsTableView.dataSource = self
-        friendsTableView.backgroundColor = .clear
-        friendsTableView.separatorStyle = .none
-        friendsTableView.register(FriendTableViewCell.self, forCellReuseIdentifier: FriendTableViewCell.reuseIdentifier)
-        view.addSubview(friendsTableView)
+        usersTableView.delegate = self
+        usersTableView.dataSource = self
+        usersTableView.backgroundColor = .clear
+        usersTableView.separatorStyle = .none
+        usersTableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.reuseIdentifier)
+        view.addSubview(usersTableView)
 
         setupConstraints()
     }
@@ -80,7 +79,7 @@ class FriendsViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        friendsTableView.snp.makeConstraints { make in
+        usersTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom)
         }
@@ -93,44 +92,31 @@ class FriendsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        friendsTitleLabel.text = isCollaborators ? "Collaborators" : "Friends"
-        friendsTitleLabel.font = .systemFont(ofSize: 18)
-        friendsTitleLabel.textColor = .black
-        navigationController?.navigationBar.addSubview(friendsTitleLabel)
-
-        friendsTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(59)
-            make.top.bottom.trailing.equalToSuperview()
-        }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        friendsTitleLabel.removeFromSuperview()
-    }
 }
 
-extension FriendsViewController: UITableViewDelegate {
+extension UsersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let userId = friends[indexPath.row].id
+        let userId = users[indexPath.row].id
         let profileViewController = ProfileViewController(isHome: false, userId: userId)
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 }
 
-extension FriendsViewController: UITableViewDataSource {
+extension UsersViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+        return users.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendTableViewCell.reuseIdentifier, for: indexPath) as? FriendTableViewCell else { return UITableViewCell() }
-        let friend = friends[indexPath.row]
-        cell.configure(user: friend)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
+        let user = users[indexPath.row]
+        cell.configure(user: user)
         return cell
     }
 }

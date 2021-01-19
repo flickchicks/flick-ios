@@ -379,8 +379,8 @@ extension ListViewController: ListSummaryDelegate {
     func pushCollaboratorsView() {
         if let owner = list?.owner {
             let users = [owner] + (list?.collaborators ?? [])
-            let friendsViewController = FriendsViewController(isCollaborators: true, friends: users)
-            navigationController?.pushViewController(friendsViewController, animated: true)
+            let usersViewController = UsersViewController(isCollaborators: true, users: users)
+            navigationController?.pushViewController(usersViewController, animated: true)
         }
     }
 
