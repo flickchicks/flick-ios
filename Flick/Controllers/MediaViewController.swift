@@ -86,14 +86,14 @@ class MediaViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let backButtonSize = CGSize(width: 22, height: 18)
+        let backButtonSize = CGSize(width: 34, height: 34)
 
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
 
         let backButton = UIButton()
-        backButton.setImage(UIImage(named: "whiteBackArrow"), for: .normal)
+        backButton.setImage(UIImage(named: "backArrowCircle"), for: .normal)
         backButton.snp.makeConstraints { make in
             make.size.equalTo(backButtonSize)
         }

@@ -38,21 +38,23 @@ class SettingsViewController: UIViewController {
         setupNavigationBar()
 
         editProfileButton.setTitle("Edit Profile", for: .normal)
-        editProfileButton.setTitleColor(.darkBlue, for: .normal)
+        editProfileButton.setTitleColor(.black, for: .normal)
         editProfileButton.titleLabel?.font = .systemFont(ofSize: 18)
         editProfileButton.addTarget(self, action: #selector(showEditProfile), for: .touchUpInside)
         editProfileButton.contentHorizontalAlignment = .left
         view.addSubview(editProfileButton)
 
         sendFeedbackButton.setTitle("Send Feedback", for: .normal)
-        sendFeedbackButton.setTitleColor(.darkBlue, for: .normal)
+        sendFeedbackButton.setTitleColor(.black, for: .normal)
         sendFeedbackButton.titleLabel?.font = .systemFont(ofSize: 18)
         sendFeedbackButton.contentHorizontalAlignment = .left
+        sendFeedbackButton.addTarget(self, action: #selector(sendFeedbackPressed), for: .touchUpInside)
         view.addSubview(sendFeedbackButton)
 
         aboutButton.setTitle("About", for: .normal)
-        aboutButton.setTitleColor(.darkBlue, for: .normal)
+        aboutButton.setTitleColor(.black, for: .normal)
         aboutButton.titleLabel?.font = .systemFont(ofSize: 18)
+        aboutButton.addTarget(self, action: #selector(showAboutVC), for: .touchUpInside)
         aboutButton.contentHorizontalAlignment = .left
         view.addSubview(aboutButton)
 
@@ -90,19 +92,19 @@ class SettingsViewController: UIViewController {
         }
 
         sendFeedbackButton.snp.makeConstraints { make in
-            make.top.equalTo(editProfileButton.snp.bottom).offset(24)
+            make.top.equalTo(editProfileButton.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
 
         aboutButton.snp.makeConstraints { make in
-            make.top.equalTo(sendFeedbackButton.snp.bottom).offset(24)
+            make.top.equalTo(sendFeedbackButton.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
 
         logoutButton.snp.makeConstraints { make in
-            make.top.equalTo(aboutButton.snp.bottom).offset(24)
+            make.top.equalTo(aboutButton.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
@@ -139,11 +141,19 @@ class SettingsViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.height.equalTo(10)
         }
-
     }
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func showAboutVC() {
+        navigationController?.pushViewController(AboutViewController(), animated: true)
+    }
+    
+    @objc func sendFeedbackPressed() {
+        //TODO: Add link later
+        print("sendFeedbackPressed")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -168,9 +178,7 @@ class SettingsViewController: UIViewController {
 }
 
 extension SettingsViewController: EditProfileDelegate {
-
     func updateUser(user: UserProfile) {
         self.user = user
     }
-
 }

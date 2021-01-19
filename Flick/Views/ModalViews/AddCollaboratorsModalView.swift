@@ -113,7 +113,6 @@ class AddCollaboratorModalView: ModalView {
 
     private func setupConstraints() {
         let collaboratorsTitleLabelSize = CGSize(width: 117, height: 22)
-        let copyLinkButtonSize = CGSize(width: 48, height: 12)
         let horizontalPadding = 24
         let inviteTitleLabelSize = CGSize(width: 48, height: 22)
         let noFriendsSectionViewHeight = 3 * collaboratorCellHeight

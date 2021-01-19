@@ -19,7 +19,7 @@ class LoginViewController: UIViewController {
     private let logoImageView = UIImageView()
 
     // MARK: - Private Data Vars
-    private let profileSize = CGSize(width: 50, height: 50)
+    private let profileSize = CGSize(width: 100, height: 100)
 
     override func viewDidLoad() {
         super.viewDidLoad()
