@@ -8,7 +8,6 @@
 
 import UIKit
 
-// Reference: https://stackoverflow.com/a/41248703/5078779
 
 class CustomNavigationController: UINavigationController {
 
@@ -25,6 +24,8 @@ class CustomNavigationController: UINavigationController {
 
     // MARK: - Setup
 
+    // For setting up pop recognizer for the navigation controller
+    // Reference: https://stackoverflow.com/a/41248703/5078779
     private func setupPopRecognizer() {
         popRecognizer = InteractivePopRecognizer(controller: self)
     }

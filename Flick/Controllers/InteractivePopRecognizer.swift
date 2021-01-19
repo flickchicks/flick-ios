@@ -8,6 +8,7 @@
 
 import UIKit
 
+// This class is used for recognizing gesture to pop view controller
 // Reference: https://stackoverflow.com/a/41248703/5078779
 
 class InteractivePopRecognizer: NSObject {
