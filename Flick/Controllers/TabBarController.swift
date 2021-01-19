@@ -12,13 +12,19 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.clipsToBounds = true
+        let appearance = tabBar.standardAppearance
+        appearance.shadowImage = nil
+        appearance.shadowColor = nil
+        appearance.backgroundColor = .white
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkBlueGray2]
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.gradientPurple]
+        tabBar.standardAppearance = appearance;
         tabBar.isTranslucent = false
         tabBar.barTintColor = .white
-//        tabBar.layer.shadowColor = UIColor.darkBlueGray2.cgColor
-//        tabBar.layer.shadowOpacity = 0.1
-//        tabBar.layer.shadowRadius = 4
-//        tabBar.layer.shadowOffset = CGSize(width: 0, height: -1)
+        tabBar.layer.shadowColor = UIColor.darkBlueGray2.cgColor
+        tabBar.layer.shadowOpacity = 0.1
+        tabBar.layer.shadowRadius = 4
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: -1)
 
         let discoverVC = DiscoverViewController()
         let searchIconImage = UIImage(named: "searchIcon")
@@ -34,9 +40,6 @@ class TabBarController: UITabBarController {
         let notificationIconImage = UIImage(named: "notificationIcon")
         let selectedNotificationIconImage = UIImage(named: "selectedNotificationIcon")
         notificationVC.tabBarItem = UITabBarItem(title: "Notifications", image: notificationIconImage, selectedImage: selectedNotificationIconImage)
-
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.darkBlueGray2], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.gradientPurple], for: .selected)
 
         let tabBarList = [discoverVC, profileVC, notificationVC]
 
