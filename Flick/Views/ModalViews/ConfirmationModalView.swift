@@ -10,10 +10,9 @@ import UIKit
 
 enum ConfirmationType { case deleteList, removeMedia }
 
-class ConfirmationModalView: UIView {
+class ConfirmationModalView: ModalView {
 
     // MARK: - Private View Vars
-    private let containerView = UIView()
     private let messageLabel = UILabel()
     private var noButton = UIButton()
     private var yesButton = UIButton()
@@ -21,21 +20,13 @@ class ConfirmationModalView: UIView {
     // MARK: - Private Data Var
     weak var editListDelegate: EditListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
-    weak var modalDelegate: ModalDelegate?
     private var type: ConfirmationType
 
     init(message: String, type: ConfirmationType) {
         self.type = type
-        super.init(frame: .zero)
+        super.init()
 
         messageLabel.text = message
-
-        frame = UIScreen.main.bounds
-        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
 
         messageLabel.textColor = .black
         messageLabel.textAlignment = .center
@@ -53,13 +44,6 @@ class ConfirmationModalView: UIView {
         containerView.addSubview(yesButton)
 
         setupConstraints()
-
-        // Animate the pop up of error alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
     }
 
     func setupConstraints() {
@@ -93,23 +77,11 @@ class ConfirmationModalView: UIView {
     }
 
     @objc func noButtonPressed() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
     @objc func yesButtonPressed() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
         switch type {
         case .deleteList:
             listSettingsDelegate?.deleteList()

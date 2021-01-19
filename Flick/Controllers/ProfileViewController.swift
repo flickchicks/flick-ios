@@ -288,8 +288,8 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
     
     func pushFriendsView() {
-        let friendsViewController = FriendsViewController(friends: friends)
-        navigationController?.pushViewController(friendsViewController, animated: true)
+        let usersViewController = UsersViewController(isCollaborators: false, users: friends)
+        navigationController?.pushViewController(usersViewController, animated: true)
     }
 
     func showCreateListModal() {

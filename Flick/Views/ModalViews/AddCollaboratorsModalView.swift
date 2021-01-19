@@ -9,12 +9,11 @@
 import UIKit
 import SnapKit
 
-class AddCollaboratorModalView: UIView {
+class AddCollaboratorModalView: ModalView {
 
     // MARK: - Private View Vars
     private var collaboratorsTableView: UITableView!
     private let collaboratorsTitleLabel = UILabel()
-    private let containerView = UIView()
     private let copyLinkButton = UIButton()
     private var doneButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
@@ -33,20 +32,16 @@ class AddCollaboratorModalView: UIView {
     private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
     private let inviteCollaboratorCellReuseIdentifier = "InviteCollaboratorCellReuseIdentifier"
 
-    weak var modalDelegate: ModalDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
 
     init(owner: UserProfile, collaborators: [UserProfile]) {
         self.owner = owner
         self.collaborators = [owner] + collaborators
-        super.init(frame: .zero)
+        super.init()
         setupViews()
     }
 
     func setupViews() {
-        frame = UIScreen.main.bounds
-        backgroundColor = UIColor.darkBlueGray2.withAlphaComponent(0.7)
-
         collaboratorsTitleLabel.text = "Collaborators"
         collaboratorsTitleLabel.textColor = .black
         collaboratorsTitleLabel.font = .boldSystemFont(ofSize: 18)
@@ -105,10 +100,6 @@ class AddCollaboratorModalView: UIView {
         noFriendsLabel.numberOfLines = 0
         noFriendsLabel.font = .systemFont(ofSize: 12)
         noFriendsLabel.textAlignment = .center
-
-        containerView.backgroundColor = .white
-        containerView.layer.cornerRadius = 24
-        addSubview(containerView)
 
         setupConstraints()
 
@@ -179,14 +170,6 @@ class AddCollaboratorModalView: UIView {
             make.height.equalTo(40)
             make.top.equalTo(inviteTitleLabel.snp.bottom).offset(18)
         }
-
-        // Animate the pop up of error alert view in 0.25 seconds
-        UIView.animate(withDuration: 0.25, animations: {
-            self.containerView.transform = .init(scaleX: 1.5, y: 1.5)
-            self.containerView.alpha = 1
-            self.containerView.transform = .identity
-        })
-
     }
 
     private func setupFriendsView() {
@@ -217,13 +200,7 @@ class AddCollaboratorModalView: UIView {
     }
 
     @objc func cancelTapped() {
-        UIView.animate(withDuration: 0.15, animations: {
-            self.containerView.alpha = 0
-            self.containerView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            self.backgroundColor = UIColor(red: 63/255, green: 58/255, blue: 88/255, alpha: 0)
-        }) { (_) in
-            self.modalDelegate?.dismissModal(modalView: self)
-        }
+        dismissModal()
     }
 
     @objc func copyLink() {
