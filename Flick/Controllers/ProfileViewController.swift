@@ -180,6 +180,16 @@ class ProfileViewController: UIViewController {
         }
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
+
+        // Change notification tab if there's any notifications
+        if isCurrentUser,
+           let tabItems = tabBarController?.tabBar.items {
+            let notificationItem = tabItems[2]
+            if let numNotifs = user.numNotifs {
+                let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
+                notificationItem.image = UIImage(named: imageName)
+            }
+        }
     }
 
 }
