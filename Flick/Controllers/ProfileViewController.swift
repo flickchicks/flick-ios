@@ -78,7 +78,7 @@ class ProfileViewController: UIViewController {
         view.addSubview(listsTableView)
 
         listsTableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
 
@@ -89,7 +89,11 @@ class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigationBar()
+        if isHome {
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        } else {
+            setupNavigationBar()
+        }
         setupPopGesture()
     }
 
