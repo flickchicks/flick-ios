@@ -84,6 +84,8 @@ class ListSettingsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.shadowOpacity = 0.0
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)

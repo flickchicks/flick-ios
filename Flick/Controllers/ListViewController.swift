@@ -187,6 +187,7 @@ class ListViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.shadowOpacity = 0.0
 
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
         backButton.tintColor = .black
