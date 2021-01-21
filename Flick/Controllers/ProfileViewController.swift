@@ -106,8 +106,7 @@ class ProfileViewController: UIViewController {
         
         listsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         bottomPaddingView.snp.makeConstraints { make in

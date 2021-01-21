@@ -52,7 +52,7 @@ class UsersPreviewView: UIView {
         let usersLayout = UICollectionViewFlowLayout()
         usersLayout.minimumInteritemSpacing = cellSpacing
 
-        usersCollectionView = UICollect ionView(frame: .zero, collectionViewLayout: usersLayout)
+        usersCollectionView = UICollectionView(frame: .zero, collectionViewLayout: usersLayout)
         usersCollectionView.delegate = self
         usersCollectionView.dataSource = self
         usersCollectionView.register(UserPreviewCollectionViewCell.self, forCellWithReuseIdentifier: usersCellReuseIdentifier)
