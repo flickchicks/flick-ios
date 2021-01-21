@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var listsTableView: UITableView!
+    private var bottomPaddingView = UIView()
 
     // MARK: - Private Data Vars
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
@@ -60,6 +61,11 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
         
+        // pad the bottom of view with white color so that table bouncing on bottom doesn't look weird
+        bottomPaddingView.layer.zPosition = 0
+        bottomPaddingView.backgroundColor = .white
+        view.addSubview(bottomPaddingView)
+        
         refreshControl.addTarget(self, action: #selector(refreshProfile(_:)), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
@@ -72,11 +78,13 @@ class ProfileViewController: UIViewController {
         // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
 //        listsTableView.estimatedRowHeight = 185
         listsTableView.rowHeight = UITableView.automaticDimension
+        listsTableView.bounces = true
         listsTableView.separatorStyle = .none
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
         listsTableView.isSkeletonable = true
+        listsTableView.layer.zPosition = 1
 
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -86,15 +94,27 @@ class ProfileViewController: UIViewController {
         }
         
         view.addSubview(listsTableView)
+    
 
-        listsTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-
+        setupConstraints()
         setupSections()
 
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+    }
+    
+    private func setupConstraints() {
+        
+        listsTableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        bottomPaddingView.snp.makeConstraints { make in
+            make.height.equalTo(300)
+            make.leading.trailing.bottom.equalTo(listsTableView)
+        }
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -391,3 +411,17 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
 }
+
+// NOTE: This code allows us to prevent bouncing on the bottom of table view
+//extension ProfileViewController: UIScrollViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView == listsTableView {
+//            print("here")
+//            let contentOffset = scrollView.contentOffset
+//            let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height;
+//            if contentOffset.y >= maxOffset {
+//                scrollView.contentOffset.y = maxOffset
+//            }
+//        }
+//    }
+//}
