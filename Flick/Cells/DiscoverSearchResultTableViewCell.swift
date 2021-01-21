@@ -22,9 +22,9 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private let circleImageViewSize = CGSize(width: 36, height: 36)
-    private let listPreviewSize = CGSize(width: 37, height: 48)
-    private let posterImageViewSize = CGSize(width: 36, height: 54)
+    private let circleImageViewSize = CGSize(width: 44, height: 44)
+    private let listPreviewSize = CGSize(width: 49, height: 66)
+    private let posterImageViewSize = CGSize(width: 44, height: 66)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -55,7 +55,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         subtitleStackView.addArrangedSubview(iconImageView)
 
         subtitleLabel.textColor = .mediumGray
-        subtitleLabel.font = .systemFont(ofSize: 10)
+        subtitleLabel.font = .systemFont(ofSize: 12)
         subtitleStackView.addArrangedSubview(subtitleLabel)
 
         resultImageView.backgroundColor = .lightGray
@@ -106,7 +106,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
         subtitleLabel.isHidden = isCurrentUser
-        subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
+        subtitleLabel.text = "@\(user.username) • \(user.numMutualFriends ?? 0) mutual friends"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
