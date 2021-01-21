@@ -14,6 +14,7 @@ target 'Flick' do
 
 	# Networking
     	pod 'Alamofire', '~> 5.2.1'
+	pod 'Wormholy', :configurations => ['Dev Debug']
 
 	# User Interface
     	pod 'IQKeyboardManagerSwift'

@@ -46,6 +46,7 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.showsVerticalScrollIndicator = false
         resultsTableView.separatorStyle = .none
         resultsTableView.isDirectionalLockEnabled = true
+        resultsTableView.keyboardDismissMode = .onDrag
         view.addSubview(resultsTableView)
 
         noResultsLabel.text = "No results found"

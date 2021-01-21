@@ -101,6 +101,7 @@ class AddToListViewController: UIViewController {
         resultMediaTableView.allowsMultipleSelection = true
         resultMediaTableView.bounces = false
         resultMediaTableView.showsVerticalScrollIndicator = false
+        resultMediaTableView.keyboardDismissMode = .onDrag
         view.addSubview(resultMediaTableView)
 
 //        let suggestedMediaCollectionViewLayout = UICollectionViewFlowLayout()
@@ -224,7 +225,7 @@ class AddToListViewController: UIViewController {
         }
 
         searchBar.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(labelLeadingOffset)
+            make.leading.trailing.equalToSuperview().inset(26)
             make.top.equalTo(addToListLabel.snp.bottom).offset(12)
             make.height.equalTo(40)
         }

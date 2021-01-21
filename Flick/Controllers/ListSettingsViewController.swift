@@ -84,6 +84,8 @@ class ListSettingsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.shadowOpacity = 0.0
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -186,11 +188,13 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
 
-            self.presentInfoAlert(message: "Renamed to \(self.list.name)") {
+            self.presentInfoAlert(message: "Deleted \(self.list.name)") {
                 let controllers = self.navigationController?.viewControllers
-                for controller in controllers ?? [] {
-                    if controller is ProfileViewController {
+                // Controllers are reversed because recent stack is at the end of the list
+                for controller in controllers?.reversed() ?? [] {
+                    if controller is ProfileViewController || controller is TabBarController {
                         self.navigationController?.popToViewController(controller, animated: true)
+                        return
                     }
                 }
             }
