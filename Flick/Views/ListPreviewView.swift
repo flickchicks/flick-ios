@@ -43,9 +43,9 @@ class ListPreviewView: UIView {
     }
 
     private func setupConstraints() {
-        let firstImageSize = CGSize(width: 32, height: 48)
-        let secondImageSize = CGSize(width: 28, height: 42)
-        let thirdImageSize = CGSize(width: 24, height: 36)
+        let firstImageSize = CGSize(width: 44, height: 66)
+        let secondImageSize = CGSize(width: 40, height: 60)
+        let thirdImageSize = CGSize(width: 36, height: 54)
 
         firstImageView.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview()
