@@ -36,6 +36,7 @@ class MediaCardViewController: UIViewController {
 
         setupHandleArea()
 
+        mediaInformationTableView.isHidden = true
         mediaInformationTableView.backgroundColor = .movieWhite
         mediaInformationTableView.allowsSelection = false
         mediaInformationTableView.isUserInteractionEnabled = true
@@ -103,6 +104,7 @@ class MediaCardViewController: UIViewController {
     func setupMedia(media: Media) {
         self.media = media
         mediaInformationTableView.reloadData()
+        mediaInformationTableView.isHidden = false
     }
 
 }

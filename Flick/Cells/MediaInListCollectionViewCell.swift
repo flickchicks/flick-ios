@@ -39,6 +39,8 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
     func configure(media: SimpleMedia) {
         if let posterPic = media.posterPic, let imageUrl = URL(string: posterPic) {
             mediaImageView.kf.setImage(with: imageUrl)
+        } else {
+            mediaImageView.image = UIImage(named: "defaultMovie")
         }
     }
 

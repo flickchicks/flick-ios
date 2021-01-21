@@ -57,6 +57,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentProfileImageView.layer.cornerRadius = 20
         commentProfileImageView.layer.masksToBounds = true
         commentProfileImageView.clipsToBounds = true
+        commentProfileImageView.contentMode = .scaleAspectFill
         commentCellView.addSubview(commentProfileImageView)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
@@ -177,7 +178,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         if numComments == 0 { return }
-        let comment = comments[0]
+        let comment = comments[comments.count-1]
 //        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         viewSpoilerButton.isHidden = true
@@ -196,13 +197,13 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     @objc func likeComment() {
         if comments.count > 0 {
-            delegate?.likeComment(index: 0)
+            delegate?.likeComment(index: comments.count-1)
         }
     }
     
     @objc func profileImageTapped() {
         if comments.count > 0 {
-            delegate?.showProfile(userId: comments[0].owner.id)
+            delegate?.showProfile(userId: comments[comments.count-1].owner.id)
         }
     }
 

@@ -49,6 +49,7 @@ class AddCollaboratorModalView: ModalView {
 
         doneButton.setTitle("Done", for: .normal)
         doneButton.setTitleColor(.mediumGray, for: .normal)
+        doneButton.layer.backgroundColor = UIColor.blue.cgColor
         doneButton.titleLabel?.font = .systemFont(ofSize: 14)
         doneButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(doneButton)

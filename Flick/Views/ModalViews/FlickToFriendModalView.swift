@@ -63,6 +63,8 @@ class FlickToFriendModalView: ModalView {
         mediaPosterImageView.layer.masksToBounds = true
         if let imageUrl = URL(string: media.posterPic ?? "") {
             mediaPosterImageView.kf.setImage(with: imageUrl)
+        } else {
+            mediaPosterImageView.image = UIImage(named: "defaultMovie")
         }
         containerView.addSubview(mediaPosterImageView)
 

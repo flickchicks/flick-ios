@@ -26,6 +26,7 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var listsTableView: UITableView!
+    private var bottomPaddingView = UIView()
 
     // MARK: - Private Data Vars
     private let headerReuseIdentifier = "HeaderReuseIdentifier"
@@ -38,6 +39,7 @@ class ProfileViewController: UIViewController {
     private var isHome: Bool = false
     private var mediaLists: [SimpleMediaList] = []
     private var sections = [Section]()
+    private let refreshControl = UIRefreshControl()
     private var user: UserProfile?
     private var userId: Int?
 
@@ -58,32 +60,60 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
+        
+        // pad the bottom of view with white color so that table bouncing on bottom doesn't look weird
+        bottomPaddingView.layer.zPosition = 0
+        bottomPaddingView.backgroundColor = .white
+        view.addSubview(bottomPaddingView)
+        
+        refreshControl.addTarget(self, action: #selector(refreshProfile(_:)), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self
+        listsTableView.backgroundColor = .clear
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
         // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
 //        listsTableView.estimatedRowHeight = 185
         listsTableView.rowHeight = UITableView.automaticDimension
+        listsTableView.bounces = true
         listsTableView.separatorStyle = .none
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
-        listsTableView.bounces = false
         listsTableView.isSkeletonable = true
-        view.addSubview(listsTableView)
+        listsTableView.layer.zPosition = 1
 
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            listsTableView.refreshControl = refreshControl
+        } else {
+            listsTableView.addSubview(refreshControl)
+        }
+        
+        view.addSubview(listsTableView)
+    
+
+        setupConstraints()
+        setupSections()
+
+        listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+    }
+    
+    private func setupConstraints() {
+        
         listsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        
+        bottomPaddingView.snp.makeConstraints { make in
+            make.height.equalTo(300)
+            make.leading.trailing.bottom.equalTo(listsTableView)
+        }
 
-        setupSections()
-
-        listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +127,10 @@ class ProfileViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        updateUser()
+    }
+    
+    private func updateUser() {
         if isCurrentUser {
             getCurrentUser()
         } else if let userId = userId {
@@ -127,6 +161,10 @@ class ProfileViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc func refreshProfile(_ sender: Any) {
+        updateUser()
+    }
 
     private func setupSections() {
         let profileSummary = Section(type: SectionType.profileSummary, items: [])
@@ -150,6 +188,7 @@ class ProfileViewController: UIViewController {
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -169,6 +208,7 @@ class ProfileViewController: UIViewController {
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -191,6 +231,7 @@ class ProfileViewController: UIViewController {
                 notificationItem.image = UIImage(named: imageName)
             }
         }
+        refreshControl.endRefreshing()
     }
 
 }
@@ -213,7 +254,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return 1
         case .lists:
-            return 4
+            return 3
         }
     }
     
@@ -370,3 +411,17 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
 }
+
+// NOTE: This code allows us to prevent bouncing on the bottom of table view
+//extension ProfileViewController: UIScrollViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView == listsTableView {
+//            print("here")
+//            let contentOffset = scrollView.contentOffset
+//            let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height;
+//            if contentOffset.y >= maxOffset {
+//                scrollView.contentOffset.y = maxOffset
+//            }
+//        }
+//    }
+//}

@@ -46,6 +46,8 @@ class MediaViewController: UIViewController {
         if let mediaImageUrl = mediaImageUrl {
             let url = URL(string: mediaImageUrl)
             self.mediaImageView.kf.setImage(with: url)
+        } else {
+            self.mediaImageView.image = UIImage(named: "defaultMovie")
         }
     }
 
@@ -153,10 +155,11 @@ class MediaViewController: UIViewController {
     }
 
     @objc func shareButtonTapped() {
-        let shareMediaView = ShareMediaModalView()
-        shareMediaView.modalDelegate = self
-        shareMediaView.shareMediaDelegate = self
-        showModalPopup(view: shareMediaView)
+//        let shareMediaView = ShareMediaModalView()
+//        shareMediaView.modalDelegate = self
+//        shareMediaView.shareMediaDelegate = self
+//        showModalPopup(view: shareMediaView)
+        showFlickToFriendView()
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
