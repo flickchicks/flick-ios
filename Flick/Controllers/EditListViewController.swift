@@ -237,7 +237,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
-        let listsModalView = MediaListsModalView(type: .moveMedia)
+        let listsModalView = MediaListsModalView(type: .moveMedia, currentList: list)
         listsModalView.modalDelegate = self
         listsModalView.editListDelegate = self
         showModalPopup(view: listsModalView)
