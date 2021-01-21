@@ -126,12 +126,7 @@ class EditListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     private func setupConstraints() {
@@ -242,7 +237,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
-        let listsModalView = MediaListsModalView(type: .moveMedia)
+        let listsModalView = MediaListsModalView(type: .moveMedia, currentList: list)
         listsModalView.modalDelegate = self
         listsModalView.editListDelegate = self
         showModalPopup(view: listsModalView)

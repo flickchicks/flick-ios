@@ -51,6 +51,7 @@ class MediaCommentsViewController: UIViewController {
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
         commentsTableView.sizeToFit()
+        commentsTableView.keyboardDismissMode = .interactive
         view.addSubview(commentsTableView)
 
         setupConstraints()
@@ -67,6 +68,7 @@ class MediaCommentsViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.shadowOpacity = 0.0
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)

@@ -68,6 +68,7 @@ class MediaListsModalView: ModalView {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    private let currentList: MediaList?
     private let listNameCellReuseIdentifier = "ListNameCellReuseIdentifier"
     private var lists: [SimpleMediaList] = []
     private var selectedList: SimpleMediaList?
@@ -76,7 +77,8 @@ class MediaListsModalView: ModalView {
     weak var editListDelegate: EditListDelegate?
     weak var saveMediaDelegate: SaveMediaDelegate?
 
-    init(type: MediaListsModalViewType) {
+    init(type: MediaListsModalViewType, currentList: MediaList?) {
+        self.currentList = currentList
         self.type = type
         super.init()
 
@@ -169,6 +171,9 @@ class MediaListsModalView: ModalView {
         NetworkManager.getUserProfile { [weak self] user in
             guard let self = self, let user = user else { return }
             self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
+            if let currentList = self.currentList {
+                self.lists.removeAll { $0.id == currentList.id }
+            }
             self.listsTableView.reloadData()
         }
     }

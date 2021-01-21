@@ -95,6 +95,7 @@ class AddCollaboratorModalView: ModalView {
         inviteCollaboratorsTableView.showsVerticalScrollIndicator = false
         inviteCollaboratorsTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
         inviteCollaboratorsTableView.separatorStyle = .none
+        inviteCollaboratorsTableView.keyboardDismissMode = .onDrag
 
         noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
         noFriendsLabel.textColor = .darkBlue

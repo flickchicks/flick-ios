@@ -11,7 +11,6 @@ import UIKit
 class UsersViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let headerView = UIView()
     private let usersTableView = UITableView(frame: .zero)
 
     // MARK: - Private Data Vars
@@ -34,15 +33,6 @@ class UsersViewController: UIViewController {
         title = isCollaborators ? "Collaborators" : "Friends"
         view.backgroundColor = .offWhite
 
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
-
         usersTableView.delegate = self
         usersTableView.dataSource = self
         usersTableView.backgroundColor = .clear
@@ -64,6 +54,12 @@ class UsersViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -78,15 +74,9 @@ class UsersViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
-
         usersTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(headerView.snp.bottom)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
     }
 

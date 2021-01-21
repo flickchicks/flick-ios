@@ -15,10 +15,11 @@ class AllNotificationsViewController: UIViewController {
     private var tabCollectionView: UICollectionView!
     private var tabContainerView: UIView!
     private var tabPageViewController: NotificationsTabPageViewController!
+    private let topView = UIView()
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
-    private let tabBarHeight: CGFloat = 28
+    private let tabBarHeight: CGFloat = 40
     private let tabCellReuseIdentifier = "tabCellReuseIdentifier"
     private let tabs = ["Notifications", "Suggestions"]
 
@@ -50,7 +51,15 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView.layer.shadowRadius = 8
         view.addSubview(tabCollectionView)
 
+        topView.backgroundColor = .movieWhite
+        view.addSubview(topView)
+
         setUpConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     private func setupNavigationBar() {
@@ -78,6 +87,11 @@ class AllNotificationsViewController: UIViewController {
     }
 
     private func setUpConstraints() {
+        topView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(tabCollectionView.snp.top)
+        }
+
         tabCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
@@ -88,11 +102,6 @@ class AllNotificationsViewController: UIViewController {
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(tabCollectionView.snp.bottom)
         }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationBar()
     }
 
 }

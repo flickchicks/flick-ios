@@ -69,7 +69,7 @@ class DiscoverViewController: UIViewController {
         }
     }
     
-    @objc private func refreshDiscoverData(_ sender: Any) {
+    @objc func refreshDiscoverData(_ sender: Any) {
         fetchDiscoverShows()
     }
     

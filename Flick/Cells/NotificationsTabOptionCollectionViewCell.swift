@@ -32,11 +32,10 @@ class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
         // TODO: Fix styling of views
         tabLabel.textColor = inactiveCellColor
         tabLabel.font = .systemFont(ofSize: 16)
-        addSubview(tabLabel)
+        contentView.addSubview(tabLabel)
 
         tabLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(12)
+            make.centerX.centerY.equalToSuperview()
         }
 
     }

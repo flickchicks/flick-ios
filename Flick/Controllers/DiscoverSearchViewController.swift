@@ -75,6 +75,8 @@ class DiscoverSearchViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .offWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.shadowOpacity = 0.0
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
@@ -101,7 +103,7 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.snp.makeConstraints { make in
             make.top.equalTo(tabCollectionView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 
