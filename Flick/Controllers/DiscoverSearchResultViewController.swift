@@ -45,6 +45,7 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.showsVerticalScrollIndicator = false
         resultsTableView.separatorStyle = .none
         resultsTableView.isDirectionalLockEnabled = true
+        resultsTableView.keyboardDismissMode = .onDrag
         view.addSubview(resultsTableView)
         
 //        resultsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))

@@ -14,7 +14,6 @@ class SettingsViewController: UIViewController {
     // MARK: - Private View Vars
     private let aboutButton = UIButton()
     private let editProfileButton = UIButton()
-    private let headerView = UIView()
     private let logoutButton = UIButton()
     private let sendFeedbackButton = UIButton()
 
@@ -35,15 +34,6 @@ class SettingsViewController: UIViewController {
 
         title = "Settings"
         view.backgroundColor = .offWhite
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
 
         editProfileButton.setTitle("Edit Profile", for: .normal)
         editProfileButton.setTitleColor(.black, for: .normal)
@@ -97,14 +87,8 @@ class SettingsViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
-
         editProfileButton.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
@@ -134,6 +118,12 @@ class SettingsViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)

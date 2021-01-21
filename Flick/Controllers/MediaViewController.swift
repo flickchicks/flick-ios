@@ -82,15 +82,10 @@ class MediaViewController: UIViewController {
         getMediaInformation()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
-    }
-
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 34, height: 34)
 
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
@@ -151,7 +146,7 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        let listsModalView = MediaListsModalView(type: .saveMedia)
+        let listsModalView = MediaListsModalView(type: .saveMedia, currentList: nil)
         listsModalView.modalDelegate = self
         listsModalView.saveMediaDelegate = self
         showModalPopup(view: listsModalView)

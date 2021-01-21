@@ -13,7 +13,6 @@ class AboutViewController: UIViewController {
     // MARK: - Private View Vars
     private let attributionsSubtitleLabel = UILabel()
     private let attributionsTitleLabel = UILabel()
-    private let headerView = UIView()
     private let privacyPolicyButton = UIButton()
     private let privacyPolicyLabel = UILabel()
     private let tmdBImageView = UIImageView(image: UIImage(named: "tmdB"))
@@ -23,15 +22,6 @@ class AboutViewController: UIViewController {
 
         title = "About"
         view.backgroundColor = .offWhite
-
-        headerView.backgroundColor = .movieWhite
-        headerView.clipsToBounds = false
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        headerView.layer.shadowOpacity = 0.07
-        headerView.layer.shadowOffset = .init(width: 0, height: 4)
-        headerView.layer.shadowRadius = 8
-        view.addSubview(headerView)
 
         privacyPolicyLabel.text = "Privacy Policy"
         privacyPolicyLabel.textColor = .black
@@ -50,7 +40,7 @@ class AboutViewController: UIViewController {
         attributionsSubtitleLabel.text = "We use TMDb to gather all the movies and shows you see."
         attributionsSubtitleLabel.textColor = .black
         attributionsSubtitleLabel.font = .systemFont(ofSize: 12)
-        attributionsTitleLabel.numberOfLines = 0
+        attributionsSubtitleLabel.numberOfLines = 0
         view.addSubview(attributionsSubtitleLabel)
         
         view.addSubview(tmdBImageView)
@@ -63,15 +53,13 @@ class AboutViewController: UIViewController {
         setupNavigationBar()
     }
 
-    private func setupConstraints() {
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.height.equalTo(10)
-        }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
 
+    private func setupConstraints() {
         privacyPolicyLabel.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.leading.equalToSuperview().inset(24)
             make.trailing.equalTo(privacyPolicyButton.snp.leading)
             make.height.equalTo(22)
@@ -92,7 +80,6 @@ class AboutViewController: UIViewController {
         attributionsSubtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(attributionsTitleLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(15)
         }
         
         tmdBImageView.snp.makeConstraints { make in
@@ -107,6 +94,12 @@ class AboutViewController: UIViewController {
 
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
