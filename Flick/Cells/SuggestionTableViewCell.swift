@@ -79,6 +79,7 @@ class SuggestionTableViewCell: UITableViewCell {
         messageLabel.numberOfLines = 0
         containerView.addSubview(messageLabel)
 
+        mediaImageView.image = UIImage(named: "defaultMovie")
         mediaImageView.layer.masksToBounds = true
         mediaImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         mediaImageView.layer.cornerRadius = 8

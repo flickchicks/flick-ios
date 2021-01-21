@@ -61,6 +61,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         resultImageView.backgroundColor = .lightGray
         resultImageView.layer.masksToBounds = true
         resultImageView.layer.cornerRadius = 4
+        resultImageView.contentMode = .scaleAspectFill
         contentView.addSubview(resultImageView)
 
         listPreviewView.isHidden = true
@@ -97,7 +98,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         if let imageUrl = URL(string: movie.posterPic ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
         } else {
-            resultImageView.image = nil
+            resultImageView.image = UIImage(named: "defaultMovie")
         }
     }
 
@@ -130,7 +131,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         if let imageUrl = URL(string: show.posterPic ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
         } else {
-            resultImageView.image = nil
+            resultImageView.image = UIImage(named: "defaultMovie")
         }
     }
 

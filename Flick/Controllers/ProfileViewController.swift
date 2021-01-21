@@ -38,6 +38,7 @@ class ProfileViewController: UIViewController {
     private var isHome: Bool = false
     private var mediaLists: [SimpleMediaList] = []
     private var sections = [Section]()
+    private let refreshControl = UIRefreshControl()
     private var user: UserProfile?
     private var userId: Int?
 
@@ -58,10 +59,13 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
+        
+        refreshControl.addTarget(self, action: #selector(refreshProfile(_:)), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self
+        listsTableView.backgroundColor = .clear
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
@@ -72,8 +76,15 @@ class ProfileViewController: UIViewController {
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
-        listsTableView.bounces = false
         listsTableView.isSkeletonable = true
+
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            listsTableView.refreshControl = refreshControl
+        } else {
+            listsTableView.addSubview(refreshControl)
+        }
+        
         view.addSubview(listsTableView)
 
         listsTableView.snp.makeConstraints { make in
@@ -97,6 +108,10 @@ class ProfileViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        updateUser()
+    }
+    
+    private func updateUser() {
         if isCurrentUser {
             getCurrentUser()
         } else if let userId = userId {
@@ -126,6 +141,10 @@ class ProfileViewController: UIViewController {
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
+    
+    @objc func refreshProfile(_ sender: Any) {
+        updateUser()
+    }
 
     private func setupSections() {
         let profileSummary = Section(type: SectionType.profileSummary, items: [])
@@ -149,6 +168,7 @@ class ProfileViewController: UIViewController {
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -168,6 +188,7 @@ class ProfileViewController: UIViewController {
             self.friends = friends
             DispatchQueue.main.async {
                 self.listsTableView.reloadSections(IndexSet([0]), with: .none)
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -190,6 +211,7 @@ class ProfileViewController: UIViewController {
                 notificationItem.image = UIImage(named: imageName)
             }
         }
+        refreshControl.endRefreshing()
     }
 
 }
@@ -212,7 +234,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return 1
         case .lists:
-            return 4
+            return 3
         }
     }
     

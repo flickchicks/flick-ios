@@ -147,6 +147,8 @@ class EditProfileViewController: UIViewController {
         bioTextView.delegate = self
         bioTextView.sizeToFit()
         bioTextView.isScrollEnabled = false
+        bioTextView.textContainerInset = .zero
+        bioTextView.textContainer.lineFragmentPadding = 0
         bioTextView.font = .systemFont(ofSize: 14)
         bioTextView.textColor = .black
         bioTextView.layer.backgroundColor = UIColor.offWhite.cgColor
@@ -337,15 +339,23 @@ class EditProfileViewController: UIViewController {
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
             let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.pngData()?.base64EncodedString() : nil
-            let updatedUser = User(username: username, name: name, bio: bio, profilePic: base64ProfileImage, phoneNumber: user.phoneNumber, socialIdToken: user.socialIdToken, socialIdTokenType: user.socialIdTokenType)
+            let updatedUser = User(
+                username: username,
+                name: name,
+                bio: bio,
+                profilePic: base64ProfileImage,
+                phoneNumber: user.phoneNumber,
+                socialIdToken: user.socialIdToken,
+                socialIdTokenType: user.socialIdTokenType
+            )
             NetworkManager.updateUserProfile(user: updatedUser) { [ weak self] user in
                 guard let self = self else { return }
                 self.user = user
-                self.presentInfoAlert(message: "Profile updated", completion: nil)
                 self.delegate?.updateUser(user: user)
                 if self.didChangeProfilePic {
                     ImageCache.default.removeImage(forKey: "userid-\(user.id)")
                 }
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

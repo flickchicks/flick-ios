@@ -23,6 +23,7 @@ class MediaInListCollectionViewCell: UICollectionViewCell {
         clipsToBounds = true
         layer.masksToBounds = true
         
+        mediaImageView.image = UIImage(named: "defaultMovie")
         mediaImageView.contentMode = .scaleAspectFill
         mediaImageView.layer.cornerRadius = 8
         mediaImageView.layer.masksToBounds = true
