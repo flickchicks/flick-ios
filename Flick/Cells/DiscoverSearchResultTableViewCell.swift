@@ -55,7 +55,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         subtitleStackView.addArrangedSubview(iconImageView)
 
         subtitleLabel.textColor = .mediumGray
-        subtitleLabel.font = .systemFont(ofSize: 10)
+        subtitleLabel.font = .systemFont(ofSize: 12)
         subtitleStackView.addArrangedSubview(subtitleLabel)
 
         resultImageView.backgroundColor = .lightGray
@@ -106,7 +106,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
         subtitleLabel.isHidden = isCurrentUser
-        subtitleLabel.text = "\(user.numMutualFriends ?? 0) mutual friends"
+        subtitleLabel.text = "@\(user.username) • \(user.numMutualFriends ?? 0) mutual friends"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
