@@ -79,7 +79,6 @@ class SuggestionTableViewCell: UITableViewCell {
         messageLabel.numberOfLines = 0
         containerView.addSubview(messageLabel)
 
-        mediaImageView.image = UIImage(named: "defaultMovie")
         mediaImageView.layer.masksToBounds = true
         mediaImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         mediaImageView.layer.cornerRadius = 8
@@ -217,6 +216,8 @@ class SuggestionTableViewCell: UITableViewCell {
         mediaTitleLabel.text = suggestion.show.title
         if let posterImageUrl = URL(string: suggestion.show.posterPic ?? "") {
             mediaImageView.kf.setImage(with: posterImageUrl)
+        } else {
+            mediaImageView.iamge = UIImage(named: "defaultMovie")
         }
         if let tags = suggestion.show.tags?.map({ $0.name }) {
             tagsLabel.text = tags.joined(separator: ", ")
