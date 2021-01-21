@@ -51,6 +51,7 @@ class MediaCommentsViewController: UIViewController {
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
         commentsTableView.sizeToFit()
+        commentsTableView.keyboardDismissMode = .interactive
         view.addSubview(commentsTableView)
 
         setupConstraints()
