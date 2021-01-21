@@ -217,7 +217,7 @@ class SuggestionTableViewCell: UITableViewCell {
         if let posterImageUrl = URL(string: suggestion.show.posterPic ?? "") {
             mediaImageView.kf.setImage(with: posterImageUrl)
         } else {
-            mediaImageView.iamge = UIImage(named: "defaultMovie")
+            mediaImageView.image = UIImage(named: "defaultMovie")
         }
         if let tags = suggestion.show.tags?.map({ $0.name }) {
             tagsLabel.text = tags.joined(separator: ", ")
