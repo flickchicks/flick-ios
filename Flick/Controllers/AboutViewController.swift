@@ -40,7 +40,7 @@ class AboutViewController: UIViewController {
         attributionsSubtitleLabel.text = "We use TMDb to gather all the movies and shows you see."
         attributionsSubtitleLabel.textColor = .black
         attributionsSubtitleLabel.font = .systemFont(ofSize: 12)
-        attributionsTitleLabel.numberOfLines = 0
+        attributionsSubtitleLabel.numberOfLines = 0
         view.addSubview(attributionsSubtitleLabel)
         
         view.addSubview(tmdBImageView)
@@ -80,7 +80,6 @@ class AboutViewController: UIViewController {
         attributionsSubtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(attributionsTitleLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(15)
         }
         
         tmdBImageView.snp.makeConstraints { make in
