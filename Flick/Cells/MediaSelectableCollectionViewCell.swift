@@ -69,9 +69,10 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(media: SimpleMedia) {
-        if let pictureUrl = URL(string: media.posterPic ?? ""), let pictureData = try? Data(contentsOf: pictureUrl) {
-            let pictureObject = UIImage(data: pictureData)
-            posterImageView.image = pictureObject
+        if let imageUrl = URL(string: media.posterPic ?? "") {
+            posterImageView.kf.setImage(with: imageUrl)
+        } else {
+            posterImageView.image = UIImage(named: "defaultMovie")
         }
     }
 
