@@ -22,6 +22,7 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
         layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = 0.5
         layer.cornerRadius = 10
+        layer.masksToBounds = true
         contentMode = .scaleAspectFill
         
         contentView.addSubview(profileImageView)
