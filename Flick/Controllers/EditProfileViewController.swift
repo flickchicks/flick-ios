@@ -139,8 +139,8 @@ class EditProfileViewController: UIViewController {
         bioTextView.delegate = self
         bioTextView.sizeToFit()
         bioTextView.isScrollEnabled = false
+        bioTextView.returnKeyType = .done
         bioTextView.textContainerInset = .zero
-        bioTextView.enablesReturnKeyAutomatically = true
         bioTextView.textContainer.lineFragmentPadding = 0
         bioTextView.font = .systemFont(ofSize: 14)
         bioTextView.textColor = .black
@@ -363,6 +363,9 @@ class EditProfileViewController: UIViewController {
 extension EditProfileViewController: UITextViewDelegate {
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
         let currentText = textView.text ?? ""
         // Attempt to read the range they are trying to change, or terminate if we can't
         guard let stringRange = Range(range, in: currentText) else { return false }
@@ -372,7 +375,7 @@ extension EditProfileViewController: UITextViewDelegate {
         bioTextLimitLabel.text = "\(charCount) / 150"
         return charCount <= 150
     }
-
+    
 }
 
 extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {

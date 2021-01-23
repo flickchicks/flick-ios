@@ -31,6 +31,7 @@ class CommentAreaView: UIView {
         commentTextView.layer.cornerRadius = 15
         commentTextView.isScrollEnabled = false
         commentTextView.textColor = .black
+        commentTextView.returnKeyType = .done
         commentTextView.sizeToFit()
         commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         addSubview(commentTextView)
@@ -78,4 +79,15 @@ class CommentAreaView: UIView {
 
     }
 
+}
+
+extension CommentAreaView: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    
 }

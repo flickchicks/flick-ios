@@ -14,6 +14,7 @@ class NotificationsTabPageViewController: UIPageViewController {
     private var noticationsViewController: ActivityViewController!
     private var pages: [UIViewController] = [UIViewController]()
     private var suggestionsViewController: SuggestionsViewController!
+    weak var notificationsTabDelegate: NotificationsTabDelegate?
 
     override init(
         transitionStyle style: UIPageViewController.TransitionStyle,
@@ -29,6 +30,15 @@ class NotificationsTabPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(leftSwipeDetected))
+        leftSwipeGestureRecognizer.direction = .left
+        
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(rightSwipeDetected))
+        rightSwipeGestureRecognizer.direction = .right
+        
+        view.addGestureRecognizer(leftSwipeGestureRecognizer)
+        view.addGestureRecognizer(rightSwipeGestureRecognizer)
 
         noticationsViewController = ActivityViewController()
         suggestionsViewController = SuggestionsViewController()
@@ -40,6 +50,16 @@ class NotificationsTabPageViewController: UIPageViewController {
     func setViewController(to index: Int) {
         let direction: UIPageViewController.NavigationDirection = (index == 1) ? .forward : .reverse
         self.setViewControllers([pages[index]], direction: direction, animated: true, completion: nil)
+    }
+    
+    @objc func leftSwipeDetected() {
+        setViewController(to: 0)
+        notificationsTabDelegate?.setActiveIndex(to: 0)
+    }
+    
+    @objc func rightSwipeDetected() {
+        setViewController(to: 1)
+        notificationsTabDelegate?.setActiveIndex(to: 1)
     }
 
 }

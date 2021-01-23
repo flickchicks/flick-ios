@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController {
         bottomPaddingView.backgroundColor = .white
         view.addSubview(bottomPaddingView)
         
-        refreshControl.addTarget(self, action: #selector(refreshProfile(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
@@ -162,7 +162,7 @@ class ProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func refreshProfile(_ sender: Any) {
+    @objc func refreshProfile() {
         updateUser()
     }
 

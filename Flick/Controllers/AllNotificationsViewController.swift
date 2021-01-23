@@ -9,6 +9,10 @@
 import SnapKit
 import UIKit
 
+protocol NotificationsTabDelegate: class {
+    func setActiveIndex(to index: Int)
+}
+
 class AllNotificationsViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -27,6 +31,7 @@ class AllNotificationsViewController: UIViewController {
         view.backgroundColor = .offWhite
 
         tabPageViewController = NotificationsTabPageViewController()
+        tabPageViewController.notificationsTabDelegate = self
         addChild(tabPageViewController)
 
         tabContainerView = UIView()
@@ -136,5 +141,8 @@ extension AllNotificationsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-
+extension AllNotificationsViewController: NotificationsTabDelegate {
+    func setActiveIndex(to index: Int) {
+        activeTabIndex = index
+    }
+}
