@@ -6,6 +6,7 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import SPPermissions
 import UIKit
 
 class TabBarController: UITabBarController {
@@ -44,6 +45,70 @@ class TabBarController: UITabBarController {
         let tabBarList = [discoverVC, profileVC, notificationVC]
 
         viewControllers = tabBarList
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !UserDefaults.standard.bool(forKey: Constants.UserDefaults.didPromptPermission) {
+            showPermissionModal()
+        }
+    }
+
+}
+
+extension TabBarController: SPPermissionsDataSource, SPPermissionsDelegate {
+
+    func showPermissionModal() {
+        let controller = SPPermissions.dialog([.notification])
+        // Ovveride texts in controller
+        controller.titleText = "Permission Request"
+        controller.headerText = ""
+        controller.dataSource = self
+        controller.delegate = self
+        controller.present(on: self)
+    }
+
+    func configure(_ cell: SPPermissionTableViewCell, for permission: SPPermission) -> SPPermissionTableViewCell {
+        // Titles
+        cell.permissionTitleLabel.text = "Notifications"
+        cell.button.allowTitle = "Allow"
+        cell.button.allowedTitle = "Allowed"
+
+        // Colors
+        cell.iconView.color = .gradientPurple
+        cell.button.allowBackgroundColor = .gradientPurple
+        cell.button.allowedBackgroundColor = .gradientPurple
+        cell.button.allowTitleColor = .white
+        cell.button.allowedTitleColor = .white
+
+        return cell
+    }
+
+    func didAllow(permission: SPPermission) {
+        UserDefaults.standard.setValue(true, forKey: Constants.UserDefaults.didPromptPermission)
+        UIApplication.shared.registerForRemoteNotifications()
+    }
+
+    func didDenied(permission: SPPermission) {
+        UserDefaults.standard.setValue(true, forKey: Constants.UserDefaults.didPromptPermission)
+    }
+
+    func didHide(permissions ids: [Int]) {
+        UserDefaults.standard.setValue(true, forKey: Constants.UserDefaults.didPromptPermission)
+    }
+
+    func deniedData(for permission: SPPermission) -> SPPermissionDeniedAlertData? {
+        if permission == .notification {
+            let data = SPPermissionDeniedAlertData()
+            data.alertOpenSettingsDeniedPermissionTitle = "Permission denied"
+            data.alertOpenSettingsDeniedPermissionDescription = "If you would like to receive push notifications, please go to Settings"
+            data.alertOpenSettingsDeniedPermissionButtonTitle = "Settings"
+            data.alertOpenSettingsDeniedPermissionCancelTitle = "Cancel"
+            return data
+        } else {
+            // If returned nil, alert will not show.
+            return nil
+        }
     }
 
 }

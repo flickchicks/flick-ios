@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
 
         // Setup push notifications
-        registerForPushNotifications()
         UNUserNotificationCenter.current().delegate = self
 
         return true
@@ -80,28 +79,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register notifications: \(error)")
-    }
-
-    // Ask for push notification authorization
-    func registerForPushNotifications() {
-        UNUserNotificationCenter.current()
-            .requestAuthorization(
-                options: [.alert, .sound, .badge]) { [weak self] granted, _ in
-                print("Permission granted: \(granted)")
-                guard granted else { return }
-                self?.getNotificationSettings()
-            }
-    }
-
-    // Register for notifications if push notifications authorized
-    func getNotificationSettings() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            print("Notification settings: \(settings)")
-            guard settings.authorizationStatus == .authorized else { return }
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
-            }
-        }
     }
 
     // Called to allow to present notification when app is open

@@ -42,6 +42,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
+
+                // Register user for notifications
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    print("Notification settings: \(settings)")
+                    if settings.authorizationStatus == .authorized {
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    }
+                }
+
                 let tabBarController = TabBarController()
                 // If connected from notificaiton tap, show notification tab
                 if connectionOptions.notificationResponse != nil {
