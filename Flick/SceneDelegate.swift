@@ -42,7 +42,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
-                window.rootViewController = CustomNavigationController(rootViewController: TabBarController())
+                let tabBarController = TabBarController()
+                // If connected from notificaiton tap, show notification tab
+                if connectionOptions.notificationResponse != nil {
+                    tabBarController.selectedIndex = 2
+                }
+                window.rootViewController = CustomNavigationController(rootViewController: tabBarController)
             }
         }
     }
@@ -84,11 +89,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Change the root view controller to your specific view controller
         window.rootViewController = vc
 
-        UIView.transition(with: window,
-                          duration: 0.5,
-                          options: [.transitionFlipFromLeft],
-                          animations: nil,
-                          completion: nil)
+        if animated {
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: [.transitionFlipFromLeft],
+                              animations: nil,
+                              completion: nil)
+        }
     }
 
 }

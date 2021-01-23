@@ -41,8 +41,8 @@
 		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */; };
 		80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */; };
-		80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */; };
 		80E7F91525B5415400B545C8 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7F91425B5415400B545C8 /* ModalView.swift */; };
+		80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */; };
 		80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */; };
 		80F00F6524AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */; };
 		80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */; };
@@ -188,8 +188,8 @@
 		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80E3A1A024A595410084203A /* ProfileSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		80E3A1A224A597FA0084203A /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
-		80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		80E7F91425B5415400B545C8 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
+		80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		80F00F6124AAFE8C0051B8FF /* AddToListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToListViewController.swift; sourceTree = "<group>"; };
 		80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSelectableCollectionViewCell.swift; sourceTree = "<group>"; };
 		80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResultTableViewCell.swift; sourceTree = "<group>"; };
