@@ -144,5 +144,6 @@ extension AllNotificationsViewController: UICollectionViewDelegateFlowLayout {
 extension AllNotificationsViewController: NotificationsTabDelegate {
     func setActiveIndex(to index: Int) {
         activeTabIndex = index
+        tabCollectionView.reloadData()
     }
 }

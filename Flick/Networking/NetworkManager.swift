@@ -12,10 +12,11 @@ import Alamofire
 class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
+    static let authorizationToken = "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")"
 
     static var headers: HTTPHeaders {
         let headers: HTTPHeaders = [
-            "Authorization": "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
+            "Authorization": authorizationToken,
             "Accept": "application/json"
         ]
         return headers
@@ -76,7 +77,13 @@ class NetworkManager {
 
     /// [GET] Get a user with token [updated as of 8/11/20]
     static func getUserProfile(completion: @escaping (UserProfile?) -> Void) {
-        AF.request("\(hostEndpoint)/api/me/", method: .get, headers: headers).validate().responseData { response in
+        
+        var myProfileURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/me/")!)
+        myProfileURLRequest.httpMethod = "GET"
+        myProfileURLRequest.cachePolicy = .returnCacheDataElseLoad
+        myProfileURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        
+        AF.request(myProfileURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -639,7 +646,11 @@ class NetworkManager {
     
     /// [GET] Get lists search result by query [updated as of 9/3/20]
     static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
-        AF.request("\(hostEndpoint)/api/discover/", method: .get, headers: headers).validate().responseData { response in
+        var discoverShowURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/discover/")!)
+        discoverShowURLRequest.httpMethod = "GET"
+        discoverShowURLRequest.cachePolicy = .returnCacheDataElseLoad
+        
+        AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -658,7 +669,13 @@ class NetworkManager {
 
     /// [GET] Get all notifications
     static func getNotifications(completion: @escaping ([Notification]) -> Void) {
-        AF.request("\(hostEndpoint)/api/notifications/", method: .get, headers: headers).validate().responseData { response in
+        
+        var notificationsURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/notifications/")!)
+        notificationsURLRequest.httpMethod = "GET"
+        notificationsURLRequest.cachePolicy = .returnCacheDataElseLoad
+        notificationsURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        
+        AF.request(notificationsURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 debugPrint(data)
@@ -672,6 +689,7 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
+        
     }
 
     /// [POST] Update notification viewed time [updated as of 1/15/21]
@@ -695,7 +713,13 @@ class NetworkManager {
     
     /// [GET] Get all suggestions [updated as of 12/30/20]
     static func getSuggestions(completion: @escaping ([Suggestion]) -> Void) {
-        AF.request("\(hostEndpoint)/api/suggestions/", method: .get, headers: headers).validate().responseData { response in
+        
+        var suggestionsURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/suggestions/")!)
+        suggestionsURLRequest.httpMethod = "GET"
+        suggestionsURLRequest.cachePolicy = .returnCacheDataElseLoad
+        suggestionsURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        
+        AF.request(suggestionsURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -708,6 +732,7 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
+    
     }
 
     /// [POST] Update suggestion viewed time [updated as of 1/15/21]

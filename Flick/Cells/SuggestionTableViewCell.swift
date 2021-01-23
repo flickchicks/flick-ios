@@ -8,7 +8,6 @@
 
 import UIKit
 import Kingfisher
-import SkeletonView
 
 protocol SuggestionsDelegate: class {
     func likeSuggestion(index: Int)
@@ -44,7 +43,6 @@ class SuggestionTableViewCell: UITableViewCell {
 
         selectionStyle = .none
         backgroundColor = .offWhite
-        isSkeletonable = true
 
         containerView.layer.backgroundColor = UIColor.movieWhite.cgColor
         containerView.layer.cornerRadius = 16
@@ -52,7 +50,6 @@ class SuggestionTableViewCell: UITableViewCell {
         containerView.layer.shadowOpacity = 0.07
         containerView.layer.shadowOffset = .init(width: 0, height: 4)
         containerView.layer.shadowRadius = 8
-        containerView.isSkeletonable = true
         containerView.skeletonCornerRadius = 10
         contentView.addSubview(containerView)
         

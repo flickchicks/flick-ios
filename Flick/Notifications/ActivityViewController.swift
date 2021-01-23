@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import SkeletonView
 
 class ActivityViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let activityTableView = UITableView(frame: .zero, style: .grouped)
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Private Data Vars
     private var friendRequests: [NotificationEnum] = []
@@ -22,12 +22,13 @@ class ActivityViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .offWhite
-        view.isSkeletonable = true
+        
+        refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
         
         activityTableView.delegate = self
         activityTableView.dataSource = self
+        activityTableView.showsVerticalScrollIndicator = false
         activityTableView.isScrollEnabled = true
-        activityTableView.isSkeletonable = true
         activityTableView.backgroundColor = .offWhite
         activityTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
         activityTableView.register(FriendRequestTableViewCell.self, forCellReuseIdentifier: FriendRequestTableViewCell.reuseIdentifier)
@@ -35,14 +36,24 @@ class ActivityViewController: UIViewController {
         activityTableView.rowHeight = UITableView.automaticDimension
         activityTableView.estimatedRowHeight = 80
         activityTableView.sizeToFit()
+
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            activityTableView.refreshControl = refreshControl
+        } else {
+            activityTableView.addSubview(refreshControl)
+        }
+
         view.addSubview(activityTableView)
-        
-        activityTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         activityTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    @objc func refreshActivityData() {
+        getActivity()
     }
     
     private func getFriendRequests() {
@@ -54,6 +65,7 @@ class ActivityViewController: UIViewController {
                 }
                 self.activityTableView.reloadData()
                 self.updateNotificationViewedTime()
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -90,7 +102,6 @@ class ActivityViewController: UIViewController {
                     }
                 }
                 self.getFriendRequests()
-                self.activityTableView.hideSkeleton()
             }
         }
     }
@@ -103,32 +114,20 @@ class ActivityViewController: UIViewController {
     private func updateNotificationViewedTime() {
         let currentTime = Date().iso8601withFractionalSeconds
         NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { success in
-            if success {
-                print("Updated notification viewed time")
-            } else {
-                print("Failed to update notification viewed time")
-            }
+//            if success {
+//                print("Updated notification viewed time")
+//            } else {
+//                print("Failed to update notification viewed time")
+//            }
         }
     }
 
 }
 
-extension ActivityViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return NotificationTableViewCell.reuseIdentifier
-    }
+extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return friendRequests.count > 0 ? 2 : 1
-    }
-    
-    func numSections(in collectionSkeletonView: UITableView) -> Int {
-        return 1
-    }
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

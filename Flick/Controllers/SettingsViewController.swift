@@ -77,6 +77,7 @@ class SettingsViewController: UIViewController {
         }
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+        URLCache.shared.removeAllCachedResponses()
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 

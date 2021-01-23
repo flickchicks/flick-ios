@@ -53,13 +53,13 @@ class NotificationsTabPageViewController: UIPageViewController {
     }
     
     @objc func leftSwipeDetected() {
-        setViewController(to: 0)
-        notificationsTabDelegate?.setActiveIndex(to: 0)
+        setViewController(to: 1)
+        notificationsTabDelegate?.setActiveIndex(to: 1)
     }
     
     @objc func rightSwipeDetected() {
-        setViewController(to: 1)
-        notificationsTabDelegate?.setActiveIndex(to: 1)
+        setViewController(to: 0)
+        notificationsTabDelegate?.setActiveIndex(to: 0)
     }
 
 }

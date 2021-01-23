@@ -423,6 +423,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				D4CE248C25BCC04D007C45C5 /* Notifications */,
 				803E5F4A25A3E932004CF4B7 /* Flick.entitlements */,
 				D4621FD524EE04270026381F /* Layouts */,
 				D4FB449024B11C9A003CA71A /* Supporting */,
@@ -483,11 +484,7 @@
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
-				D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */,
-				D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */,
-				D492727D24DE50A100FA5F2A /* ActivityViewController.swift */,
 				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
-				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
 				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
@@ -599,6 +596,17 @@
 				80E7F91425B5415400B545C8 /* ModalView.swift */,
 			);
 			path = ModalViews;
+			sourceTree = "<group>";
+		};
+		D4CE248C25BCC04D007C45C5 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */,
+				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
+				D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */,
+				D492727D24DE50A100FA5F2A /* ActivityViewController.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		D4FB449024B11C9A003CA71A /* Supporting */ = {
