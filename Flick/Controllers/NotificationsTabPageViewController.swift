@@ -11,7 +11,7 @@ import UIKit
 class NotificationsTabPageViewController: UIPageViewController {
 
     // MARK: - Private View Vars
-    private var noticationsViewController: NotificationsViewController!
+    private var noticationsViewController: ActivityViewController!
     private var pages: [UIViewController] = [UIViewController]()
     private var suggestionsViewController: SuggestionsViewController!
 
@@ -30,7 +30,7 @@ class NotificationsTabPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noticationsViewController = NotificationsViewController()
+        noticationsViewController = ActivityViewController()
         suggestionsViewController = SuggestionsViewController()
         pages = [noticationsViewController, suggestionsViewController]
 

@@ -411,17 +411,3 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
 }
-
-// NOTE: This code allows us to prevent bouncing on the bottom of table view
-//extension ProfileViewController: UIScrollViewDelegate {
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView == listsTableView {
-//            print("here")
-//            let contentOffset = scrollView.contentOffset
-//            let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height;
-//            if contentOffset.y >= maxOffset {
-//                scrollView.contentOffset.y = maxOffset
-//            }
-//        }
-//    }
-//}

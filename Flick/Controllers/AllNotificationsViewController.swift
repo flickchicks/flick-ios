@@ -20,8 +20,7 @@ class AllNotificationsViewController: UIViewController {
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
     private let tabBarHeight: CGFloat = 40
-    private let tabCellReuseIdentifier = "tabCellReuseIdentifier"
-    private let tabs = ["Notifications", "Suggestions"]
+    private let tabs = ["Activity", "Suggestions"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +40,7 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: tabLayout)
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
-        tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: tabCellReuseIdentifier)
+        tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: NotificationsTabOptionCollectionViewCell.reuseIdenfier)
         tabCollectionView.backgroundColor = .movieWhite
         tabCollectionView.clipsToBounds = false
         tabCollectionView.layer.masksToBounds = false
@@ -122,7 +121,7 @@ extension AllNotificationsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tabCellReuseIdentifier, for: indexPath) as? NotificationsTabOptionCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NotificationsTabOptionCollectionViewCell.reuseIdenfier, for: indexPath) as? NotificationsTabOptionCollectionViewCell else { return UICollectionViewCell() }
         if indexPath.item == activeTabIndex {
             cell.isSelected = true
         }

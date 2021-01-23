@@ -110,6 +110,7 @@ class EditProfileViewController: UIViewController {
         view.addSubview(nameFieldLabel)
 
         nameTextField.text = user.name
+        nameTextField.enablesReturnKeyAutomatically = false
         nameTextField.delegate = self
         view.addSubview(nameTextField)
 
@@ -119,6 +120,7 @@ class EditProfileViewController: UIViewController {
         view.addSubview(userNameFieldLabel)
 
         userNameTextField.text = user.username
+        userNameTextField.enablesReturnKeyAutomatically = false
         userNameTextField.delegate = self
         view.addSubview(userNameTextField)
 
@@ -138,6 +140,7 @@ class EditProfileViewController: UIViewController {
         bioTextView.sizeToFit()
         bioTextView.isScrollEnabled = false
         bioTextView.textContainerInset = .zero
+        bioTextView.enablesReturnKeyAutomatically = true
         bioTextView.textContainer.lineFragmentPadding = 0
         bioTextView.font = .systemFont(ofSize: 14)
         bioTextView.textColor = .black

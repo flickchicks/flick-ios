@@ -18,6 +18,8 @@ class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Data Vars
     private var activeCellColor: UIColor = .darkBlue
     private var inactiveCellColor: UIColor = .mediumGray
+    
+    static let reuseIdenfier = "tabOptionCellReuseIdentifier"
 
     override var isSelected: Bool {
         didSet {
