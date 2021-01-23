@@ -12,8 +12,9 @@ import SkeletonView
 class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let searchBar = SearchBar()
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
+    private let searchBar = SearchBar()
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Private Data Vars
     private var discoverShows: [[SimpleMedia]] = [[], [], []]
@@ -27,6 +28,8 @@ class DiscoverViewController: UIViewController {
         searchBar.placeholder = "Search movies, shows, people, genres"
         searchBar.delegate = self
         view.addSubview(searchBar)
+        
+        refreshControl.addTarget(self, action: #selector(refreshDiscoverData(_:)), for: .valueChanged)
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
@@ -38,6 +41,14 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.separatorStyle = .none
         discoverFeedTableView.register(DiscoverTableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: DiscoverTableViewHeaderFooterView.reuseIdentifier)
         discoverFeedTableView.register(TrendingTableViewCell.self, forCellReuseIdentifier: TrendingTableViewCell.reuseIdentifier)
+        
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            discoverFeedTableView.refreshControl = refreshControl
+        } else {
+            discoverFeedTableView.addSubview(refreshControl)
+        }
+        
         view.addSubview(discoverFeedTableView)
 
         discoverFeedTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
@@ -57,14 +68,12 @@ class DiscoverViewController: UIViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
+    
+    @objc func refreshDiscoverData(_ sender: Any) {
+        fetchDiscoverShows()
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    
+    func fetchDiscoverShows() {
         NetworkManager.discoverShows { [weak self] mediaList in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -73,8 +82,20 @@ class DiscoverViewController: UIViewController {
                 self.discoverShows[2] = mediaList.trendingAnimes
                 self.discoverFeedTableView.reloadData()
                 self.discoverFeedTableView.hideSkeleton()
+                // Maybe find better place to put this
+                self.refreshControl.endRefreshing()
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchDiscoverShows()
     }
 }
 
@@ -109,7 +130,7 @@ extension DiscoverViewController: SkeletonTableViewDelegate, SkeletonTableViewDa
     }
     
     func numSections(in collectionSkeletonView: UITableView) -> Int {
-        return discoverShows.count
+        return 2
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

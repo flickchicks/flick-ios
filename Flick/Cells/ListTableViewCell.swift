@@ -34,7 +34,8 @@ class ListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = .clear
+        backgroundColor = .white
+        contentView.backgroundColor = .white
         isSkeletonable = true
         contentView.isSkeletonable = true
 

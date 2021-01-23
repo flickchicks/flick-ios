@@ -47,6 +47,8 @@ class TrendingContentCollectionViewCell: UICollectionViewCell {
         mediaId = media.id
         if let posterPic = media.posterPic, let imageUrl = URL(string: posterPic) {
             imageView.kf.setImage(with: imageUrl)
+        } else {
+            imageView.image = UIImage(named: "defaultMovie")
         }
     }
     

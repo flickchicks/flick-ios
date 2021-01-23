@@ -103,7 +103,7 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.snp.makeConstraints { make in
             make.top.equalTo(tabCollectionView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
 
