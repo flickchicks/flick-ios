@@ -56,7 +56,7 @@ class AllNotificationsViewController: UIViewController {
 
         setUpConstraints()
 
-        // Set icon badge to 0 when user taps on
+        // Set icon badge to 0 when user taps on notifications
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
