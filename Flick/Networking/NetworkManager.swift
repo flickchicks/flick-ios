@@ -427,8 +427,12 @@ class NetworkManager {
 
     /// [GET] Get media information by id [updated as of 8/15/20]
     static func getMedia(mediaId: Int, completion: @escaping (Media) -> Void) {
-        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-//            debugPrint(response)
+        var mediaURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/show/\(String(mediaId))/")!)
+        mediaURLRequest.httpMethod = "GET"
+        mediaURLRequest.cachePolicy = .returnCacheDataElseLoad
+        mediaURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
+        
+        AF.request(mediaURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -668,7 +672,7 @@ class NetworkManager {
     /// [GET] Get all notifications
     static func getNotifications(completion: @escaping ([Notification]) -> Void) {
         
-        var notificationsURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/notifications/")!)
+        var notificationsURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/notifications/")!)
         notificationsURLRequest.httpMethod = "GET"
         notificationsURLRequest.cachePolicy = .returnCacheDataElseLoad
         notificationsURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
