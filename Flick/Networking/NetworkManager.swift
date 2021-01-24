@@ -746,5 +746,25 @@ class NetworkManager {
         }
     }
 
+    // MARK: - Push Notifications
+
+    /// [POST] Enable push notifications by sending device token [updated as of 1/23/21]
+    static func enableNotifications(deviceToken: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "device_type": "ios",
+            "device_token": deviceToken
+        ]
+
+        AF.request("\(hostEndpoint)/api/notifications/enable/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
 }
 

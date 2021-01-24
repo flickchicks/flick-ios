@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKCoreKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,7 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("PROD")
         
         #endif
-        
+
+        // Setup push notifications
+        UNUserNotificationCenter.current().delegate = self
+
         return true
     }
 
@@ -60,3 +64,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+// MARK: - Push Notifications
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
+        // Send device token to backend
+        NetworkManager.enableNotifications(deviceToken: token) { _ in
+        }
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register notifications: \(error)")
+    }
+
+    // Called to allow to present notification when app is open
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    // Called when the user taps the notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else { return }
+        // Open notifications tab
+        let tabBarController = TabBarController()
+        tabBarController.selectedIndex = 2
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(            CustomNavigationController(rootViewController: tabBarController), animated: false)
+        completionHandler()
+    }
+
+}

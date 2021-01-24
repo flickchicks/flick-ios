@@ -55,6 +55,9 @@ class AllNotificationsViewController: UIViewController {
         view.addSubview(topView)
 
         setUpConstraints()
+
+        // Set icon badge to 0 when user taps on notifications
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     override func viewWillAppear(_ animated: Bool) {

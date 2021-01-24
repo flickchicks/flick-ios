@@ -23,6 +23,7 @@ struct Constants {
 
     struct UserDefaults {
         static let authorizationToken = "authorizationToken"
+        static let didPromptPermission = "didPromptPermission"
         static let userId = "userId"
     }
 

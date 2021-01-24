@@ -42,7 +42,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
-                window.rootViewController = CustomNavigationController(rootViewController: TabBarController())
+
+                // Register user for notifications
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    print("Notification settings: \(settings)")
+                    if settings.authorizationStatus == .authorized {
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    }
+                }
+
+                let tabBarController = TabBarController()
+                // If connected from notification tap, show notification tab
+                if connectionOptions.notificationResponse != nil {
+                    tabBarController.selectedIndex = 2
+                }
+                window.rootViewController = CustomNavigationController(rootViewController: tabBarController)
             }
         }
     }
@@ -84,11 +100,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Change the root view controller to your specific view controller
         window.rootViewController = vc
 
-        UIView.transition(with: window,
-                          duration: 0.5,
-                          options: [.transitionFlipFromLeft],
-                          animations: nil,
-                          completion: nil)
+        if animated {
+            UIView.transition(with: window,
+                              duration: 0.5,
+                              options: [.transitionFlipFromLeft],
+                              animations: nil,
+                              completion: nil)
+        }
     }
 
 }
