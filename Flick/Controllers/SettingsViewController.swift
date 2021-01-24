@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKLoginKit
+import Kingfisher
 
 class SettingsViewController: UIViewController {
 
@@ -78,6 +79,9 @@ class SettingsViewController: UIViewController {
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.didPromptPermission)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
+        URLCache.shared.removeAllCachedResponses()
+        ImageCache.default.clearMemoryCache()
+        ImageCache.default.clearDiskCache()
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 

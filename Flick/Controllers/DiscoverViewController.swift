@@ -25,11 +25,11 @@ class DiscoverViewController: UIViewController {
         view.backgroundColor = .offWhite
         view.isSkeletonable = true
 
-        searchBar.placeholder = "Search movies, shows, people, genres"
+        searchBar.placeholder = "Search movies, shows, people, lists"
         searchBar.delegate = self
         view.addSubview(searchBar)
         
-        refreshControl.addTarget(self, action: #selector(refreshDiscoverData(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshDiscoverData), for: .valueChanged)
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
@@ -69,7 +69,7 @@ class DiscoverViewController: UIViewController {
         }
     }
     
-    @objc func refreshDiscoverData(_ sender: Any) {
+    @objc func refreshDiscoverData() {
         fetchDiscoverShows()
     }
     
