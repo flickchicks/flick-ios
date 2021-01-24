@@ -89,7 +89,6 @@ class NetworkManager {
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
-                    print(user)
                     completion(user)
                 }
             case .failure(let error):
