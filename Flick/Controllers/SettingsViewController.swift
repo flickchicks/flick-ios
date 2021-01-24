@@ -76,6 +76,7 @@ class SettingsViewController: UIViewController {
             LoginManager().logOut()
         }
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.authorizationToken)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.didPromptPermission)
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
