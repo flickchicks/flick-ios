@@ -32,7 +32,7 @@ class MediaSummaryTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .movieWhite
+        backgroundColor = .clear
 
         titleLabel.font = .boldSystemFont(ofSize: 20)
         titleLabel.textColor = .darkBlue
@@ -103,6 +103,10 @@ class MediaSummaryTableViewCell: UITableViewCell {
         }
         if let releaseYear = media.dateReleased {
             mediaSummaryInfo.append(MediaSummary(text: String(releaseYear.prefix(4)), type: .releaseStatus))
+            mediaSummaryInfo.append(MediaSummary(type: .spacer))
+        }
+        if let status = media.status {
+            mediaSummaryInfo.append(MediaSummary(text: status , type: .releaseStatus))
             mediaSummaryInfo.append(MediaSummary(type: .spacer))
         }
         if let audienceLevel = media.audienceLevel {

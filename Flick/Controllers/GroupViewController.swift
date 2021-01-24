@@ -11,11 +11,13 @@ import UIKit
 class GroupViewController: UIViewController {
 
     private let addIdeasButton = UIButton()
-    private let mediaInfoView = UIView()
     private let moreInfoView = UIStackView()
     private let posterImageView = UIImageView()
+    private let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
 
     private var ideas: [Media] = []
+    private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
+    private var media: Media? // temp to remove
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +63,20 @@ class GroupViewController: UIViewController {
         moreInfoView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
         view.addSubview(moreInfoView)
 
-        mediaInfoView.backgroundColor = .movieWhite
-        mediaInfoView.layer.opacity = 0.85
-        mediaInfoView.isHidden = true
-        view.addSubview(mediaInfoView)
+        mediaInformationTableView.isHidden = true
+        mediaInformationTableView.backgroundColor = UIColor.movieWhite.withAlphaComponent(0.9)
+        mediaInformationTableView.allowsSelection = false
+        mediaInformationTableView.isUserInteractionEnabled = true
+        mediaInformationTableView.delegate = self
+        mediaInformationTableView.dataSource = self
+        mediaInformationTableView.bounces = false
+        mediaInformationTableView.separatorStyle = .none
+        mediaInformationTableView.setNeedsLayout()
+        mediaInformationTableView.layoutIfNeeded()
+        mediaInformationTableView.contentInset = UIEdgeInsets(top: 24, left: 10, bottom: 24, right: 10)
+        mediaInformationTableView.layer.cornerRadius = 25
+        mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: mediaSummaryReuseIdentifier)
+        view.addSubview(mediaInformationTableView)
 
         setupConstraints()
     }
@@ -77,9 +89,11 @@ class GroupViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NetworkManager.getMedia(mediaId: 1) { media in
+            self.media = media
             if let url = URL(string: media.posterPic ?? "") {
                 self.posterImageView.kf.setImage(with: url)
             }
+            self.mediaInformationTableView.reloadData()
         }
     }
 
@@ -117,7 +131,7 @@ class GroupViewController: UIViewController {
             make.size.equalTo(CGSize(width: posterWidth, height: posterHeight))
         }
 
-        mediaInfoView.snp.makeConstraints { make in
+        mediaInformationTableView.snp.makeConstraints { make in
             make.edges.equalTo(posterImageView)
         }
 
@@ -138,9 +152,28 @@ class GroupViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
-    @objc private func longPressedPoster() {
-        print("long pressed")
-        mediaInfoView.isHidden = false
+    @objc private func longPressedPoster(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            mediaInformationTableView.isHidden = false
+        } else if sender.state == .ended {
+            mediaInformationTableView.isHidden = true
+        }
     }
 
+}
+
+extension GroupViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaSummaryReuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell,
+              let media = media else {
+            return UITableViewCell()
+        }
+        cell.configure(with: media)
+        return cell
+    }
 }
