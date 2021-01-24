@@ -230,7 +230,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
-        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to remove \(selectedMedia.count) items from this list?", type: .removeMedia)
+        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to remove \(selectedMedia.count) item\(selectedMedia.count>1 ? "s" : "") from this list?", type: .removeMedia)
         deleteConfirmationModalView.modalDelegate = self
         deleteConfirmationModalView.editListDelegate = self
         showModalPopup(view: deleteConfirmationModalView)

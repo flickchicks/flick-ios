@@ -80,6 +80,7 @@ class SettingsViewController: UIViewController {
         UserDefaults.standard.removeObject(forKey: Constants.UserDefaults.userId)
         URLCache.shared.removeAllCachedResponses()
         ImageCache.default.clearMemoryCache()
+        ImageCache.default.clearDiskCache()
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 
