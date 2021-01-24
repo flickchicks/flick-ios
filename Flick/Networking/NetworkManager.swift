@@ -12,11 +12,10 @@ import Alamofire
 class NetworkManager {
 
     static let shared: NetworkManager = NetworkManager()
-    static let authorizationToken = "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")"
 
     static var headers: HTTPHeaders {
         let headers: HTTPHeaders = [
-            "Authorization": authorizationToken,
+            "Authorization": "Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")",
             "Accept": "application/json"
         ]
         return headers
@@ -81,7 +80,7 @@ class NetworkManager {
         var myProfileURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/me/")!)
         myProfileURLRequest.httpMethod = "GET"
         myProfileURLRequest.cachePolicy = .returnCacheDataElseLoad
-        myProfileURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        myProfileURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(myProfileURLRequest).validate().responseData { response in
             switch response.result {
@@ -90,6 +89,7 @@ class NetworkManager {
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
                     let user = userData.data
+                    print(user)
                     completion(user)
                 }
             case .failure(let error):
@@ -491,7 +491,6 @@ class NetworkManager {
         let parameters: [String: Any] = [
             "user_rating": userRating
         ]
-        print("\(hostEndpoint)/api/show/\(String(mediaId))/")
         AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -673,7 +672,7 @@ class NetworkManager {
         var notificationsURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/notifications/")!)
         notificationsURLRequest.httpMethod = "GET"
         notificationsURLRequest.cachePolicy = .returnCacheDataElseLoad
-        notificationsURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        notificationsURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(notificationsURLRequest).validate().responseData { response in
             switch response.result {
@@ -717,7 +716,7 @@ class NetworkManager {
         var suggestionsURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/suggestions/")!)
         suggestionsURLRequest.httpMethod = "GET"
         suggestionsURLRequest.cachePolicy = .returnCacheDataElseLoad
-        suggestionsURLRequest.setValue(authorizationToken, forHTTPHeaderField: "Authorization")
+        suggestionsURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(suggestionsURLRequest).validate().responseData { response in
             switch response.result {

@@ -30,6 +30,7 @@ class CommentAreaView: UIView {
         commentTextView.backgroundColor = .lightGray2
         commentTextView.layer.cornerRadius = 15
         commentTextView.isScrollEnabled = false
+        commentTextView.delegate = self
         commentTextView.textColor = .black
         commentTextView.returnKeyType = .done
         commentTextView.sizeToFit()
@@ -45,6 +46,7 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
+        commentTextView.resignFirstResponder()
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
             delegate?.addComment(commentText: commentText, isSpoiler: false)
 //            delegate?.showSpoilerModal(commentText: commentText)
