@@ -1,5 +1,5 @@
 //
-//  GroupViewController.swift
+//  GroupVoteViewController.swift
 //  Flick
 //
 //  Created by Haiying W on 1/23/21.
@@ -8,12 +8,16 @@
 
 import UIKit
 
-class GroupViewController: UIViewController {
+class GroupVoteViewController: UIViewController {
 
     private let addIdeasButton = UIButton()
-    private let moreInfoView = UIStackView()
-    private let posterImageView = UIImageView()
     private let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
+    private let moreInfoView = UIStackView()
+    private let numIdeasLabel = UILabel()
+    private let posterImageView = UIImageView()
+    private let voteMaybeButton = UIButton()
+    private let voteNoButton = UIButton()
+    private let voteYesButton = UIButton()
 
     private var ideas: [Media] = []
     private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
@@ -25,7 +29,13 @@ class GroupViewController: UIViewController {
         title = "Group name" // TODO: Replace with actual name of group
         view.backgroundColor = .offWhite
 
+        numIdeasLabel.text = "No ideas yet"
+        numIdeasLabel.textColor = .darkBlueGray2
+        numIdeasLabel.font = .systemFont(ofSize: 16)
+        view.addSubview(numIdeasLabel)
+
         posterImageView.backgroundColor = .lightGray
+        posterImageView.contentMode = .scaleAspectFit
         posterImageView.layer.cornerRadius = 25
         posterImageView.layer.masksToBounds = true
         posterImageView.isUserInteractionEnabled = true
@@ -44,7 +54,7 @@ class GroupViewController: UIViewController {
         view.addSubview(addIdeasButton)
 
         let infoTextLabel = UILabel()
-        infoTextLabel.text = "Tap and hold for more info "
+        infoTextLabel.text = "Press and hold for more info "
         infoTextLabel.font = .systemFont(ofSize: 14)
         moreInfoView.addArrangedSubview(infoTextLabel)
 
@@ -64,7 +74,7 @@ class GroupViewController: UIViewController {
         view.addSubview(moreInfoView)
 
         mediaInformationTableView.isHidden = true
-        mediaInformationTableView.backgroundColor = UIColor.movieWhite.withAlphaComponent(0.9)
+        mediaInformationTableView.backgroundColor = UIColor.movieWhite.withAlphaComponent(0.95)
         mediaInformationTableView.allowsSelection = false
         mediaInformationTableView.isUserInteractionEnabled = true
         mediaInformationTableView.delegate = self
@@ -77,6 +87,15 @@ class GroupViewController: UIViewController {
         mediaInformationTableView.layer.cornerRadius = 25
         mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: mediaSummaryReuseIdentifier)
         view.addSubview(mediaInformationTableView)
+
+        voteNoButton.setImage(UIImage(named: "voteNoButton"), for: .normal)
+        view.addSubview(voteNoButton)
+
+        voteMaybeButton.setImage(UIImage(named: "voteMaybeButton"), for: .normal)
+        view.addSubview(voteMaybeButton)
+
+        voteYesButton.setImage(UIImage(named: "voteYesButton"), for: .normal)
+        view.addSubview(voteYesButton)
 
         setupConstraints()
     }
@@ -99,6 +118,7 @@ class GroupViewController: UIViewController {
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
+        let settingsButtonSize = CGSize(width: 22, height: 22)
 
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
@@ -120,15 +140,35 @@ class GroupViewController: UIViewController {
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
+
+        let settingsButton = UIButton()
+        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.tintColor = .mediumGray
+        settingsButton.snp.makeConstraints { make in
+            make.size.equalTo(settingsButtonSize)
+        }
+
+        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
+        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
 
     private func setupConstraints() {
-        let posterWidth = UIScreen.main.bounds.width - 60
-        let posterHeight = posterWidth * 3 / 2
+//        let posterWidth = UIScreen.main.bounds.width - 60
+//        let posterHeight = posterWidth * 3 / 2
+        let voteButtonSize: CGSize = CGSize(width: 50, height: 50)
+
+        numIdeasLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            make.leading.trailing.equalToSuperview().inset(38)
+        }
 
         posterImageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(CGSize(width: posterWidth, height: posterHeight))
+            make.top.equalTo(numIdeasLabel.snp.bottom).offset(12)
+            make.bottom.equalTo(voteMaybeButton.snp.top).offset(-16)
+            make.leading.trailing.equalToSuperview().inset(38)
+//            make.center.equalToSuperview()
+//            make.size.equalTo(CGSize(width: posterWidth, height: posterHeight))
         }
 
         mediaInformationTableView.snp.makeConstraints { make in
@@ -138,7 +178,7 @@ class GroupViewController: UIViewController {
         moreInfoView.snp.makeConstraints { make in
             make.top.equalTo(posterImageView.snp.top).offset(9)
             make.trailing.equalTo(posterImageView.snp.trailing).offset(-9)
-            make.size.equalTo(CGSize(width: 205, height: 24))
+            make.size.equalTo(CGSize(width: 220, height: 24))
         }
 
         addIdeasButton.snp.makeConstraints { make in
@@ -146,10 +186,32 @@ class GroupViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-26)
             make.size.equalTo(CGSize(width: 112, height: 40))
         }
+
+        voteNoButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(54)
+            make.size.equalTo(voteButtonSize)
+            make.bottom.equalTo(addIdeasButton.snp.top).offset(-30)
+        }
+
+        voteMaybeButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.size.equalTo(voteButtonSize)
+            make.bottom.equalTo(addIdeasButton.snp.top).offset(-30)
+        }
+
+        voteYesButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(54)
+            make.size.equalTo(voteButtonSize)
+            make.bottom.equalTo(addIdeasButton.snp.top).offset(-30)
+        }
     }
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc private func settingsButtonPressed() {
+
     }
 
     @objc private func longPressedPoster(sender: UILongPressGestureRecognizer) {
@@ -162,7 +224,7 @@ class GroupViewController: UIViewController {
 
 }
 
-extension GroupViewController: UITableViewDelegate, UITableViewDataSource {
+extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1

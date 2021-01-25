@@ -15,7 +15,7 @@ class MediaSummarySpacerCollectionViewCell: UICollectionViewCell {
 
         let spacerView = UIView()
         spacerView.layer.cornerRadius = 1
-        spacerView.layer.backgroundColor = UIColor.lightGray.cgColor
+        spacerView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(spacerView)
 
         spacerView.snp.makeConstraints { make in
@@ -37,10 +37,10 @@ class MediaSummaryAudienceLevelCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 0
-        label.textColor = .mediumGray
+        label.textColor = .darkBlueGray2
         label.layer.borderWidth = 1
         label.layer.cornerRadius = 2
-        label.layer.borderColor = UIColor.mediumGray.cgColor
+        label.layer.borderColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(label)
 
         label.snp.makeConstraints { make in
@@ -68,7 +68,7 @@ class MediaSummaryIconLabelCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 0
-        label.textColor = .mediumGray
+        label.textColor = .darkBlueGray2
         label.sizeToFit()
         contentView.addSubview(label)
 
@@ -106,7 +106,7 @@ class MediaSummaryLabelCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 0
-        label.textColor = .mediumGray
+        label.textColor = .darkBlueGray2
         contentView.addSubview(label)
 
         label.snp.makeConstraints { make in

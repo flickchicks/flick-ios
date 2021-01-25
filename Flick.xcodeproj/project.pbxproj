@@ -16,7 +16,7 @@
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
-		8015158625BCE128002313B9 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupViewController.swift */; };
+		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
 		8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0F825B4060F00F6BAEE /* TabBarController.swift */; };
@@ -163,7 +163,7 @@
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		74EDFCD858A4F4E8205153C6 /* Pods-FlickTests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.dev debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.dev debug.xcconfig"; sourceTree = "<group>"; };
-		8015158525BCE128002313B9 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
+		8015158525BCE128002313B9 /* GroupVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVoteViewController.swift; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
 		8033C0F825B4060F00F6BAEE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -376,6 +376,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8015159025BE41D9002313B9 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				8015158525BCE128002313B9 /* GroupVoteViewController.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		D40ED7D825950E84004C2F2C /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,6 +433,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				8015159025BE41D9002313B9 /* Group */,
 				803E5F4A25A3E932004CF4B7 /* Flick.entitlements */,
 				D4621FD524EE04270026381F /* Layouts */,
 				D4FB449024B11C9A003CA71A /* Supporting */,
@@ -499,7 +508,6 @@
 				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
-				8015158525BCE128002313B9 /* GroupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -868,7 +876,7 @@
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
 				80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */,
 				802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */,
-				8015158625BCE128002313B9 /* GroupViewController.swift in Sources */,
+				8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */,
 				8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */,
 				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
