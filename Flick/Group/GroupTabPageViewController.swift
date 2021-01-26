@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol GroupTabDelegate: class {
+    func setActiveIndex(to index: Int)
+}
+
 class GroupTabPageViewController: UIPageViewController {
 
     private var pages: [UIViewController] = [UIViewController]()
     private var resultViewController: GroupResultViewController!
     private var voteViewController: GroupVoteViewController!
+
+    weak var tabDelegate: GroupTabDelegate?
 
     override init(
         transitionStyle style: UIPageViewController.TransitionStyle,
@@ -29,6 +35,15 @@ class GroupTabPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(leftSwipeDetected))
+        leftSwipeGestureRecognizer.direction = .left
+
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(rightSwipeDetected))
+        rightSwipeGestureRecognizer.direction = .right
+
+        view.addGestureRecognizer(leftSwipeGestureRecognizer)
+        view.addGestureRecognizer(rightSwipeGestureRecognizer)
+
         resultViewController = GroupResultViewController()
         voteViewController = GroupVoteViewController()
         pages = [voteViewController, resultViewController]
@@ -39,6 +54,16 @@ class GroupTabPageViewController: UIPageViewController {
     func setViewController(to index: Int) {
         let direction: UIPageViewController.NavigationDirection = (index == 1) ? .forward : .reverse
         self.setViewControllers([pages[index]], direction: direction, animated: true, completion: nil)
+    }
+
+    @objc func leftSwipeDetected() {
+        setViewController(to: 1)
+        tabDelegate?.setActiveIndex(to: 1)
+    }
+
+    @objc func rightSwipeDetected() {
+        setViewController(to: 0)
+        tabDelegate?.setActiveIndex(to: 0)
     }
 
 }

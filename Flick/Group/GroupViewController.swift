@@ -27,6 +27,7 @@ class GroupViewController: UIViewController {
         title = "Group name" // TODO: Replace with actual name of group
         view.backgroundColor = .offWhite
 
+        tabPageViewController.tabDelegate = self
         addChild(tabPageViewController)
 
         tabContainerView = UIView()
@@ -79,11 +80,6 @@ class GroupViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.layer.shadowOpacity = 0
-//        navigationController?.navigationBar.layer.masksToBounds = false
-//        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-//        navigationController?.navigationBar.layer.shadowOpacity = 0.07
-//        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
-//        navigationController?.navigationBar.layer.shadowRadius = 8
         navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
         let backButton = UIButton()
@@ -147,6 +143,15 @@ extension GroupViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: UIScreen.main.bounds.width/2, height: tabBarHeight)
+    }
+
+}
+
+extension GroupViewController: GroupTabDelegate {
+
+    func setActiveIndex(to index: Int) {
+        activeTabIndex = index
+        tabCollectionView.reloadData()
     }
 
 }
