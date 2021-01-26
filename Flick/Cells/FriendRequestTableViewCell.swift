@@ -10,8 +10,8 @@ import UIKit
 import SkeletonView
 import Kingfisher
 
-protocol NotificationDelegate: class {
-    func refreshNotifications(message: String)
+protocol ActivityDelegate: class {
+    func refreshActivity(message: String)
 }
 
 class FriendRequestTableViewCell: UITableViewCell {
@@ -25,7 +25,7 @@ class FriendRequestTableViewCell: UITableViewCell {
     private let profileImageView = UIImageView()
 
     // MARK: - Data Vars
-    weak var delegate: NotificationDelegate?
+    weak var delegate: ActivityDelegate?
     private var fromUser: UserProfile?
     private let padding = 12
     static let reuseIdentifier = "FriendRequestCellReuseIdentifier"
@@ -136,7 +136,7 @@ class FriendRequestTableViewCell: UITableViewCell {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if success {
-                    self.delegate?.refreshNotifications(message: "Accepted \(fromUser.name)'s request.")
+                    self.delegate?.refreshActivity(message: "Accepted \(fromUser.name)'s request.")
                 }
             }
         }
@@ -148,7 +148,7 @@ class FriendRequestTableViewCell: UITableViewCell {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if success {
-                    self.delegate?.refreshNotifications(message: "Ignored \(fromUser.name)'s request.")
+                    self.delegate?.refreshActivity(message: "Ignored \(fromUser.name)'s request.")
                 }
             }
         }

@@ -66,7 +66,7 @@ class ProfileViewController: UIViewController {
         bottomPaddingView.backgroundColor = .white
         view.addSubview(bottomPaddingView)
         
-        refreshControl.addTarget(self, action: #selector(refreshProfile(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
@@ -162,7 +162,7 @@ class ProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func refreshProfile(_ sender: Any) {
+    @objc func refreshProfile() {
         updateUser()
     }
 
@@ -412,17 +412,3 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
 }
-
-// NOTE: This code allows us to prevent bouncing on the bottom of table view
-//extension ProfileViewController: UIScrollViewDelegate {
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView == listsTableView {
-//            print("here")
-//            let contentOffset = scrollView.contentOffset
-//            let maxOffset = scrollView.contentSize.height - scrollView.frame.size.height;
-//            if contentOffset.y >= maxOffset {
-//                scrollView.contentOffset.y = maxOffset
-//            }
-//        }
-//    }
-//}

@@ -61,6 +61,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentCellView.addSubview(commentProfileImageView)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(seeAllComments))
+        
         commentTextView.isUserInteractionEnabled = true
         commentTextView.addGestureRecognizer(tapGestureRecognizer)
         commentTextView.isEditable = false

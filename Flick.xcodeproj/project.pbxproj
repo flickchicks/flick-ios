@@ -33,6 +33,7 @@
 		806E76EA25BF90F500B82ECE /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76E925BF90F500B82ECE /* GroupViewController.swift */; };
 		806E76EF25BF913600B82ECE /* GroupTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */; };
 		806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76F325BF914B00B82ECE /* GroupResultViewController.swift */; };
+		806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
@@ -111,7 +112,7 @@
 		D47866A3247C5805009E42FE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47866A2247C5805009E42FE /* User.swift */; };
 		D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */; };
 		D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */; };
-		D492727E24DE50A100FA5F2A /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */; };
+		D492727E24DE50A100FA5F2A /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727D24DE50A100FA5F2A /* ActivityViewController.swift */; };
 		D492728024DE515700FA5F2A /* NotificationsTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */; };
 		D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */; };
 		D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728324DE5B8B00FA5F2A /* Notification.swift */; };
@@ -184,6 +185,7 @@
 		806E76E925BF90F500B82ECE /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTabPageViewController.swift; sourceTree = "<group>"; };
 		806E76F325BF914B00B82ECE /* GroupResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResultViewController.swift; sourceTree = "<group>"; };
+		806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingResultTableViewCell.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
@@ -273,7 +275,7 @@
 		D48DEAB7170FEEB58E08EC8A /* Pods-Flick-FlickUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick-FlickUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Flick-FlickUITests/Pods-Flick-FlickUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllNotificationsViewController.swift; sourceTree = "<group>"; };
 		D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
-		D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		D492727D24DE50A100FA5F2A /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabPageViewController.swift; sourceTree = "<group>"; };
 		D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D492728324DE5B8B00FA5F2A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 				806E76E925BF90F500B82ECE /* GroupViewController.swift */,
 				806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */,
 				806E76F325BF914B00B82ECE /* GroupResultViewController.swift */,
+				806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				8015159025BE41D9002313B9 /* Group */,
+				D4CE248C25BCC04D007C45C5 /* Notifications */,
 				803E5F4A25A3E932004CF4B7 /* Flick.entitlements */,
 				D4621FD524EE04270026381F /* Layouts */,
 				D4FB449024B11C9A003CA71A /* Supporting */,
@@ -503,11 +507,7 @@
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
-				D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */,
-				D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */,
-				D492727D24DE50A100FA5F2A /* NotificationsViewController.swift */,
 				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
-				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
 				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
@@ -536,7 +536,6 @@
 			children = (
 				D40ED7D925950E8F004C2F2C /* TableViewCells */,
 				D40ED7D825950E84004C2F2C /* CollectionViewCells */,
-				80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
 				D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */,
 				3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */,
@@ -552,6 +551,7 @@
 				D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */,
 				80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */,
 				D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */,
+				80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */,
 				D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */,
 				D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */,
 				D425B98D24E83AE200FB13A5 /* FriendRequestTableViewCell.swift */,
@@ -619,6 +619,17 @@
 				80E7F91425B5415400B545C8 /* ModalView.swift */,
 			);
 			path = ModalViews;
+			sourceTree = "<group>";
+		};
+		D4CE248C25BCC04D007C45C5 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				D492727924DE4B2300FA5F2A /* AllNotificationsViewController.swift */,
+				D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */,
+				D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */,
+				D492727D24DE50A100FA5F2A /* ActivityViewController.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		D4FB449024B11C9A003CA71A /* Supporting */ = {
@@ -897,7 +908,7 @@
 				D492728824DED27600FA5F2A /* String.swift in Sources */,
 				D44BC12C25A052DD00D10DAB /* UserTableViewCell.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
-				D492727E24DE50A100FA5F2A /* NotificationsViewController.swift in Sources */,
+				D492727E24DE50A100FA5F2A /* ActivityViewController.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				D40ED7CF25946CE9004C2F2C /* DiscoverContent.swift in Sources */,
 				803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */,
@@ -970,6 +981,7 @@
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D44BC12725A047F300D10DAB /* UsersViewController.swift in Sources */,
+				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
@@ -1164,7 +1176,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1188,7 +1200,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1358,7 +1370,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1480,7 +1492,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1608,7 +1620,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.2;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

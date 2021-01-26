@@ -1,5 +1,5 @@
 //
-//  NotificationsViewController.swift
+//  ActivityViewController.swift
 //  Flick
 //
 //  Created by Lucy Xu on 8/7/20.
@@ -7,42 +7,53 @@
 //
 
 import UIKit
-import SkeletonView
 
-class NotificationsViewController: UIViewController {
+class ActivityViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let notificationsTableView = UITableView(frame: .zero, style: .grouped)
+    private let activityTableView = UITableView(frame: .zero, style: .grouped)
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Private Data Vars
     private var friendRequests: [NotificationEnum] = []
-    private var notifications: [NotificationEnum] = []
+    private var activities: [NotificationEnum] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .offWhite
-        view.isSkeletonable = true
         
-        notificationsTableView.delegate = self
-        notificationsTableView.dataSource = self
-        notificationsTableView.isScrollEnabled = true
-        notificationsTableView.isSkeletonable = true
-        notificationsTableView.backgroundColor = .offWhite
-        notificationsTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
-        notificationsTableView.register(FriendRequestTableViewCell.self, forCellReuseIdentifier: FriendRequestTableViewCell.reuseIdentifier)
-        notificationsTableView.separatorStyle = .none
-        notificationsTableView.rowHeight = UITableView.automaticDimension
-        notificationsTableView.estimatedRowHeight = 80
-        notificationsTableView.sizeToFit()
-        view.addSubview(notificationsTableView)
+        refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
         
-        notificationsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+        activityTableView.delegate = self
+        activityTableView.dataSource = self
+        activityTableView.showsVerticalScrollIndicator = false
+        activityTableView.isScrollEnabled = true
+        activityTableView.backgroundColor = .offWhite
+        activityTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
+        activityTableView.register(FriendRequestTableViewCell.self, forCellReuseIdentifier: FriendRequestTableViewCell.reuseIdentifier)
+        activityTableView.separatorStyle = .none
+        activityTableView.rowHeight = UITableView.automaticDimension
+        activityTableView.estimatedRowHeight = 80
+        activityTableView.sizeToFit()
 
-        notificationsTableView.snp.makeConstraints { make in
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            activityTableView.refreshControl = refreshControl
+        } else {
+            activityTableView.addSubview(refreshControl)
+        }
+
+        view.addSubview(activityTableView)
+
+        activityTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    @objc func refreshActivityData() {
+        getActivity()
     }
     
     private func getFriendRequests() {
@@ -52,19 +63,20 @@ class NotificationsViewController: UIViewController {
                 self.friendRequests = friendRequests.map {
                     return .IncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.created)
                 }
-                self.notificationsTableView.reloadData()
+                self.activityTableView.reloadData()
                 self.updateNotificationViewedTime()
+                self.refreshControl.endRefreshing()
             }
         }
     }
     
-    private func getNotifications() {
+    private func getActivity() {
         NetworkManager.getNotifications { [weak self] notifications in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 /* Note: Every element in returned notifications needs to be mapped to a corresponding object in our notifications array so depending on mistakes on the backend or frontend, there might be some inconsistencies in mapping the objects. I also make assumptions on the presence of values for optionals depending on the notification type, which may cause issues. For the most part this shouldn't be an issue. We can also revisit this later if need be.
                 */
-                self.notifications = notifications.map {
+                self.activities = notifications.map {
                     if $0.notifType == "list_invite" {
                         return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!, createdAt: $0.createdAt)
                     } else if $0.notifType == "incoming_friend_request_accepted" {
@@ -90,49 +102,36 @@ class NotificationsViewController: UIViewController {
                     }
                 }
                 self.getFriendRequests()
-                self.notificationsTableView.hideSkeleton()
             }
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getNotifications()
+        getActivity()
     }
 
     private func updateNotificationViewedTime() {
         let currentTime = Date().iso8601withFractionalSeconds
         NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { success in
-            if success {
-                print("Updated notification viewed time")
-            } else {
-                print("Failed to update notification viewed time")
-            }
+//            if success {
+//                print("Updated notification viewed time")
+//            } else {
+//                print("Failed to update notification viewed time")
+//            }
         }
     }
 
 }
 
-extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableViewDataSource {
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return NotificationTableViewCell.reuseIdentifier
-    }
+extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return friendRequests.count > 0 ? 2 : 1
     }
-    
-    func numSections(in collectionSkeletonView: UITableView) -> Int {
-        return 1
-    }
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friendRequests.count > 0 && section == 0 ? friendRequests.count : notifications.count
+        return friendRequests.count > 0 && section == 0 ? friendRequests.count : activities.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -146,7 +145,7 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
                 break
             }
         } else {
-            switch notifications[indexPath.row] {
+            switch activities[indexPath.row] {
             case .AcceptedIncomingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
             case .AcceptedOutgoingFriendRequest(let fromUser, _):
@@ -172,7 +171,7 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
         headerLabel.font = .boldSystemFont(ofSize: 12)
-        headerLabel.text = section == 0 && friendRequests.count > 0 ? "Friend Requests" : "Notifications"
+        headerLabel.text = section == 0 && friendRequests.count > 0 ? "Friend Requests" : "Activity"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
@@ -204,15 +203,15 @@ extension NotificationsViewController: SkeletonTableViewDelegate, SkeletonTableV
         }
         else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.reuseIdentifier, for: indexPath) as? NotificationTableViewCell else { return UITableViewCell() }
-            cell.configure(with: notifications[indexPath.row])
+            cell.configure(with: activities[indexPath.row])
             return cell
         }
     }
 }
 
-extension NotificationsViewController: NotificationDelegate {
-    func refreshNotifications(message: String) {
+extension ActivityViewController: ActivityDelegate {
+    func refreshActivity(message: String) {
         presentInfoAlert(message: message, completion: nil)
-        getNotifications()
+        getActivity()
     }
 }

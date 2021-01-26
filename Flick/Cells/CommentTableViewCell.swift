@@ -48,6 +48,9 @@ class CommentTableViewCell: UITableViewCell {
         profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
         contentView.addSubview(profileImageView)
 
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeComment))
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
         commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
@@ -55,6 +58,7 @@ class CommentTableViewCell: UITableViewCell {
         commentTextView.font = .systemFont(ofSize: 12)
         commentTextView.textColor = .black
         commentTextView.layer.cornerRadius = 16
+        commentTextView.addGestureRecognizer(doubleTapGestureRecognizer)
         contentView.addSubview(commentTextView)
 
         nameLabel.font = .systemFont(ofSize: 10)

@@ -7,12 +7,12 @@
 //
 
 import UIKit
-import SkeletonView
 
 class SuggestionsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let suggestionsTableView = UITableView(frame: .zero)
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = []
@@ -21,36 +21,51 @@ class SuggestionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.isSkeletonable = true
         view.backgroundColor = .offWhite
+        
+        refreshControl.addTarget(self, action: #selector(refreshSuggestionData), for: .valueChanged)
 
         suggestionsTableView.delegate = self
         suggestionsTableView.dataSource = self
         suggestionsTableView.isScrollEnabled = true
-        suggestionsTableView.isSkeletonable = true
+        suggestionsTableView.showsVerticalScrollIndicator = false
         suggestionsTableView.backgroundColor = .offWhite
         suggestionsTableView.register(SuggestionTableViewCell.self, forCellReuseIdentifier: suggestionCellReuseIdentifier)
         suggestionsTableView.separatorStyle = .none
         suggestionsTableView.rowHeight = UITableView.automaticDimension
         suggestionsTableView.estimatedRowHeight = 140
+        
+        // Add Refresh Control to Table View
+        if #available(iOS 10.0, *) {
+            suggestionsTableView.refreshControl = refreshControl
+        } else {
+            suggestionsTableView.addSubview(refreshControl)
+        }
+        
         view.addSubview(suggestionsTableView)
         
-        suggestionsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
-
         suggestionsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
+    
+    @objc func refreshSuggestionData() {
+        getSuggetions()
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        getSuggetions()
+    }
+    
+    private func getSuggetions() {
         NetworkManager.getSuggestions { [weak self] suggestions in
             guard let self = self else { return }
             self.suggestions = suggestions
             DispatchQueue.main.async {
                 self.suggestionsTableView.reloadData()
                 self.updateSuggestionViewedTime()
-                self.suggestionsTableView.hideSkeleton()
+                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -68,15 +83,7 @@ class SuggestionsViewController: UIViewController {
 
 }
 
-extension SuggestionsViewController: UITableViewDelegate, SkeletonTableViewDataSource {
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return suggestionCellReuseIdentifier
-    }
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
+extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return suggestions.count

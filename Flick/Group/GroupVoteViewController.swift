@@ -10,6 +10,7 @@ import UIKit
 
 class GroupVoteViewController: UIViewController {
 
+    // MARK: - Private View Vars
     private let addIdeasButton = UIButton()
     private let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
     private let moreInfoView = UIStackView()
@@ -19,6 +20,7 @@ class GroupVoteViewController: UIViewController {
     private let voteNoButton = UIButton()
     private let voteYesButton = UIButton()
 
+    // MARK: - Private Data Vars
     private var ideas: [Media] = []
     private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
     private var media: Media? // temp to remove

@@ -30,7 +30,9 @@ class CommentAreaView: UIView {
         commentTextView.backgroundColor = .lightGray2
         commentTextView.layer.cornerRadius = 15
         commentTextView.isScrollEnabled = false
+        commentTextView.delegate = self
         commentTextView.textColor = .black
+        commentTextView.returnKeyType = .done
         commentTextView.sizeToFit()
         commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         addSubview(commentTextView)
@@ -44,6 +46,7 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
+        commentTextView.resignFirstResponder()
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
             delegate?.addComment(commentText: commentText, isSpoiler: false)
 //            delegate?.showSpoilerModal(commentText: commentText)
@@ -78,4 +81,15 @@ class CommentAreaView: UIView {
 
     }
 
+}
+
+extension CommentAreaView: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    
 }
