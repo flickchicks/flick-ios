@@ -12,14 +12,23 @@ class GroupResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
+    private let votingStatusImageView = UIImageView()
+    private let votingStatusLabel = UILabel()
 
     // MARK: - Private Data Vars
     private let votingResultCellReuseIdentifier = "votingResultCellReuseIdentifier"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .offWhite
+
+        votingStatusImageView.image = UIImage(named: "stillVotingIcon")
+        view.addSubview(votingStatusImageView)
+
+        votingStatusLabel.text = "2 friends are still voting"
+        votingStatusLabel.textColor = .darkBlueGray2
+        votingStatusLabel.font = .systemFont(ofSize: 14)
+        view.addSubview(votingStatusLabel)
 
         resultsTableView.backgroundColor = .offWhite
         resultsTableView.dataSource = self
@@ -33,8 +42,20 @@ class GroupResultViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        votingStatusImageView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(19)
+            make.leading.equalToSuperview().offset(24)
+            make.size.equalTo(CGSize(width: 32, height: 20))
+        }
+
+        votingStatusLabel.snp.makeConstraints { make in
+            make.leading.equalTo(votingStatusImageView.snp.trailing).offset(8)
+            make.centerY.equalTo(votingStatusImageView)
+        }
+
         resultsTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(votingStatusImageView.snp.bottom).offset(7)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 
