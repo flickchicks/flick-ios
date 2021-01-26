@@ -26,9 +26,6 @@ class GroupVoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Group name" // TODO: Replace with actual name of group
-        view.backgroundColor = .offWhite
-
         numIdeasLabel.text = "No ideas yet"
         numIdeasLabel.textColor = .darkBlueGray2
         numIdeasLabel.font = .systemFont(ofSize: 16)
@@ -100,11 +97,6 @@ class GroupVoteViewController: UIViewController {
         setupConstraints()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationBar()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NetworkManager.getMedia(mediaId: 1) { media in
@@ -114,43 +106,6 @@ class GroupVoteViewController: UIViewController {
             }
             self.mediaInformationTableView.reloadData()
         }
-    }
-
-    private func setupNavigationBar() {
-        let backButtonSize = CGSize(width: 22, height: 18)
-        let settingsButtonSize = CGSize(width: 22, height: 22)
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.barTintColor = .movieWhite
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.layer.masksToBounds = false
-        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        navigationController?.navigationBar.layer.shadowOpacity = 0.07
-        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
-        navigationController?.navigationBar.layer.shadowRadius = 8
-        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
-
-        let backButton = UIButton()
-        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
-        backButton.tintColor = .black
-        backButton.snp.makeConstraints { make in
-            make.size.equalTo(backButtonSize)
-        }
-
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
-
-        let settingsButton = UIButton()
-        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
-        settingsButton.tintColor = .mediumGray
-        settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(settingsButtonSize)
-        }
-
-        settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
-        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
 
     private func setupConstraints() {
@@ -204,14 +159,6 @@ class GroupVoteViewController: UIViewController {
             make.size.equalTo(voteButtonSize)
             make.bottom.equalTo(addIdeasButton.snp.top).offset(-30)
         }
-    }
-
-    @objc private func backButtonPressed() {
-        navigationController?.popViewController(animated: true)
-    }
-
-    @objc private func settingsButtonPressed() {
-
     }
 
     @objc private func longPressedPoster(sender: UILongPressGestureRecognizer) {
