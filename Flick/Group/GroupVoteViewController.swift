@@ -34,7 +34,7 @@ class GroupVoteViewController: UIViewController {
         view.addSubview(numIdeasLabel)
 
         posterImageView.backgroundColor = .lightGray
-        posterImageView.contentMode = .scaleAspectFit
+        posterImageView.contentMode = .scaleAspectFill
         posterImageView.layer.cornerRadius = 25
         posterImageView.layer.masksToBounds = true
         posterImageView.isUserInteractionEnabled = true
@@ -47,7 +47,7 @@ class GroupVoteViewController: UIViewController {
         addIdeasButton.setTitleColor(.gradientPurple, for: .normal)
         addIdeasButton.titleLabel?.font = .systemFont(ofSize: 14)
         addIdeasButton.backgroundColor = .lightPurple
-        addIdeasButton.layer.borderWidth = 1
+        addIdeasButton.layer.borderWidth = 2
         addIdeasButton.layer.borderColor = UIColor.gradientPurple.cgColor
         addIdeasButton.layer.cornerRadius = 20
         view.addSubview(addIdeasButton)
@@ -111,8 +111,6 @@ class GroupVoteViewController: UIViewController {
     }
 
     private func setupConstraints() {
-//        let posterWidth = UIScreen.main.bounds.width - 60
-//        let posterHeight = posterWidth * 3 / 2
         let voteButtonSize: CGSize = CGSize(width: 50, height: 50)
 
         numIdeasLabel.snp.makeConstraints { make in
@@ -124,8 +122,6 @@ class GroupVoteViewController: UIViewController {
             make.top.equalTo(numIdeasLabel.snp.bottom).offset(12)
             make.bottom.equalTo(voteMaybeButton.snp.top).offset(-16)
             make.leading.trailing.equalToSuperview().inset(38)
-//            make.center.equalToSuperview()
-//            make.size.equalTo(CGSize(width: posterWidth, height: posterHeight))
         }
 
         mediaInformationTableView.snp.makeConstraints { make in

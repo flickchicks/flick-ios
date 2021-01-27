@@ -13,8 +13,13 @@ class VotingResultTableViewCell: UITableViewCell {
     // MARK: - Private View Vars
     private let nameLabel = UILabel()
     private let numberLabel = UILabel()
+    private let numVoteMaybeLabel = UILabel()
+    private let numVoteNoLabel = UILabel()
+    private let numVoteYesLabel = UILabel()
     private let posterImageView = UIImageView()
-    private let voteYesLabel = UILabel()
+    private let voteMaybeImageView = UIImageView()
+    private let voteNoImageView = UIImageView()
+    private let voteYesImageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,10 +42,29 @@ class VotingResultTableViewCell: UITableViewCell {
         nameLabel.font = .systemFont(ofSize: 16)
         contentView.addSubview(nameLabel)
 
-        voteYesLabel.text = "6/7 said yes"
-        voteYesLabel.font = .systemFont(ofSize: 16)
-        voteYesLabel.textColor = .mediumGray
-        contentView.addSubview(voteYesLabel)
+        voteMaybeImageView.image = UIImage(named: "voteMaybeEmoticon")
+        contentView.addSubview(voteMaybeImageView)
+
+        numVoteMaybeLabel.text = "5"
+        numVoteMaybeLabel.font = .systemFont(ofSize: 16)
+        numVoteMaybeLabel.textColor = .mediumGray
+        contentView.addSubview(numVoteMaybeLabel)
+
+        voteNoImageView.image = UIImage(named: "voteNoEmoticon")
+        contentView.addSubview(voteNoImageView)
+
+        numVoteNoLabel.text = "5"
+        numVoteNoLabel.font = .systemFont(ofSize: 16)
+        numVoteNoLabel.textColor = .mediumGray
+        contentView.addSubview(numVoteNoLabel)
+
+        voteYesImageView.image = UIImage(named: "voteYesEmoticon")
+        contentView.addSubview(voteYesImageView)
+
+        numVoteYesLabel.text = "5"
+        numVoteYesLabel.font = .systemFont(ofSize: 16)
+        numVoteYesLabel.textColor = .mediumGray
+        contentView.addSubview(numVoteYesLabel)
 
         setupConstraints()
     }
@@ -51,6 +75,7 @@ class VotingResultTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         let padding = 12
+        let voteImageViewSize = CGSize(width: 19, height: 19)
 
         numberLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(padding)
@@ -70,9 +95,37 @@ class VotingResultTableViewCell: UITableViewCell {
             make.leading.equalTo(posterImageView.snp.trailing).offset(padding)
         }
 
-        voteYesLabel.snp.makeConstraints { make in
+        voteYesImageView.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
             make.leading.equalTo(nameLabel)
+            make.size.equalTo(voteImageViewSize)
+        }
+
+        numVoteYesLabel.snp.makeConstraints { make in
+            make.top.equalTo(voteYesImageView)
+            make.leading.equalTo(voteYesImageView.snp.trailing).offset(6)
+        }
+
+        voteMaybeImageView.snp.makeConstraints { make in
+            make.top.equalTo(voteYesImageView)
+            make.leading.equalTo(numVoteYesLabel.snp.trailing).offset(18)
+            make.size.equalTo(voteImageViewSize)
+        }
+
+        numVoteMaybeLabel.snp.makeConstraints { make in
+            make.top.equalTo(voteYesImageView)
+            make.leading.equalTo(voteMaybeImageView.snp.trailing).offset(6)
+        }
+
+        voteNoImageView.snp.makeConstraints { make in
+            make.top.equalTo(voteYesImageView)
+            make.leading.equalTo(numVoteMaybeLabel.snp.trailing).offset(18)
+            make.size.equalTo(voteImageViewSize)
+        }
+
+        numVoteNoLabel.snp.makeConstraints { make in
+            make.top.equalTo(voteYesImageView)
+            make.leading.equalTo(voteNoImageView.snp.trailing).offset(6)
         }
     }
 
