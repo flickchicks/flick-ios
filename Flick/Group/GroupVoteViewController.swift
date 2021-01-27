@@ -101,6 +101,7 @@ class GroupVoteViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // TODO: remove later. Here temp for testing
         NetworkManager.getMedia(mediaId: 1) { media in
             self.media = media
             if let url = URL(string: media.posterPic ?? "") {

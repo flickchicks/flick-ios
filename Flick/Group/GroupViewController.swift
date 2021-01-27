@@ -12,7 +12,7 @@ class GroupViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var tabCollectionView: UICollectionView!
-    private var tabContainerView: UIView!
+    private var tabContainerView = UIView()
     private let tabPageViewController = GroupTabPageViewController()
 
     // MARK: - Private Data Vars
@@ -30,7 +30,6 @@ class GroupViewController: UIViewController {
         tabPageViewController.tabDelegate = self
         addChild(tabPageViewController)
 
-        tabContainerView = UIView()
         view.addSubview(tabContainerView)
         tabPageViewController.view.frame = tabContainerView.frame
         tabContainerView.addSubview(tabPageViewController.view)
@@ -110,9 +109,7 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-
     }
-
 
 }
 
