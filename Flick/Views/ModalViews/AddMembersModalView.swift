@@ -121,6 +121,10 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
 
 extension AddMembersModalView: UISearchBarDelegate {
 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             isSearching = false
