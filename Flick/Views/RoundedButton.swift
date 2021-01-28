@@ -16,7 +16,7 @@ class RoundedButton: UIButton {
         super.init(frame: .zero)
 
         setTitle(title, for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 14)
+        titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         layer.cornerRadius = 20
         switch style {
         case .gray:

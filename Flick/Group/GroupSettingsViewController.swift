@@ -133,17 +133,27 @@ class GroupSettingsViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    private func showAddMembersModal() {
+        let addMembersModalView = AddMembersModalView()
+        addMembersModalView.modalDelegate = self
+        showModalPopup(view: addMembersModalView)
+    }
+
+    private func showClearIdeasModal() {
+        let clearIdeasModalView = ConfirmationModalView(
+            message: "Clear all current ideas and votes?",
+            subMessage: "To pick a new show, the group have to start fresh",
+            type: .clearIdeas
+        )
+        clearIdeasModalView.modalDelegate = self
+        showModalPopup(view: clearIdeasModalView)
+    }
+
     private func showRenameGroupModal() {
         let renameGroupModalView = EnterNameModalView(type: .renameGroup)
         renameGroupModalView.modalDelegate = self
         renameGroupModalView.renameGroupDelegate = self
         showModalPopup(view: renameGroupModalView)
-    }
-
-    private func showAddMembersModal() {
-        let addMembersModalView = AddMembersModalView()
-        addMembersModalView.modalDelegate = self
-        showModalPopup(view: addMembersModalView)
     }
 
 }
@@ -222,6 +232,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
             showAddMembersModal()
         case .clear:
             print("clear")
+            showClearIdeasModal()
         case .rename:
             print("rename")
             showRenameGroupModal()
