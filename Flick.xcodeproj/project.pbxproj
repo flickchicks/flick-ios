@@ -16,6 +16,7 @@
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		5737709C125CA9E1DE268023 /* Pods_Flick_FlickUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDE099F326F1F52DA081070A /* Pods_Flick_FlickUITests.framework */; };
+		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
 		8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0F825B4060F00F6BAEE /* TabBarController.swift */; };
@@ -29,6 +30,10 @@
 		803E5FF425AABEE1004CF4B7 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5FF325AABEE0004CF4B7 /* Provider.swift */; };
 		803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */; };
 		803E603B25AAD2B1004CF4B7 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 803E603A25AAD2B1004CF4B7 /* Keys.plist */; };
+		806E76EA25BF90F500B82ECE /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76E925BF90F500B82ECE /* GroupViewController.swift */; };
+		806E76EF25BF913600B82ECE /* GroupTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */; };
+		806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76F325BF914B00B82ECE /* GroupResultViewController.swift */; };
+		806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
@@ -109,7 +114,7 @@
 		D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */; };
 		D492727E24DE50A100FA5F2A /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727D24DE50A100FA5F2A /* ActivityViewController.swift */; };
 		D492728024DE515700FA5F2A /* NotificationsTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */; };
-		D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */; };
+		D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */; };
 		D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728324DE5B8B00FA5F2A /* Notification.swift */; };
 		D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */; };
 		D492728824DED27600FA5F2A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728724DED27600FA5F2A /* String.swift */; };
@@ -162,6 +167,7 @@
 		6CD62CB9C81EC8212038CAEF /* Pods-Flick.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flick.release.xcconfig"; path = "Target Support Files/Pods-Flick/Pods-Flick.release.xcconfig"; sourceTree = "<group>"; };
 		70C2CCE3C736CD4C410FE753 /* Pods-FlickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.debug.xcconfig"; sourceTree = "<group>"; };
 		74EDFCD858A4F4E8205153C6 /* Pods-FlickTests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickTests.dev debug.xcconfig"; path = "Target Support Files/Pods-FlickTests/Pods-FlickTests.dev debug.xcconfig"; sourceTree = "<group>"; };
+		8015158525BCE128002313B9 /* GroupVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVoteViewController.swift; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
 		8033C0F825B4060F00F6BAEE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -176,6 +182,10 @@
 		803E5FF325AABEE0004CF4B7 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCollectionViewCell.swift; sourceTree = "<group>"; };
 		803E603A25AAD2B1004CF4B7 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		806E76E925BF90F500B82ECE /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
+		806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTabPageViewController.swift; sourceTree = "<group>"; };
+		806E76F325BF914B00B82ECE /* GroupResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResultViewController.swift; sourceTree = "<group>"; };
+		806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingResultTableViewCell.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
@@ -267,7 +277,7 @@
 		D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
 		D492727D24DE50A100FA5F2A /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabPageViewController.swift; sourceTree = "<group>"; };
-		D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
+		D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D492728324DE5B8B00FA5F2A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D492728724DED27600FA5F2A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -374,6 +384,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8015159025BE41D9002313B9 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				8015158525BCE128002313B9 /* GroupVoteViewController.swift */,
+				806E76E925BF90F500B82ECE /* GroupViewController.swift */,
+				806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */,
+				806E76F325BF914B00B82ECE /* GroupResultViewController.swift */,
+				806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		D40ED7D825950E84004C2F2C /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +445,7 @@
 		D41FE8B02477C7A40048900F /* Flick */ = {
 			isa = PBXGroup;
 			children = (
+				8015159025BE41D9002313B9 /* Group */,
 				D4CE248C25BCC04D007C45C5 /* Notifications */,
 				803E5F4A25A3E932004CF4B7 /* Flick.entitlements */,
 				D4621FD524EE04270026381F /* Layouts */,
@@ -527,7 +550,7 @@
 				D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */,
 				D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */,
 				80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */,
-				D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */,
+				D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */,
 				80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */,
 				D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */,
 				D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */,
@@ -873,13 +896,14 @@
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
 				80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */,
 				802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */,
+				8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */,
 				8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */,
 				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
-				D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */,
+				D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */,
 				8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */,
 				D492728824DED27600FA5F2A /* String.swift in Sources */,
 				D44BC12C25A052DD00D10DAB /* UserTableViewCell.swift in Sources */,
@@ -918,6 +942,7 @@
 				D45A3D7B25A8485B0094161A /* FriendRequest.swift in Sources */,
 				D414185824D5A621000BA11B /* CommentAreaView.swift in Sources */,
 				D425B99024E9B44200FB13A5 /* MediaCardVewController.swift in Sources */,
+				806E76EA25BF90F500B82ECE /* GroupViewController.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
 				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
@@ -927,6 +952,7 @@
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */,
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
+				806E76EF25BF913600B82ECE /* GroupTabPageViewController.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
 				D40ED7D4259471D7004C2F2C /* TrendingContentCollectionViewCell.swift in Sources */,
@@ -946,6 +972,7 @@
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
 				D425B98E24E83AE200FB13A5 /* FriendRequestTableViewCell.swift in Sources */,
 				80B3F9C024F317D7002891C4 /* SearchTabCollectionViewCell.swift in Sources */,
+				806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
 				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
@@ -954,6 +981,7 @@
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
 				D44BC12725A047F300D10DAB /* UsersViewController.swift in Sources */,
+				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
