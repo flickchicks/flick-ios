@@ -118,7 +118,7 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showRenameListModal() {
-        let renameListModalView = EnterListNameModalView(type: .renameList)
+        let renameListModalView = EnterNameModalView(type: .renameList)
         renameListModalView.modalDelegate = self
         renameListModalView.listSettingsDelegate = self
         showModalPopup(view: renameListModalView)

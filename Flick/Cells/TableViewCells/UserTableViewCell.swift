@@ -36,7 +36,7 @@ class UserTableViewCell: UITableViewCell {
         nameLabel.textColor = .darkBlue
         contentView.addSubview(nameLabel)
         
-        usernameLabel.font = .systemFont(ofSize: 10)
+        usernameLabel.font = .systemFont(ofSize: 14)
         usernameLabel.textColor = .mediumGray
         contentView.addSubview(usernameLabel)
         

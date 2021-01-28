@@ -26,8 +26,16 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private struct GroupSettingsItem {
+        var type: GroupSettingsType
         var icon: String
         var title: String
+    }
+
+    private enum GroupSettingsType {
+        case addMembers
+        case clear
+        case rename
+        case viewResults
     }
 
     // MARK: - Private View Vars
@@ -65,14 +73,14 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func setupSections() {
-        let suggestionsItem = GroupSettingsItem(icon: "refresh", title: "Clear current suggestions")
+        let suggestionsItem = GroupSettingsItem(type: .addMembers, icon: "refresh", title: "Clear current suggestions")
         let suggestionsSection = Section(type: .suggestions, header: "Suggestions", footer: "This removes the active suggestions and votes so that you can start again", settingItems: [suggestionsItem], members: [])
 
-        let resultsItem = GroupSettingsItem(icon: "medal", title: "View results")
+        let resultsItem = GroupSettingsItem(type: .viewResults, icon: "medal", title: "View results")
         let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [resultsItem], members: [])
 
-        let renameItem = GroupSettingsItem(icon: "pencil", title: "Rename \"flick chicks\"")
-        let addMembersItem = GroupSettingsItem(icon: "circlePlus", title: "Add members")
+        let renameItem = GroupSettingsItem(type: .rename, icon: "pencil", title: "Rename \"flick chicks\"")
+        let addMembersItem = GroupSettingsItem(type: .addMembers, icon: "circlePlus", title: "Add members")
         let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [renameItem, addMembersItem], members: [])
 
         sections = [suggestionsSection, resultsSection, detailsSection]
@@ -105,6 +113,13 @@ class GroupSettingsViewController: UIViewController {
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    private func showRenameGroupModal() {
+        let renameGroupModalView = EnterNameModalView(type: .renameGroup)
+        renameGroupModalView.modalDelegate = self
+        renameGroupModalView.renameGroupDelegate = self
+        showModalPopup(view: renameGroupModalView)
     }
 
 }
@@ -177,4 +192,34 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         return 52
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Don't do anything if selecting on a group member
+        if sections[indexPath.section].type == .details && indexPath.row > 1 {
+            return
+        }
+        let item = sections[indexPath.section].settingItems[indexPath.row]
+        switch item.type {
+        case .addMembers:
+            print("add members")
+        case .clear:
+            print("clear")
+        case .rename:
+            print("rename")
+            showRenameGroupModal()
+        case .viewResults:
+            print("view results")
+        }
+    }
+
+}
+
+extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+    func renameGroup(title: String) {
+        print("Rename group")
+    }
 }

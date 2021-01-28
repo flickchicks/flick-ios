@@ -13,20 +13,26 @@ protocol CreateListDelegate: class {
     func createList(title: String)
 }
 
-enum EnterListNameModalType {
-    case createList, renameList
+protocol RenameGroupDelegate: class {
+    func renameGroup(title: String)
+}
+
+enum EnterNameModalType {
+    case createList, renameGroup, renameList
 
     var titleText: String {
         switch self {
         case .createList:
             return "Create new list"
+        case .renameGroup:
+            return "Rename group"
         case .renameList:
             return "Rename list"
         }
     }
 }
 
-class EnterListNameModalView: ModalView {
+class EnterNameModalView: ModalView {
 
     // MARK: - Private View Vars
     private var cancelButton = UIButton()
@@ -34,12 +40,13 @@ class EnterListNameModalView: ModalView {
     private let nameTextField = UITextField()
     private let titleLabel = UILabel()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
     weak var createListDelegate: CreateListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
-    private var type: EnterListNameModalType!
+    weak var renameGroupDelegate: RenameGroupDelegate?
+    private var type: EnterNameModalType!
 
-    init(type: EnterListNameModalType) {
+    init(type: EnterNameModalType) {
         super.init()
         self.type = type
 
@@ -115,11 +122,13 @@ class EnterListNameModalView: ModalView {
         guard let nameText = nameTextField.text,
             nameText.trimmingCharacters(in: .whitespaces) != ""
             else { return }
-        switch self.type {
+        switch type {
         case .createList:
-            self.createListDelegate?.createList(title: nameText)
+            createListDelegate?.createList(title: nameText)
+        case .renameGroup:
+            renameGroupDelegate?.renameGroup(title: nameText)
         case .renameList:
-            self.listSettingsDelegate?.renameList(to: nameText)
+            listSettingsDelegate?.renameList(to: nameText)
         case .none:
             break
         }
@@ -136,7 +145,7 @@ class EnterListNameModalView: ModalView {
 
 }
 
-extension EnterListNameModalView: UITextFieldDelegate {
+extension EnterNameModalView: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

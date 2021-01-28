@@ -350,7 +350,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterListNameModalView(type: .createList)
+        let createListModalView = EnterNameModalView(type: .createList)
         createListModalView.modalDelegate = self
         createListModalView.createListDelegate = self
         showModalPopup(view: createListModalView)

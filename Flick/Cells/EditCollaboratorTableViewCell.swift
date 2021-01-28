@@ -37,7 +37,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         nameLabel.sizeToFit()
         contentView.addSubview(nameLabel)
 
-        usernameLabel.font = .systemFont(ofSize: 12)
+        usernameLabel.font = .systemFont(ofSize: 14)
         usernameLabel.textColor = .mediumGray
         usernameLabel.sizeToFit()
         contentView.addSubview(usernameLabel)
