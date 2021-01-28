@@ -122,6 +122,12 @@ class GroupSettingsViewController: UIViewController {
         showModalPopup(view: renameGroupModalView)
     }
 
+    private func showAddMembersModal() {
+        let addMembersModalView = AddMembersModalView()
+        addMembersModalView.modalDelegate = self
+        showModalPopup(view: addMembersModalView)
+    }
+
 }
 
 extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -201,6 +207,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         switch item.type {
         case .addMembers:
             print("add members")
+            showAddMembersModal()
         case .clear:
             print("clear")
         case .rename:

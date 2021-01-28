@@ -118,7 +118,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userImageView.snp.trailing).offset(8)
+            make.leading.equalTo(userImageView.snp.trailing).offset(12)
             make.trailing.equalTo(editButton.snp.leading).offset(-10)
             make.top.equalTo(userImageView)
         }
