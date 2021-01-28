@@ -22,7 +22,6 @@ class GroupVoteViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var ideas: [Media] = []
-    private let mediaSummaryReuseIdentifier = "MediaSummaryReuseIdentifier"
     private var media: Media? // temp to remove
 
     override func viewDidLoad() {
@@ -84,7 +83,7 @@ class GroupVoteViewController: UIViewController {
         mediaInformationTableView.layoutIfNeeded()
         mediaInformationTableView.contentInset = UIEdgeInsets(top: 24, left: 10, bottom: 24, right: 10)
         mediaInformationTableView.layer.cornerRadius = 25
-        mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: mediaSummaryReuseIdentifier)
+        mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: MediaSummaryTableViewCell.reuseIdentifier)
         view.addSubview(mediaInformationTableView)
 
         voteNoButton.setImage(UIImage(named: "voteNoButton"), for: .normal)
@@ -163,6 +162,10 @@ class GroupVoteViewController: UIViewController {
     @objc private func longPressedPoster(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             mediaInformationTableView.isHidden = false
+            // Send haptic feedback when long press begins
+            let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .medium)
+            impactFeedbackgenerator.prepare()
+            impactFeedbackgenerator.impactOccurred()
         } else if sender.state == .ended {
             mediaInformationTableView.isHidden = true
         }
@@ -177,7 +180,7 @@ extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaSummaryReuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MediaSummaryTableViewCell.reuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell,
               let media = media else {
             return UITableViewCell()
         }

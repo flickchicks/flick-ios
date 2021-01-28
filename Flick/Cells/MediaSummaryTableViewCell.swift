@@ -30,6 +30,8 @@ class MediaSummaryTableViewCell: UITableViewCell {
     private var tags: [Tag] = []
     private var providers: [Provider] = []
 
+    static let reuseIdentifier = "MediaSummaryCellReuseIdentifier"
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear

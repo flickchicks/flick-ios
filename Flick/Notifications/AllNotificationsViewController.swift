@@ -45,7 +45,7 @@ class AllNotificationsViewController: UIViewController {
         tabCollectionView = UICollectionView(frame: .zero, collectionViewLayout: tabLayout)
         tabCollectionView.delegate = self
         tabCollectionView.dataSource = self
-        tabCollectionView.register(NotificationsTabOptionCollectionViewCell.self, forCellWithReuseIdentifier: NotificationsTabOptionCollectionViewCell.reuseIdenfier)
+        tabCollectionView.register(TabOptionCollectionViewCell.self, forCellWithReuseIdentifier: TabOptionCollectionViewCell.reuseIdentifier)
         tabCollectionView.backgroundColor = .movieWhite
         tabCollectionView.clipsToBounds = false
         tabCollectionView.layer.masksToBounds = false
@@ -129,7 +129,7 @@ extension AllNotificationsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NotificationsTabOptionCollectionViewCell.reuseIdenfier, for: indexPath) as? NotificationsTabOptionCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TabOptionCollectionViewCell.reuseIdentifier, for: indexPath) as? TabOptionCollectionViewCell else { return UICollectionViewCell() }
         if indexPath.item == activeTabIndex {
             cell.isSelected = true
         }
