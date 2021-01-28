@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: Show members of group
 class GroupSettingsViewController: UIViewController {
 
     // MARK: - Table View Sections
@@ -15,8 +16,7 @@ class GroupSettingsViewController: UIViewController {
         let type: SectionType
         let header: String
         let footer: String?
-        var settingItems: [GroupSettingsItem]
-        var members: [UserProfile]
+        var settingItems: [GroupSettingsType]
     }
 
     private enum SectionType {
@@ -25,17 +25,37 @@ class GroupSettingsViewController: UIViewController {
         case suggestions
     }
 
-    private struct GroupSettingsItem {
-        var type: GroupSettingsType
-        var icon: String
-        var title: String
-    }
-
     private enum GroupSettingsType {
         case addMembers
         case clear
         case rename
         case viewResults
+
+        var icon: String {
+            switch self {
+            case .addMembers:
+                return "circlePlus"
+            case .clear:
+                return "refresh"
+            case .rename:
+                return "pencil"
+            case .viewResults:
+                return "medal"
+            }
+        }
+
+        var title: String {
+            switch self {
+            case .addMembers:
+                return "Add members"
+            case .clear:
+                return "Clear current suggestions"
+            case .rename:
+                return "Rename \"flick chicks\""
+            case .viewResults:
+                return "View results"
+            }
+        }
     }
 
     // MARK: - Private View Vars
@@ -73,16 +93,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func setupSections() {
-        let suggestionsItem = GroupSettingsItem(type: .addMembers, icon: "refresh", title: "Clear current suggestions")
-        let suggestionsSection = Section(type: .suggestions, header: "Suggestions", footer: "This removes the active suggestions and votes so that you can start again", settingItems: [suggestionsItem], members: [])
-
-        let resultsItem = GroupSettingsItem(type: .viewResults, icon: "medal", title: "View results")
-        let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [resultsItem], members: [])
-
-        let renameItem = GroupSettingsItem(type: .rename, icon: "pencil", title: "Rename \"flick chicks\"")
-        let addMembersItem = GroupSettingsItem(type: .addMembers, icon: "circlePlus", title: "Add members")
-        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [renameItem, addMembersItem], members: [])
-
+        let suggestionsSection = Section(type: .suggestions, header: "Suggestions", footer: "This removes the active suggestions and votes so that you can start again", settingItems: [.clear])
+        let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
+        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
         sections = [suggestionsSection, resultsSection, detailsSection]
     }
 
@@ -137,13 +150,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = sections[section]
-        switch section.type {
-        case .details:
-            return section.settingItems.count + section.members.count
-        default:
-            return section.settingItems.count
-        }
+        return sections[section].settingItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -204,7 +211,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
             return
         }
         let item = sections[indexPath.section].settingItems[indexPath.row]
-        switch item.type {
+        switch item {
         case .addMembers:
             print("add members")
             showAddMembersModal()

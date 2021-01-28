@@ -58,7 +58,7 @@ class AddMembersModalView: ModalView {
     }
 
     private func setupConstraints() {
-        let containerViewSize = CGSize(width: 325, height: 460)
+        let containerViewSize = CGSize(width: 325, height: 510)
         let horizontalPadding = 22
         let verticalPadding = 36
 
