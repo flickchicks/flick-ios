@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol GroupSettingsDelegate: class {
+    func viewResults()
+}
+
 // TODO: Show members of group
 class GroupSettingsViewController: UIViewController {
 
@@ -63,7 +67,8 @@ class GroupSettingsViewController: UIViewController {
     private let userCellReuseIdentifier = "UserCellReuseIdentifier"
     private let settingsTableView = UITableView(frame: .zero, style: .grouped)
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
+    weak var delegate: GroupSettingsDelegate?
     private var sections: [Section] = []
 
     override func viewDidLoad() {
@@ -222,6 +227,8 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
             showRenameGroupModal()
         case .viewResults:
             print("view results")
+            delegate?.viewResults()
+            navigationController?.popViewController(animated: true)
         }
     }
 
