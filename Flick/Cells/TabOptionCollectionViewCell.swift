@@ -1,5 +1,5 @@
 //
-//  NotificationsTabOptionCollectionViewCell.swift
+//  TabOptionCollectionViewCell.swift
 //  Flick
 //
 //  Created by Lucy Xu on 8/7/20.
@@ -9,7 +9,7 @@
 import SnapKit
 import UIKit
 
-class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
+class TabOptionCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
     private let activeTabIndicatorView = UIView()
@@ -19,7 +19,7 @@ class NotificationsTabOptionCollectionViewCell: UICollectionViewCell {
     private var activeCellColor: UIColor = .darkBlue
     private var inactiveCellColor: UIColor = .mediumGray
     
-    static let reuseIdenfier = "tabOptionCellReuseIdentifier"
+    static let reuseIdentifier = "tabOptionCellReuseIdentifier"
 
     override var isSelected: Bool {
         didSet {

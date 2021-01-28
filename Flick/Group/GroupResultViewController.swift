@@ -12,17 +12,13 @@ class GroupResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
-    private let votingStatusImageView = UIImageView()
+    private let votingStatusImageView = UIImageView(image: UIImage(named: "stillVotingIcon"))
     private let votingStatusLabel = UILabel()
-
-    // MARK: - Private Data Vars
-    private let votingResultCellReuseIdentifier = "votingResultCellReuseIdentifier"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        votingStatusImageView.image = UIImage(named: "stillVotingIcon")
         view.addSubview(votingStatusImageView)
 
         votingStatusLabel.text = "2 friends are still voting"
@@ -35,7 +31,7 @@ class GroupResultViewController: UIViewController {
         resultsTableView.delegate = self
         resultsTableView.separatorStyle = .none
         resultsTableView.showsVerticalScrollIndicator = false
-        resultsTableView.register(VotingResultTableViewCell.self, forCellReuseIdentifier: votingResultCellReuseIdentifier)
+        resultsTableView.register(VotingResultTableViewCell.self, forCellReuseIdentifier: VotingResultTableViewCell.reuseIdentifier)
         view.addSubview(resultsTableView)
 
         setupConstraints()
@@ -68,7 +64,7 @@ extension GroupResultViewController: UITableViewDataSource, UITableViewDelegate 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: votingResultCellReuseIdentifier, for: indexPath) as? VotingResultTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: VotingResultTableViewCell.reuseIdentifier, for: indexPath) as? VotingResultTableViewCell else { return UITableViewCell() }
         cell.configure(number: indexPath.row)
         return cell
     }

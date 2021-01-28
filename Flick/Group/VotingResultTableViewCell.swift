@@ -17,9 +17,12 @@ class VotingResultTableViewCell: UITableViewCell {
     private let numVoteNoLabel = UILabel()
     private let numVoteYesLabel = UILabel()
     private let posterImageView = UIImageView()
-    private let voteMaybeImageView = UIImageView()
-    private let voteNoImageView = UIImageView()
-    private let voteYesImageView = UIImageView()
+    private let voteMaybeImageView = UIImageView(image: UIImage(named: "voteMaybeEmoticon"))
+    private let voteNoImageView = UIImageView(image: UIImage(named: "voteNoEmoticon"))
+    private let voteYesImageView = UIImageView(image: UIImage(named: "voteYesEmoticon"))
+
+    // MARK: - Data Vars
+    static let reuseIdentifier = "VotingResultCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,24 +45,19 @@ class VotingResultTableViewCell: UITableViewCell {
         nameLabel.font = .systemFont(ofSize: 16)
         contentView.addSubview(nameLabel)
 
-        voteMaybeImageView.image = UIImage(named: "voteMaybeEmoticon")
         contentView.addSubview(voteMaybeImageView)
+        contentView.addSubview(voteNoImageView)
+        contentView.addSubview(voteYesImageView)
 
         numVoteMaybeLabel.text = "5"
         numVoteMaybeLabel.font = .systemFont(ofSize: 16)
         numVoteMaybeLabel.textColor = .mediumGray
         contentView.addSubview(numVoteMaybeLabel)
 
-        voteNoImageView.image = UIImage(named: "voteNoEmoticon")
-        contentView.addSubview(voteNoImageView)
-
         numVoteNoLabel.text = "5"
         numVoteNoLabel.font = .systemFont(ofSize: 16)
         numVoteNoLabel.textColor = .mediumGray
         contentView.addSubview(numVoteNoLabel)
-
-        voteYesImageView.image = UIImage(named: "voteYesEmoticon")
-        contentView.addSubview(voteYesImageView)
 
         numVoteYesLabel.text = "5"
         numVoteYesLabel.font = .systemFont(ofSize: 16)

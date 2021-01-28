@@ -114,7 +114,7 @@
 		D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */; };
 		D492727E24DE50A100FA5F2A /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727D24DE50A100FA5F2A /* ActivityViewController.swift */; };
 		D492728024DE515700FA5F2A /* NotificationsTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */; };
-		D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */; };
+		D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */; };
 		D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728324DE5B8B00FA5F2A /* Notification.swift */; };
 		D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */; };
 		D492728824DED27600FA5F2A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728724DED27600FA5F2A /* String.swift */; };
@@ -277,7 +277,7 @@
 		D492727B24DE502900FA5F2A /* SuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsViewController.swift; sourceTree = "<group>"; };
 		D492727D24DE50A100FA5F2A /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		D492727F24DE515700FA5F2A /* NotificationsTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabPageViewController.swift; sourceTree = "<group>"; };
-		D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
+		D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D492728324DE5B8B00FA5F2A /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D492728724DED27600FA5F2A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -550,7 +550,7 @@
 				D45DC63224B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift */,
 				D4F0FB5024CC724400DEF826 /* CommentTableViewCell.swift */,
 				80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */,
-				D492728124DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift */,
+				D492728124DE528A00FA5F2A /* TabOptionCollectionViewCell.swift */,
 				80F00F6424AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift */,
 				D492728524DE6C8000FA5F2A /* NotificationTableViewCell.swift */,
 				D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */,
@@ -903,7 +903,7 @@
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
-				D492728224DE528A00FA5F2A /* NotificationsTabOptionCollectionViewCell.swift in Sources */,
+				D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */,
 				8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */,
 				D492728824DED27600FA5F2A /* String.swift in Sources */,
 				D44BC12C25A052DD00D10DAB /* UserTableViewCell.swift in Sources */,
