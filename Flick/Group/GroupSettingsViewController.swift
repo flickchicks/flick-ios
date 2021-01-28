@@ -51,6 +51,7 @@ class GroupSettingsViewController: UIViewController {
         settingsTableView.delegate = self
         settingsTableView.register(GroupSettingTableViewCell.self, forCellReuseIdentifier: groupSettingReuseIdentifier)
         settingsTableView.register(UserTableViewCell.self, forCellReuseIdentifier: userCellReuseIdentifier)
+        settingsTableView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         view.addSubview(settingsTableView)
 
         settingsTableView.snp.makeConstraints { make in
@@ -130,6 +131,46 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let item = section.settingItems[indexPath.row]
         cell.configure(icon: item.icon, title: item.title)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        let headerLabel = UILabel()
+        headerLabel.text = sections[section].header
+        headerLabel.textColor = .darkBlueGray2
+        headerLabel.font = .boldSystemFont(ofSize: 14)
+        headerView.addSubview(headerLabel)
+        headerLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().offset(20)
+            make.top.bottom.equalToSuperview().inset(6)
+        }
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard sections[section].footer != nil else { return nil }
+        let padding = 20
+        let footerView = UIView()
+        let footerLabel = UILabel()
+        let spacerView = UIView()
+        footerLabel.text = sections[section].footer
+        footerLabel.textColor = .mediumGray
+        footerLabel.font = .systemFont(ofSize: 14)
+        footerLabel.numberOfLines = 0
+        footerView.addSubview(footerLabel)
+        footerLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(padding)
+            make.top.equalToSuperview().offset(6)
+        }
+        spacerView.backgroundColor = .lightGray2
+        footerView.addSubview(spacerView)
+        spacerView.snp.makeConstraints { make in
+            make.height.equalTo(2)
+            make.leading.trailing.equalToSuperview().inset(padding)
+            make.top.equalTo(footerLabel.snp.bottom).offset(16)
+            make.bottom.equalToSuperview().inset(10)
+        }
+        return footerView
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
