@@ -226,16 +226,12 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let item = sections[indexPath.section].settingItems[indexPath.row]
         switch item {
         case .addMembers:
-            print("add members")
             showAddMembersModal()
         case .clear:
-            print("clear")
             showClearIdeasModal()
         case .rename:
-            print("rename")
             showRenameGroupModal()
         case .viewResults:
-            print("view results")
             delegate?.viewResults()
             navigationController?.popViewController(animated: true)
         }

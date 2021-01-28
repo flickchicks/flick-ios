@@ -333,10 +333,9 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
     func pushSettingsView() {
-//        guard let user = user else { return }
-//        let settingsViewController = SettingsViewController(user: user)
-//        navigationController?.pushViewController(settingsViewController, animated: true)
-        navigationController?.pushViewController(GroupViewController(), animated: true)
+        guard let user = user else { return }
+        let settingsViewController = SettingsViewController(user: user)
+        navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
     func pushNotificationsView() {
