@@ -349,10 +349,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterListNameModalView(type: .createList)
-        createListModalView.modalDelegate = self
-        createListModalView.createListDelegate = self
-        showModalPopup(view: createListModalView)
+//        let createListModalView = EnterListNameModalView(type: .createList)
+//        createListModalView.modalDelegate = self
+//        createListModalView.createListDelegate = self
+//        showModalPopup(view: createListModalView)
+        navigationController?.pushViewController(GroupSettingsViewController(), animated: true)
     }
 
     func createFriendRequest() {
