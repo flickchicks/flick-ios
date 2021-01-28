@@ -20,7 +20,6 @@ class AddMembersModalView: ModalView {
     private var isSearching: Bool = false
     private var timer: Timer?
     private var users: [UserProfile] = []
-    private let usersCellReuseIdentifier = "UsersCellReuseIdentifier"
 
     override init() {
         super.init()
@@ -37,7 +36,7 @@ class AddMembersModalView: ModalView {
         usersTableView.dataSource = self
         usersTableView.delegate = self
         usersTableView.showsVerticalScrollIndicator = false
-        usersTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: usersCellReuseIdentifier)
+        usersTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
         usersTableView.separatorStyle = .none
         usersTableView.keyboardDismissMode = .onDrag
         containerView.addSubview(usersTableView)
@@ -108,7 +107,7 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: usersCellReuseIdentifier, for: indexPath) as? EditCollaboratorTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let user = isSearching ? users[indexPath.row] : friends[indexPath.row]
         cell.configureFriend(for: user, isAdded: false) // false is temp
         return cell

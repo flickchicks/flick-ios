@@ -336,7 +336,7 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
 //        guard let user = user else { return }
 //        let settingsViewController = SettingsViewController(user: user)
 //        navigationController?.pushViewController(settingsViewController, animated: true)
-        navigationController?.pushViewController(GroupSettingsViewController(), animated: true)
+        navigationController?.pushViewController(GroupViewController(), animated: true)
     }
 
     func pushNotificationsView() {

@@ -63,8 +63,6 @@ class GroupSettingsViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private let groupSettingReuseIdentifier = "GroupSettingReuseIdentifier"
-    private let userCellReuseIdentifier = "UserCellReuseIdentifier"
     private let settingsTableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - Data Vars
@@ -82,8 +80,8 @@ class GroupSettingsViewController: UIViewController {
         settingsTableView.separatorStyle = .none
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
-        settingsTableView.register(GroupSettingTableViewCell.self, forCellReuseIdentifier: groupSettingReuseIdentifier)
-        settingsTableView.register(UserTableViewCell.self, forCellReuseIdentifier: userCellReuseIdentifier)
+        settingsTableView.register(GroupSettingTableViewCell.self, forCellReuseIdentifier: GroupSettingTableViewCell.reuseIdentifier)
+        settingsTableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.reuseIdentifier)
         settingsTableView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         view.addSubview(settingsTableView)
 
@@ -170,7 +168,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: groupSettingReuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
         let item = section.settingItems[indexPath.row]
         cell.configure(icon: item.icon, title: item.title)
         return cell

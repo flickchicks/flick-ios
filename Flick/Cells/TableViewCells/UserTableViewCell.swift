@@ -17,7 +17,7 @@ class UserTableViewCell: UITableViewCell {
     private let usernameLabel = UILabel()
 
     // MARK: - Data Vars
-    static let reuseIdentifier = "UsersTableViewCell"
+    static let reuseIdentifier = "UsersTableViewCellReuseIdentifier"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -29,9 +29,6 @@ class AddCollaboratorModalView: ModalView {
     private var friends: [UserProfile] = []
     private var owner: UserProfile
 
-    private let collaboratorCellReuseIdentifier = "CollaboratorCellReuseIdentifier"
-    private let inviteCollaboratorCellReuseIdentifier = "InviteCollaboratorCellReuseIdentifier"
-
     weak var listSettingsDelegate: ListSettingsDelegate?
 
     init(owner: UserProfile, collaborators: [UserProfile]) {
@@ -66,7 +63,7 @@ class AddCollaboratorModalView: ModalView {
         collaboratorsTableView.isScrollEnabled = true
         collaboratorsTableView.alwaysBounceVertical = false
         collaboratorsTableView.showsVerticalScrollIndicator = false
-        collaboratorsTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
+        collaboratorsTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
         collaboratorsTableView.separatorStyle = .none
         containerView.addSubview(collaboratorsTableView)
 
@@ -92,7 +89,7 @@ class AddCollaboratorModalView: ModalView {
         inviteCollaboratorsTableView.isScrollEnabled = true
         inviteCollaboratorsTableView.alwaysBounceVertical = false
         inviteCollaboratorsTableView.showsVerticalScrollIndicator = false
-        inviteCollaboratorsTableView.register(EditCollaboratorTableViewCell.self, forCellReuseIdentifier: collaboratorCellReuseIdentifier)
+        inviteCollaboratorsTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
         inviteCollaboratorsTableView.separatorStyle = .none
         inviteCollaboratorsTableView.keyboardDismissMode = .onDrag
 
@@ -226,7 +223,7 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: collaboratorCellReuseIdentifier, for: indexPath) as? EditCollaboratorTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         if tableView == collaboratorsTableView {
             let collaborator = collaborators[indexPath.row]
             cell.configureCollaborator(for: collaborator, isOwner: owner.id == collaborator.id)

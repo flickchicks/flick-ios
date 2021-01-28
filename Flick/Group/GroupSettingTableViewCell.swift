@@ -10,9 +10,13 @@ import UIKit
 
 class GroupSettingTableViewCell: UITableViewCell {
 
+    // MARK: - Private View Vars
     private let containerView = UIView()
     private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
+
+    // MARK: - Data Vars
+    static let reuseIdentifier = "GroupSettingCellReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,6 +31,7 @@ class GroupSettingTableViewCell: UITableViewCell {
         containerView.addSubview(iconImageView)
 
         titleLabel.textColor = .darkBlue
+        titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         containerView.addSubview(titleLabel)
 
         setupConstraints()

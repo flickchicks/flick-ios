@@ -1,5 +1,5 @@
 //
-//  EditCollaboratorTableViewCell.swift
+//  EditUserTableViewCell.swift
 //  Flick
 //
 //  Created by Haiying W on 1/6/21.
@@ -14,7 +14,7 @@ protocol EditCollaboratorCellDelegate: class {
     func removeCollaboratorTapped(user: UserProfile)
 }
 
-class EditCollaboratorTableViewCell: UITableViewCell {
+class EditUserTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let editButton = UIButton()
@@ -22,9 +22,10 @@ class EditCollaboratorTableViewCell: UITableViewCell {
     private let userImageView = UIImageView()
     private let usernameLabel = UILabel()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
     weak var delegate: EditCollaboratorCellDelegate?
     private var isCollaborator: Bool?
+    static let reuseIdentifier = "EditUserCellReuseIdentifier"
     private var user: UserProfile?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
