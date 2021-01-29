@@ -1,5 +1,5 @@
 //
-//  EditCollaboratorTableViewCell.swift
+//  EditUserTableViewCell.swift
 //  Flick
 //
 //  Created by Haiying W on 1/6/21.
@@ -14,7 +14,7 @@ protocol EditCollaboratorCellDelegate: class {
     func removeCollaboratorTapped(user: UserProfile)
 }
 
-class EditCollaboratorTableViewCell: UITableViewCell {
+class EditUserTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let editButton = UIButton()
@@ -22,9 +22,10 @@ class EditCollaboratorTableViewCell: UITableViewCell {
     private let userImageView = UIImageView()
     private let usernameLabel = UILabel()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
     weak var delegate: EditCollaboratorCellDelegate?
     private var isCollaborator: Bool?
+    static let reuseIdentifier = "EditUserCellReuseIdentifier"
     private var user: UserProfile?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,7 +38,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         nameLabel.sizeToFit()
         contentView.addSubview(nameLabel)
 
-        usernameLabel.font = .systemFont(ofSize: 12)
+        usernameLabel.font = .systemFont(ofSize: 14)
         usernameLabel.textColor = .mediumGray
         usernameLabel.sizeToFit()
         contentView.addSubview(usernameLabel)
@@ -49,11 +50,11 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         userImageView.layer.masksToBounds = true
         contentView.addSubview(userImageView)
 
-        editButton.setTitleColor(.mediumGray, for: .normal)
-        editButton.titleLabel?.font = .systemFont(ofSize: 14)
+        editButton.setTitleColor(.darkBlueGray2, for: .normal)
+        editButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         editButton.backgroundColor = .lightGray2
         editButton.titleEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
-        editButton.layer.cornerRadius = 11
+        editButton.layer.cornerRadius = 12.5
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         contentView.addSubview(editButton)
 
@@ -72,6 +73,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
             editButton.isEnabled = false
             editButton.backgroundColor = .clear
             editButton.setTitle("Added", for: .normal)
+            editButton.layer.borderWidth = 0
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(68)
             }
@@ -79,6 +81,8 @@ class EditCollaboratorTableViewCell: UITableViewCell {
             editButton.isEnabled = true
             editButton.backgroundColor = .lightGray2
             editButton.setTitle("Add", for: .normal)
+            editButton.layer.borderWidth = 1
+            editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(48)
             }
@@ -99,6 +103,8 @@ class EditCollaboratorTableViewCell: UITableViewCell {
             usernameLabel.text = "@\(user.username)"
             editButton.isHidden = false
             editButton.setTitle("Remove", for: .normal)
+            editButton.layer.borderWidth = 1
+            editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(74)
             }
@@ -118,7 +124,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userImageView.snp.trailing).offset(8)
+            make.leading.equalTo(userImageView.snp.trailing).offset(12)
             make.trailing.equalTo(editButton.snp.leading).offset(-10)
             make.top.equalTo(userImageView)
         }
@@ -130,7 +136,7 @@ class EditCollaboratorTableViewCell: UITableViewCell {
 
         editButton.snp.makeConstraints { make in
             make.width.equalTo(74)
-            make.height.equalTo(22)
+            make.height.equalTo(25)
             make.trailing.centerY.equalToSuperview()
         }
     }

@@ -8,40 +8,48 @@
 
 import UIKit
 
-enum ConfirmationType { case deleteList, removeMedia }
+enum ConfirmationType { case clearIdeas, deleteList, removeMedia }
 
 class ConfirmationModalView: ModalView {
 
     // MARK: - Private View Vars
+    private var grayButton = UIButton()
     private let messageLabel = UILabel()
-    private var noButton = UIButton()
-    private var yesButton = UIButton()
+    private var purpleButton = UIButton()
+    private let subMessageLabel = UILabel()
 
     // MARK: - Private Data Var
     weak var editListDelegate: EditListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     private var type: ConfirmationType
 
-    init(message: String, type: ConfirmationType) {
+    init(message: String, subMessage: String? = nil, type: ConfirmationType) {
         self.type = type
         super.init()
 
         messageLabel.text = message
-
         messageLabel.textColor = .black
-        messageLabel.textAlignment = .center
+        messageLabel.textAlignment = type == .clearIdeas ? .left : .center
         messageLabel.font = .systemFont(ofSize: 20, weight: .medium)
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
         containerView.addSubview(messageLabel)
 
-        noButton = RoundedButton(style: .purple, title: "No")
-        noButton.addTarget(self, action: #selector(noButtonPressed), for: .touchUpInside)
-        containerView.addSubview(noButton)
+        purpleButton = RoundedButton(style: .purple, title: type == .clearIdeas ? "Clear" : "No")
+        purpleButton.addTarget(self, action: #selector(purpleButtonPressed), for: .touchUpInside)
+        containerView.addSubview(purpleButton)
 
-        yesButton = RoundedButton(style: .gray, title: "Yes")
-        yesButton.addTarget(self, action: #selector(yesButtonPressed), for: .touchUpInside)
-        containerView.addSubview(yesButton)
+        grayButton = RoundedButton(style: .gray, title: type == .clearIdeas ? "Cancel" : "No")
+        grayButton.addTarget(self, action: #selector(grayButtonPressed), for: .touchUpInside)
+        containerView.addSubview(grayButton)
+
+        if let subMessage = subMessage, type == .clearIdeas {
+            subMessageLabel.text = subMessage
+            subMessageLabel.textColor = .darkBlueGray2
+            subMessageLabel.font = .systemFont(ofSize: 14)
+            subMessageLabel.numberOfLines = 0
+            containerView.addSubview(subMessageLabel)
+        }
 
         setupConstraints()
     }
@@ -56,15 +64,26 @@ class ConfirmationModalView: ModalView {
             make.top.equalToSuperview().offset(verticalPadding)
         }
 
-        yesButton.snp.makeConstraints { make in
-            make.top.equalTo(messageLabel.snp.bottom).offset(verticalPadding)
+        if type == .clearIdeas {
+            subMessageLabel.snp.makeConstraints { make in
+                make.top.equalTo(messageLabel.snp.bottom).offset(12)
+                make.leading.trailing.equalTo(messageLabel)
+            }
+        }
+
+        grayButton.snp.makeConstraints { make in
+            if type == .clearIdeas {
+                make.top.equalTo(subMessageLabel.snp.bottom).offset(verticalPadding)
+            } else {
+                make.top.equalTo(messageLabel.snp.bottom).offset(verticalPadding)
+            }
             make.bottom.equalToSuperview().inset(verticalPadding)
             make.size.equalTo(buttonSize)
             make.leading.equalToSuperview().offset(buttonHorizontalPadding)
         }
 
-        noButton.snp.makeConstraints { make in
-            make.top.equalTo(messageLabel.snp.bottom).offset(verticalPadding)
+        purpleButton.snp.makeConstraints { make in
+            make.top.equalTo(grayButton)
             make.bottom.equalToSuperview().inset(verticalPadding)
             make.size.equalTo(buttonSize)
             make.trailing.equalToSuperview().inset(buttonHorizontalPadding)
@@ -76,13 +95,15 @@ class ConfirmationModalView: ModalView {
         }
     }
 
-    @objc func noButtonPressed() {
+    @objc func grayButtonPressed() {
         dismissModal()
     }
 
-    @objc func yesButtonPressed() {
+    @objc func purpleButtonPressed() {
         dismissModal()
         switch type {
+        case .clearIdeas:
+            print("Clear ideas tapped")
         case .deleteList:
             listSettingsDelegate?.deleteList()
         case .removeMedia:

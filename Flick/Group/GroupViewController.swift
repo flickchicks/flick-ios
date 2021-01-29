@@ -108,6 +108,9 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
+        let groupSettingsVC = GroupSettingsViewController()
+        groupSettingsVC.delegate = self
+        navigationController?.pushViewController(groupSettingsVC, animated: true)
     }
 
 }
@@ -147,6 +150,16 @@ extension GroupViewController: GroupTabDelegate {
 
     func setActiveIndex(to index: Int) {
         activeTabIndex = index
+        tabCollectionView.reloadData()
+    }
+
+}
+
+extension GroupViewController: GroupSettingsDelegate {
+
+    func viewResults() {
+        activeTabIndex = 1
+        tabPageViewController.setViewController(to: 1)
         tabCollectionView.reloadData()
     }
 

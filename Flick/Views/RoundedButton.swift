@@ -16,15 +16,18 @@ class RoundedButton: UIButton {
         super.init(frame: .zero)
 
         setTitle(title, for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 14)
+        titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         layer.cornerRadius = 20
+        layer.borderWidth = 1
         switch style {
         case .gray:
             setTitleColor(.darkBlueGray2, for: .normal)
             layer.backgroundColor = UIColor.lightGray2.cgColor
+            layer.borderColor = UIColor.darkBlueGray2.cgColor
         case .purple:
             setTitleColor(.gradientPurple, for: .normal)
             layer.backgroundColor = UIColor.lightPurple.cgColor
+            layer.borderColor = UIColor.gradientPurple.cgColor
         }
     }
 

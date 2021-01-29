@@ -29,7 +29,7 @@ class GroupVoteViewController: UIViewController {
 
         numIdeasLabel.text = "No ideas yet"
         numIdeasLabel.textColor = .darkBlueGray2
-        numIdeasLabel.font = .systemFont(ofSize: 16)
+        numIdeasLabel.font = .systemFont(ofSize: 16, weight: .medium)
         view.addSubview(numIdeasLabel)
 
         posterImageView.backgroundColor = .lightGray
@@ -44,7 +44,7 @@ class GroupVoteViewController: UIViewController {
 
         addIdeasButton.setTitle("＋ Add Ideas", for: .normal)
         addIdeasButton.setTitleColor(.gradientPurple, for: .normal)
-        addIdeasButton.titleLabel?.font = .systemFont(ofSize: 14)
+        addIdeasButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         addIdeasButton.backgroundColor = .lightPurple
         addIdeasButton.layer.borderWidth = 2
         addIdeasButton.layer.borderColor = UIColor.gradientPurple.cgColor

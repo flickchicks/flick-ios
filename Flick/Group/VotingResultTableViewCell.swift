@@ -30,7 +30,7 @@ class VotingResultTableViewCell: UITableViewCell {
         backgroundColor = .offWhite
 
         numberLabel.textColor = .darkBlueGray2
-        numberLabel.font = .systemFont(ofSize: 14)
+        numberLabel.font = .systemFont(ofSize: 14, weight: .medium)
         numberLabel.backgroundColor = .lightGray2
         numberLabel.textAlignment = .center
         numberLabel.layer.cornerRadius = 12

@@ -25,7 +25,7 @@
 		803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */; };
 		803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */; };
 		803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F0A259D41B4004CF4B7 /* Suggestion.swift */; };
-		803E5F5825A67966004CF4B7 /* EditCollaboratorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */; };
+		803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */; };
 		803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */; };
 		803E5FF425AABEE1004CF4B7 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5FF325AABEE0004CF4B7 /* Provider.swift */; };
 		803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */; };
@@ -34,6 +34,9 @@
 		806E76EF25BF913600B82ECE /* GroupTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */; };
 		806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76F325BF914B00B82ECE /* GroupResultViewController.swift */; };
 		806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */; };
+		806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */; };
+		806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */; };
+		806E772225C2517D00B82ECE /* AddMembersModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E772125C2517C00B82ECE /* AddMembersModalView.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
@@ -177,7 +180,7 @@
 		803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickToFriendModalView.swift; sourceTree = "<group>"; };
 		803E5F0A259D41B4004CF4B7 /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		803E5F4A25A3E932004CF4B7 /* Flick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flick.entitlements; sourceTree = "<group>"; };
-		803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCollaboratorTableViewCell.swift; sourceTree = "<group>"; };
+		803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserTableViewCell.swift; sourceTree = "<group>"; };
 		803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreviewCollectionViewCell.swift; sourceTree = "<group>"; };
 		803E5FF325AABEE0004CF4B7 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -186,6 +189,9 @@
 		806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTabPageViewController.swift; sourceTree = "<group>"; };
 		806E76F325BF914B00B82ECE /* GroupResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResultViewController.swift; sourceTree = "<group>"; };
 		806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingResultTableViewCell.swift; sourceTree = "<group>"; };
+		806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsViewController.swift; sourceTree = "<group>"; };
+		806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingTableViewCell.swift; sourceTree = "<group>"; };
+		806E772125C2517C00B82ECE /* AddMembersModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersModalView.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
@@ -392,6 +398,8 @@
 				806E76EE25BF913600B82ECE /* GroupTabPageViewController.swift */,
 				806E76F325BF914B00B82ECE /* GroupResultViewController.swift */,
 				806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */,
+				806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */,
+				806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -563,7 +571,7 @@
 				802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */,
 				D40ED7D3259471D7004C2F2C /* TrendingContentCollectionViewCell.swift */,
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
-				803E5F5725A67965004CF4B7 /* EditCollaboratorTableViewCell.swift */,
+				803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */,
 				803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -617,6 +625,7 @@
 				803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */,
 				803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */,
 				80E7F91425B5415400B545C8 /* ModalView.swift */,
+				806E772125C2517C00B82ECE /* AddMembersModalView.swift */,
 			);
 			path = ModalViews;
 			sourceTree = "<group>";
@@ -900,7 +909,9 @@
 				8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */,
 				80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */,
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
+				806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
+				806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */,
@@ -963,7 +974,7 @@
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				D40ED7DB25950E9E004C2F2C /* TrendingTableViewCell.swift in Sources */,
-				803E5F5825A67966004CF4B7 /* EditCollaboratorTableViewCell.swift in Sources */,
+				803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */,
 				D45A3E1925A9A7E90094161A /* Keys.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
@@ -975,6 +986,7 @@
 				806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
+				806E772225C2517D00B82ECE /* AddMembersModalView.swift in Sources */,
 				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
 				80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */,
 				D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */,
