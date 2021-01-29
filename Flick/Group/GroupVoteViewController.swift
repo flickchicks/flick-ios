@@ -49,6 +49,7 @@ class GroupVoteViewController: UIViewController {
         addIdeasButton.layer.borderWidth = 2
         addIdeasButton.layer.borderColor = UIColor.gradientPurple.cgColor
         addIdeasButton.layer.cornerRadius = 20
+        addIdeasButton.addTarget(self, action: #selector(addIdeasPressed), for: .touchUpInside)
         view.addSubview(addIdeasButton)
 
         let infoTextLabel = UILabel()
@@ -169,6 +170,15 @@ class GroupVoteViewController: UIViewController {
         } else if sender.state == .ended {
             mediaInformationTableView.isHidden = true
         }
+    }
+
+    @objc private func addIdeasPressed() {
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
+        let addToListVC = AddMediaViewController(type: .toGroup , height: Float(posterImageView.frame.height + 162 + bottomPadding), list: MediaList(id: 1, name: "", pic: nil, isSaved: true, isPrivate: true, isWatchLater: true, collaborators: [], owner: UserProfile(id: 1, username: "", name: "", profilePic: nil, bio: nil, phoneNumber: nil, socialId: nil, socialIdToken: nil, socialIdTokenType: nil, numNotifs: nil, ownerLsts: [], collabLsts: [], numMutualFriends: nil, friendStatus: nil), shows: [], tags: []))
+//        addToListVC.delegate = self
+        addToListVC.modalPresentationStyle = .overCurrentContext
+        present(addToListVC, animated: true, completion: nil)
     }
 
 }

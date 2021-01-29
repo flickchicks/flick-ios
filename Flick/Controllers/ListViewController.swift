@@ -342,7 +342,7 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
         settingsButton.tintColor = .clear
         navigationItem.rightBarButtonItem?.isEnabled = false
 
-        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height), list: list)
+        let addToListVC = AddMediaViewController(type: .toList, height: Float(mediaCollectionView.frame.height), list: list)
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
