@@ -21,9 +21,9 @@ enum AddMediaType {
     }
 }
 
-protocol AddToListDelegate: class {
-    func addToListDismissed()
-    func reloadList()
+protocol AddMediaDelegate: class {
+    func addMediaDismissed()
+    func reloadMedia()
 }
 
 class AddMediaViewController: UIViewController {
@@ -65,7 +65,7 @@ class AddMediaViewController: UIViewController {
     // Keeps track of current position of pan gesture
     private var viewTranslation = CGPoint(x: 0, y: 0)
 
-    weak var delegate: AddToListDelegate?
+    weak var delegate: AddMediaDelegate?
 
     init(type: AddMediaType, height: Float, list: MediaList) {
         self.type = type
@@ -288,11 +288,16 @@ class AddMediaViewController: UIViewController {
             return
         }
         let mediaIds = selectedMedia.map { $0.id }
-        NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-            self.selectedMedia = []
-            self.dismissVC(isMediaAdded: true)
+        switch type {
+        case .toGroup:
+            print("Add to group")
+        case .toList:
+            NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+                guard let self = self else { return }
+                self.list = list
+                self.selectedMedia = []
+                self.dismissVC(isMediaAdded: true)
+            }
         }
     }
 
@@ -381,9 +386,9 @@ class AddMediaViewController: UIViewController {
 
     private func dismissVC(isMediaAdded: Bool = false) {
         dismiss(animated: true) {
-            self.delegate?.addToListDismissed()
+            self.delegate?.addMediaDismissed()
             if isMediaAdded {
-                self.delegate?.reloadList()
+                self.delegate?.reloadMedia()
             }
         }
     }
