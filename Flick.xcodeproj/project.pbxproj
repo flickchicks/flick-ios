@@ -37,6 +37,7 @@
 		806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */; };
 		806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */; };
 		806E772225C2517D00B82ECE /* AddMembersModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E772125C2517C00B82ECE /* AddMembersModalView.swift */; };
+		806E777625C4FEBE00B82ECE /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E777525C4FEBE00B82ECE /* Group.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */; };
@@ -192,6 +193,7 @@
 		806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsViewController.swift; sourceTree = "<group>"; };
 		806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingTableViewCell.swift; sourceTree = "<group>"; };
 		806E772125C2517C00B82ECE /* AddMembersModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersModalView.swift; sourceTree = "<group>"; };
+		806E777525C4FEBE00B82ECE /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B724DF96BB002891C4 /* MediaListsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListsModalView.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				803E5F0A259D41B4004CF4B7 /* Suggestion.swift */,
 				D45A3D7A25A8485B0094161A /* FriendRequest.swift */,
 				803E5FF325AABEE0004CF4B7 /* Provider.swift */,
+				806E777525C4FEBE00B82ECE /* Group.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -978,6 +981,7 @@
 				D45A3E1925A9A7E90094161A /* Keys.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
+				806E777625C4FEBE00B82ECE /* Group.swift in Sources */,
 				D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */,
 				80B3F9B824DF96BB002891C4 /* MediaListsModalView.swift in Sources */,
 				80F00F7424B96D410051B8FF /* PrivacySwitch.swift in Sources */,
