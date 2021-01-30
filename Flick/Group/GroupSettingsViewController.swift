@@ -25,8 +25,8 @@ class GroupSettingsViewController: UIViewController {
 
     private enum SectionType {
         case details
+        case ideas
         case results
-        case suggestions
     }
 
     private enum GroupSettingsType {
@@ -53,7 +53,7 @@ class GroupSettingsViewController: UIViewController {
             case .addMembers:
                 return "Add members"
             case .clear:
-                return "Clear current suggestions"
+                return "Clear current ideas"
             case .rename:
                 return "Rename \"flick chicks\""
             case .viewResults:
@@ -96,10 +96,10 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func setupSections() {
-        let suggestionsSection = Section(type: .suggestions, header: "Suggestions", footer: "This removes the active suggestions and votes so that you can start again", settingItems: [.clear])
+        let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear])
         let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
         let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
-        sections = [suggestionsSection, resultsSection, detailsSection]
+        sections = [ideasSection, resultsSection, detailsSection]
     }
 
     private func setupNavigationBar() {
