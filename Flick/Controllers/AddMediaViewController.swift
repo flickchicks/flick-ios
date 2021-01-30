@@ -55,7 +55,7 @@ class AddMediaViewController: UIViewController {
 
     private var isSearching = false
     private var isSelectedHidden = true
-    private var list: MediaList
+    private var list: MediaList?
     private var searchResultMedia: [Media] = []
     private var selectedMedia: [SimpleMedia] = []
 //    private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
@@ -67,7 +67,7 @@ class AddMediaViewController: UIViewController {
 
     weak var delegate: AddMediaDelegate?
 
-    init(type: AddMediaType, height: Float, list: MediaList) {
+    init(type: AddMediaType, height: Float, list: MediaList? = nil) {
         self.type = type
         self.list = list
         self.height = height
@@ -292,6 +292,7 @@ class AddMediaViewController: UIViewController {
         case .toGroup:
             print("Add to group")
         case .toList:
+            guard let list = list else { return }
             NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
                 guard let self = self else { return }
                 self.list = list
@@ -311,7 +312,8 @@ class AddMediaViewController: UIViewController {
         showSelectedMedia()
     }
 
-    @ objc private func quickAddTapped() {
+    @objc private func quickAddTapped() {
+        print("Quick add tapped")
     }
 
     @objc private func handleDragToDismiss(sender: UIPanGestureRecognizer) {

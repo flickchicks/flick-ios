@@ -184,7 +184,10 @@ class GroupVoteViewController: UIViewController {
 
         delegate?.hideNavigationBarItems()
 
-        let addToListVC = AddMediaViewController(type: .toGroup , height: Float(posterImageView.frame.height + 162 + bottomPadding), list: MediaList(id: 1, name: "", pic: nil, isSaved: true, isPrivate: true, isWatchLater: true, collaborators: [], owner: UserProfile(id: 1, username: "", name: "", profilePic: nil, bio: nil, phoneNumber: nil, socialId: nil, socialIdToken: nil, socialIdTokenType: nil, numNotifs: nil, ownerLsts: [], collabLsts: [], numMutualFriends: nil, friendStatus: nil), shows: [], tags: []))
+        let addToListVC = AddMediaViewController(
+            type: .toGroup,
+            height: Float(posterImageView.frame.height + 162 + bottomPadding)
+        )
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
