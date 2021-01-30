@@ -21,8 +21,18 @@ class GroupVoteViewController: UIViewController {
     private let voteYesButton = UIButton()
 
     // MARK: - Private Data Vars
+    private var groupId: Int
     private var ideas: [Media] = []
     private var media: Media? // temp to remove
+
+    init(groupId: Int) {
+        self.groupId = groupId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

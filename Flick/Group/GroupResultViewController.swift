@@ -15,6 +15,18 @@ class GroupResultViewController: UIViewController {
     private let votingStatusImageView = UIImageView(image: UIImage(named: "stillVotingIcon"))
     private let votingStatusLabel = UILabel()
 
+    // MARK: - Private Data Vars
+    private var groupId: Int
+
+    init(groupId: Int) {
+        self.groupId = groupId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite

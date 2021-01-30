@@ -1,5 +1,5 @@
 //
-//  AddListModalView.swift
+//  EnterNameModalView.swift
 //  Flick
 //
 //  Created by Lucy Xu on 7/4/20.
@@ -8,6 +8,10 @@
 
 import Foundation
 import UIKit
+
+protocol CreateGroupDelegate: class {
+    func createGroup(title: String)
+}
 
 protocol CreateListDelegate: class {
     func createList(title: String)
@@ -18,10 +22,12 @@ protocol RenameGroupDelegate: class {
 }
 
 enum EnterNameModalType {
-    case createList, renameGroup, renameList
+    case createGroup, createList, renameGroup, renameList
 
     var titleText: String {
         switch self {
+        case .createGroup:
+            return "Create a new group"
         case .createList:
             return "Create new list"
         case .renameGroup:
@@ -41,6 +47,7 @@ class EnterNameModalView: ModalView {
     private let titleLabel = UILabel()
 
     // MARK: - Data Vars
+    weak var createGroupDelegate: CreateGroupDelegate?
     weak var createListDelegate: CreateListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     weak var renameGroupDelegate: RenameGroupDelegate?
@@ -95,7 +102,7 @@ class EnterNameModalView: ModalView {
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(containerView).offset(verticalPadding)
-            make.leading.equalTo(containerView).offset(horizontalPadding)
+            make.leading.trailing.equalTo(containerView).inset(horizontalPadding)
             make.size.equalTo(titleLabelSize)
         }
 
@@ -123,6 +130,8 @@ class EnterNameModalView: ModalView {
             nameText.trimmingCharacters(in: .whitespaces) != ""
             else { return }
         switch type {
+        case .createGroup:
+            createGroupDelegate?.createGroup(title: nameText)
         case .createList:
             createListDelegate?.createList(title: nameText)
         case .renameGroup:

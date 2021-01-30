@@ -13,12 +13,23 @@ class GroupViewController: UIViewController {
     // MARK: - Private View Vars
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
-    private let tabPageViewController = GroupTabPageViewController()
+    private var tabPageViewController: GroupTabPageViewController
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
+    private var shouldAddMembers: Bool
     private let tabBarHeight: CGFloat = 40
     private let tabs = ["Vote", "Results"]
+
+    init(groupId: Int, shouldAddMembers: Bool = false) {
+        self.shouldAddMembers = shouldAddMembers
+        self.tabPageViewController = GroupTabPageViewController(groupId: groupId)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
