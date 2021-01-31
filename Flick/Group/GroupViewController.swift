@@ -137,7 +137,7 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-        let groupSettingsVC = GroupSettingsViewController(group: group)
+        let groupSettingsVC = GroupSettingsViewController(groupId: groupId, group: group)
         groupSettingsVC.delegate = self
         navigationController?.pushViewController(groupSettingsVC, animated: true)
     }
