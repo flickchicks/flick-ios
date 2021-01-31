@@ -14,16 +14,20 @@ class GroupViewController: UIViewController {
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
     private var tabPageViewController: GroupTabPageViewController
+    private let addMembersModalView = AddMembersModalView()
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
+    private var group: Group?
+    private var groupId: Int
     private var shouldAddMembers: Bool
     private let tabBarHeight: CGFloat = 40
     private let tabs = ["Vote", "Results"]
 
     init(groupId: Int, shouldAddMembers: Bool = false) {
-        self.shouldAddMembers = shouldAddMembers
+        self.groupId = groupId
         self.tabPageViewController = GroupTabPageViewController(groupId: groupId)
+        self.shouldAddMembers = shouldAddMembers
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -33,6 +37,12 @@ class GroupViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if shouldAddMembers {
+            addMembersModalView.modalDelegate = self
+            showModalPopup(view: addMembersModalView)
+            shouldAddMembers = false
+        }
 
         title = "Group name" // TODO: Replace with actual name of group
         view.backgroundColor = .offWhite
@@ -66,6 +76,14 @@ class GroupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getGroup(id: groupId) { [weak self] group in
+            guard let self = self else { return }
+            self.group = group
+        }
     }
 
     private func setupConstraints() {
@@ -119,7 +137,7 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-        let groupSettingsVC = GroupSettingsViewController()
+        let groupSettingsVC = GroupSettingsViewController(group: group)
         groupSettingsVC.delegate = self
         navigationController?.pushViewController(groupSettingsVC, animated: true)
     }
@@ -172,6 +190,14 @@ extension GroupViewController: GroupSettingsDelegate {
         activeTabIndex = 1
         tabPageViewController.setViewController(to: 1)
         tabCollectionView.reloadData()
+    }
+
+}
+
+extension GroupViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
     }
 
 }

@@ -21,6 +21,7 @@ class GroupSettingsViewController: UIViewController {
         let header: String
         let footer: String?
         var settingItems: [GroupSettingsType]
+        var members: [UserProfile]
     }
 
     private enum SectionType {
@@ -48,14 +49,14 @@ class GroupSettingsViewController: UIViewController {
             }
         }
 
-        var title: String {
+        func getTitle(group: Group?) -> String {
             switch self {
             case .addMembers:
                 return "Add members"
             case .clear:
                 return "Clear current ideas"
             case .rename:
-                return "Rename \"flick chicks\""
+                return "Rename \(group?.name ?? "")"
             case .viewResults:
                 return "View results"
             }
@@ -67,7 +68,17 @@ class GroupSettingsViewController: UIViewController {
 
     // MARK: - Data Vars
     weak var delegate: GroupSettingsDelegate?
+    private var group: Group?
     private var sections: [Section] = []
+
+    init(group: Group?) {
+        self.group = group
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,9 +107,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func setupSections() {
-        let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear])
-        let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
-        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
+        let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear], members: [])
+        let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults], members: [])
+        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers], members: group?.members ?? [])
         sections = [ideasSection, resultsSection, detailsSection]
     }
 
@@ -163,15 +174,30 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].settingItems.count
+        let section = sections[section]
+        switch section.type {
+        case .details:
+            return section.settingItems.count + section.members.count
+        default:
+            return section.settingItems.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
-        let item = section.settingItems[indexPath.row]
-        cell.configure(icon: item.icon, title: item.title)
-        return cell
+        if indexPath.row < section.settingItems.count {
+            // Setup cell for settings action item
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
+            let item = section.settingItems[indexPath.row]
+            cell.configure(icon: item.icon, title: item.getTitle(group: group))
+            return cell
+        } else {
+            // Setup cell for group member
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
+            let member = section.members[indexPath.row]
+            cell.configure(user: member)
+            return cell
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
