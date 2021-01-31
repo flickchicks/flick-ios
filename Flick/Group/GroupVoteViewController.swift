@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol GroupVoteDelegate: class {
+    func hideNavigationBarItems()
+    func showNavigationBarItems()
+}
+
 class GroupVoteViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -20,7 +25,8 @@ class GroupVoteViewController: UIViewController {
     private let voteNoButton = UIButton()
     private let voteYesButton = UIButton()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
+    weak var delegate: GroupVoteDelegate?
     private var ideas: [Media] = []
     private var media: Media? // temp to remove
 
@@ -49,6 +55,7 @@ class GroupVoteViewController: UIViewController {
         addIdeasButton.layer.borderWidth = 2
         addIdeasButton.layer.borderColor = UIColor.gradientPurple.cgColor
         addIdeasButton.layer.cornerRadius = 20
+        addIdeasButton.addTarget(self, action: #selector(addIdeasPressed), for: .touchUpInside)
         view.addSubview(addIdeasButton)
 
         let infoTextLabel = UILabel()
@@ -171,6 +178,21 @@ class GroupVoteViewController: UIViewController {
         }
     }
 
+    @objc private func addIdeasPressed() {
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
+
+        delegate?.hideNavigationBarItems()
+
+        let addToListVC = AddMediaViewController(
+            type: .toGroup,
+            height: Float(posterImageView.frame.height + 162 + bottomPadding)
+        )
+        addToListVC.delegate = self
+        addToListVC.modalPresentationStyle = .overCurrentContext
+        present(addToListVC, animated: true, completion: nil)
+    }
+
 }
 
 extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
@@ -187,4 +209,17 @@ extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(with: media)
         return cell
     }
+}
+
+extension GroupVoteViewController: AddMediaDelegate {
+
+    func addMediaDismissed() {
+        delegate?.showNavigationBarItems()
+    }
+
+    func reloadMedia() {
+        print("Reload media to vote")
+        presentInfoAlert(message: "Added ideas", completion: nil)
+    }
+
 }

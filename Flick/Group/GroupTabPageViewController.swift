@@ -16,7 +16,7 @@ class GroupTabPageViewController: UIPageViewController {
 
     private var pages: [UIViewController] = [UIViewController]()
     private var resultViewController: GroupResultViewController!
-    private var voteViewController: GroupVoteViewController!
+    var voteViewController: GroupVoteViewController!
 
     weak var tabDelegate: GroupTabDelegate?
 

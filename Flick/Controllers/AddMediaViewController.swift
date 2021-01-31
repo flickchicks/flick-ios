@@ -1,5 +1,5 @@
 //
-//  AddToListViewController.swift
+//  AddMediaViewController.swift
 //  Flick
 //
 //  Created by Haiying W on 6/27/20.
@@ -8,18 +8,32 @@
 
 import UIKit
 
-protocol AddToListDelegate: class {
-    func addToListDismissed()
-    func reloadList()
+enum AddMediaType {
+    case toGroup, toList
+
+    var title: String {
+        switch self {
+        case .toGroup:
+            return "Add Ideas"
+        case .toList:
+            return "Add to List"
+        }
+    }
 }
 
-class AddToListViewController: UIViewController {
+protocol AddMediaDelegate: class {
+    func addMediaDismissed()
+    func reloadMedia()
+}
+
+class AddMediaViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let addToListLabel = UILabel()
+    private let titleLabel = UILabel()
     private let backButton = UIButton()
     private let chevronButton = UIButton()
     private let doneButton = UIButton()
+    private let quickAddButton = UIButton()
     private let searchBar = SearchBar()
     private let selectedLabel = UILabel()
     private var selectedMediaCollectionView: UICollectionView!
@@ -41,19 +55,20 @@ class AddToListViewController: UIViewController {
 
     private var isSearching = false
     private var isSelectedHidden = true
-    private var list: MediaList
-    // TODO: Get result from backend. Media are string for now
+    private var list: MediaList?
     private var searchResultMedia: [Media] = []
     private var selectedMedia: [SimpleMedia] = []
 //    private var suggestedMedia = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     private var timer: Timer?
+    private var type: AddMediaType
 
     // Keeps track of current position of pan gesture
     private var viewTranslation = CGPoint(x: 0, y: 0)
 
-    weak var delegate: AddToListDelegate?
+    weak var delegate: AddMediaDelegate?
 
-    init(height: Float, list: MediaList) {
+    init(type: AddMediaType, height: Float, list: MediaList? = nil) {
+        self.type = type
         self.list = list
         self.height = height
         super.init(nibName: nil, bundle: nil)
@@ -69,10 +84,10 @@ class AddToListViewController: UIViewController {
 
         view.addSubview(roundTopView)
 
-        addToListLabel.text = "Add to List"
-        addToListLabel.textColor = .darkBlue
-        addToListLabel.font = .systemFont(ofSize: 18, weight: .medium)
-        view.addSubview(addToListLabel)
+        titleLabel.text = type.title
+        titleLabel.textColor = .darkBlue
+        titleLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        view.addSubview(titleLabel)
 
         chevronButton.setImage(UIImage(named: "downChevron"), for: .normal)
         chevronButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
@@ -140,6 +155,19 @@ class AddToListViewController: UIViewController {
         searchBar.delegate = self
         view.addSubview(searchBar)
 
+        if type == .toGroup {
+            quickAddButton.setTitle("Quick Add", for: .normal)
+            quickAddButton.setTitleColor(.darkBlueGray2, for: .normal)
+            quickAddButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+            quickAddButton.backgroundColor = .lightGray2
+            quickAddButton.titleEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
+            quickAddButton.layer.cornerRadius = 12.5
+            quickAddButton.layer.borderWidth = 1
+            quickAddButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
+            quickAddButton.addTarget(self, action: #selector(quickAddTapped), for: .touchUpInside)
+            view.addSubview(quickAddButton)
+        }
+
         getCellSize()
         setupConstraints()
 
@@ -173,7 +201,7 @@ class AddToListViewController: UIViewController {
         let labelLeadingOffset = 36
         let verticalOffset = 20
 
-        addToListLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.top.equalTo(roundTopView).offset(30)
             make.leading.equalToSuperview().offset(labelLeadingOffset)
             make.trailing.equalToSuperview()
@@ -226,8 +254,16 @@ class AddToListViewController: UIViewController {
 
         searchBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(26)
-            make.top.equalTo(addToListLabel.snp.bottom).offset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(12)
             make.height.equalTo(40)
+        }
+
+        if type == .toGroup {
+            quickAddButton.snp.makeConstraints { make in
+                make.top.equalTo(selectedLabel.snp.bottom).offset(verticalOffset)
+                make.trailing.equalToSuperview().inset(21)
+                make.size.equalTo(CGSize(width: 95, height: 25))
+            }
         }
     }
 
@@ -252,11 +288,17 @@ class AddToListViewController: UIViewController {
             return
         }
         let mediaIds = selectedMedia.map { $0.id }
-        NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-            self.selectedMedia = []
-            self.dismissVC(isMediaAdded: true)
+        switch type {
+        case .toGroup:
+            print("Add to group")
+        case .toList:
+            guard let list = list else { return }
+            NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+                guard let self = self else { return }
+                self.list = list
+                self.selectedMedia = []
+                self.dismissVC(isMediaAdded: true)
+            }
         }
     }
 
@@ -268,6 +310,10 @@ class AddToListViewController: UIViewController {
         isSelectedHidden.toggle()
         chevronButton.setImage(UIImage(named: isSelectedHidden ? "downChevron" : "upChevron"), for: .normal)
         showSelectedMedia()
+    }
+
+    @objc private func quickAddTapped() {
+        print("Quick add tapped")
     }
 
     @objc private func handleDragToDismiss(sender: UIPanGestureRecognizer) {
@@ -342,16 +388,16 @@ class AddToListViewController: UIViewController {
 
     private func dismissVC(isMediaAdded: Bool = false) {
         dismiss(animated: true) {
-            self.delegate?.addToListDismissed()
+            self.delegate?.addMediaDismissed()
             if isMediaAdded {
-                self.delegate?.reloadList()
+                self.delegate?.reloadMedia()
             }
         }
     }
 
 }
 
-extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
+extension AddMediaViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResultMedia.count
@@ -379,7 +425,7 @@ extension AddToListViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension AddToListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension AddMediaViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return collectionView == selectedMediaCollectionView ? selectedMedia.count : suggestedMedia.count
@@ -419,7 +465,7 @@ extension AddToListViewController: UICollectionViewDataSource, UICollectionViewD
 
 }
 
-extension AddToListViewController: UICollectionViewDelegateFlowLayout {
+extension AddMediaViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionViewCellSize
@@ -427,18 +473,20 @@ extension AddToListViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-extension AddToListViewController: UISearchBarDelegate {
+extension AddMediaViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             isSearching = false
             resultLabel.text = ""
             resultMediaTableView.isHidden = true
+            quickAddButton.isHidden = false
 //            suggestedMediaCollectionView.isHidden = false
         } else {
             isSearching = true
             resultLabel.text = "\(searchResultMedia.count) Results"
             resultMediaTableView.isHidden = false
+            quickAddButton.isHidden = true
 //            suggestedMediaCollectionView.isHidden = true
 
             timer?.invalidate()
