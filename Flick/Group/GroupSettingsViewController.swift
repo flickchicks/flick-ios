@@ -66,15 +66,11 @@ class GroupSettingsViewController: UIViewController {
 
     // MARK: - Data Vars
     weak var delegate: GroupSettingsDelegate?
-    private var group: Group?
-    private var groupId: Int
+    private var group: Group
     private var sections: [Section] = []
 
-    // groupId is used to make request to get group by id
-    // group (if not nil) is used to pre-populate group name and group members
-    init(groupId: Int, group: Group?) {
+    init(group: Group) {
         self.group = group
-        self.groupId = groupId
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -110,7 +106,7 @@ class GroupSettingsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NetworkManager.getGroup(id: groupId) { group in
+        NetworkManager.getGroup(id: group.id) { group in
             DispatchQueue.main.async {
                 self.group = group
                 // Reload details section
@@ -194,7 +190,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let section = sections[section]
         switch section.type {
         case .details:
-            return section.settingItems.count + (group?.members ?? []).count
+            return section.settingItems.count + group.members.count
         default:
             return section.settingItems.count
         }
@@ -211,7 +207,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         } else {
             // Setup cell for group member
             guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
-            let member = (group?.members ?? [])[indexPath.row]
+            let member = group.members[indexPath.row]
             cell.configure(user: member)
             return cell
         }
@@ -289,6 +285,17 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate {
     }
 
     func renameGroup(title: String) {
-        print("Rename group")
+        NetworkManager.updateGroup(id: group.id, name: title) { [weak self] group in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.group = group
+                // Reload details section
+                self.sections.enumerated().forEach { (index, section) in
+                    if section.type == .details {
+                        self.settingsTableView.reloadSections(IndexSet([index]), with: .automatic)
+                    }
+                }
+            }
+        }
     }
 }

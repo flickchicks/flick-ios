@@ -851,7 +851,7 @@ class NetworkManager {
     }
 
     /// [POST] Update group detail [updated as of 1/29/21]
-    static func updateGroup(id: String, name: String, completion: @escaping (Group) -> Void) {
+    static func updateGroup(id: Int, name: String, completion: @escaping (Group) -> Void) {
         let parameters: [String: Any] = [
             "name": name
         ]
@@ -872,7 +872,7 @@ class NetworkManager {
     }
 
     /// [POST] Add  to group [updated as of 1/29/21]
-    static func addToGroup(id: String, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
+    static func addToGroup(id: Int, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
         let parameters: [String: Any] = [
             "members": memberIds,
             "shows": showIds
@@ -894,7 +894,7 @@ class NetworkManager {
     }
 
     /// [POST] Remove froms group [updated as of 1/29/21]
-    static func removeFromGroup(id: String, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
+    static func removeFromGroup(id: Int, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
         let parameters: [String: Any] = [
             "members": memberIds,
             "shows": showIds

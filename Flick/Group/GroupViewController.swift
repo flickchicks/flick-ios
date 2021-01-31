@@ -18,15 +18,14 @@ class GroupViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
-    private var group: Group?
-    private var groupId: Int
+    private var group: Group
     private var shouldAddMembers: Bool
     private let tabBarHeight: CGFloat = 40
     private let tabs = ["Vote", "Results"]
 
-    init(groupId: Int, shouldAddMembers: Bool = false) {
-        self.groupId = groupId
-        self.tabPageViewController = GroupTabPageViewController(groupId: groupId)
+    init(group: Group, shouldAddMembers: Bool = false) {
+        self.group = group
+        self.tabPageViewController = GroupTabPageViewController(groupId: group.id)
         self.shouldAddMembers = shouldAddMembers
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,7 +43,7 @@ class GroupViewController: UIViewController {
             shouldAddMembers = false
         }
 
-        title = "Group name" // TODO: Replace with actual name of group
+        title = group.name
         view.backgroundColor = .offWhite
 
         tabPageViewController.tabDelegate = self
@@ -80,7 +79,7 @@ class GroupViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NetworkManager.getGroup(id: groupId) { [weak self] group in
+        NetworkManager.getGroup(id: group.id) { [weak self] group in
             guard let self = self else { return }
             self.group = group
         }
@@ -137,7 +136,7 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-        let groupSettingsVC = GroupSettingsViewController(groupId: groupId, group: group)
+        let groupSettingsVC = GroupSettingsViewController(group: group)
         groupSettingsVC.delegate = self
         navigationController?.pushViewController(groupSettingsVC, animated: true)
     }

@@ -411,3 +411,17 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
 }
+
+
+// TODO: remove later, here temporarily for testing
+extension ProfileViewController: CreateGroupDelegate {
+
+    func createGroup(title: String) {
+        NetworkManager.createGroup(name: title) { [weak self] group in
+            guard let self = self else { return }
+            let groupViewController = GroupViewController(group: group, shouldAddMembers: true)
+            self.navigationController?.pushViewController(groupViewController, animated: true)
+        }
+    }
+
+}
