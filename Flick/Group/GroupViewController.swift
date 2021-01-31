@@ -11,6 +11,8 @@ import UIKit
 class GroupViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private let backButton = UIButton()
+    private let settingsButton = UIButton()
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
     private var tabPageViewController: GroupTabPageViewController
@@ -75,6 +77,7 @@ class GroupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+        tabPageViewController.voteViewController.delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -108,7 +111,6 @@ class GroupViewController: UIViewController {
         navigationController?.navigationBar.layer.shadowOpacity = 0
         navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
-        let backButton = UIButton()
         backButton.setImage(UIImage(named: "backArrow"), for: .normal)
         backButton.tintColor = .black
         backButton.snp.makeConstraints { make in
@@ -119,7 +121,6 @@ class GroupViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        let settingsButton = UIButton()
         settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
         settingsButton.tintColor = .mediumGray
         settingsButton.snp.makeConstraints { make in
@@ -192,6 +193,25 @@ extension GroupViewController: GroupSettingsDelegate {
     }
 
 }
+
+extension GroupViewController: GroupVoteDelegate {
+
+    func hideNavigationBarItems() {
+        backButton.tintColor = .clear
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        settingsButton.tintColor = .clear
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+
+    func showNavigationBarItems() {
+        backButton.tintColor = .black
+        navigationItem.leftBarButtonItem?.isEnabled = true
+        settingsButton.tintColor = .mediumGray
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+
+}
+
 
 extension GroupViewController: ModalDelegate {
 

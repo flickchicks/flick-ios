@@ -336,13 +336,17 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
 
     func addMedia() {
         guard let list = list else { return }
-        // Hide naviation bar items
+        // Hide navigation bar items
         backButton.tintColor = .clear
         navigationItem.leftBarButtonItem?.isEnabled = false
         settingsButton.tintColor = .clear
         navigationItem.rightBarButtonItem?.isEnabled = false
 
-        let addToListVC = AddToListViewController(height: Float(mediaCollectionView.frame.height), list: list)
+        let addToListVC = AddMediaViewController(
+            type: .toList,
+            height: Float(mediaCollectionView.frame.height),
+            list: list
+        )
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
@@ -386,16 +390,16 @@ extension ListViewController: ListSummaryDelegate {
 
 }
 
-extension ListViewController: AddToListDelegate {
+extension ListViewController: AddMediaDelegate {
 
-    func addToListDismissed() {
+    func addMediaDismissed() {
         backButton.tintColor = .black
         navigationItem.leftBarButtonItem?.isEnabled = true
         settingsButton.tintColor = .mediumGray
         navigationItem.rightBarButtonItem?.isEnabled = true
     }
 
-    func reloadList() {
+    func reloadMedia() {
         getMediaList()
         presentInfoAlert(message: "Added items to list", completion: nil)
     }
