@@ -333,9 +333,10 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
 extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
 
     func pushSettingsView() {
-        guard let user = user else { return }
-        let settingsViewController = SettingsViewController(user: user)
-        navigationController?.pushViewController(settingsViewController, animated: true)
+//        guard let user = user else { return }
+//        let settingsViewController = SettingsViewController(user: user)
+//        navigationController?.pushViewController(settingsViewController, animated: true)
+        navigationController?.pushViewController(GroupViewController(group: Group(id: 1, name: "", members: [], shows: [])), animated: true)
     }
 
     func pushNotificationsView() {
@@ -349,10 +350,14 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterNameModalView(type: .createList)
-        createListModalView.modalDelegate = self
-        createListModalView.createListDelegate = self
-        showModalPopup(view: createListModalView)
+//        let createListModalView = EnterNameModalView(type: .createList)
+//        createListModalView.modalDelegate = self
+//        createListModalView.createListDelegate = self
+//        showModalPopup(view: createListModalView)
+        let createGroupModalView = EnterNameModalView(type: .createGroup)
+        createGroupModalView.modalDelegate = self
+        createGroupModalView.createGroupDelegate = self
+        showModalPopup(view: createGroupModalView)
     }
 
     func createFriendRequest() {
