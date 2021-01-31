@@ -872,10 +872,10 @@ class NetworkManager {
     }
 
     /// [POST] Add  to group [updated as of 1/29/21]
-    static func addToGroup(id: Int, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
+    static func addToGroup(id: Int, memberIds: [Int] = [], mediaIds: [Int] = [], completion: @escaping (Group) -> Void) {
         let parameters: [String: Any] = [
             "members": memberIds,
-            "shows": showIds
+            "shows": mediaIds
         ]
 
         AF.request("\(hostEndpoint)/api/groups/\(id)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in

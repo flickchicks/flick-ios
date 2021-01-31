@@ -196,7 +196,8 @@ class GroupVoteViewController: UIViewController {
 
         let addToListVC = AddMediaViewController(
             type: .toGroup,
-            height: Float(posterImageView.frame.height + 162 + bottomPadding)
+            height: Float(posterImageView.frame.height + 162 + bottomPadding),
+            groupId: groupId
         )
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
