@@ -25,6 +25,7 @@ class GroupViewController: UIViewController {
     private let tabBarHeight: CGFloat = 40
     private let tabs = ["Vote", "Results"]
 
+    // shouldAddMembers only true when group is just created
     init(group: Group, shouldAddMembers: Bool = false) {
         self.group = group
         self.tabPageViewController = GroupTabPageViewController(groupId: group.id)
