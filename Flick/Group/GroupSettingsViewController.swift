@@ -80,7 +80,7 @@ class GroupSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Group settings"
+        title = "Group Settings"
         view.backgroundColor = .offWhite
 
         setupSections()
@@ -109,12 +109,7 @@ class GroupSettingsViewController: UIViewController {
         NetworkManager.getGroup(id: group.id) { group in
             DispatchQueue.main.async {
                 self.group = group
-                // Reload details section
-                self.sections.enumerated().forEach { (index, section) in
-                    if section.type == .details {
-                        self.settingsTableView.reloadSections(IndexSet([index]), with: .automatic)
-                    }
-                }
+                self.reloadDetailsSection()
             }
         }
     }
@@ -122,7 +117,7 @@ class GroupSettingsViewController: UIViewController {
     private func setupSections() {
         let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear])
         let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
-        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
+        let detailsSection = Section(type: .details, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
         sections = [ideasSection, resultsSection, detailsSection]
     }
 
@@ -156,8 +151,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showAddMembersModal() {
-        let addMembersModalView = AddMembersModalView()
+        let addMembersModalView = AddMembersModalView(group: group)
         addMembersModalView.modalDelegate = self
+        addMembersModalView.delegate = self
         showModalPopup(view: addMembersModalView)
     }
 
@@ -176,6 +172,14 @@ class GroupSettingsViewController: UIViewController {
         renameGroupModalView.modalDelegate = self
         renameGroupModalView.renameGroupDelegate = self
         showModalPopup(view: renameGroupModalView)
+    }
+
+    private func reloadDetailsSection() {
+        sections.enumerated().forEach { (index, section) in
+            if section.type == .details {
+                settingsTableView.reloadSections(IndexSet([index]), with: .automatic)
+            }
+        }
     }
 
 }
@@ -207,7 +211,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         } else {
             // Setup cell for group member
             guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
-            let member = group.members[indexPath.row]
+            let member = group.members[indexPath.row - section.settingItems.count]
             cell.configure(user: member)
             return cell
         }
@@ -254,7 +258,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return 54
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -278,7 +282,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
 
 }
 
-extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate {
+extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMembersDelegate {
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
@@ -289,13 +293,16 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.group = group
-                // Reload details section
-                self.sections.enumerated().forEach { (index, section) in
-                    if section.type == .details {
-                        self.settingsTableView.reloadSections(IndexSet([index]), with: .automatic)
-                    }
-                }
+                self.reloadDetailsSection()
             }
         }
     }
+
+    func reloadGroupMembers(group: Group) {
+        DispatchQueue.main.async {
+            self.group = group
+            self.reloadDetailsSection()
+        }
+    }
+
 }

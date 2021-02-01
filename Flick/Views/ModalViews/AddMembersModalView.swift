@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AddMembersDelegate: class {
+    func reloadGroupMembers(group: Group)
+}
+
 class AddMembersModalView: ModalView {
 
     // MARK: - Private View Vars
@@ -15,13 +19,16 @@ class AddMembersModalView: ModalView {
     private let titleLabel = UILabel()
     private let usersTableView = UITableView()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
+    weak var delegate: AddMembersDelegate?
     private var friends: [UserProfile] = []
+    private var group: Group
     private var isSearching: Bool = false
     private var timer: Timer?
     private var users: [UserProfile] = []
 
-    override init() {
+    init(group: Group) {
+        self.group = group
         super.init()
 
         titleLabel.text = "Add members"
@@ -109,7 +116,9 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let user = isSearching ? users[indexPath.row] : friends[indexPath.row]
-        cell.configureFriend(for: user, isAdded: false) // false is temp
+        let isAdded = group.members.contains { user.id == $0.id }
+        cell.configureForAdd(user: user, isAdded: isAdded)
+        cell.delegate = self
         return cell
     }
 
@@ -142,6 +151,38 @@ extension AddMembersModalView: UISearchBarDelegate {
                 repeats: false
             )
         }
+    }
+
+}
+
+extension AddMembersModalView: EditUserCellDelegate {
+
+    func addUserTapped(user: UserProfile) {
+        NetworkManager.addToGroup(id: group.id, memberIds: [user.id]) { [weak self] group in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.group = group
+                // Reload table view row for added user
+                if self.isSearching {
+                    self.users.enumerated().forEach { (index, resultUser) in
+                        if user.id == resultUser.id {
+                            self.usersTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        }
+                    }
+                } else {
+                    self.friends.enumerated().forEach { (index, friend) in
+                        if user.id == friend.id {
+                            self.usersTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                        }
+                    }
+                }
+                self.delegate?.reloadGroupMembers(group: group)
+            }
+        }
+    }
+
+    func removeUserTapped(user: UserProfile) {
+        print("Remove user tapped")
     }
 
 }

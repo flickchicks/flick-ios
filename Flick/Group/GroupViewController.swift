@@ -16,7 +16,7 @@ class GroupViewController: UIViewController {
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
     private var tabPageViewController: GroupTabPageViewController
-    private let addMembersModalView = AddMembersModalView()
+    private var addMembersModalView: AddMembersModalView!
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
@@ -28,6 +28,7 @@ class GroupViewController: UIViewController {
     init(group: Group, shouldAddMembers: Bool = false) {
         self.group = group
         self.tabPageViewController = GroupTabPageViewController(groupId: group.id)
+        self.addMembersModalView = AddMembersModalView(group: group)
         self.shouldAddMembers = shouldAddMembers
         super.init(nibName: nil, bundle: nil)
     }
@@ -85,6 +86,7 @@ class GroupViewController: UIViewController {
         NetworkManager.getGroup(id: group.id) { [weak self] group in
             guard let self = self else { return }
             self.group = group
+            self.title = group.name
         }
     }
 

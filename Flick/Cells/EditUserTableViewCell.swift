@@ -9,9 +9,9 @@
 import UIKit
 import Kingfisher
 
-protocol EditCollaboratorCellDelegate: class {
-    func addCollaboratorTapped(user: UserProfile)
-    func removeCollaboratorTapped(user: UserProfile)
+protocol EditUserCellDelegate: class {
+    func addUserTapped(user: UserProfile)
+    func removeUserTapped(user: UserProfile)
 }
 
 class EditUserTableViewCell: UITableViewCell {
@@ -23,8 +23,8 @@ class EditUserTableViewCell: UITableViewCell {
     private let usernameLabel = UILabel()
 
     // MARK: - Data Vars
-    weak var delegate: EditCollaboratorCellDelegate?
-    private var isCollaborator: Bool?
+    weak var delegate: EditUserCellDelegate?
+    private var isAddUser: Bool?
     static let reuseIdentifier = "EditUserCellReuseIdentifier"
     private var user: UserProfile?
 
@@ -61,9 +61,9 @@ class EditUserTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func configureFriend(for user: UserProfile, isAdded: Bool) {
+    func configureForAdd(user: UserProfile, isAdded: Bool) {
         self.user = user
-        self.isCollaborator = false
+        self.isAddUser = true
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let profilePic = user.profilePic {
@@ -89,7 +89,7 @@ class EditUserTableViewCell: UITableViewCell {
         }
     }
 
-    func configureCollaborator(for user: UserProfile, isOwner: Bool) {
+    func configureForRemove(user: UserProfile, isOwner: Bool) {
         self.user = user
         nameLabel.text = user.name
         if let profilePic = user.profilePic {
@@ -99,7 +99,7 @@ class EditUserTableViewCell: UITableViewCell {
             usernameLabel.text = "Owner"
             editButton.isHidden = true
         } else {
-            self.isCollaborator = true
+            self.isAddUser = false
             usernameLabel.text = "@\(user.username)"
             editButton.isHidden = false
             editButton.setTitle("Remove", for: .normal)
@@ -142,8 +142,8 @@ class EditUserTableViewCell: UITableViewCell {
     }
 
     @objc func editButtonTapped() {
-        guard let user = user, let isCollaborator = isCollaborator else { return }
-        isCollaborator ? delegate?.removeCollaboratorTapped(user: user) : delegate?.addCollaboratorTapped(user: user)
+        guard let user = user, let isAddUser = isAddUser else { return }
+        isAddUser ? delegate?.addUserTapped(user: user) : delegate?.removeUserTapped(user: user)
     }
 
     override func prepareForReuse() {
