@@ -14,3 +14,33 @@ struct Group: Codable {
     var members: [UserProfile]
     var shows: [Media]?
 }
+
+struct PendingIdeas: Codable {
+    var requestTimestamp: String
+    var shows: [Media]
+}
+
+struct GroupResult: Codable {
+    var numMembers: Int
+    var numVoted: Int
+    var userVoted: Bool
+    var results: [MediaResult]
+}
+
+struct MediaResult: Codable {
+    var id: Int
+    var numYesVotes: Int
+    var numMaybeVotes: Int
+    var numNoVotes: Int
+    var title: String
+    var posterPic: String?
+    var backdropPic: String?
+    var isTV: Bool
+    var plot: String?
+    var dateReleased: String?
+    var language: String?
+}
+
+enum Vote: String {
+    case maybe, no, yes
+}
