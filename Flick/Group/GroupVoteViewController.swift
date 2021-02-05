@@ -104,12 +104,15 @@ class GroupVoteViewController: UIViewController {
         view.addSubview(mediaInformationTableView)
 
         voteNoButton.setImage(UIImage(named: "voteNoButton"), for: .normal)
+        voteNoButton.addTarget(self, action: #selector(voteNoButtonPressed), for: .touchUpInside)
         view.addSubview(voteNoButton)
 
         voteMaybeButton.setImage(UIImage(named: "voteMaybeButton"), for: .normal)
+        voteMaybeButton.addTarget(self, action: #selector(voteMaybeButtonPressed), for: .touchUpInside)
         view.addSubview(voteMaybeButton)
 
         voteYesButton.setImage(UIImage(named: "voteYesButton"), for: .normal)
+        voteYesButton.addTarget(self, action: #selector(voteYesButtonPressed), for: .touchUpInside)
         view.addSubview(voteYesButton)
 
         setupConstraints()
@@ -202,6 +205,18 @@ class GroupVoteViewController: UIViewController {
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
+    }
+
+    @objc private func voteNoButtonPressed() {
+    }
+
+    @objc private func voteMaybeButtonPressed() {
+    }
+
+    @objc private func voteYesButtonPressed() {
+    }
+
+    private func vote(vote: Vote) {
     }
 
 }

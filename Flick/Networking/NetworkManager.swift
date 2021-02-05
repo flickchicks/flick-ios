@@ -916,14 +916,18 @@ class NetworkManager {
     }
 
     /// [POST] Clear group ideas [updated as of 2/4/21]
-    static func clearIdeas(id: Int, completion: @escaping (Bool) -> Void) {
+    static func clearIdeas(id: Int, completion: @escaping (Group) -> Void) {
         AF.request("\(hostEndpoint)/api/groups/\(id)/shows/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
-            case .success:
-                completion(true)
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
             case .failure(let error):
                 print(error.localizedDescription)
-                completion(false)
             }
         }
     }

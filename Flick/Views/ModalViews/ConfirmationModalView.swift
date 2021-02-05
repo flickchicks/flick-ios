@@ -10,6 +10,10 @@ import UIKit
 
 enum ConfirmationType { case clearIdeas, deleteList, removeMedia }
 
+protocol ClearIdeasDelegate: class {
+    func clearIdeas()
+}
+
 class ConfirmationModalView: ModalView {
 
     // MARK: - Private View Vars
@@ -19,6 +23,7 @@ class ConfirmationModalView: ModalView {
     private let subMessageLabel = UILabel()
 
     // MARK: - Private Data Var
+    weak var clearIdeasDelegate: ClearIdeasDelegate?
     weak var editListDelegate: EditListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     private var type: ConfirmationType
@@ -103,7 +108,7 @@ class ConfirmationModalView: ModalView {
         dismissModal()
         switch type {
         case .clearIdeas:
-            print("Clear ideas tapped")
+            clearIdeasDelegate?.clearIdeas()
         case .deleteList:
             listSettingsDelegate?.deleteList()
         case .removeMedia:

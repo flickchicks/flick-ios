@@ -35,7 +35,7 @@ struct MediaResult: Codable {
     var title: String
     var posterPic: String?
     var backdropPic: String?
-    var isTV: Bool
+    var isTv: Bool
     var plot: String?
     var dateReleased: String?
     var language: String?

@@ -12,11 +12,12 @@ class GroupResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
-    private let votingStatusImageView = UIImageView(image: UIImage(named: "stillVotingIcon"))
+    private let votingStatusImageView = UIImageView()
     private let votingStatusLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var groupId: Int
+    private var groupResult: GroupResult?
 
     init(groupId: Int) {
         self.groupId = groupId
@@ -33,7 +34,6 @@ class GroupResultViewController: UIViewController {
 
         view.addSubview(votingStatusImageView)
 
-        votingStatusLabel.text = "2 friends are still voting"
         votingStatusLabel.textColor = .darkBlueGray2
         votingStatusLabel.font = .systemFont(ofSize: 14)
         view.addSubview(votingStatusLabel)
@@ -47,6 +47,45 @@ class GroupResultViewController: UIViewController {
         view.addSubview(resultsTableView)
 
         setupConstraints()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getGroupResults(id: groupId) { [weak self] groupResult in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.groupResult = groupResult
+                let numNotVoted = groupResult.numMembers - groupResult.numVoted
+                if numNotVoted == 0 {
+                    self.votingStatusImageView.image = UIImage(named: "votesInIcon")
+                    self.votingStatusImageView.snp.updateConstraints { update in
+                        update.size.equalTo(CGSize(width: 20, height: 20))
+                    }
+                    self.votingStatusLabel.text = "All votes are in!"
+                } else if numNotVoted == 1 {
+                    self.votingStatusImageView.image = UIImage(named: "stillVotingIcon")
+                    self.votingStatusImageView.snp.updateConstraints { update in
+                        update.size.equalTo(CGSize(width: 32, height: 20))
+                    }
+                    if !groupResult.userVoted {
+                        self.votingStatusLabel.text = "You are still voting"
+                    } else {
+                        self.votingStatusLabel.text = "1 friend is still voting"
+                    }
+                } else {
+                    self.votingStatusImageView.image = UIImage(named: "stillVotingIcon")
+                    self.votingStatusImageView.snp.updateConstraints { update in
+                        update.size.equalTo(CGSize(width: 32, height: 20))
+                    }
+                    if !groupResult.userVoted {
+                        self.votingStatusLabel.text = "You and \(numNotVoted - 1) friends are still voting"
+                    } else {
+                        self.votingStatusLabel.text = "\(numNotVoted) friends are still voting"
+                    }
+                }
+                self.resultsTableView.reloadData()
+            }
+        }
     }
 
     private func setupConstraints() {
@@ -72,12 +111,14 @@ class GroupResultViewController: UIViewController {
 extension GroupResultViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return groupResult?.results.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: VotingResultTableViewCell.reuseIdentifier, for: indexPath) as? VotingResultTableViewCell else { return UITableViewCell() }
-        cell.configure(number: indexPath.row)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: VotingResultTableViewCell.reuseIdentifier, for: indexPath) as? VotingResultTableViewCell,
+              let groupResult = groupResult else { return UITableViewCell() }
+        let result = groupResult.results[indexPath.row]
+        cell.configure(number: indexPath.row, result: result)
         return cell
     }
 
