@@ -128,4 +128,10 @@ extension GroupResultViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let groupResult = groupResult else { return }
+        let media = groupResult.results[indexPath.row]
+        navigationController?.pushViewController(MediaViewController(mediaId: media.id, mediaImageUrl: media.posterPic), animated: true)
+    }
+
 }
