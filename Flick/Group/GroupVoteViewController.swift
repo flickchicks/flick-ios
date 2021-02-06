@@ -19,6 +19,7 @@ class GroupVoteViewController: UIViewController {
     private let addIdeasButton = UIButton()
     private let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
     private let moreInfoView = UIStackView()
+    private let noIdeasLabel = UILabel()
     private let numIdeasLabel = UILabel()
     private let posterImageView = UIImageView()
     private let voteMaybeButton = UIButton()
@@ -26,27 +27,51 @@ class GroupVoteViewController: UIViewController {
     private let voteYesButton = UIButton()
 
     // MARK: - Data Vars
+    private var currentMedia: Media?
     weak var delegate: GroupVoteDelegate?
-    private var ideas: [Media] = []
-    private var media: Media? // temp to remove
+    private var groupId: Int
+    private var ideas: [Media] = [] {
+        didSet {
+            currentMedia = ideas.last
+            if ideas.isEmpty {
+                DispatchQueue.main.async {
+                    self.setupNoIdeas()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.setupIdeas()
+                }
+            }
+        }
+    }
+    private var lastRequestTime: Date?
+    private var longPressRecognizer: UILongPressGestureRecognizer!
+    private var timer: Timer?
+
+    init(groupId: Int) {
+        self.groupId = groupId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        numIdeasLabel.text = "No ideas yet"
+        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressedPoster))
+
         numIdeasLabel.textColor = .darkBlueGray2
         numIdeasLabel.font = .systemFont(ofSize: 16, weight: .medium)
         view.addSubview(numIdeasLabel)
 
-        posterImageView.backgroundColor = .lightGray
+        posterImageView.backgroundColor = .lightGray2
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.layer.cornerRadius = 25
         posterImageView.layer.masksToBounds = true
         posterImageView.isUserInteractionEnabled = true
         view.addSubview(posterImageView)
-
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressedPoster))
-        posterImageView.addGestureRecognizer(longPressRecognizer)
 
         addIdeasButton.setTitle("＋ Add Ideas", for: .normal)
         addIdeasButton.setTitleColor(.gradientPurple, for: .normal)
@@ -76,6 +101,7 @@ class GroupVoteViewController: UIViewController {
         moreInfoView.layer.cornerRadius = 12
         moreInfoView.isLayoutMarginsRelativeArrangement = true
         moreInfoView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        moreInfoView.isHidden = true
         view.addSubview(moreInfoView)
 
         mediaInformationTableView.isHidden = true
@@ -93,13 +119,24 @@ class GroupVoteViewController: UIViewController {
         mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: MediaSummaryTableViewCell.reuseIdentifier)
         view.addSubview(mediaInformationTableView)
 
+        noIdeasLabel.text = "Add or auto-generate ideas by tapping below!"
+        noIdeasLabel.textColor = .darkBlueGray2
+        noIdeasLabel.textAlignment = .center
+        noIdeasLabel.font = .systemFont(ofSize: 16)
+        noIdeasLabel.numberOfLines = 0
+        noIdeasLabel.isHidden = true
+        view.addSubview(noIdeasLabel)
+
         voteNoButton.setImage(UIImage(named: "voteNoButton"), for: .normal)
+        voteNoButton.addTarget(self, action: #selector(voteNoButtonPressed), for: .touchUpInside)
         view.addSubview(voteNoButton)
 
         voteMaybeButton.setImage(UIImage(named: "voteMaybeButton"), for: .normal)
+        voteMaybeButton.addTarget(self, action: #selector(voteMaybeButtonPressed), for: .touchUpInside)
         view.addSubview(voteMaybeButton)
 
         voteYesButton.setImage(UIImage(named: "voteYesButton"), for: .normal)
+        voteYesButton.addTarget(self, action: #selector(voteYesButtonPressed), for: .touchUpInside)
         view.addSubview(voteYesButton)
 
         setupConstraints()
@@ -107,13 +144,15 @@ class GroupVoteViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // TODO: remove later. Here temp for testing
-        NetworkManager.getMedia(mediaId: 1) { media in
-            self.media = media
-            if let url = URL(string: media.posterPic ?? "") {
-                self.posterImageView.kf.setImage(with: url)
-            }
-            self.mediaInformationTableView.reloadData()
+        getPendingIdeas()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Invalidate timer
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
         }
     }
 
@@ -139,6 +178,11 @@ class GroupVoteViewController: UIViewController {
             make.top.equalTo(posterImageView.snp.top).offset(9)
             make.trailing.equalTo(posterImageView.snp.trailing).offset(-9)
             make.size.equalTo(CGSize(width: 220, height: 24))
+        }
+
+        noIdeasLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(posterImageView)
+            make.leading.trailing.equalTo(posterImageView).inset(30)
         }
 
         addIdeasButton.snp.makeConstraints { make in
@@ -186,11 +230,89 @@ class GroupVoteViewController: UIViewController {
 
         let addToListVC = AddMediaViewController(
             type: .toGroup,
-            height: Float(posterImageView.frame.height + 162 + bottomPadding)
+            height: Float(posterImageView.frame.height + 162 + bottomPadding),
+            groupId: groupId
         )
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext
         present(addToListVC, animated: true, completion: nil)
+    }
+
+    @objc private func getPendingIdeas() {
+        lastRequestTime = Date()
+        NetworkManager.getPendingIdeas(id: groupId) { [weak self] (timestamp, ideas) in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                // Update ideas only for the lastest request
+                if timestamp.iso8601withFractionalSeconds ?? Date() >= self.lastRequestTime ?? Date() {
+                    self.ideas = ideas
+                }
+            }
+        }
+    }
+
+    private func setupIdeas() {
+        noIdeasLabel.isHidden = true
+        moreInfoView.isHidden = false
+        voteNoButton.isEnabled = true
+        voteMaybeButton.isEnabled = true
+        voteYesButton.isEnabled = true
+        posterImageView.addGestureRecognizer(longPressRecognizer)
+
+        // Invalidate timer
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+
+        if let imageUrl = URL(string: self.currentMedia?.posterPic ?? "") {
+            self.posterImageView.kf.setImage(with: imageUrl)
+        } else {
+            self.posterImageView.image = UIImage(named: "defaultMovie")
+        }
+        self.numIdeasLabel.text = "\(ideas.count) more idea\(ideas.count > 1 ? "s" : "") to vote"
+        self.mediaInformationTableView.reloadData()
+    }
+
+    private func setupNoIdeas() {
+        noIdeasLabel.isHidden = false
+        moreInfoView.isHidden = true
+        voteNoButton.isEnabled = false
+        voteMaybeButton.isEnabled = false
+        voteYesButton.isEnabled = false
+        posterImageView.removeGestureRecognizer(longPressRecognizer)
+
+        // Setup timer to get ideas every 5 seconds
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(getPendingIdeas), userInfo: nil, repeats: true)
+        }
+
+        self.numIdeasLabel.text = "No ideas yet"
+        self.posterImageView.image = nil
+        self.mediaInformationTableView.reloadData()
+    }
+
+    @objc private func voteNoButtonPressed() {
+        vote(.no)
+    }
+
+    @objc private func voteMaybeButtonPressed() {
+        vote(.maybe)
+    }
+
+    @objc private func voteYesButtonPressed() {
+        vote(.yes)
+    }
+
+    private func vote(_ vote: Vote) {
+        guard let media = currentMedia else { return }
+        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { success in
+            if success {
+                DispatchQueue.main.async {
+                    self.ideas.removeLast()
+                }
+            }
+        }
     }
 
 }
@@ -203,7 +325,7 @@ extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MediaSummaryTableViewCell.reuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell,
-              let media = media else {
+              let media = currentMedia else {
             return UITableViewCell()
         }
         cell.configure(with: media)
@@ -218,8 +340,8 @@ extension GroupVoteViewController: AddMediaDelegate {
     }
 
     func reloadMedia() {
-        print("Reload media to vote")
-        presentInfoAlert(message: "Added ideas", completion: nil)
+        getPendingIdeas()
+        presentInfoAlert(message: "Ideas added", completion: nil)
     }
 
 }

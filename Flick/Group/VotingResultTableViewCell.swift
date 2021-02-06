@@ -11,12 +11,12 @@ import UIKit
 class VotingResultTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
-    private let nameLabel = UILabel()
     private let numberLabel = UILabel()
     private let numVoteMaybeLabel = UILabel()
     private let numVoteNoLabel = UILabel()
     private let numVoteYesLabel = UILabel()
     private let posterImageView = UIImageView()
+    private let titleLabel = UILabel()
     private let voteMaybeImageView = UIImageView(image: UIImage(named: "voteMaybeEmoticon"))
     private let voteNoImageView = UIImageView(image: UIImage(named: "voteNoEmoticon"))
     private let voteYesImageView = UIImageView(image: UIImage(named: "voteYesEmoticon"))
@@ -39,27 +39,24 @@ class VotingResultTableViewCell: UITableViewCell {
 
         posterImageView.backgroundColor = .lightGray
         posterImageView.layer.cornerRadius = 4
+        posterImageView.layer.masksToBounds = true
         contentView.addSubview(posterImageView)
 
-        nameLabel.text = "Wonder Women"
-        nameLabel.font = .systemFont(ofSize: 16)
-        contentView.addSubview(nameLabel)
+        titleLabel.font = .systemFont(ofSize: 16)
+        contentView.addSubview(titleLabel)
 
         contentView.addSubview(voteMaybeImageView)
         contentView.addSubview(voteNoImageView)
         contentView.addSubview(voteYesImageView)
 
-        numVoteMaybeLabel.text = "5"
         numVoteMaybeLabel.font = .systemFont(ofSize: 16)
         numVoteMaybeLabel.textColor = .mediumGray
         contentView.addSubview(numVoteMaybeLabel)
 
-        numVoteNoLabel.text = "5"
         numVoteNoLabel.font = .systemFont(ofSize: 16)
         numVoteNoLabel.textColor = .mediumGray
         contentView.addSubview(numVoteNoLabel)
 
-        numVoteYesLabel.text = "5"
         numVoteYesLabel.font = .systemFont(ofSize: 16)
         numVoteYesLabel.textColor = .mediumGray
         contentView.addSubview(numVoteYesLabel)
@@ -88,14 +85,14 @@ class VotingResultTableViewCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 50, height: 75))
         }
 
-        nameLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.top.equalTo(numberLabel)
             make.leading.equalTo(posterImageView.snp.trailing).offset(padding)
         }
 
         voteYesImageView.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(nameLabel)
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(titleLabel)
             make.size.equalTo(voteImageViewSize)
         }
 
@@ -127,8 +124,17 @@ class VotingResultTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(number: Int) {
+    func configure(number: Int, result: MediaResult) {
         numberLabel.text = String(number)
+        titleLabel.text = result.title
+        numVoteNoLabel.text = String(result.numNoVotes)
+        numVoteYesLabel.text = String(result.numYesVotes)
+        numVoteMaybeLabel.text = String(result.numMaybeVotes)
+        if let imageUrl = URL(string: result.posterPic ?? "") {
+            posterImageView.kf.setImage(with: imageUrl)
+        } else {
+            posterImageView.image = UIImage(named: "defaultMovie")
+        }
     }
 
 }

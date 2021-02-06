@@ -226,12 +226,12 @@ extension AddCollaboratorModalView: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         if tableView == collaboratorsTableView {
             let collaborator = collaborators[indexPath.row]
-            cell.configureCollaborator(for: collaborator, isOwner: owner.id == collaborator.id)
+            cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
             cell.delegate = self
         } else {
             let friend = friends[indexPath.row]
             let isAdded = collaborators.contains { $0.id == friend.id }
-            cell.configureFriend(for: friend, isAdded: isAdded)
+            cell.configureForAdd(user: friend, isAdded: isAdded)
             cell.delegate = self
         }
         return cell
@@ -258,13 +258,13 @@ extension AddCollaboratorModalView: UISearchBarDelegate {
     }
 }
 
-extension AddCollaboratorModalView: EditCollaboratorCellDelegate {
+extension AddCollaboratorModalView: EditUserCellDelegate {
 
-    func addCollaboratorTapped(user: UserProfile) {
+    func addUserTapped(user: UserProfile) {
         listSettingsDelegate?.addCollaborator(collaborator: user)
     }
 
-    func removeCollaboratorTapped(user: UserProfile) {
+    func removeUserTapped(user: UserProfile) {
         listSettingsDelegate?.removeCollaborator(collaborator: user)
     }
 

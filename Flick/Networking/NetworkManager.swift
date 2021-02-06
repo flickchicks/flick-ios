@@ -735,7 +735,6 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-    
     }
 
     /// [POST] Update suggestion viewed time [updated as of 1/15/21]
@@ -790,6 +789,198 @@ class NetworkManager {
             case .failure(let error):
                 print(error.localizedDescription)
                 completion(false)
+            }
+        }
+    }
+
+    // MARK: - Group
+
+    /// [GET] Get groups [updated 1/29/21]
+    static func getGroups(completion: @escaping ([Group]) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupsData = try? jsonDecoder.decode(Response<[Group]>.self, from: data) {
+                    let groups = groupsData.data
+                    completion(groups)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Create a group [updated as of 1/29/21]
+    static func createGroup(name: String, completion: @escaping (Group) -> Void) {
+        let parameters: [String: Any] = [
+            "name": name,
+            "members": []
+        ]
+
+        AF.request("\(hostEndpoint)/api/groups/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get a group by id [updated 1/29/21]
+    static func getGroup(id: Int, completion: @escaping (Group) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Update group detail [updated as of 1/29/21]
+    static func updateGroup(id: Int, name: String, completion: @escaping (Group) -> Void) {
+        let parameters: [String: Any] = [
+            "name": name
+        ]
+
+        AF.request("\(hostEndpoint)/api/groups/\(id)/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Add  to group [updated as of 1/29/21]
+    static func addToGroup(id: Int, memberIds: [Int] = [], mediaIds: [Int] = [], completion: @escaping (Group) -> Void) {
+        let parameters: [String: Any] = [
+            "members": memberIds,
+            "shows": mediaIds
+        ]
+
+        AF.request("\(hostEndpoint)/api/groups/\(id)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Remove froms group [updated as of 1/29/21]
+    static func removeFromGroup(id: Int, memberIds: [Int] = [], showIds: [Int] = [], completion: @escaping (Group) -> Void) {
+        let parameters: [String: Any] = [
+            "members": memberIds,
+            "shows": showIds
+        ]
+
+        AF.request("\(hostEndpoint)/api/groups/\(id)/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Clear group ideas [updated as of 2/4/21]
+    static func clearIdeas(id: Int, completion: @escaping (Group) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/shows/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
+                    let group = groupData.data
+                    completion(group)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [GET] Get pending (unvoted) ideas [updated as of 2/4/21]
+    static func getPendingIdeas(id: Int, completion: @escaping ((String, [Media])) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/pending/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let responseData = try? jsonDecoder.decode(Response<PendingIdeas>.self, from: data) {
+                    let media = responseData.data.shows
+                    let timestamp = responseData.data.requestTimestamp
+                    completion((timestamp, media))
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Vote for an idea [updated as of 2/4/21]
+    static func voteForIdea(groupId: Int, mediaId: Int, vote: Vote, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "vote": vote.rawValue
+        ]
+
+        AF.request("\(hostEndpoint)/api/groups/\(groupId)/shows/\(mediaId)/vote/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [GET] Get group results [updated as of 2/4/21]
+    static func getGroupResults(id: Int, completion: @escaping (GroupResult) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/shows/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let resultData = try? jsonDecoder.decode(Response<GroupResult>.self, from: data) {
+                    let result = resultData.data
+                    completion(result)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }

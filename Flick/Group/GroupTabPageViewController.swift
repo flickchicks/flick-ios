@@ -18,13 +18,11 @@ class GroupTabPageViewController: UIPageViewController {
     private var resultViewController: GroupResultViewController!
     var voteViewController: GroupVoteViewController!
 
+    private var groupId: Int
     weak var tabDelegate: GroupTabDelegate?
 
-    override init(
-        transitionStyle style: UIPageViewController.TransitionStyle,
-        navigationOrientation: UIPageViewController.NavigationOrientation,
-        options: [UIPageViewController.OptionsKey : Any]? = nil
-    ) {
+    init(groupId: Int) {
+        self.groupId = groupId
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     }
 
@@ -44,8 +42,8 @@ class GroupTabPageViewController: UIPageViewController {
         view.addGestureRecognizer(leftSwipeGestureRecognizer)
         view.addGestureRecognizer(rightSwipeGestureRecognizer)
 
-        resultViewController = GroupResultViewController()
-        voteViewController = GroupVoteViewController()
+        resultViewController = GroupResultViewController(groupId: groupId)
+        voteViewController = GroupVoteViewController(groupId: groupId)
         pages = [voteViewController, resultViewController]
 
         setViewControllers([pages[0]], direction: .forward, animated: true, completion: nil)
