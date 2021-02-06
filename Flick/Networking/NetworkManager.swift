@@ -22,15 +22,14 @@ class NetworkManager {
     }
 
     #if LOCAL
-    private static let hostEndpoint = "https://\(Keys.serverURL)"
-//    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "http://localhost:8000"
     #else
     private static let hostEndpoint = "https://\(Keys.serverURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
     private static let discoverBaseUrl = "\(hostEndpoint)/api/discover/show/"
-    
+
     private static func getUrlWithQuery(baseUrl: String, items: [String: String]) -> String? {
         guard let baseUrl = URL(string: baseUrl) else { return nil }
         var urlComp = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)

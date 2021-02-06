@@ -18,7 +18,6 @@ protocol DiscoverSearchResultDelegate: class {
 class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private View Vars
-//    private let noResultsLabel = UILabel()
     private let emptyStateView = EmptyStateView(type: .search)
     private let resultsTableView = UITableView()
 
@@ -52,13 +51,11 @@ class DiscoverSearchResultViewController: UIViewController {
 
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
-        
-//        resultsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
-
+    
         resultsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         emptyStateView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(75)
             make.centerX.equalToSuperview()
@@ -89,7 +86,6 @@ class DiscoverSearchResultViewController: UIViewController {
                     self.emptyStateView.isHidden = !shows.isEmpty
                     self.media = shows
                     self.resultsTableView.reloadData()
-//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .people:
@@ -99,7 +95,6 @@ class DiscoverSearchResultViewController: UIViewController {
                     self.emptyStateView.isHidden = !users.isEmpty
                     self.users = users
                     self.resultsTableView.reloadData()
-//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .tags:
@@ -109,7 +104,6 @@ class DiscoverSearchResultViewController: UIViewController {
                     self.emptyStateView.isHidden = !tags.isEmpty
                     self.tags = tags
                     self.resultsTableView.reloadData()
-//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .lists:
@@ -119,7 +113,6 @@ class DiscoverSearchResultViewController: UIViewController {
                     self.emptyStateView.isHidden = !lists.isEmpty
                     self.lists = lists
                     self.resultsTableView.reloadData()
-//                    self.resultsTableView.hideSkeleton()
                 }
             }
         default:

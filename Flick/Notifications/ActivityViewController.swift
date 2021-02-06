@@ -58,7 +58,7 @@ class ActivityViewController: UIViewController {
             make.top.equalToSuperview().offset(8)
             make.leading.trailing.bottom.equalToSuperview()
         }
-//
+
         emptyStateView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(150)
             make.centerX.equalToSuperview()

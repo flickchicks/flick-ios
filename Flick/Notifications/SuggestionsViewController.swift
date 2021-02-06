@@ -11,10 +11,9 @@ import UIKit
 class SuggestionsViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private let emptyStateView = EmptyStateView(type: .suggestions)
     private let suggestionsTableView = UITableView(frame: .zero)
     private let refreshControl = UIRefreshControl()
-    
-    private let emptyStateView = EmptyStateView(type: .suggestions)
     
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = []
