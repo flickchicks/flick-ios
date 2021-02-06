@@ -21,6 +21,7 @@ class ListPreviewView: UIView {
             setupMediaImages()
         }
     }
+    
     init() {
         super.init(frame: .zero)
 

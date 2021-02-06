@@ -23,9 +23,8 @@ class NetworkManager {
 
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
-//    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #else
-    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "https://\(Keys.serverURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
@@ -57,6 +56,8 @@ class NetworkManager {
             "social_id_token": socialIdToken,
             "social_id_token_type": socialIdTokenType
         ]
+        
+        print("\(hostEndpoint)/api/authenticate/")
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
 //            debugPrint(response)
@@ -79,7 +80,7 @@ class NetworkManager {
         
         var myProfileURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/me/")!)
         myProfileURLRequest.httpMethod = "GET"
-        myProfileURLRequest.cachePolicy = .returnCacheDataElseLoad
+        myProfileURLRequest.cachePolicy = .reloadIgnoringCacheData
         myProfileURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(myProfileURLRequest).validate().responseData { response in

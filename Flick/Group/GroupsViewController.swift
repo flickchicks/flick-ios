@@ -12,6 +12,7 @@ class GroupsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let createGroupButton = UIButton()
+    private let emptyStateView = EmptyStateView(type: .group)
     private let groupsTableView = UITableView(frame: .zero, style: .grouped)
 
     // MARK: - Private View Vars
@@ -38,6 +39,9 @@ class GroupsViewController: UIViewController {
         createGroupButton.layer.cornerRadius = 20
         createGroupButton.addTarget(self, action: #selector(createGroupPressed), for: .touchUpInside)
         view.addSubview(createGroupButton)
+        
+        emptyStateView.isHidden = true
+        view.addSubview(emptyStateView)
 
         groupsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -47,6 +51,12 @@ class GroupsViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-33)
             make.size.equalTo(CGSize(width: 134, height: 40))
+        }
+        
+        emptyStateView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(200)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(50)
         }
     }
 
@@ -60,8 +70,9 @@ class GroupsViewController: UIViewController {
         NetworkManager.getGroups { [weak self] groups in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.groups = groups
-                self.groupsTableView.reloadData()
+//                self.groups = groups
+                self.emptyStateView.isHidden = false
+//                self.groupsTableView.reloadData()
             }
         }
     }

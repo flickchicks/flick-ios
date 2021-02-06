@@ -104,6 +104,7 @@
 		D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */; };
 		D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F7A249F82AE008D5484 /* CollaboratorTableViewCell.swift */; };
 		D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F7C249F843C008D5484 /* Collaborator.swift */; };
+		D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */; };
 		D474D17224B132A7006795F6 /* EnterNameModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D474D17124B132A7006795F6 /* EnterNameModalView.swift */; };
 		D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478667F2478B4F0009E42FE /* HomeViewController.swift */; };
 		D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */; };
@@ -272,6 +273,7 @@
 		D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorsModalView.swift; sourceTree = "<group>"; };
 		D46B3F7A249F82AE008D5484 /* CollaboratorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollaboratorTableViewCell.swift; sourceTree = "<group>"; };
 		D46B3F7C249F843C008D5484 /* Collaborator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collaborator.swift; sourceTree = "<group>"; };
+		D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		D474D17124B132A7006795F6 /* EnterNameModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameModalView.swift; sourceTree = "<group>"; };
 		D478667F2478B4F0009E42FE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */,
 				803E5EA22596D92B004CF4B7 /* RoundedButton.swift */,
 				80AB6AE225B1293500998FF0 /* LoginButton.swift */,
+				D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1012,6 +1015,7 @@
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
+				D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
 				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
@@ -1203,7 +1207,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1227,7 +1231,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1397,7 +1401,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1519,7 +1523,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1647,7 +1651,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.2;
+				CURRENT_PROJECT_VERSION = 1.0.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

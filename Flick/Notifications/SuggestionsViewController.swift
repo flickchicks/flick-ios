@@ -11,9 +11,10 @@ import UIKit
 class SuggestionsViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private let emptyStateView = EmptyStateView(type: .suggestions)
     private let suggestionsTableView = UITableView(frame: .zero)
     private let refreshControl = UIRefreshControl()
-
+    
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = []
     private let suggestionCellReuseIdentifier = "SuggestionCellReuseIdentifier"
@@ -44,8 +45,20 @@ class SuggestionsViewController: UIViewController {
         
         view.addSubview(suggestionsTableView)
         
+        emptyStateView.isHidden = true
+        view.addSubview(emptyStateView)
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         suggestionsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        emptyStateView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(150)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -61,8 +74,9 @@ class SuggestionsViewController: UIViewController {
     private func getSuggetions() {
         NetworkManager.getSuggestions { [weak self] suggestions in
             guard let self = self else { return }
-            self.suggestions = suggestions
             DispatchQueue.main.async {
+                self.suggestions = suggestions
+                self.emptyStateView.isHidden = suggestions.count > 0
                 self.suggestionsTableView.reloadData()
                 self.updateSuggestionViewedTime()
                 self.refreshControl.endRefreshing()
