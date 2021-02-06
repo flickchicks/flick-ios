@@ -18,7 +18,8 @@ protocol DiscoverSearchResultDelegate: class {
 class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let noResultsLabel = UILabel()
+//    private let noResultsLabel = UILabel()
+    private let emptyStateView = EmptyStateView(type: .search)
     private let resultsTableView = UITableView()
 
     // MARK: - Data Vars
@@ -49,26 +50,23 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.keyboardDismissMode = .onDrag
         view.addSubview(resultsTableView)
 
-        noResultsLabel.text = "No results found"
-        noResultsLabel.font = .systemFont(ofSize: 16)
-        noResultsLabel.isHidden = true
-        noResultsLabel.textAlignment = .center
-        view.addSubview(noResultsLabel)
+        emptyStateView.isHidden = true
+        view.addSubview(emptyStateView)
         
 //        resultsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
 
         resultsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
-        noResultsLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(20)
+        
+        emptyStateView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(75)
+            make.centerX.equalToSuperview()
         }
     }
 
     func updateSearchResult(query: String) {
-        noResultsLabel.isHidden = true
+        emptyStateView.isHidden = true
         if query == "" {
             clearContent()
             return
@@ -78,7 +76,7 @@ class DiscoverSearchResultViewController: UIViewController {
             NetworkManager.searchMovies(query: query) { [weak self] movies in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.noResultsLabel.isHidden = !movies.isEmpty
+                    self.emptyStateView.isHidden = !movies.isEmpty
                     self.media = movies
                     self.resultsTableView.reloadData()
 //                    self.resultsTableView.hideSkeleton()
@@ -88,7 +86,7 @@ class DiscoverSearchResultViewController: UIViewController {
             NetworkManager.searchShows(query: query) { [weak self] shows in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.noResultsLabel.isHidden = !shows.isEmpty
+                    self.emptyStateView.isHidden = !shows.isEmpty
                     self.media = shows
                     self.resultsTableView.reloadData()
 //                    self.resultsTableView.hideSkeleton()
@@ -98,7 +96,7 @@ class DiscoverSearchResultViewController: UIViewController {
             NetworkManager.searchUsers(query: query) { [weak self] users in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.noResultsLabel.isHidden = !users.isEmpty
+                    self.emptyStateView.isHidden = !users.isEmpty
                     self.users = users
                     self.resultsTableView.reloadData()
 //                    self.resultsTableView.hideSkeleton()
@@ -108,7 +106,7 @@ class DiscoverSearchResultViewController: UIViewController {
             NetworkManager.searchTags(query: query) { [weak self] tags in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.noResultsLabel.isHidden = !tags.isEmpty
+                    self.emptyStateView.isHidden = !tags.isEmpty
                     self.tags = tags
                     self.resultsTableView.reloadData()
 //                    self.resultsTableView.hideSkeleton()
@@ -118,7 +116,7 @@ class DiscoverSearchResultViewController: UIViewController {
             NetworkManager.searchLists(query: query) { [weak self] lists in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
-                    self.noResultsLabel.isHidden = !lists.isEmpty
+                    self.emptyStateView.isHidden = !lists.isEmpty
                     self.lists = lists
                     self.resultsTableView.reloadData()
 //                    self.resultsTableView.hideSkeleton()

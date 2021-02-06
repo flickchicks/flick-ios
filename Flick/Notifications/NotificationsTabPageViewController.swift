@@ -14,6 +14,7 @@ class NotificationsTabPageViewController: UIPageViewController {
     private var noticationsViewController: ActivityViewController!
     private var pages: [UIViewController] = [UIViewController]()
     private var suggestionsViewController: SuggestionsViewController!
+    
     weak var notificationsTabDelegate: NotificationsTabDelegate?
 
     override init(

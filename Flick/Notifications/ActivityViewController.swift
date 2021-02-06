@@ -12,6 +12,7 @@ class ActivityViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let activityTableView = UITableView(frame: .zero, style: .grouped)
+    private let emptyStateView = EmptyStateView(type: .activity)
     private let refreshControl = UIRefreshControl()
 
     // MARK: - Private Data Vars
@@ -45,10 +46,22 @@ class ActivityViewController: UIViewController {
         }
 
         view.addSubview(activityTableView)
-
+        
+        emptyStateView.isHidden = true
+        view.addSubview(emptyStateView)
+    
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         activityTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+//
+        emptyStateView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(150)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -63,6 +76,7 @@ class ActivityViewController: UIViewController {
                 self.friendRequests = friendRequests.map {
                     return .IncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.created)
                 }
+                self.emptyStateView.isHidden = self.friendRequests.count > 0 || self.activities.count > 0
                 self.activityTableView.reloadData()
                 self.updateNotificationViewedTime()
                 self.refreshControl.endRefreshing()
