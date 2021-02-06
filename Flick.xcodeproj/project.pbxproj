@@ -988,6 +988,8 @@
 				803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */,
 				D45A3E1925A9A7E90094161A /* Keys.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
+				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
+				806E777625C4FEBE00B82ECE /* Group.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
 				806E777625C4FEBE00B82ECE /* Group.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
