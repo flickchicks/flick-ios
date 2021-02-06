@@ -991,7 +991,7 @@
 				803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */,
 				D45A3E1925A9A7E90094161A /* Keys.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
-				80F00F6224AAFE8C0051B8FF /* AddToListViewController.swift in Sources */,
+				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
 				806E777625C4FEBE00B82ECE /* Group.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
 				806E777625C4FEBE00B82ECE /* Group.swift in Sources */,
@@ -1207,7 +1207,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1231,7 +1231,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1401,7 +1401,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1523,7 +1523,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1651,7 +1651,7 @@
 				CODE_SIGN_ENTITLEMENTS = Flick/Flick.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Flick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

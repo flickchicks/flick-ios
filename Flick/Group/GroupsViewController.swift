@@ -70,9 +70,9 @@ class GroupsViewController: UIViewController {
         NetworkManager.getGroups { [weak self] groups in
             guard let self = self else { return }
             DispatchQueue.main.async {
-//                self.groups = groups
-                self.emptyStateView.isHidden = false
-//                self.groupsTableView.reloadData()
+                self.groups = groups
+                self.emptyStateView.isHidden = groups.count > 0
+                self.groupsTableView.reloadData()
             }
         }
     }
