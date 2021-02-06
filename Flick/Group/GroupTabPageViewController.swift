@@ -18,7 +18,7 @@ class GroupTabPageViewController: UIPageViewController {
     private var resultViewController: GroupResultViewController!
     var voteViewController: GroupVoteViewController!
 
-    private var groupId:Int
+    private var groupId: Int
     weak var tabDelegate: GroupTabDelegate?
 
     init(groupId: Int) {
