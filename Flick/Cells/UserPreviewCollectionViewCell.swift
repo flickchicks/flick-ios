@@ -14,14 +14,16 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
     // MARK: - Private View Vars
     private let profileImageView = UIImageView()
 
+    // MARK: - Data Vars
+    static let reuseIdentifier = "UserReuseIdentifier"
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         backgroundColor = .deepPurple
         clipsToBounds = true
         layer.borderColor = UIColor.white.cgColor
-        layer.borderWidth = 0.5
-        layer.cornerRadius = 10
+
         layer.masksToBounds = true
         contentMode = .scaleAspectFill
         
@@ -32,7 +34,9 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func configure(user: UserProfile?, shouldShowEllipsis: Bool) {
+    func configure(user: UserProfile?, width: CGFloat = 20, shouldShowEllipsis: Bool) {
+        layer.cornerRadius = width / 2
+        layer.borderWidth = width / 40
         if shouldShowEllipsis {
             profileImageView.image = UIImage(named: "ellipsis")
         } else {

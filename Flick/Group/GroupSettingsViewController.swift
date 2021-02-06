@@ -311,7 +311,7 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.group = group
-                // TODO: clear ideas for vote and results
+                self.presentInfoAlert(message: "Ideas cleared", completion: nil)
             }
         }
     }

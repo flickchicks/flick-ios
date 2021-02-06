@@ -32,6 +32,11 @@ class TabBarController: UITabBarController {
         let selectedSearchIconImage = UIImage(named: "selectedSearchIcon")
         discoverVC.tabBarItem = UITabBarItem(title: "Discover", image: searchIconImage, selectedImage: selectedSearchIconImage)
 
+        let groupsVC = GroupsViewController()
+        let groupsIconImage = UIImage(named: "groupsIcon")
+        let selectedGroupsIconImage = UIImage(named: "selectedGroupsIcon")
+        groupsVC.tabBarItem = UITabBarItem(title: "Groups", image: groupsIconImage, selectedImage: selectedGroupsIconImage)
+
         let profileVC = ProfileViewController(isHome: true, userId: nil)
         let profileIconImage = UIImage(named: "profileIcon")
         let selectedProfileIconImage = UIImage(named: "selectedProfileIcon")
@@ -42,7 +47,7 @@ class TabBarController: UITabBarController {
         let selectedNotificationIconImage = UIImage(named: "selectedNotificationIcon")
         notificationVC.tabBarItem = UITabBarItem(title: "Notifications", image: notificationIconImage, selectedImage: selectedNotificationIconImage)
 
-        let tabBarList = [discoverVC, profileVC, notificationVC]
+        let tabBarList = [discoverVC, groupsVC, profileVC, notificationVC]
 
         viewControllers = tabBarList
     }

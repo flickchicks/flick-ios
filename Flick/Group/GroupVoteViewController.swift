@@ -270,7 +270,7 @@ class GroupVoteViewController: UIViewController {
         } else {
             self.posterImageView.image = UIImage(named: "defaultMovie")
         }
-        self.numIdeasLabel.text = "\(ideas.count) more ideas to vote"
+        self.numIdeasLabel.text = "\(ideas.count) more idea\(ideas.count > 1 ? "s" : "") to vote"
         self.mediaInformationTableView.reloadData()
     }
 
@@ -341,7 +341,7 @@ extension GroupVoteViewController: AddMediaDelegate {
 
     func reloadMedia() {
         getPendingIdeas()
-        presentInfoAlert(message: "Added ideas", completion: nil)
+        presentInfoAlert(message: "Ideas added", completion: nil)
     }
 
 }
