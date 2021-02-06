@@ -12,6 +12,7 @@ enum EmptyStateType {
     case suggestions
     case activity
     case search
+    case group
     
     var image: String {
         switch self {
@@ -21,17 +22,21 @@ enum EmptyStateType {
             return "emptyNotifications"
         case .search:
             return "emptySearch"
+        case .group:
+            return "emptyGroups"
         }
     }
 
     var title: String {
         switch self {
         case .suggestions:
-            return "No Suggestions"
+            return "No suggestions"
         case .activity:
             return "*Crickets*"
         case .search:
             return "Nothing popped up"
+        case .group:
+            return "No groups yet"
         }
     }
     
@@ -43,19 +48,11 @@ enum EmptyStateType {
             return "Recent activity will show here"
         case .search:
             return "Try searching for something else"
+        case .group:
+            return "Create a group to pick what to watch together"
         }
     }
-    
-    var imageSize: CGSize {
-        switch self {
-        case .suggestions:
-            return CGSize(width: 213, height: 154)
-        case .activity:
-            return CGSize(width: 209, height: 142)
-        case .search:
-            return CGSize(width: 234, height: 78)
-        }
-    }
+
 }
 
 class EmptyStateView: UIView {
@@ -87,28 +84,30 @@ class EmptyStateView: UIView {
         subtitleLabel.numberOfLines = 0
         addSubview(subtitleLabel)
         
-        setupConstraints(for: type)
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupConstraints(for type: EmptyStateType) {
+    private func setupConstraints() {
         imageView.snp.makeConstraints { make in
-            make.size.equalTo(type.imageSize)
+            make.size.equalTo(CGSize(width: 280, height: 200))
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(8)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(33)
-            make.centerX.leading.trailing.equalTo(imageView)
+            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.centerX.equalTo(imageView)
+            make.leading.trailing.equalToSuperview().inset(8)
         }
         
         subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.centerX.leading.trailing.equalTo(imageView)
+            make.centerX.equalTo(imageView)
+            make.leading.trailing.equalToSuperview()
         }
     }
 }

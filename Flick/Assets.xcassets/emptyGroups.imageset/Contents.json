@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "emptyNotifications1x.png",
+      "filename" : "emptyGroups1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "emptyNotifications2x.png",
+      "filename" : "emptyGroups2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "emptyNotifications3x.png",
+      "filename" : "emptyGroups3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
