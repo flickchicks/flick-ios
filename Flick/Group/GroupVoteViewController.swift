@@ -26,10 +26,16 @@ class GroupVoteViewController: UIViewController {
     private let voteYesButton = UIButton()
 
     // MARK: - Data Vars
+    private var currentMedia: Media?
     weak var delegate: GroupVoteDelegate?
     private var groupId: Int
-    private var ideas: [Media] = []
-    private var media: Media? // temp to remove
+    private var ideas: [Media] = [] {
+        didSet {
+            print("didSet ideas")
+            currentMedia = ideas.last
+        }
+    }
+    private var lastRequestTime: Date?
 
     init(groupId: Int) {
         self.groupId = groupId
@@ -43,7 +49,6 @@ class GroupVoteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        numIdeasLabel.text = "No ideas yet"
         numIdeasLabel.textColor = .darkBlueGray2
         numIdeasLabel.font = .systemFont(ofSize: 16, weight: .medium)
         view.addSubview(numIdeasLabel)
@@ -120,14 +125,7 @@ class GroupVoteViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // TODO: remove later. Here temp for testing
-        NetworkManager.getMedia(mediaId: 1) { media in
-            self.media = media
-            if let url = URL(string: media.posterPic ?? "") {
-                self.posterImageView.kf.setImage(with: url)
-            }
-            self.mediaInformationTableView.reloadData()
-        }
+        getPendingIdeas()
     }
 
     private func setupConstraints() {
@@ -207,16 +205,59 @@ class GroupVoteViewController: UIViewController {
         present(addToListVC, animated: true, completion: nil)
     }
 
+    private func getPendingIdeas() {
+        lastRequestTime = Date()
+        NetworkManager.getPendingIdeas(id: groupId) { [weak self] (timestamp, ideas) in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                print(timestamp.iso8601withFractionalSeconds)
+                print(self.lastRequestTime)
+                // Update ideas only for the lastest request
+                if timestamp.iso8601withFractionalSeconds ?? Date() >= self.lastRequestTime ?? Date() {
+                    print("update ideas")
+                    self.ideas = ideas
+    //                self.currentMedia = ideas.last
+                    if let imageUrl = URL(string: self.currentMedia?.posterPic ?? "") {
+                        self.posterImageView.kf.setImage(with: imageUrl)
+                    } else {
+                        self.posterImageView.image = UIImage(named: "defaultMovie")
+                    }
+                    self.numIdeasLabel.text = ideas.count == 0 ? "No ideas yet" : "\(ideas.count) more ideas to vote"
+                    self.mediaInformationTableView.reloadData()
+                }
+            }
+        }
+    }
+
     @objc private func voteNoButtonPressed() {
+        vote(.no)
     }
 
     @objc private func voteMaybeButtonPressed() {
+        vote(.maybe)
     }
 
     @objc private func voteYesButtonPressed() {
+        vote(.yes)
     }
 
-    private func vote(vote: Vote) {
+    private func vote(_ vote: Vote) {
+        guard let media = currentMedia else { return }
+        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { success in
+            if success {
+                DispatchQueue.main.async {
+                    self.ideas.removeLast()
+                    if let imageUrl = URL(string: self.currentMedia?.posterPic ?? "") {
+                        self.posterImageView.kf.setImage(with: imageUrl)
+                    } else {
+                        self.posterImageView.image = UIImage(named: "defaultMovie")
+                    }
+                    self.numIdeasLabel.text = self.ideas.count == 0 ? "No ideas yet" : "\(self.ideas.count) more ideas to vote"
+                    self.mediaInformationTableView.reloadData()
+                    self.getPendingIdeas()
+                }
+            }
+        }
     }
 
 }
@@ -229,7 +270,7 @@ extension GroupVoteViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MediaSummaryTableViewCell.reuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell,
-              let media = media else {
+              let media = currentMedia else {
             return UITableViewCell()
         }
         cell.configure(with: media)
@@ -244,7 +285,7 @@ extension GroupVoteViewController: AddMediaDelegate {
     }
 
     func reloadMedia() {
-        print("Reload media to vote")
+        getPendingIdeas()
         presentInfoAlert(message: "Added ideas", completion: nil)
     }
 

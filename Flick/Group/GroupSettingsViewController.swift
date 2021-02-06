@@ -54,7 +54,7 @@ class GroupSettingsViewController: UIViewController {
             case .clear:
                 return "Clear current ideas"
             case .rename:
-                return "Rename \(group?.name ?? "")"
+                return "Rename \"\(group?.name ?? "")\""
             case .viewResults:
                 return "View results"
             }
@@ -311,7 +311,7 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.group = group
-                // clear ideas for vote and results
+                // TODO: clear ideas for vote and results
             }
         }
     }

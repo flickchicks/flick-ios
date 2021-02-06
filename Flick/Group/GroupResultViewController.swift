@@ -56,7 +56,13 @@ class GroupResultViewController: UIViewController {
             DispatchQueue.main.async {
                 self.groupResult = groupResult
                 let numNotVoted = groupResult.numMembers - groupResult.numVoted
-                if numNotVoted == 0 {
+                if groupResult.results.isEmpty {
+                    self.votingStatusImageView.image = UIImage(named: "stillVotingIcon")
+                    self.votingStatusImageView.snp.updateConstraints { update in
+                        update.size.equalTo(CGSize(width: 32, height: 20))
+                    }
+                    self.votingStatusLabel.text = "No votes yet"
+                } else if numNotVoted == 0 {
                     self.votingStatusImageView.image = UIImage(named: "votesInIcon")
                     self.votingStatusImageView.snp.updateConstraints { update in
                         update.size.equalTo(CGSize(width: 20, height: 20))
