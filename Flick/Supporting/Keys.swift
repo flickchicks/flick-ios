@@ -10,7 +10,8 @@ import Foundation
 
 struct Keys {
 
-    static let serverURL = Keys.keyDict["SERVER_URL"] as? String ?? ""
+    static let devServerURL = Keys.keyDict["PROD_SERVER_URL"] as? String ?? ""
+    static let prodServerURL = Keys.keyDict["PROD_SERVER_URL"] as? String ?? ""
 
     private static let keyDict: NSDictionary = {
         guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),

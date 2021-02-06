@@ -31,13 +31,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
+            print("has token")
             window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
             return
         }
+        print("is it here")
         // We have correct authorization token
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
                 guard let profile = profile else {
+                    print("no token")
                     window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
                     return
                 }
@@ -61,6 +64,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 window.rootViewController = CustomNavigationController(rootViewController: tabBarController)
             }
         }
+        
+        print("is it here")
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

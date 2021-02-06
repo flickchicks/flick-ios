@@ -178,6 +178,7 @@ class ProfileViewController: UIViewController {
             guard let self = self, let userProfile = userProfile else { return }
             UserDefaults.standard.set(userProfile.id, forKey: Constants.UserDefaults.userId)
             DispatchQueue.main.async {
+                print(userProfile)
                 self.updateUserInfo(user: userProfile)
             }
         }

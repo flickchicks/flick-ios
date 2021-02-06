@@ -23,9 +23,10 @@ class NetworkManager {
 
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
-//    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    #elseif DEV
+    private static let hostEndpoint = "http://\(Keys.devServerURL)"
     #else
-    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "http://\(Keys.prodServerURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
@@ -76,12 +77,11 @@ class NetworkManager {
 
     /// [GET] Get a user with token [updated as of 8/11/20]
     static func getUserProfile(completion: @escaping (UserProfile?) -> Void) {
-        
         var myProfileURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/me/")!)
         myProfileURLRequest.httpMethod = "GET"
-        myProfileURLRequest.cachePolicy = .returnCacheDataElseLoad
+        // LUCY - Look into fixing this?
+        myProfileURLRequest.cachePolicy = .reloadIgnoringLocalCacheData
         myProfileURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
-        
         AF.request(myProfileURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -178,12 +178,15 @@ class NetworkManager {
                           parameters: parameters,
                           encoding: JSONEncoding.default,
                           headers: headers).validate().responseData { response in
+                            print(response)
             switch response.result {
             case .success(let data):
+                print(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
+                    print(mediaList)
                     completion(mediaList)
                 }
             case .failure(let error):
