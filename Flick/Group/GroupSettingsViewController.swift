@@ -54,7 +54,7 @@ class GroupSettingsViewController: UIViewController {
             case .clear:
                 return "Clear current ideas"
             case .rename:
-                return "Rename \(group?.name ?? "")"
+                return "Rename \"\(group?.name ?? "")\""
             case .viewResults:
                 return "View results"
             }
@@ -164,6 +164,7 @@ class GroupSettingsViewController: UIViewController {
             type: .clearIdeas
         )
         clearIdeasModalView.modalDelegate = self
+        clearIdeasModalView.clearIdeasDelegate = self
         showModalPopup(view: clearIdeasModalView)
     }
 
@@ -282,7 +283,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
 
 }
 
-extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMembersDelegate {
+extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMembersDelegate, ClearIdeasDelegate {
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
@@ -302,6 +303,16 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
         DispatchQueue.main.async {
             self.group = group
             self.reloadDetailsSection()
+        }
+    }
+
+    func clearIdeas() {
+        NetworkManager.clearIdeas(id: group.id) { [weak self] group in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.group = group
+                self.presentInfoAlert(message: "Ideas cleared", completion: nil)
+            }
         }
     }
 

@@ -225,7 +225,7 @@ class ProfileViewController: UIViewController {
         // Change notification tab icon image if there's any notifications
         if isCurrentUser,
            let tabItems = tabBarController?.tabBar.items {
-            let notificationItem = tabItems[2]
+            let notificationItem = tabItems[3]
             if let numNotifs = user.numNotifs {
                 let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
                 notificationItem.image = UIImage(named: imageName)
