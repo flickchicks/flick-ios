@@ -124,7 +124,7 @@ extension GroupResultViewController: UITableViewDataSource, UITableViewDelegate 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VotingResultTableViewCell.reuseIdentifier, for: indexPath) as? VotingResultTableViewCell,
               let groupResult = groupResult else { return UITableViewCell() }
         let result = groupResult.results[indexPath.row]
-        cell.configure(number: indexPath.row, result: result)
+        cell.configure(number: indexPath.row + 1, result: result)
         return cell
     }
 
