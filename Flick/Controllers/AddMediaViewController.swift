@@ -53,6 +53,7 @@ class AddMediaViewController: UIViewController {
     private let mediaSelectableCellReuseIdentifier = "MediaSelectableCellReuseIdentifier"
     private let selectedMediaCellReuseIdentifier = "SelectedMediaCellReuseIdentifier"
 
+    private var groupId: Int?
     private var isSearching = false
     private var isSelectedHidden = true
     private var list: MediaList?
@@ -67,8 +68,9 @@ class AddMediaViewController: UIViewController {
 
     weak var delegate: AddMediaDelegate?
 
-    init(type: AddMediaType, height: Float, list: MediaList? = nil) {
+    init(type: AddMediaType, height: Float, list: MediaList? = nil, groupId: Int? = nil) {
         self.type = type
+        self.groupId = groupId
         self.list = list
         self.height = height
         super.init(nibName: nil, bundle: nil)
@@ -290,7 +292,12 @@ class AddMediaViewController: UIViewController {
         let mediaIds = selectedMedia.map { $0.id }
         switch type {
         case .toGroup:
-            print("Add to group")
+            guard let groupId = groupId else { return }
+            NetworkManager.addToGroup(id: groupId, mediaIds: mediaIds) { [weak self] _ in
+                guard let self = self else { return }
+                self.selectedMedia = []
+                self.dismissVC(isMediaAdded: true)
+            }
         case .toList:
             guard let list = list else { return }
             NetworkManager.addToMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in

@@ -27,8 +27,18 @@ class GroupVoteViewController: UIViewController {
 
     // MARK: - Data Vars
     weak var delegate: GroupVoteDelegate?
+    private var groupId: Int
     private var ideas: [Media] = []
     private var media: Media? // temp to remove
+
+    init(groupId: Int) {
+        self.groupId = groupId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -186,7 +196,8 @@ class GroupVoteViewController: UIViewController {
 
         let addToListVC = AddMediaViewController(
             type: .toGroup,
-            height: Float(posterImageView.frame.height + 162 + bottomPadding)
+            height: Float(posterImageView.frame.height + 162 + bottomPadding),
+            groupId: groupId
         )
         addToListVC.delegate = self
         addToListVC.modalPresentationStyle = .overCurrentContext

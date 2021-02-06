@@ -15,17 +15,39 @@ class GroupViewController: UIViewController {
     private let settingsButton = UIButton()
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
-    private let tabPageViewController = GroupTabPageViewController()
+    private var tabPageViewController: GroupTabPageViewController
+    private var addMembersModalView: AddMembersModalView!
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
+    private var group: Group
+    private var shouldAddMembers: Bool
     private let tabBarHeight: CGFloat = 40
     private let tabs = ["Vote", "Results"]
+
+    // shouldAddMembers only true when group is just created
+    init(group: Group, shouldAddMembers: Bool = false) {
+        self.group = group
+        self.tabPageViewController = GroupTabPageViewController(groupId: group.id)
+        self.addMembersModalView = AddMembersModalView(group: group)
+        self.shouldAddMembers = shouldAddMembers
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Group name" // TODO: Replace with actual name of group
+        if shouldAddMembers {
+            addMembersModalView.modalDelegate = self
+            showModalPopup(view: addMembersModalView)
+            shouldAddMembers = false
+        }
+
+        title = group.name
         view.backgroundColor = .offWhite
 
         tabPageViewController.tabDelegate = self
@@ -58,6 +80,15 @@ class GroupViewController: UIViewController {
         super.viewWillAppear(animated)
         setupNavigationBar()
         tabPageViewController.voteViewController.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getGroup(id: group.id) { [weak self] group in
+            guard let self = self else { return }
+            self.group = group
+            self.title = group.name
+        }
     }
 
     private func setupConstraints() {
@@ -109,7 +140,7 @@ class GroupViewController: UIViewController {
     }
 
     @objc private func settingsButtonPressed() {
-        let groupSettingsVC = GroupSettingsViewController()
+        let groupSettingsVC = GroupSettingsViewController(group: group)
         groupSettingsVC.delegate = self
         navigationController?.pushViewController(groupSettingsVC, animated: true)
     }
@@ -180,6 +211,15 @@ extension GroupViewController: GroupVoteDelegate {
         navigationItem.leftBarButtonItem?.isEnabled = true
         settingsButton.tintColor = .mediumGray
         navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+
+}
+
+
+extension GroupViewController: ModalDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
     }
 
 }

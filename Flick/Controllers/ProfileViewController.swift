@@ -353,6 +353,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         createListModalView.modalDelegate = self
         createListModalView.createListDelegate = self
         showModalPopup(view: createListModalView)
+        // TODO: Remove later. Code here for testing
+//        let createGroupModalView = EnterNameModalView(type: .createGroup)
+//        createGroupModalView.modalDelegate = self
+//        createGroupModalView.createGroupDelegate = self
+//        showModalPopup(view: createGroupModalView)
     }
 
     func createFriendRequest() {
@@ -408,6 +413,20 @@ extension ProfileViewController: ListTableViewCellDelegate {
     func pushMediaViewController(mediaId: Int, mediaImageUrl: String?) {
         let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: mediaImageUrl)
         navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
+}
+
+
+// TODO: Remove later, here temporarily for testing
+extension ProfileViewController: CreateGroupDelegate {
+
+    func createGroup(title: String) {
+        NetworkManager.createGroup(name: title) { [weak self] group in
+            guard let self = self else { return }
+            let groupViewController = GroupViewController(group: group, shouldAddMembers: true)
+            self.navigationController?.pushViewController(groupViewController, animated: true)
+        }
     }
 
 }

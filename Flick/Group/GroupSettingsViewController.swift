@@ -12,7 +12,6 @@ protocol GroupSettingsDelegate: class {
     func viewResults()
 }
 
-// TODO: Show members of group
 class GroupSettingsViewController: UIViewController {
 
     // MARK: - Table View Sections
@@ -25,8 +24,8 @@ class GroupSettingsViewController: UIViewController {
 
     private enum SectionType {
         case details
+        case ideas
         case results
-        case suggestions
     }
 
     private enum GroupSettingsType {
@@ -48,14 +47,14 @@ class GroupSettingsViewController: UIViewController {
             }
         }
 
-        var title: String {
+        func getTitle(group: Group?) -> String {
             switch self {
             case .addMembers:
                 return "Add members"
             case .clear:
-                return "Clear current suggestions"
+                return "Clear current ideas"
             case .rename:
-                return "Rename \"flick chicks\""
+                return "Rename \(group?.name ?? "")"
             case .viewResults:
                 return "View results"
             }
@@ -67,11 +66,21 @@ class GroupSettingsViewController: UIViewController {
 
     // MARK: - Data Vars
     weak var delegate: GroupSettingsDelegate?
+    private var group: Group
     private var sections: [Section] = []
+
+    init(group: Group) {
+        self.group = group
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Group settings"
+        title = "Group Settings"
         view.backgroundColor = .offWhite
 
         setupSections()
@@ -95,11 +104,21 @@ class GroupSettingsViewController: UIViewController {
         setupNavigationBar()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NetworkManager.getGroup(id: group.id) { group in
+            DispatchQueue.main.async {
+                self.group = group
+                self.reloadDetailsSection()
+            }
+        }
+    }
+
     private func setupSections() {
-        let suggestionsSection = Section(type: .suggestions, header: "Suggestions", footer: "This removes the active suggestions and votes so that you can start again", settingItems: [.clear])
+        let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear])
         let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
-        let detailsSection = Section(type: .results, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
-        sections = [suggestionsSection, resultsSection, detailsSection]
+        let detailsSection = Section(type: .details, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
+        sections = [ideasSection, resultsSection, detailsSection]
     }
 
     private func setupNavigationBar() {
@@ -132,8 +151,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showAddMembersModal() {
-        let addMembersModalView = AddMembersModalView()
+        let addMembersModalView = AddMembersModalView(group: group)
         addMembersModalView.modalDelegate = self
+        addMembersModalView.delegate = self
         showModalPopup(view: addMembersModalView)
     }
 
@@ -154,6 +174,14 @@ class GroupSettingsViewController: UIViewController {
         showModalPopup(view: renameGroupModalView)
     }
 
+    private func reloadDetailsSection() {
+        sections.enumerated().forEach { (index, section) in
+            if section.type == .details {
+                settingsTableView.reloadSections(IndexSet([index]), with: .automatic)
+            }
+        }
+    }
+
 }
 
 extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -163,15 +191,30 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].settingItems.count
+        let section = sections[section]
+        switch section.type {
+        case .details:
+            return section.settingItems.count + group.members.count
+        default:
+            return section.settingItems.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
-        let item = section.settingItems[indexPath.row]
-        cell.configure(icon: item.icon, title: item.title)
-        return cell
+        if indexPath.row < section.settingItems.count {
+            // Setup cell for settings action item
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
+            let item = section.settingItems[indexPath.row]
+            cell.configure(icon: item.icon, title: item.getTitle(group: group))
+            return cell
+        } else {
+            // Setup cell for group member
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
+            let member = group.members[indexPath.row - section.settingItems.count]
+            cell.configure(user: member)
+            return cell
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -215,7 +258,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return 54
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -239,13 +282,27 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
 
 }
 
-extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate {
+extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMembersDelegate {
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
     }
 
     func renameGroup(title: String) {
-        print("Rename group")
+        NetworkManager.updateGroup(id: group.id, name: title) { [weak self] group in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.group = group
+                self.reloadDetailsSection()
+            }
+        }
     }
+
+    func reloadGroupMembers(group: Group) {
+        DispatchQueue.main.async {
+            self.group = group
+            self.reloadDetailsSection()
+        }
+    }
+
 }

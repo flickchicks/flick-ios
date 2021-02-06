@@ -29,7 +29,7 @@ class UserTableViewCell: UITableViewCell {
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.clipsToBounds = true
         userProfileImageView.layer.cornerRadius = 20
-        userProfileImageView.layer.backgroundColor = UIColor.darkPurple.cgColor
+        userProfileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(userProfileImageView)
         
         nameLabel.font = .systemFont(ofSize: 16)
