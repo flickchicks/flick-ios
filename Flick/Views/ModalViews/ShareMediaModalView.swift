@@ -10,6 +10,7 @@ import UIKit
 
 protocol ShareMediaDelegate: class {
     func showFlickToFriendView()
+    func shareToInstagramFeed()
 }
 
 class ShareMediaModalView: ModalView {
@@ -18,7 +19,10 @@ class ShareMediaModalView: ModalView {
     private let cancelButton = UIButton()
     private let flickToFriendButton = UIButton()
     private let flickToFriendLabel = UILabel()
-    private let rightChevronImageView = UIImageView()
+    private let flickToFriendRightChevronImageView = UIImageView()
+    private let instagramButton = UIButton()
+    private let instagramLabel = UILabel()
+    private let instagramRightChevronImageView = UIImageView()
     private let shareLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -39,9 +43,21 @@ class ShareMediaModalView: ModalView {
         flickToFriendLabel.font = .systemFont(ofSize: 16)
         flickToFriendButton.addSubview(flickToFriendLabel)
 
-        rightChevronImageView.image = UIImage(named: "rightChevron")
-        rightChevronImageView.isUserInteractionEnabled = false
-        flickToFriendButton.addSubview(rightChevronImageView)
+        flickToFriendRightChevronImageView.image = UIImage(named: "rightChevron")
+        flickToFriendRightChevronImageView.isUserInteractionEnabled = false
+        flickToFriendButton.addSubview(flickToFriendRightChevronImageView)
+        
+        instagramButton.addTarget(self, action: #selector(shareToInstagramTapped), for: .touchUpInside)
+        containerView.addSubview(instagramButton)
+        
+        instagramLabel.text = "Instagram Story"
+        instagramLabel.textColor = .darkBlue
+        instagramLabel.font = .systemFont(ofSize: 16)
+        instagramButton.addSubview(instagramLabel)
+
+        instagramRightChevronImageView.image = UIImage(named: "rightChevron")
+        instagramRightChevronImageView.isUserInteractionEnabled = false
+        instagramButton.addSubview(instagramRightChevronImageView)
 
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.mediumGray, for: .normal)
@@ -57,7 +73,7 @@ class ShareMediaModalView: ModalView {
     }
 
     private func setupConstraints() {
-        let containerViewSize = CGSize(width: 335, height: 210)
+        let containerViewSize = CGSize(width: 335, height: 240)
         let horizontalPadding = 24
         let verticalPadding = 36
 
@@ -81,7 +97,23 @@ class ShareMediaModalView: ModalView {
             make.leading.centerY.equalToSuperview()
         }
 
-        rightChevronImageView.snp.makeConstraints { make in
+        flickToFriendRightChevronImageView.snp.makeConstraints { make in
+            make.trailing.centerY.equalToSuperview()
+            make.width.equalTo(5)
+            make.height.equalTo(10)
+        }
+        
+        instagramButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
+            make.top.equalTo(flickToFriendButton.snp.bottom).offset(20)
+            make.height.equalTo(20)
+        }
+
+        instagramLabel.snp.makeConstraints { make in
+            make.leading.centerY.equalToSuperview()
+        }
+
+        instagramRightChevronImageView.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
             make.width.equalTo(5)
             make.height.equalTo(10)
@@ -100,6 +132,10 @@ class ShareMediaModalView: ModalView {
 
     @objc private func cancelTapped() {
         dismissModal()
+    }
+    
+    @objc func shareToInstagramTapped() {
+        shareMediaDelegate?.shareToInstagramFeed()
     }
 
 }
