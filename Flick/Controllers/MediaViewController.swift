@@ -329,13 +329,14 @@ extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
         }
 
         if UIApplication.shared.canOpenURL(instagramUrl) {
-            // share something on Instagram
             guard let image = mediaImageView.image else { return }
             guard let imageData = image.pngData() else { return }
             let pasteboardItems: [String: Any] = [
                 "com.instagram.sharedSticker.stickerImage": imageData,
                 "com.instagram.sharedSticker.backgroundTopColor": "#D1BED7",
-                "com.instagram.sharedSticker.backgroundBottomColor": "#B8B6DE"
+                "com.instagram.sharedSticker.backgroundBottomColor": "#B8B6DE",
+                // This contentURL doesn't seem to work
+                "com.instagram.sharedSticker.contentURL": "https://www.google.com/"
             ]
             let pasteboardOptions = [
                 UIPasteboard.OptionsKey.expirationDate: Date().addingTimeInterval(300)
