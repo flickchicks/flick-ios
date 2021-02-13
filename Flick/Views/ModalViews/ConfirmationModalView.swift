@@ -40,7 +40,7 @@ class ConfirmationModalView: ModalView {
         messageLabel.lineBreakMode = .byWordWrapping
         containerView.addSubview(messageLabel)
 
-        purpleButton = RoundedButton(style: .purple, title: type == .clearIdeas ? "Clear" : "No")
+        purpleButton = RoundedButton(style: .purple, title: type == .clearIdeas ? "Clear" : "Yes")
         purpleButton.addTarget(self, action: #selector(purpleButtonPressed), for: .touchUpInside)
         containerView.addSubview(purpleButton)
 
