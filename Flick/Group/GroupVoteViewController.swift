@@ -287,7 +287,7 @@ class GroupVoteViewController: UIViewController {
             timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(getPendingIdeas), userInfo: nil, repeats: true)
         }
 
-        self.numIdeasLabel.text = "No ideas yet"
+        self.numIdeasLabel.text = "No ideas to vote on"
         self.posterImageView.image = nil
         self.mediaInformationTableView.reloadData()
     }

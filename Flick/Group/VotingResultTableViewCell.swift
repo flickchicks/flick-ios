@@ -88,6 +88,7 @@ class VotingResultTableViewCell: UITableViewCell {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(numberLabel)
             make.leading.equalTo(posterImageView.snp.trailing).offset(padding)
+            make.trailing.equalToSuperview().inset(padding)
         }
 
         voteYesImageView.snp.makeConstraints { make in
