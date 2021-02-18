@@ -9,17 +9,17 @@
 import UIKit
 
 protocol ShareMediaDelegate: class {
-    func showFlickToFriendView()
+    func showSuggestToFriendView()
 }
 
 class ShareMediaModalView: ModalView {
 
     // MARK: - Private View Vars
     private let cancelButton = UIButton()
-    private let flickToFriendButton = UIButton()
-    private let flickToFriendLabel = UILabel()
     private let rightChevronImageView = UIImageView()
     private let shareLabel = UILabel()
+    private let suggestToFriendButton = UIButton()
+    private let suggestToFriendLabel = UILabel()
 
     // MARK: - Private Data Vars
     weak var shareMediaDelegate: ShareMediaDelegate?
@@ -31,17 +31,17 @@ class ShareMediaModalView: ModalView {
         shareLabel.font = .boldSystemFont(ofSize: 20)
         containerView.addSubview(shareLabel)
 
-        flickToFriendButton.addTarget(self, action: #selector(flickToFriendTapped), for: .touchUpInside)
-        containerView.addSubview(flickToFriendButton)
+        suggestToFriendButton.addTarget(self, action: #selector(suggestToFriendTapped), for: .touchUpInside)
+        containerView.addSubview(suggestToFriendButton)
 
-        flickToFriendLabel.text = "Flick to a friend"
-        flickToFriendLabel.textColor = .darkBlue
-        flickToFriendLabel.font = .systemFont(ofSize: 16)
-        flickToFriendButton.addSubview(flickToFriendLabel)
+        suggestToFriendLabel.text = "Suggest to friend"
+        suggestToFriendLabel.textColor = .darkBlue
+        suggestToFriendLabel.font = .systemFont(ofSize: 16)
+        suggestToFriendButton.addSubview(suggestToFriendLabel)
 
         rightChevronImageView.image = UIImage(named: "rightChevron")
         rightChevronImageView.isUserInteractionEnabled = false
-        flickToFriendButton.addSubview(rightChevronImageView)
+        suggestToFriendButton.addSubview(rightChevronImageView)
 
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.mediumGray, for: .normal)
@@ -71,13 +71,13 @@ class ShareMediaModalView: ModalView {
             make.leading.equalToSuperview().offset(horizontalPadding)
         }
 
-        flickToFriendButton.snp.makeConstraints { make in
+        suggestToFriendButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(shareLabel.snp.bottom).offset(verticalPadding)
             make.height.equalTo(20)
         }
 
-        flickToFriendLabel.snp.makeConstraints { make in
+        suggestToFriendLabel.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview()
         }
 
@@ -93,9 +93,9 @@ class ShareMediaModalView: ModalView {
         }
     }
 
-    @objc private func flickToFriendTapped() {
+    @objc private func suggestToFriendTapped() {
         modalDelegate?.dismissModal(modalView: self)
-        shareMediaDelegate?.showFlickToFriendView()
+        shareMediaDelegate?.showSuggestToFriendView()
     }
 
     @objc private func cancelTapped() {

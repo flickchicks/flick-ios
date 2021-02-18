@@ -20,7 +20,7 @@ enum CardState {case collapsed, expanded }
 class MediaViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var flickToFriendView: FlickToFriendModalView!
+    private var suggestToFriendView: SuggestToFriendModalView!
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
@@ -155,11 +155,10 @@ class MediaViewController: UIViewController {
     }
 
     @objc func shareButtonTapped() {
-//        let shareMediaView = ShareMediaModalView()
-//        shareMediaView.modalDelegate = self
-//        shareMediaView.shareMediaDelegate = self
-//        showModalPopup(view: shareMediaView)
-        showFlickToFriendView()
+        let shareMediaView = ShareMediaModalView()
+        shareMediaView.modalDelegate = self
+        shareMediaView.shareMediaDelegate = self
+        showModalPopup(view: shareMediaView)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -302,25 +301,25 @@ extension MediaViewController: CreateListDelegate {
 
 }
 
-extension MediaViewController: ShareMediaDelegate, FlickToFriendDelegate {
+extension MediaViewController: ShareMediaDelegate, SuggestToFriendDelegate {
 
-    func showFlickToFriendView() {
+    func showSuggestToFriendView() {
         if let media = media {
-            flickToFriendView = FlickToFriendModalView(media: media)
-            flickToFriendView.modalDelegate = self
-            flickToFriendView.flickToFriendDelegate = self
-            showModalPopup(view: flickToFriendView)
+            suggestToFriendView = SuggestToFriendModalView(media: media)
+            suggestToFriendView.modalDelegate = self
+            suggestToFriendView.suggestToFriendDelegate = self
+            showModalPopup(view: suggestToFriendView)
         }
     }
 
-    func flickMediaToFriends(mediaId: Int, friendIds: [Int], message: String) {
-        NetworkManager.flickMediaToFriends(friendIds: friendIds, mediaId: mediaId, message: message) { [weak self] success in
+    func suggestMediaToFriends(mediaId: Int, friendIds: [Int], message: String) {
+        NetworkManager.suggestMediaToFriends(friendIds: friendIds, mediaId: mediaId, message: message) { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.presentInfoAlert(message: "Flicked to friend", completion: nil)
-                self.flickToFriendView.clearSelectedFriends()
+                self.presentInfoAlert(message: "Suggested to friend\(friendIds.count > 1 ? "s" : "")", completion: nil)
+                self.suggestToFriendView.clearSelectedFriends()
             } else {
-                self.presentInfoAlert(message: "Failed to flick to friend", completion: nil)
+                self.presentInfoAlert(message: "Failed to suggest to friend", completion: nil)
             }
         }
     }

@@ -754,8 +754,8 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Flick a show to friends [updated as of 12/29/20]
-    static func flickMediaToFriends(friendIds: [Int], mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
+    /// [POST] Suggest a show to friends [updated as of 12/29/20]
+    static func suggestMediaToFriends(friendIds: [Int], mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
             "users": friendIds,
             "show_id": mediaId,

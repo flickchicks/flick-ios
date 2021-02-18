@@ -93,7 +93,7 @@ class AddCollaboratorModalView: ModalView {
         inviteCollaboratorsTableView.separatorStyle = .none
         inviteCollaboratorsTableView.keyboardDismissMode = .onDrag
 
-        noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
+        noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Telie!"
         noFriendsLabel.textColor = .darkBlue
         noFriendsLabel.numberOfLines = 0
         noFriendsLabel.font = .systemFont(ofSize: 12)
