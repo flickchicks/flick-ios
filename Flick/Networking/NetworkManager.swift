@@ -24,7 +24,7 @@ class NetworkManager {
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
     #else
-    private static let hostEndpoint = "https://\(Keys.serverURL)"
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"

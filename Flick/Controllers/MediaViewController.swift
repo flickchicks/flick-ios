@@ -201,7 +201,6 @@ class MediaViewController: UIViewController {
             break
         }
 
-
     }
 
     private func animateTransitionIfNeeded(state: CardState, duration: TimeInterval, panDirection: String) {
@@ -321,6 +320,32 @@ extension MediaViewController: ShareMediaDelegate, SuggestToFriendDelegate {
             } else {
                 self.presentInfoAlert(message: "Failed to suggest to friend", completion: nil)
             }
+        }
+    }
+    
+    func shareToInstagramFeed() {
+        guard let instagramUrl = URL(string: "instagram-stories://share") else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(instagramUrl) {
+            guard let image = mediaImageView.image else { return }
+            guard let imageData = image.pngData() else { return }
+            let pasteboardItems: [String: Any] = [
+                "com.instagram.sharedSticker.stickerImage": imageData,
+                "com.instagram.sharedSticker.backgroundTopColor": "#D1BED7",
+                "com.instagram.sharedSticker.backgroundBottomColor": "#B8B6DE",
+                // This contentURL doesn't seem to work
+                "com.instagram.sharedSticker.contentURL": "https://www.google.com/"
+            ]
+            let pasteboardOptions = [
+                UIPasteboard.OptionsKey.expirationDate: Date().addingTimeInterval(300)
+            ]
+            UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
+            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+        } else {
+            // Instagram app is not installed or can't be opened, pop up an alert
+            print("no instagram")
         }
     }
 
