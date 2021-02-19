@@ -6,12 +6,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "logomark-1.png",
+      "filename" : "logomark2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "logomark-2.png",
+      "filename" : "logomark3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
