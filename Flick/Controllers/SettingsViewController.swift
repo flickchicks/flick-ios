@@ -151,8 +151,9 @@ class SettingsViewController: UIViewController {
     }
     
     @objc func sendFeedbackPressed() {
-        //TODO: Add link later
-        print("sendFeedbackPressed")
+        if let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSfU2Wn5uVFEuaWLmcBFZCm_UQiNRHKGKChgV8rgpLWFMtjp0Q/viewform") {
+            UIApplication.shared.open(url)
+        }
     }
 
 }

@@ -15,6 +15,7 @@ class AboutViewController: UIViewController {
     private let attributionsTitleLabel = UILabel()
     private let privacyPolicyButton = UIButton()
     private let privacyPolicyLabel = UILabel()
+    private let rightChevronImageView = UIImageView()
     private let tmdBImageView = UIImageView(image: UIImage(named: "tmdB"))
 
     override func viewDidLoad() {
@@ -23,14 +24,17 @@ class AboutViewController: UIViewController {
         title = "About"
         view.backgroundColor = .offWhite
 
+        privacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
+        view.addSubview(privacyPolicyButton)
+
         privacyPolicyLabel.text = "Privacy Policy"
         privacyPolicyLabel.textColor = .black
         privacyPolicyLabel.font = .systemFont(ofSize: 18)
-        view.addSubview(privacyPolicyLabel)
-        
-        privacyPolicyButton.setImage(UIImage(named: "rightChevron"), for: .normal)
-        privacyPolicyButton.addTarget(self, action: #selector(showPrivacyPolicy), for: .touchUpInside)
-        view.addSubview(privacyPolicyButton)
+        privacyPolicyButton.addSubview(privacyPolicyLabel)
+
+        rightChevronImageView.image = UIImage(named: "rightChevron")
+        rightChevronImageView.isUserInteractionEnabled = false
+        privacyPolicyButton.addSubview(rightChevronImageView)
         
         attributionsTitleLabel.text = "Attributions"
         attributionsTitleLabel.textColor = .black
@@ -58,17 +62,21 @@ class AboutViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        privacyPolicyLabel.snp.makeConstraints { make in
+
+        privacyPolicyButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.leading.equalToSuperview().inset(24)
-            make.trailing.equalTo(privacyPolicyButton.snp.leading)
+            make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
+
+        privacyPolicyLabel.snp.makeConstraints { make in
+            make.leading.centerY.equalToSuperview()
+        }
         
-        privacyPolicyButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 4, height: 9))
-            make.centerY.equalTo(privacyPolicyLabel)
-            make.trailing.equalToSuperview().inset(24)
+        rightChevronImageView.snp.makeConstraints { make in
+            make.trailing.centerY.equalToSuperview()
+            make.width.equalTo(5)
+            make.height.equalTo(10)
         }
         
         attributionsTitleLabel.snp.makeConstraints { make in
@@ -118,8 +126,9 @@ class AboutViewController: UIViewController {
     }
     
     @objc func showPrivacyPolicy() {
-        //TODO: Add link later
-        print("showPrivacyPolicy")
+        if let url = URL(string: "https://telie.netlify.app/") {
+            UIApplication.shared.open(url)
+        }
     }
 
 }
