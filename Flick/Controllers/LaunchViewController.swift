@@ -15,7 +15,7 @@ class LaunchViewController: UIViewController {
     override func viewDidLoad() {
         view.backgroundColor = .offWhite
         
-        logoImageView.image = UIImage(named: "flickLogo")
+        logoImageView.image = UIImage(named: "logomark")
         view.addSubview(logoImageView)
         
         setupConstraints()
@@ -24,7 +24,7 @@ class LaunchViewController: UIViewController {
     private func setupConstraints() {
         logoImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(CGSize(width: 117, height: 43))
+            make.size.equalTo(CGSize(width: 150, height: 50))
         }
     }
     
