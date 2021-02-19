@@ -65,6 +65,7 @@ class MediaListsModalView: ModalView {
     private var doneButton = UIButton()
     private let listsTableView = UITableView()
     private let newListButton = NewListButton()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -102,6 +103,12 @@ class MediaListsModalView: ModalView {
         listsTableView.separatorStyle = .none
         listsTableView.bounces = false
         containerView.addSubview(listsTableView)
+
+        spinner.hidesWhenStopped = true
+        if lists.isEmpty {
+            listsTableView.backgroundView = spinner
+            spinner.startAnimating()
+        }
 
         setupConstraints()
         getLists()
@@ -170,11 +177,14 @@ class MediaListsModalView: ModalView {
     private func getLists() {
         NetworkManager.getUserProfile { [weak self] user in
             guard let self = self, let user = user else { return }
-            self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
-            if let currentList = self.currentList {
-                self.lists.removeAll { $0.id == currentList.id }
+            DispatchQueue.main.async {
+                self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
+                if let currentList = self.currentList {
+                    self.lists.removeAll { $0.id == currentList.id }
+                }
+                self.spinner.stopAnimating()
+                self.listsTableView.reloadData()
             }
-            self.listsTableView.reloadData()
         }
     }
 
