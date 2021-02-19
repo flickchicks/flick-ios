@@ -24,7 +24,7 @@ class NetworkManager {
     #if LOCAL
     private static let hostEndpoint = "http://localhost:8000"
     #else
-    private static let hostEndpoint = "https://\(Keys.serverURL)"
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
@@ -754,8 +754,8 @@ class NetworkManager {
         }
     }
 
-    /// [POST] Flick a show to friends [updated as of 12/29/20]
-    static func flickMediaToFriends(friendIds: [Int], mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
+    /// [POST] Suggest a show to friends [updated as of 12/29/20]
+    static func suggestMediaToFriends(friendIds: [Int], mediaId: Int, message: String, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
             "users": friendIds,
             "show_id": mediaId,

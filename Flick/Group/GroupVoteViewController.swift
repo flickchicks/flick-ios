@@ -287,7 +287,7 @@ class GroupVoteViewController: UIViewController {
             timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(getPendingIdeas), userInfo: nil, repeats: true)
         }
 
-        self.numIdeasLabel.text = "No ideas yet"
+        self.numIdeasLabel.text = "No ideas to vote on"
         self.posterImageView.image = nil
         self.mediaInformationTableView.reloadData()
     }
@@ -306,13 +306,8 @@ class GroupVoteViewController: UIViewController {
 
     private func vote(_ vote: Vote) {
         guard let media = currentMedia else { return }
-        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { success in
-            if success {
-                DispatchQueue.main.async {
-                    self.ideas.removeLast()
-                }
-            }
-        }
+        self.ideas.removeLast()
+        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { _ in }
     }
 
 }

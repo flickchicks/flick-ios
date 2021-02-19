@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "flickLogo1x.png",
+      "filename" : "logomark1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "flickLogo2x.png",
+      "filename" : "logomark2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "flickLogo3x.png",
+      "filename" : "logomark3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

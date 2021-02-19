@@ -181,7 +181,7 @@ class NotificationTableViewCell: UITableViewCell {
             .boldFont14(fromUser.name)
             .normalFont14(" \(type.rawValue) ")
             .boldFont14(collaboratorNames.joined(separator: ","))
-            .normalFont14(" as collaborators on ")
+            .normalFont14(" as collaborator\(collaborators.count > 1 ? "s" : "") on ")
             .boldFont14(list.name)
             .normalFont14(".")
     }

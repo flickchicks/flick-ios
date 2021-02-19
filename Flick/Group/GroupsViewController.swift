@@ -14,6 +14,7 @@ class GroupsViewController: UIViewController {
     private let createGroupButton = UIButton()
     private let emptyStateView = EmptyStateView(type: .group)
     private let groupsTableView = UITableView(frame: .zero, style: .grouped)
+    private let refreshControl = UIRefreshControl()
 
     // MARK: - Private View Vars
     private var groups: [Group] = []
@@ -28,6 +29,7 @@ class GroupsViewController: UIViewController {
         groupsTableView.separatorStyle = .none
         groupsTableView.showsVerticalScrollIndicator = false
         groupsTableView.register(GroupTableViewCell.self, forCellReuseIdentifier: GroupTableViewCell.reuseIdentifier)
+        groupsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 75, right: 0)
         view.addSubview(groupsTableView)
 
         createGroupButton.setTitle("＋ Create Group", for: .normal)
@@ -39,6 +41,9 @@ class GroupsViewController: UIViewController {
         createGroupButton.layer.cornerRadius = 20
         createGroupButton.addTarget(self, action: #selector(createGroupPressed), for: .touchUpInside)
         view.addSubview(createGroupButton)
+
+        refreshControl.addTarget(self, action: #selector(refreshGroups), for: .valueChanged)
+        groupsTableView.refreshControl = refreshControl
         
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
@@ -67,14 +72,7 @@ class GroupsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NetworkManager.getGroups { [weak self] groups in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.groups = groups
-                self.emptyStateView.isHidden = groups.count > 0
-                self.groupsTableView.reloadData()
-            }
-        }
+        getGroups()
     }
 
     @objc private func createGroupPressed() {
@@ -82,6 +80,22 @@ class GroupsViewController: UIViewController {
         createGroupModalView.modalDelegate = self
         createGroupModalView.createGroupDelegate = self
         showModalPopup(view: createGroupModalView)
+    }
+
+    @objc private func refreshGroups() {
+        getGroups()
+    }
+
+    private func getGroups() {
+        NetworkManager.getGroups { [weak self] groups in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.groups = groups
+                self.emptyStateView.isHidden = groups.count > 0
+                self.groupsTableView.reloadData()
+                self.refreshControl.endRefreshing()
+            }
+        }
     }
 
 }
@@ -137,8 +151,12 @@ extension GroupsViewController: ModalDelegate, CreateGroupDelegate {
     func createGroup(title: String) {
         NetworkManager.createGroup(name: title) { [weak self] group in
             guard let self = self else { return }
-            let groupViewController = GroupViewController(group: group, shouldAddMembers: true)
-            self.navigationController?.pushViewController(groupViewController, animated: true)
+            DispatchQueue.main.async {
+                self.groups.append(group)
+                self.groupsTableView.reloadData()
+                let groupViewController = GroupViewController(group: group, shouldAddMembers: true)
+                self.navigationController?.pushViewController(groupViewController, animated: true)
+            }
         }
     }
 

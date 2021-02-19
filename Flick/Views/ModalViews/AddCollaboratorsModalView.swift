@@ -19,6 +19,7 @@ class AddCollaboratorModalView: ModalView {
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let subtitleLabel = UILabel()
     private let noFriendsLabel = UILabel()
 
@@ -93,7 +94,13 @@ class AddCollaboratorModalView: ModalView {
         inviteCollaboratorsTableView.separatorStyle = .none
         inviteCollaboratorsTableView.keyboardDismissMode = .onDrag
 
-        noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Flick!"
+        spinner.hidesWhenStopped = true
+        if friends.isEmpty {
+            addSubview(spinner)
+            spinner.startAnimating()
+        }
+
+        noFriendsLabel.text = "Stop telling your friends what to watch when they always forget... \nTell them to join Telie!"
         noFriendsLabel.textColor = .darkBlue
         noFriendsLabel.numberOfLines = 0
         noFriendsLabel.font = .systemFont(ofSize: 12)
@@ -103,9 +110,12 @@ class AddCollaboratorModalView: ModalView {
 
         NetworkManager.getFriends { [weak self] friends in
             guard let self = self else { return }
-            self.allFriends = friends
-            self.friends = friends
-            self.setupFriendsView()
+            DispatchQueue.main.async {
+                self.allFriends = friends
+                self.friends = friends
+                self.setupFriendsView()
+                self.spinner.stopAnimating()
+            }
         }
     }
 
@@ -167,6 +177,11 @@ class AddCollaboratorModalView: ModalView {
             make.leading.trailing.equalTo(collaboratorsTableView)
             make.height.equalTo(40)
             make.top.equalTo(inviteTitleLabel.snp.bottom).offset(18)
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(inviteSearchBar.snp.bottom).offset(20)
         }
     }
 

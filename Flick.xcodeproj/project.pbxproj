@@ -23,7 +23,7 @@
 		8033C0FE25B4E4D800F6BAEE /* InteractivePopRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */; };
 		803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EA22596D92B004CF4B7 /* RoundedButton.swift */; };
 		803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */; };
-		803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */; };
+		803E5EF8259C0E7B004CF4B7 /* SuggestToFriendModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5EF7259C0E7B004CF4B7 /* SuggestToFriendModalView.swift */; };
 		803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F0A259D41B4004CF4B7 /* Suggestion.swift */; };
 		803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */; };
 		803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */; };
@@ -181,7 +181,7 @@
 		8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePopRecognizer.swift; sourceTree = "<group>"; };
 		803E5EA22596D92B004CF4B7 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaModalView.swift; sourceTree = "<group>"; };
-		803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickToFriendModalView.swift; sourceTree = "<group>"; };
+		803E5EF7259C0E7B004CF4B7 /* SuggestToFriendModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestToFriendModalView.swift; sourceTree = "<group>"; };
 		803E5F0A259D41B4004CF4B7 /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		803E5F4A25A3E932004CF4B7 /* Flick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Flick.entitlements; sourceTree = "<group>"; };
 		803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserTableViewCell.swift; sourceTree = "<group>"; };
@@ -635,7 +635,7 @@
 				D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */,
 				D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */,
 				803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */,
-				803E5EF7259C0E7B004CF4B7 /* FlickToFriendModalView.swift */,
+				803E5EF7259C0E7B004CF4B7 /* SuggestToFriendModalView.swift */,
 				80E7F91425B5415400B545C8 /* ModalView.swift */,
 				806E772125C2517C00B82ECE /* AddMembersModalView.swift */,
 			);
@@ -973,7 +973,7 @@
 				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
 				803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */,
 				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
-				803E5EF8259C0E7B004CF4B7 /* FlickToFriendModalView.swift in Sources */,
+				803E5EF8259C0E7B004CF4B7 /* SuggestToFriendModalView.swift in Sources */,
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */,
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,

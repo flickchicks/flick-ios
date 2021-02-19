@@ -12,6 +12,7 @@ struct SimpleMediaList: Codable {
     var id: Int
     var name: String
     var isPrivate: Bool
+    var owner: UserProfile
     var collaborators: [UserProfile] // Simple collaborator
     var shows: [SimpleMedia] // Simple Media
 }

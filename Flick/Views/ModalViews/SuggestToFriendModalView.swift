@@ -1,5 +1,5 @@
 //
-//  FlickToFriendModalView.swift
+//  SuggestToFriendModalView.swift
 //  Flick
 //
 //  Created by Haiying W on 12/29/20.
@@ -8,15 +8,14 @@
 
 import UIKit
 
-protocol FlickToFriendDelegate: class {
-    func flickMediaToFriends(mediaId: Int, friendIds: [Int], message: String)
+protocol SuggestToFriendDelegate: class {
+    func suggestMediaToFriends(mediaId: Int, friendIds: [Int], message: String)
 }
 
-class FlickToFriendModalView: ModalView {
+class SuggestToFriendModalView: ModalView {
 
     // MARK: - Private View Vars
     private var cancelButton = UIButton()
-    private let flickToFriendLabel = UILabel()
     private let friendsTableView = UITableView()
     private let mediaIconImageView = UIImageView()
     private let mediaInfoLabel = UILabel()
@@ -25,6 +24,8 @@ class FlickToFriendModalView: ModalView {
     private let messageTextField = UITextField()
     private let onlyFriendSeeLabel = UILabel()
     private var shareButton = UIButton()
+    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let suggestToFriendLabel = UILabel()
 
     // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
@@ -33,17 +34,17 @@ class FlickToFriendModalView: ModalView {
     private var selectedFriends: [UserProfile] = []
     private var selectedIndexPaths: [IndexPath] = []
 
-    weak var flickToFriendDelegate: FlickToFriendDelegate?
+    weak var suggestToFriendDelegate: SuggestToFriendDelegate?
 
     init(media: Media) {
         self.media = media
         super.init()
 
-        flickToFriendLabel.text = "Flick to a friend"
-        flickToFriendLabel.font = .boldSystemFont(ofSize: 20)
-        containerView.addSubview(flickToFriendLabel)
+        suggestToFriendLabel.text = "Suggest to friend"
+        suggestToFriendLabel.font = .boldSystemFont(ofSize: 20)
+        containerView.addSubview(suggestToFriendLabel)
 
-        onlyFriendSeeLabel.text = "Only this friend will see"
+        onlyFriendSeeLabel.text = "Only selected friend will see"
         onlyFriendSeeLabel.textColor = .darkBlueGray2
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
         containerView.addSubview(onlyFriendSeeLabel)
@@ -93,6 +94,12 @@ class FlickToFriendModalView: ModalView {
         friendsTableView.showsVerticalScrollIndicator = false
         containerView.addSubview(friendsTableView)
 
+        spinner.hidesWhenStopped = true
+        if friends.isEmpty {
+            friendsTableView.backgroundView = spinner
+            spinner.startAnimating()
+        }
+
         cancelButton = RoundedButton(style: .gray, title: "Cancel")
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         containerView.addSubview(cancelButton)
@@ -120,14 +127,14 @@ class FlickToFriendModalView: ModalView {
             make.size.equalTo(containerViewSize)
         }
 
-        flickToFriendLabel.snp.makeConstraints { make in
+        suggestToFriendLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
             make.top.equalToSuperview().offset(36)
         }
 
         onlyFriendSeeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
-            make.top.equalTo(flickToFriendLabel.snp.bottom).offset(4)
+            make.top.equalTo(suggestToFriendLabel.snp.bottom).offset(4)
         }
 
         mediaPosterImageView.snp.makeConstraints { make in
@@ -182,8 +189,9 @@ class FlickToFriendModalView: ModalView {
     private func getFriends() {
         NetworkManager.getFriends { [weak self] friends in
             guard let self = self else { return }
-            self.friends = friends
             DispatchQueue.main.async {
+                self.friends = friends
+                self.spinner.stopAnimating()
                 self.friendsTableView.reloadData()
             }
         }
@@ -201,7 +209,7 @@ class FlickToFriendModalView: ModalView {
     @objc private func shareTapped() {
         let selectedFriendIds = selectedFriends.map { $0.id }
         if !selectedFriendIds.isEmpty {
-            flickToFriendDelegate?.flickMediaToFriends(mediaId: media.id, friendIds: selectedFriendIds, message: messageTextField.text ?? "")
+            suggestToFriendDelegate?.suggestMediaToFriends(mediaId: media.id, friendIds: selectedFriendIds, message: messageTextField.text ?? "")
         }
     }
 
@@ -211,7 +219,7 @@ class FlickToFriendModalView: ModalView {
 
 }
 
-extension FlickToFriendModalView: UITableViewDelegate, UITableViewDataSource {
+extension SuggestToFriendModalView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friends.count
@@ -242,7 +250,7 @@ extension FlickToFriendModalView: UITableViewDelegate, UITableViewDataSource {
 
 }
 
-extension FlickToFriendModalView: UITextFieldDelegate {
+extension SuggestToFriendModalView: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

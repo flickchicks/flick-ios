@@ -26,10 +26,10 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .offWhite
         navigationController?.navigationBar.isHidden = true
 
-        logoImageView.image = UIImage(named: "flickLogo")
+        logoImageView.image = UIImage(named: "logomark")
         view.addSubview(logoImageView)
 
-        introLabel.text = "Save your favorite movies and shows, flick them to your friends"
+        introLabel.text = "Track, share, and choose what you watch with friends!"
         introLabel.textColor = .grayPurple
         introLabel.font = .boldSystemFont(ofSize: 30)
         introLabel.numberOfLines = 0
@@ -55,11 +55,11 @@ class LoginViewController: UIViewController {
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(60)
             make.centerX.equalToSuperview()
-            make.size.equalTo(CGSize(width: 75, height: 30))
+            make.size.equalTo(CGSize(width: 150, height: 50))
         }
 
         introLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(125)
+            make.top.equalTo(logoImageView.snp.bottom).offset(100)
             make.centerX.equalToSuperview()
             make.width.equalTo(275)
         }

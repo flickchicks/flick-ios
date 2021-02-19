@@ -136,11 +136,11 @@ class ListTableViewCell: UITableViewCell {
         // If there are no shows added, show empty state but no scroll
         mediaCollectionView.isScrollEnabled = self.media.count != 0
         titleLabel.text = list.name
-        let listCollaborators = list.collaborators
+        let listCollaborators = [list.owner] + list.collaborators
         lockImageView.isHidden = !list.isPrivate
         // collaboratorsPreviewView does not show if list is private
         collaboratorsPreviewView.isHidden = list.isPrivate
-        if listCollaborators.count > 0 {
+        if listCollaborators.count > 1 {
             setupCollaborators(collaborators: listCollaborators)
         }
         mediaCollectionView.reloadData()

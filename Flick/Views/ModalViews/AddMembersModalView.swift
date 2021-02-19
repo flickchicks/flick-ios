@@ -16,6 +16,7 @@ class AddMembersModalView: ModalView {
 
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let titleLabel = UILabel()
     private let usersTableView = UITableView()
 
@@ -48,12 +49,19 @@ class AddMembersModalView: ModalView {
         usersTableView.keyboardDismissMode = .onDrag
         containerView.addSubview(usersTableView)
 
+        spinner.hidesWhenStopped = true
+        if friends.isEmpty {
+            usersTableView.backgroundView = spinner
+            spinner.startAnimating()
+        }
+
         setupConstraints()
 
         NetworkManager.getFriends { [weak self] friends in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.friends = friends
+                self.spinner.stopAnimating()
                 self.usersTableView.reloadData()
             }
         }

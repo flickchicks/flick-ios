@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ShareMediaDelegate: class {
-    func showFlickToFriendView()
+    func showSuggestToFriendView()
     func shareToInstagramFeed()
 }
 
@@ -17,13 +17,13 @@ class ShareMediaModalView: ModalView {
 
     // MARK: - Private View Vars
     private let cancelButton = UIButton()
-    private let flickToFriendButton = UIButton()
-    private let flickToFriendLabel = UILabel()
-    private let flickToFriendRightChevronImageView = UIImageView()
     private let instagramButton = UIButton()
     private let instagramLabel = UILabel()
     private let instagramRightChevronImageView = UIImageView()
     private let shareLabel = UILabel()
+    private let suggestToFriendButton = UIButton()
+    private let suggestToFriendLabel = UILabel()
+    private let suggestToFriendRightChevronImageView = UIImageView()
 
     // MARK: - Private Data Vars
     weak var shareMediaDelegate: ShareMediaDelegate?
@@ -35,17 +35,17 @@ class ShareMediaModalView: ModalView {
         shareLabel.font = .boldSystemFont(ofSize: 20)
         containerView.addSubview(shareLabel)
 
-        flickToFriendButton.addTarget(self, action: #selector(flickToFriendTapped), for: .touchUpInside)
-        containerView.addSubview(flickToFriendButton)
+        suggestToFriendButton.addTarget(self, action: #selector(suggestToFriendTapped), for: .touchUpInside)
+        containerView.addSubview(suggestToFriendButton)
 
-        flickToFriendLabel.text = "Flick to a friend"
-        flickToFriendLabel.textColor = .darkBlue
-        flickToFriendLabel.font = .systemFont(ofSize: 16)
-        flickToFriendButton.addSubview(flickToFriendLabel)
+        suggestToFriendLabel.text = "Suggest to friend"
+        suggestToFriendLabel.textColor = .darkBlue
+        suggestToFriendLabel.font = .systemFont(ofSize: 16)
+        suggestToFriendButton.addSubview(suggestToFriendLabel)
 
-        flickToFriendRightChevronImageView.image = UIImage(named: "rightChevron")
-        flickToFriendRightChevronImageView.isUserInteractionEnabled = false
-        flickToFriendButton.addSubview(flickToFriendRightChevronImageView)
+        suggestToFriendRightChevronImageView.image = UIImage(named: "rightChevron")
+        suggestToFriendRightChevronImageView.isUserInteractionEnabled = false
+        suggestToFriendButton.addSubview(suggestToFriendRightChevronImageView)
         
         instagramButton.addTarget(self, action: #selector(shareToInstagramTapped), for: .touchUpInside)
         containerView.addSubview(instagramButton)
@@ -87,17 +87,17 @@ class ShareMediaModalView: ModalView {
             make.leading.equalToSuperview().offset(horizontalPadding)
         }
 
-        flickToFriendButton.snp.makeConstraints { make in
+        suggestToFriendButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(shareLabel.snp.bottom).offset(verticalPadding)
             make.height.equalTo(20)
         }
 
-        flickToFriendLabel.snp.makeConstraints { make in
+        suggestToFriendLabel.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview()
         }
 
-        flickToFriendRightChevronImageView.snp.makeConstraints { make in
+        suggestToFriendRightChevronImageView.snp.makeConstraints { make in
             make.trailing.centerY.equalToSuperview()
             make.width.equalTo(5)
             make.height.equalTo(10)
@@ -105,7 +105,7 @@ class ShareMediaModalView: ModalView {
         
         instagramButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-            make.top.equalTo(flickToFriendButton.snp.bottom).offset(20)
+            make.top.equalTo(suggestToFriendButton.snp.bottom).offset(20)
             make.height.equalTo(20)
         }
 
@@ -125,9 +125,9 @@ class ShareMediaModalView: ModalView {
         }
     }
 
-    @objc private func flickToFriendTapped() {
+    @objc private func suggestToFriendTapped() {
         modalDelegate?.dismissModal(modalView: self)
-        shareMediaDelegate?.showFlickToFriendView()
+        shareMediaDelegate?.showSuggestToFriendView()
     }
 
     @objc private func cancelTapped() {

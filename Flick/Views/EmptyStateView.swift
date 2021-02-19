@@ -19,7 +19,7 @@ enum EmptyStateType {
         case .suggestions:
             return "emptySuggestions"
         case .activity:
-            return "emptyNotifications"
+            return "emptyActivity"
         case .search:
             return "emptySearch"
         case .group:
