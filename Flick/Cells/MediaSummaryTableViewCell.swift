@@ -227,7 +227,7 @@ extension MediaSummaryTableViewCell: UICollectionViewDelegateFlowLayout {
             case .spacer:
                 return CGSize(width: 10, height: height)
             case .director:
-                return CGSize(width: textWidth + iconSpacerWidth, height: height)
+                return CGSize(width: min(textWidth + iconSpacerWidth, collectionView.frame.width - iconSpacerWidth), height: height)
             case .duration:
                 return CGSize(width: textWidth + iconSpacerWidth, height: height)
             case .rating:
