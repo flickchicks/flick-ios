@@ -19,11 +19,11 @@ class ShareMediaModalView: ModalView {
     private let cancelButton = UIButton()
     private let instagramButton = UIButton()
     private let instagramLabel = UILabel()
-    private let instagramRightChevronImageView = UIImageView()
+    private let instagramIconImageView = UIImageView()
     private let shareLabel = UILabel()
     private let suggestToFriendButton = UIButton()
     private let suggestToFriendLabel = UILabel()
-    private let suggestToFriendRightChevronImageView = UIImageView()
+    private let friendIconImageView = UIImageView()
 
     // MARK: - Private Data Vars
     weak var shareMediaDelegate: ShareMediaDelegate?
@@ -35,18 +35,23 @@ class ShareMediaModalView: ModalView {
         shareLabel.font = .boldSystemFont(ofSize: 20)
         containerView.addSubview(shareLabel)
 
+        suggestToFriendButton.layer.borderWidth = 1
+        suggestToFriendButton.layer.cornerRadius = 8
+        suggestToFriendButton.layer.borderColor = UIColor.darkBlue.withAlphaComponent(0.15).cgColor
         suggestToFriendButton.addTarget(self, action: #selector(suggestToFriendTapped), for: .touchUpInside)
         containerView.addSubview(suggestToFriendButton)
+        
+        friendIconImageView.image = UIImage(named: "friendIcon")
+        suggestToFriendButton.addSubview(friendIconImageView)
 
         suggestToFriendLabel.text = "Suggest to friend"
         suggestToFriendLabel.textColor = .darkBlue
         suggestToFriendLabel.font = .systemFont(ofSize: 16)
         suggestToFriendButton.addSubview(suggestToFriendLabel)
-
-        suggestToFriendRightChevronImageView.image = UIImage(named: "rightChevron")
-        suggestToFriendRightChevronImageView.isUserInteractionEnabled = false
-        suggestToFriendButton.addSubview(suggestToFriendRightChevronImageView)
         
+        instagramButton.layer.borderWidth = 1
+        instagramButton.layer.cornerRadius = 8
+        instagramButton.layer.borderColor = UIColor.darkBlue.withAlphaComponent(0.15).cgColor
         instagramButton.addTarget(self, action: #selector(shareToInstagramTapped), for: .touchUpInside)
         containerView.addSubview(instagramButton)
         
@@ -54,10 +59,9 @@ class ShareMediaModalView: ModalView {
         instagramLabel.textColor = .darkBlue
         instagramLabel.font = .systemFont(ofSize: 16)
         instagramButton.addSubview(instagramLabel)
-
-        instagramRightChevronImageView.image = UIImage(named: "rightChevron")
-        instagramRightChevronImageView.isUserInteractionEnabled = false
-        instagramButton.addSubview(instagramRightChevronImageView)
+        
+        instagramIconImageView.image = UIImage(named: "instagram")
+        instagramButton.addSubview(instagramIconImageView)
 
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.mediumGray, for: .normal)
@@ -73,7 +77,7 @@ class ShareMediaModalView: ModalView {
     }
 
     private func setupConstraints() {
-        let containerViewSize = CGSize(width: 335, height: 240)
+        let containerViewSize = CGSize(width: 335, height: 259)
         let horizontalPadding = 24
         let verticalPadding = 36
 
@@ -86,41 +90,43 @@ class ShareMediaModalView: ModalView {
             make.top.equalToSuperview().offset(verticalPadding)
             make.leading.equalToSuperview().offset(horizontalPadding)
         }
+        
+        friendIconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(suggestToFriendButton)
+            make.leading.equalToSuperview().offset(10.5)
+            make.size.equalTo(CGSize(width: 16, height: 16))
+        }
 
         suggestToFriendButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-            make.top.equalTo(shareLabel.snp.bottom).offset(verticalPadding)
-            make.height.equalTo(20)
+            make.top.equalTo(shareLabel.snp.bottom).offset(24)
+            make.height.equalTo(44)
         }
 
         suggestToFriendLabel.snp.makeConstraints { make in
-            make.leading.centerY.equalToSuperview()
-        }
-
-        suggestToFriendRightChevronImageView.snp.makeConstraints { make in
-            make.trailing.centerY.equalToSuperview()
-            make.width.equalTo(5)
-            make.height.equalTo(10)
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(friendIconImageView.snp.trailing).offset(9.5)
         }
         
         instagramButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
-            make.top.equalTo(suggestToFriendButton.snp.bottom).offset(20)
-            make.height.equalTo(20)
+            make.top.equalTo(suggestToFriendButton.snp.bottom).offset(10)
+            make.height.equalTo(44)
+        }
+        
+        instagramIconImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(instagramButton)
+            make.leading.equalToSuperview().offset(10.5)
+            make.size.equalTo(CGSize(width: 16, height: 16))
         }
 
         instagramLabel.snp.makeConstraints { make in
-            make.leading.centerY.equalToSuperview()
-        }
-
-        instagramRightChevronImageView.snp.makeConstraints { make in
-            make.trailing.centerY.equalToSuperview()
-            make.width.equalTo(5)
-            make.height.equalTo(10)
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(instagramIconImageView.snp.trailing).offset(9.5)
         }
 
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(verticalPadding)
+            make.top.equalTo(instagramButton.snp.bottom).offset(28)
             make.centerX.equalToSuperview()
         }
     }
