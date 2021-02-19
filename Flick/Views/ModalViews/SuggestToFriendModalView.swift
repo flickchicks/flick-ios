@@ -24,6 +24,7 @@ class SuggestToFriendModalView: ModalView {
     private let messageTextField = UITextField()
     private let onlyFriendSeeLabel = UILabel()
     private var shareButton = UIButton()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let suggestToFriendLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -92,6 +93,12 @@ class SuggestToFriendModalView: ModalView {
         friendsTableView.allowsMultipleSelection = true
         friendsTableView.showsVerticalScrollIndicator = false
         containerView.addSubview(friendsTableView)
+
+        spinner.hidesWhenStopped = true
+        if friends.isEmpty {
+            friendsTableView.backgroundView = spinner
+            spinner.startAnimating()
+        }
 
         cancelButton = RoundedButton(style: .gray, title: "Cancel")
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
@@ -182,8 +189,9 @@ class SuggestToFriendModalView: ModalView {
     private func getFriends() {
         NetworkManager.getFriends { [weak self] friends in
             guard let self = self else { return }
-            self.friends = friends
             DispatchQueue.main.async {
+                self.friends = friends
+                self.spinner.stopAnimating()
                 self.friendsTableView.reloadData()
             }
         }
