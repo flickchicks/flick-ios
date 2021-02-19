@@ -80,9 +80,8 @@ class MediaSummaryIconLabelCollectionViewCell: UICollectionViewCell {
         }
 
         label.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.top.bottom.trailing.equalToSuperview()
             make.leading.equalTo(iconImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview()
         }
     }
 
