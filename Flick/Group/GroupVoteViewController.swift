@@ -306,13 +306,8 @@ class GroupVoteViewController: UIViewController {
 
     private func vote(_ vote: Vote) {
         guard let media = currentMedia else { return }
-        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { success in
-            if success {
-                DispatchQueue.main.async {
-                    self.ideas.removeLast()
-                }
-            }
-        }
+        self.ideas.removeLast()
+        NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { _ in }
     }
 
 }
