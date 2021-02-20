@@ -225,7 +225,7 @@ class SuggestionTableViewCell: UITableViewCell {
         let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
         dateLabel.text = dateLabelText
 //        let heartImage = suggestion.liked ? "filledHeart" : "heart"
-//        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        likeButton.setImage(UIImage(named: "heart"), for: .normal)
     }
 
     override func prepareForReuse() {
