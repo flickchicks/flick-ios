@@ -127,7 +127,6 @@ class LoginViewController: UIViewController {
                 // Get profile image in base64
                 var base64Str = ""
                 if let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
-                    print(profileURL)
                     let profileURLData = try? Data(contentsOf: profileURL)
                     if let profileURLData = profileURLData,
                        let profileImage = UIImage(data: profileURLData),
