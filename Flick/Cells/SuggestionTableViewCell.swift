@@ -220,7 +220,9 @@ class SuggestionTableViewCell: UITableViewCell {
             tagsLabel.text = tags.joined(separator: ", ")
         }
         movieIconImageView.image = UIImage(named: suggestion.show.isTv ? "tv" : "film")
-        releaseDateLabel.text = suggestion.show.dateReleased
+        if let dateReleased = suggestion.show.dateReleased {
+            releaseDateLabel.text = String(dateReleased.prefix(4))
+        }
         synopsisLabel.text = suggestion.show.plot
         let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
         dateLabel.text = dateLabelText

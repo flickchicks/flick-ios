@@ -32,6 +32,7 @@ class ListViewController: UIViewController {
     private var mediaCollectionView: UICollectionView!
     private let settingsButton = UIButton()
     private var sortListModalView: SortListModalView!
+    private let spinner = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
@@ -76,6 +77,9 @@ class ListViewController: UIViewController {
         mediaCollectionView.bounces = false
         view.addSubview(mediaCollectionView)
 
+        view.addSubview(spinner)
+        spinner.startAnimating()
+
         setupSections()
         setupConstraints()
     }
@@ -95,31 +99,34 @@ class ListViewController: UIViewController {
         NetworkManager.getMediaList(listId: listId) { [weak self] list in
             guard let self = self else { return }
 
-            self.list = list
-            self.listNameLabel.text = list.name
-            // Set list summary height only if tags are not expanded
-            // TODO: Uncomment when we want tags back
-//            if self.listSummaryHeight <= 145 {
-//                self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
-//            }
-            self.setupSections()
-            self.mediaCollectionView.reloadData()
+            DispatchQueue.main.async {
+                self.list = list
+                self.listNameLabel.text = list.name
+                // Set list summary height only if tags are not expanded
+                // TODO: Uncomment when we want tags back
+    //            if self.listSummaryHeight <= 145 {
+    //                self.listSummaryHeight = list.tags.isEmpty ? 80 : 145
+    //            }
+                self.setupSections()
+                self.mediaCollectionView.reloadData()
+                self.spinner.stopAnimating()
 
-            // Show settings button and set up empty state only if current user is owner or collaborator of list
-            guard list.owner.id == self.currentUserId ||
-                    list.collaborators.contains(where: { $0.id == self.currentUserId }) else  { return }
+                // Show settings button and set up empty state only if current user is owner or collaborator of list
+                guard list.owner.id == self.currentUserId ||
+                        list.collaborators.contains(where: { $0.id == self.currentUserId }) else  { return }
 
-            self.setupSettingsButton()
+                self.setupSettingsButton()
 
-            if list.shows.isEmpty {
-                self.setupEmptyStateViews()
-                return
+                if list.shows.isEmpty {
+                    self.setupEmptyStateViews()
+                    return
+                }
+
+                // Hide empty state views
+                self.emptyListImageView.isHidden = true
+                self.addMediaMessageLabel.isHidden = true
+                self.arrowToAddButtonView.isHidden = true
             }
-
-            // Hide empty state views
-            self.emptyListImageView.isHidden = true
-            self.addMediaMessageLabel.isHidden = true
-            self.arrowToAddButtonView.isHidden = true
         }
     }
 
@@ -154,6 +161,10 @@ class ListViewController: UIViewController {
         mediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(listNameLabel.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     

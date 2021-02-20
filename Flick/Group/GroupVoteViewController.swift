@@ -22,6 +22,7 @@ class GroupVoteViewController: UIViewController {
     private let noIdeasLabel = UILabel()
     private let numIdeasLabel = UILabel()
     private let posterImageView = UIImageView()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let voteMaybeButton = UIButton()
     private let voteNoButton = UIButton()
     private let voteYesButton = UIButton()
@@ -139,6 +140,10 @@ class GroupVoteViewController: UIViewController {
         voteYesButton.addTarget(self, action: #selector(voteYesButtonPressed), for: .touchUpInside)
         view.addSubview(voteYesButton)
 
+        spinner.hidesWhenStopped = true
+        view.addSubview(spinner)
+        spinner.startAnimating()
+
         setupConstraints()
     }
 
@@ -168,6 +173,10 @@ class GroupVoteViewController: UIViewController {
             make.top.equalTo(numIdeasLabel.snp.bottom).offset(12)
             make.bottom.equalTo(voteMaybeButton.snp.top).offset(-16)
             make.leading.trailing.equalToSuperview().inset(38)
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(posterImageView)
         }
 
         mediaInformationTableView.snp.makeConstraints { make in
@@ -247,6 +256,7 @@ class GroupVoteViewController: UIViewController {
                 if timestamp.iso8601withFractionalSeconds ?? Date() >= self.lastRequestTime ?? Date() {
                     self.ideas = ideas
                 }
+                self.spinner.stopAnimating()
             }
         }
     }

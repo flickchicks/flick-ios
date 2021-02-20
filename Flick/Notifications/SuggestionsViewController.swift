@@ -14,6 +14,7 @@ class SuggestionsViewController: UIViewController {
     private let emptyStateView = EmptyStateView(type: .suggestions)
     private let suggestionsTableView = UITableView(frame: .zero)
     private let refreshControl = UIRefreshControl()
+    private let spinner = UIActivityIndicatorView(style: .large)
     
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = []
@@ -47,6 +48,9 @@ class SuggestionsViewController: UIViewController {
         
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
+
+        view.addSubview(spinner)
+        spinner.startAnimating()
         
         setupConstraints()
     }
@@ -59,6 +63,10 @@ class SuggestionsViewController: UIViewController {
         emptyStateView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(150)
             make.centerX.equalToSuperview()
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
@@ -80,6 +88,7 @@ class SuggestionsViewController: UIViewController {
                 self.suggestionsTableView.reloadData()
                 self.updateSuggestionViewedTime()
                 self.refreshControl.endRefreshing()
+                self.spinner.stopAnimating()
             }
         }
     }
