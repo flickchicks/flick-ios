@@ -15,6 +15,7 @@ class GroupsViewController: UIViewController {
     private let emptyStateView = EmptyStateView(type: .group)
     private let groupsTableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
+    private let spinner = UIActivityIndicatorView(style: .large)
 
     // MARK: - Private View Vars
     private var groups: [Group] = []
@@ -48,6 +49,9 @@ class GroupsViewController: UIViewController {
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
 
+        view.addSubview(spinner)
+        spinner.startAnimating()
+
         groupsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -62,6 +66,10 @@ class GroupsViewController: UIViewController {
             make.top.equalToSuperview().offset(200)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(50)
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 
@@ -94,6 +102,7 @@ class GroupsViewController: UIViewController {
                 self.emptyStateView.isHidden = groups.count > 0
                 self.groupsTableView.reloadData()
                 self.refreshControl.endRefreshing()
+                self.spinner.stopAnimating()
             }
         }
     }

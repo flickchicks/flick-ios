@@ -52,8 +52,10 @@ class SuggestToFriendModalView: ModalView {
         mediaIconImageView.image = UIImage(named: media.isTv ? "tv" : "film")
         containerView.addSubview(mediaIconImageView)
 
-        if let duration = media.duration?.inHourMinute, let dateReleased = media.dateReleased {
-            mediaInfoLabel.text = "\(duration) • \(dateReleased)"
+        if let duration = media.duration?.inHourMinute,
+           let dateReleased = media.dateReleased {
+            let releaseYear = String(dateReleased.prefix(4))
+            mediaInfoLabel.text = "\(duration) • \(releaseYear)"
         }
         mediaInfoLabel.textColor = .mediumGray
         mediaInfoLabel.font = .systemFont(ofSize: 12)

@@ -17,6 +17,7 @@ class MediaCardViewController: UIViewController {
     // MARK: - Private View Vars
     private let commentAreaView = CommentAreaView()
     private let handleIndicatorView = UIView()
+    private let spinner = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)
@@ -53,6 +54,9 @@ class MediaCardViewController: UIViewController {
         mediaInformationTableView.register(MediaRatingsTableViewCell.self, forCellReuseIdentifier: mediaRatingsReuseIdentifier)
         mediaInformationTableView.register(MediaThoughtsTableViewCell.self, forCellReuseIdentifier: mediaThoughtsReuseIdentifier)
         view.addSubview(mediaInformationTableView)
+
+        view.addSubview(spinner)
+        spinner.startAnimating()
 
         commentAreaView.delegate = self
         commentAreaView.sizeToFit()
@@ -94,6 +98,11 @@ class MediaCardViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+
+        spinner.snp.makeConstraints { make in
+            make.top.equalTo(handleArea.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+        }
     }
 
     // TODO: Fix scrolling and card pan gesture interactions
@@ -105,6 +114,7 @@ class MediaCardViewController: UIViewController {
         self.media = media
         mediaInformationTableView.reloadData()
         mediaInformationTableView.isHidden = false
+        spinner.stopAnimating()
     }
 
 }

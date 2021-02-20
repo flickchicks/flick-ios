@@ -139,7 +139,9 @@ class MediaViewController: UIViewController {
         NetworkManager.getMedia(mediaId: mediaId) { [weak self] media in
             guard let self = self else { return }
             self.media = media
-            self.mediaCardViewController.setupMedia(media: media)
+            DispatchQueue.main.async {
+                self.mediaCardViewController.setupMedia(media: media)
+            }
         }
     }
 

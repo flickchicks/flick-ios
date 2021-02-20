@@ -14,6 +14,7 @@ class ActivityViewController: UIViewController {
     private let activityTableView = UITableView(frame: .zero, style: .grouped)
     private let emptyStateView = EmptyStateView(type: .activity)
     private let refreshControl = UIRefreshControl()
+    private let spinner = UIActivityIndicatorView(style: .large)
 
     // MARK: - Private Data Vars
     private var friendRequests: [NotificationEnum] = []
@@ -49,6 +50,9 @@ class ActivityViewController: UIViewController {
         
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
+
+        view.addSubview(spinner)
+        spinner.startAnimating()
     
         setupConstraints()
     }
@@ -62,6 +66,10 @@ class ActivityViewController: UIViewController {
         emptyStateView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(150)
             make.centerX.equalToSuperview()
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     
@@ -80,6 +88,7 @@ class ActivityViewController: UIViewController {
                 self.activityTableView.reloadData()
                 self.updateNotificationViewedTime()
                 self.refreshControl.endRefreshing()
+                self.spinner.stopAnimating()
             }
         }
     }
