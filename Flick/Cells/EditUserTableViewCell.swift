@@ -74,8 +74,9 @@ class EditUserTableViewCell: UITableViewCell {
             editButton.backgroundColor = .clear
             editButton.setTitle("Added", for: .normal)
             editButton.layer.borderWidth = 0
+            editButton.titleEdgeInsets.right = 0
             editButton.snp.updateConstraints { update in
-                update.width.equalTo(68)
+                update.width.equalTo(58)
             }
         } else {
             editButton.isEnabled = true
@@ -83,6 +84,7 @@ class EditUserTableViewCell: UITableViewCell {
             editButton.setTitle("Add", for: .normal)
             editButton.layer.borderWidth = 1
             editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
+            editButton.titleEdgeInsets.right = 10
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(48)
             }
