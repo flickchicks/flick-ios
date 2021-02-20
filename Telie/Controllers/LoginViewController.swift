@@ -93,9 +93,6 @@ class LoginViewController: UIViewController {
         loginManager.logIn(permissions: ["public_profile", "email"], from: self) { [weak self] (result, error) in
             guard let self = self else { return }
             
-            print("here is my result", result?.authenticationToken?.tokenString)
-            print("here is my error", error)
-
             guard error == nil else {
                 print(error!.localizedDescription)
                 return
