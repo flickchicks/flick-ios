@@ -47,7 +47,7 @@ class DiscoverViewController2: UIViewController {
         SimpleMedia(id: 0, title: "Media", posterPic: "")
     ]
     
-    private var sections = [1, 2, 3]
+    private var sections = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +70,7 @@ class DiscoverViewController2: UIViewController {
         discoverFeedTableView.register(MutualFriendsTableViewCell.self, forCellReuseIdentifier: MutualFriendsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedShowsTableViewCell.self, forCellReuseIdentifier: RecommendedShowsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedListsTableViewCell.self, forCellReuseIdentifier: RecommendedListsTableViewCell.reuseIdentifier)
+        discoverFeedTableView.register(BuzzTableViewCell.self, forCellReuseIdentifier: BuzzTableViewCell.reuseIdentifier)
         
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -137,7 +138,8 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
             cell.configure(with: shows)
             return cell
         } else {
-            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BuzzTableViewCell.reuseIdentifier, for: indexPath) as? BuzzTableViewCell else { return UITableViewCell() }
+            return cell
         }
         
     }
@@ -150,7 +152,7 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
         } else if indexPath.row == 2 {
             return 620
         } else {
-            return 
+            return 190
         }
     }
 
