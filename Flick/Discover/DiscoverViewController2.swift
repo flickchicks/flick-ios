@@ -47,7 +47,7 @@ class DiscoverViewController2: UIViewController {
         SimpleMedia(id: 0, title: "Media", posterPic: "")
     ]
     
-    private var sections = [1, 2]
+    private var sections = [1, 2, 3]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +69,7 @@ class DiscoverViewController2: UIViewController {
         discoverFeedTableView.separatorStyle = .none
         discoverFeedTableView.register(MutualFriendsTableViewCell.self, forCellReuseIdentifier: MutualFriendsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedShowsTableViewCell.self, forCellReuseIdentifier: RecommendedShowsTableViewCell.reuseIdentifier)
+        discoverFeedTableView.register(RecommendedListsTableViewCell.self, forCellReuseIdentifier: RecommendedListsTableViewCell.reuseIdentifier)
         
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -127,19 +128,29 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MutualFriendsTableViewCell.reuseIdentifier, for: indexPath) as? MutualFriendsTableViewCell else { return UITableViewCell() }
             cell.configure(with: mutualFriends)
             return cell
-        } else {
+        } else if indexPath.row == 1 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendedShowsTableViewCell.reuseIdentifier, for: indexPath) as? RecommendedShowsTableViewCell else { return UITableViewCell() }
             cell.configure(with: shows)
             return cell
+        } else if indexPath.row == 2 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendedListsTableViewCell.reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: shows)
+            return cell
+        } else {
+            
         }
         
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 175
+            return 200
+        } else if indexPath.row == 1 {
+            return 575
+        } else if indexPath.row == 2 {
+            return 620
         } else {
-            return 600
+            return 
         }
     }
 
