@@ -25,13 +25,13 @@ class CommentAreaView: UIView {
         commentSeparatorView.backgroundColor = .lightGray2
         addSubview(commentSeparatorView)
 
-        commentTextView.text = ""
+        commentTextView.text = "Share your thoughts"
         commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         commentTextView.backgroundColor = .lightGray2
         commentTextView.layer.cornerRadius = 15
         commentTextView.isScrollEnabled = false
         commentTextView.delegate = self
-        commentTextView.textColor = .black
+        commentTextView.textColor = .mediumGray
         commentTextView.returnKeyType = .done
         commentTextView.sizeToFit()
         commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
@@ -74,8 +74,8 @@ class CommentAreaView: UIView {
         }
 
         sendCommentButton.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
-            make.leading.equalTo(commentTextView.snp.trailing).offset(14)
+            make.width.height.equalTo(44)
+            make.leading.equalTo(commentTextView.snp.trailing)
             make.centerY.equalTo(commentTextView)
         }
 
@@ -90,6 +90,20 @@ extension CommentAreaView: UITextViewDelegate {
             textView.resignFirstResponder()
         }
         return true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .mediumGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Share your thoughts"
+            textView.textColor = UIColor.mediumGray
+        }
     }
     
 }

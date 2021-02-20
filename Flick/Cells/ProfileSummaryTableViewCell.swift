@@ -18,7 +18,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private var condensedCellSpacing = -8
     private let maxFriendsPreview = 6
     private let profileImageSize = CGSize(width: 70, height: 70)
-    private let sideButtonsSize = CGSize(width: 24, height: 24)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,7 +67,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.textAlignment = .center
         contentView.addSubview(bioLabel)
 
-        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.setImage(UIImage(named: "options"), for: .normal)
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         settingsButton.tintColor = .mediumGray
         settingsButton.isHidden = true
@@ -138,7 +137,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
 
         settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(sideButtonsSize)
+            make.size.equalTo(CGSize(width: 44, height: 44))
             make.top.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().inset(padding)
         }

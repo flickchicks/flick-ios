@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "settingsButton1x.png",
+      "filename" : "options1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "settingsButton2x.png",
+      "filename" : "options2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "settingsButton3x.png",
+      "filename" : "options3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

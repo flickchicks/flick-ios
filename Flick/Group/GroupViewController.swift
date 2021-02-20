@@ -106,7 +106,6 @@ class GroupViewController: UIViewController {
 
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
-        let settingsButtonSize = CGSize(width: 22, height: 22)
 
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationController?.navigationBar.barTintColor = .movieWhite
@@ -124,10 +123,10 @@ class GroupViewController: UIViewController {
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.setImage(UIImage(named: "options"), for: .normal)
         settingsButton.tintColor = .mediumGray
         settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(settingsButtonSize)
+            make.size.equalTo(CGSize(width: 44, height: 44))
         }
 
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)

@@ -201,12 +201,11 @@ class ListViewController: UIViewController {
     }
 
     private func setupSettingsButton() {
-        let settingsButtonSize = CGSize(width: 22, height: 22)
 
-        settingsButton.setImage(UIImage(named: "settingsButton"), for: .normal)
+        settingsButton.setImage(UIImage(named: "options"), for: .normal)
         settingsButton.tintColor = .mediumGray
         settingsButton.snp.makeConstraints { make in
-            make.size.equalTo(settingsButtonSize)
+            make.size.equalTo(CGSize(width: 44, height: 44))
         }
 
         settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
