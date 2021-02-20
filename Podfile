@@ -2,11 +2,11 @@
 platform :ios, '12.0'
 # source 'https://github.com/CocoaPods/Specs.git'
 
-target 'Flick' do
+target 'Telie' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Flick
+  # Pods for Telie
 
 	# Facebook Authentication
  	pod 'FBSDKLoginKit'
@@ -25,12 +25,12 @@ target 'Flick' do
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.15.0'
 
-  target 'FlickTests' do
+  target 'TelieTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'FlickUITests' do
+  target 'TelieUITests' do
     # Pods for testing
   end
 
