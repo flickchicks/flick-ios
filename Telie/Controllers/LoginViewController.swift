@@ -92,6 +92,9 @@ class LoginViewController: UIViewController {
         let loginManager = LoginManager()
         loginManager.logIn(permissions: ["public_profile", "email"], from: self) { [weak self] (result, error) in
             guard let self = self else { return }
+            
+            print("here is my result", result?.authenticationToken?.tokenString)
+            print("here is my error", error)
 
             guard error == nil else {
                 print(error!.localizedDescription)
@@ -123,11 +126,11 @@ class LoginViewController: UIViewController {
         Profile.loadCurrentProfile { (profile, error) in
             if let accessToken = AccessToken.current?.tokenString,
                let profile = profile,
-               let firstName = profile.firstName,
-               let lastName = profile.lastName {
+               let name = profile.name {
                 // Get profile image in base64
                 var base64Str = ""
                 if let profileURL = profile.imageURL(forMode: .normal, size: self.profileSize) {
+                    print(profileURL)
                     let profileURLData = try? Data(contentsOf: profileURL)
                     if let profileURLData = profileURLData,
                        let profileImage = UIImage(data: profileURLData),
@@ -137,8 +140,7 @@ class LoginViewController: UIViewController {
                 }
 
                 self.authenticateUser(
-                    firstName: firstName,
-                    lastName: lastName,
+                    name: name,
                     email: email,
                     profilePic: base64Str,
                     socialId: profile.userID,
@@ -149,16 +151,14 @@ class LoginViewController: UIViewController {
         }
     }
 
-    private func authenticateUser(firstName: String,
-                                  lastName: String,
+    private func authenticateUser(name: String,
                                   email: String?,
                                   profilePic: String,
                                   socialId: String,
                                   socialIdToken: String,
                                   socialIdTokenType: String) {
         NetworkManager.authenticateUser(
-            firstName: firstName,
-            lastName: lastName,
+            name: name,
             email: email,
             profilePic: profilePic,
             socialId: socialId,
@@ -197,8 +197,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let email = appleIDCredential.email
 
             authenticateUser(
-                firstName: fullName?.givenName ?? "",
-                lastName: fullName?.familyName ?? "",
+                name: "\(fullName?.givenName ?? "") \( fullName?.familyName ?? "")",
                 email: email,
                 profilePic: "",
                 socialId: userIdentifier,
