@@ -27,6 +27,7 @@ class SuggestionsViewController: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshSuggestionData), for: .valueChanged)
 
+        suggestionsTableView.isHidden = true
         suggestionsTableView.delegate = self
         suggestionsTableView.dataSource = self
         suggestionsTableView.isScrollEnabled = true
@@ -84,7 +85,9 @@ class SuggestionsViewController: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.suggestions = suggestions
-                self.emptyStateView.isHidden = suggestions.count > 0
+                let hasSuggestions = suggestions.count > 0
+                self.emptyStateView.isHidden = hasSuggestions
+                self.suggestionsTableView.isHidden = !hasSuggestions
                 self.suggestionsTableView.reloadData()
                 self.updateSuggestionViewedTime()
                 self.refreshControl.endRefreshing()

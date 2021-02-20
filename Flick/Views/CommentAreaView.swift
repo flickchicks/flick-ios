@@ -46,6 +46,9 @@ class CommentAreaView: UIView {
     }
 
     @objc func addComment() {
+        if commentTextView.textColor == .mediumGray {
+            return
+        }
         commentTextView.resignFirstResponder()
         if let commentText = commentTextView.text, commentText.trimmingCharacters(in: .whitespaces) != "" {
             delegate?.addComment(commentText: commentText, isSpoiler: false)
@@ -95,14 +98,14 @@ extension CommentAreaView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .mediumGray {
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = .black
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Share your thoughts"
-            textView.textColor = UIColor.mediumGray
+            textView.textColor = .mediumGray
         }
     }
     

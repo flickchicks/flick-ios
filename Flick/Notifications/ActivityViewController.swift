@@ -27,6 +27,7 @@ class ActivityViewController: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
         
+        activityTableView.isHidden = true
         activityTableView.delegate = self
         activityTableView.dataSource = self
         activityTableView.showsVerticalScrollIndicator = false
@@ -84,7 +85,9 @@ class ActivityViewController: UIViewController {
                 self.friendRequests = friendRequests.map {
                     return .IncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.created)
                 }
-                self.emptyStateView.isHidden = self.friendRequests.count > 0 || self.activities.count > 0
+                let hasActivity = self.friendRequests.count > 0 || self.activities.count > 0
+                self.emptyStateView.isHidden = hasActivity
+                self.activityTableView.isHidden = !hasActivity
                 self.activityTableView.reloadData()
                 self.updateNotificationViewedTime()
                 self.refreshControl.endRefreshing()
