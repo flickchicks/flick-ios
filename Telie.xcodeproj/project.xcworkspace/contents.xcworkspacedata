@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Flick.xcodeproj">
+      location = "self:/Users/lucyxu/Desktop/flick-ios/Telie.xcodeproj">
    </FileRef>
 </Workspace>

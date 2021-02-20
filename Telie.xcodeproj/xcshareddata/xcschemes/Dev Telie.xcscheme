@@ -15,43 +15,23 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D41FE8AD2477C7A40048900F"
-               BuildableName = "Flick.app"
-               BlueprintName = "Flick"
-               ReferencedContainer = "container:Flick.xcodeproj">
+               BuildableName = "Telie.app"
+               BlueprintName = "Telie"
+               ReferencedContainer = "container:Telie.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Dev Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D41FE8C32477C7A80048900F"
-               BuildableName = "FlickTests.xctest"
-               BlueprintName = "FlickTests"
-               ReferencedContainer = "container:Flick.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D41FE8CE2477C7A80048900F"
-               BuildableName = "FlickUITests.xctest"
-               BlueprintName = "FlickUITests"
-               ReferencedContainer = "container:Flick.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Dev Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -65,14 +45,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D41FE8AD2477C7A40048900F"
-            BuildableName = "Flick.app"
-            BlueprintName = "Flick"
-            ReferencedContainer = "container:Flick.xcodeproj">
+            BuildableName = "Telie.app"
+            BlueprintName = "Telie"
+            ReferencedContainer = "container:Telie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Dev Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -82,17 +62,17 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D41FE8AD2477C7A40048900F"
-            BuildableName = "Flick.app"
-            BlueprintName = "Flick"
-            ReferencedContainer = "container:Flick.xcodeproj">
+            BuildableName = "Telie.app"
+            BlueprintName = "Telie"
+            ReferencedContainer = "container:Telie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Dev Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Dev Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
