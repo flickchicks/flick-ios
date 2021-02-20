@@ -1,1 +1,1 @@
-# flick-ios
+# Telie
