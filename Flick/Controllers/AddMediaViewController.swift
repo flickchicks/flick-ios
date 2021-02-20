@@ -320,7 +320,12 @@ class AddMediaViewController: UIViewController {
     }
 
     @objc private func quickAddTapped() {
-        print("Quick add tapped")
+        guard type == .toGroup,
+              let groupId = groupId else { return }
+        NetworkManager.addToGroup(id: groupId, isQuickAdd: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.dismissVC(isMediaAdded: true)
+        }
     }
 
     @objc private func handleDragToDismiss(sender: UIPanGestureRecognizer) {

@@ -873,10 +873,11 @@ class NetworkManager {
     }
 
     /// [POST] Add  to group [updated as of 1/29/21]
-    static func addToGroup(id: Int, memberIds: [Int] = [], mediaIds: [Int] = [], completion: @escaping (Group) -> Void) {
+    static func addToGroup(id: Int, memberIds: [Int] = [], mediaIds: [Int] = [], isQuickAdd: Bool = false, completion: @escaping (Group) -> Void) {
         let parameters: [String: Any] = [
             "members": memberIds,
-            "shows": mediaIds
+            "shows": mediaIds,
+            "num_random_shows": isQuickAdd ? 5: 0
         ]
 
         AF.request("\(hostEndpoint)/api/groups/\(id)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
