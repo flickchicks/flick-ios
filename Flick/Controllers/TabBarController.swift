@@ -27,7 +27,7 @@ class TabBarController: UITabBarController {
         tabBar.layer.shadowRadius = 4
         tabBar.layer.shadowOffset = CGSize(width: 0, height: -1)
 
-        let discoverVC = DiscoverViewController()
+        let discoverVC = DiscoverViewController2()
         let searchIconImage = UIImage(named: "searchIcon")
         let selectedSearchIconImage = UIImage(named: "selectedSearchIcon")
         discoverVC.tabBarItem = UITabBarItem(title: "Discover", image: searchIconImage, selectedImage: selectedSearchIconImage)
