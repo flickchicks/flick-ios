@@ -87,7 +87,9 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
 
     func configureMovie(movie: Media) {
         titleLabel.text = movie.title
-        subtitleLabel.text = movie.dateReleased ?? ""
+        if let dateReleased = movie.dateReleased {
+            subtitleLabel.text = String(dateReleased.prefix(4))
+        }
         subtitleStackView.isHidden = false
         resultImageView.layer.cornerRadius = 4
         resultImageView.isHidden = false
@@ -121,7 +123,9 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
     func configureShow(show: Media) {
         titleLabel.text = show.title
         subtitleStackView.isHidden = false
-        subtitleLabel.text = show.dateReleased ?? ""
+        if let dateReleased = show.dateReleased {
+            subtitleLabel.text = String(dateReleased.prefix(4))
+        }
         resultImageView.layer.cornerRadius = 4
         resultImageView.isHidden = false
         updateConstraintsForPoster()
