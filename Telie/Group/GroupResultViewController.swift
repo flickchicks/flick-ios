@@ -12,6 +12,7 @@ class GroupResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let votingStatusImageView = UIImageView()
     private let votingStatusLabel = UILabel()
 
@@ -45,6 +46,12 @@ class GroupResultViewController: UIViewController {
         resultsTableView.showsVerticalScrollIndicator = false
         resultsTableView.register(VotingResultTableViewCell.self, forCellReuseIdentifier: VotingResultTableViewCell.reuseIdentifier)
         view.addSubview(resultsTableView)
+
+        spinner.hidesWhenStopped = true
+        if groupResult == nil {
+            resultsTableView.backgroundView = spinner
+            spinner.startAnimating()
+        }
 
         setupConstraints()
     }
@@ -89,6 +96,7 @@ class GroupResultViewController: UIViewController {
                         self.votingStatusLabel.text = "\(numNotVoted) friends are still voting"
                     }
                 }
+                self.spinner.stopAnimating()
                 self.resultsTableView.reloadData()
             }
         }
