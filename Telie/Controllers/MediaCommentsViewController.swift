@@ -19,6 +19,7 @@ class MediaCommentsViewController: UIViewController {
     private var comments: [Comment]!
     private var mediaId: Int!
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
+    private var shouldScrollToBottom = true
 
     init(comments: [Comment], mediaId: Int) {
         super.init(nibName: nil, bundle: nil)
@@ -54,6 +55,10 @@ class MediaCommentsViewController: UIViewController {
         commentsTableView.keyboardDismissMode = .interactive
         commentsTableView.showsVerticalScrollIndicator = false
         view.addSubview(commentsTableView)
+        
+//        if comments.count > 0 {
+//            commentsTableView.scrollToRow(at: IndexPath(item: comments.count - 1, section: 0), at: .bottom, animated: false)
+//        }
 
         setupConstraints()
     }
@@ -61,6 +66,27 @@ class MediaCommentsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+//        if comments.count > 0 {
+//            commentsTableView.scrollToRow(at: IndexPath(item: comments.count - 1, section: 0), at: .bottom, animated: false)
+//        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+     
+        if shouldScrollToBottom {
+            shouldScrollToBottom = false
+            scrollToBottom(animated: false)
+        }
+    }
+     
+    func scrollToBottom(animated: Bool) {
+        view.layoutIfNeeded()
+        commentsTableView.setContentOffset(bottomOffset(), animated: animated)
+    }
+     
+    func bottomOffset() -> CGPoint {
+        return CGPoint(x: 0, y: max(2150, commentsTableView.contentSize.height - (commentsTableView.bounds.size.height - commentsTableView.contentInset.bottom)))
     }
 
     private func setupNavigationBar() {
