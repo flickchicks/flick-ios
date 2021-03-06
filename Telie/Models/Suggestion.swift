@@ -14,5 +14,5 @@ struct Suggestion: Codable {
     var message: String
     var createdAt: String
     var updatedAt: String
-    var hasLiked: Bool
+    var hasLiked: Bool?
 }

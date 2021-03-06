@@ -101,7 +101,7 @@ class ActivityViewController: UIViewController {
             guard let self = self else { return }
 
             // Only display supported notifications
-            let notifTypes = ["list_invite", "incoming_friend_request_accepted", "outgoing_friend_request_accepted", "list_edit", "group_invite"]
+            let notifTypes = ["list_invite", "incoming_friend_request_accepted", "outgoing_friend_request_accepted", "list_edit", "group_invite", "suggestion_like"]
             let notifications = notifs.filter { notifTypes.contains($0.notifType) }
 
             DispatchQueue.main.async {
@@ -130,8 +130,7 @@ class ActivityViewController: UIViewController {
                     } else if $0.notifType == "group_invite" {
                         return .GroupInvite(fromUser: $0.fromUser, group: $0.group, createdAt: $0.createdAt)
                     } else {
-                        // TODO: Revisit after backend finishes notifications
-                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star", createdAt: $0.createdAt)
+                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: $0.suggestion?.show.title ?? "", createdAt: $0.createdAt)
                     }
                 }
                 self.getFriendRequests()
@@ -191,7 +190,7 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .ListOwnershipEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-            case .GroupInvite(_, group: let group, _):
+            case .GroupInvite(_, let group, _):
                 guard let group = group else { return }
                 navigationController?.pushViewController(GroupViewController(group: group), animated: true)
             default:

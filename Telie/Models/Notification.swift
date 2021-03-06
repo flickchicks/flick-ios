@@ -21,6 +21,7 @@ struct Notification: Codable {
     var friendRequestAccepted: Bool?
     var createdAt: String
     var group: Group?
+    var suggestion: Suggestion?
 }
 
 

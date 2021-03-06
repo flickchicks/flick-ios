@@ -117,7 +117,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: suggestionCellReuseIdentifier, for: indexPath) as? SuggestionTableViewCell else { return UITableViewCell() }
-        cell.configure(with: suggestions[indexPath.row], index: indexPath.row)
+        cell.configure(with: suggestions[indexPath.row])
         cell.delegate = self
         return cell
     }

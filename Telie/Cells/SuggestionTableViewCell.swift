@@ -35,7 +35,6 @@ class SuggestionTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     weak var delegate: SuggestionsDelegate?
-    private var index: Int!
     private var suggestion: Suggestion?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -198,16 +197,17 @@ class SuggestionTableViewCell: UITableViewCell {
     }
 
     @objc func likeSuggestion() {
-        suggestion?.hasLiked.toggle()
+        suggestion?.hasLiked?.toggle()
         guard let suggestion = suggestion else { return }
-        let heartImage = suggestion.hasLiked ? "filledHeart" : "heart"
-        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        if let hasLiked = suggestion.hasLiked {
+            let heartImage = hasLiked ? "filledHeart" : "heart"
+            likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        }
         delegate?.likeSuggestion(suggestion: suggestion)
     }
 
     func configure(with suggestion: Suggestion) {
         self.suggestion = suggestion
-        self.index = index
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(suggestion.fromUser.name)
@@ -232,8 +232,10 @@ class SuggestionTableViewCell: UITableViewCell {
         synopsisLabel.text = suggestion.show.plot
         let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
         dateLabel.text = dateLabelText
-        let heartImage = suggestion.hasLiked ? "filledHeart" : "heart"
-        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        if let hasLiked = suggestion.hasLiked {
+            let heartImage = hasLiked ? "filledHeart" : "heart"
+            likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        }
     }
 
     override func prepareForReuse() {
