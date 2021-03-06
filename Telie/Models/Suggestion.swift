@@ -7,10 +7,12 @@
 //
 
 struct Suggestion: Codable {
+    var id: Int
 //    var toUser: UserProfile
     var fromUser: UserProfile
     var show: Media
     var message: String
     var createdAt: String
     var updatedAt: String
+    var hasLiked: Bool
 }

@@ -131,8 +131,12 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension SuggestionsViewController: SuggestionsDelegate {
-    func likeSuggestion(index: Int) {
-//        suggestions[index].liked.toggle()
-//        suggestionsTableView.reloadData()
+    func likeSuggestion(suggestion: Suggestion) {
+        NetworkManager.likeSuggestion(suggestionId: suggestion.id) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.getSuggetions()
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 protocol SuggestionsDelegate: class {
-    func likeSuggestion(index: Int)
+    func likeSuggestion(suggestion: Suggestion)
 }
 
 class SuggestionTableViewCell: UITableViewCell {
@@ -36,7 +36,7 @@ class SuggestionTableViewCell: UITableViewCell {
     // MARK: - Private Data Vars
     weak var delegate: SuggestionsDelegate?
     private var index: Int!
-
+    private var suggestion: Suggestion?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,6 +82,7 @@ class SuggestionTableViewCell: UITableViewCell {
         containerView.addSubview(mediaImageView)
 
         likeButton.addTarget(self, action: #selector(likeSuggestion), for: .touchUpInside)
+        likeButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
         contentView.addSubview(likeButton)
 
         mediaTitleLabel.font = .boldSystemFont(ofSize: 14)
@@ -197,10 +198,15 @@ class SuggestionTableViewCell: UITableViewCell {
     }
 
     @objc func likeSuggestion() {
-        delegate?.likeSuggestion(index: index)
+        suggestion?.hasLiked.toggle()
+        guard let suggestion = suggestion else { return }
+        let heartImage = suggestion.hasLiked ? "filledHeart" : "heart"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        delegate?.likeSuggestion(suggestion: suggestion)
     }
 
-    func configure(with suggestion: Suggestion, index: Int) {
+    func configure(with suggestion: Suggestion) {
+        self.suggestion = suggestion
         self.index = index
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -226,8 +232,8 @@ class SuggestionTableViewCell: UITableViewCell {
         synopsisLabel.text = suggestion.show.plot
         let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
         dateLabel.text = dateLabelText
-//        let heartImage = suggestion.liked ? "filledHeart" : "heart"
-        likeButton.setImage(UIImage(named: "heart"), for: .normal)
+        let heartImage = suggestion.hasLiked ? "filledHeart" : "heart"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
     }
 
     override func prepareForReuse() {
