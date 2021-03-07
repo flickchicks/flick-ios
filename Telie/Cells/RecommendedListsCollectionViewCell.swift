@@ -97,8 +97,25 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     }
 
-    func configure(with media: SimpleMedia) {
-        mediaId = media.id
+    func configure(with list: MediaList) {
+
+        if let imageUrl1 = URL(string: list.shows[0].posterPic ?? "") {
+            img1imageView.kf.setImage(with: imageUrl1)
+        } else {
+            img1imageView.image = UIImage(named: "defaultMovie")
+        }
+
+        if let imageUrl2 = URL(string: list.shows[1].posterPic ?? "") {
+            img2imageView.kf.setImage(with: imageUrl2)
+        } else {
+            img2imageView.image = UIImage(named: "defaultMovie")
+        }
+
+        if let imageUrl3 = URL(string: list.shows[2].posterPic ?? "") {
+            img3imageView.kf.setImage(with: imageUrl3)
+        } else {
+            img3imageView.image = UIImage(named: "defaultMovie")
+        }
     }
 
     required init?(coder: NSCoder) {

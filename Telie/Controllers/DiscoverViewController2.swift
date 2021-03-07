@@ -8,18 +8,18 @@
 
 import UIKit
 
-enum DiscoverItemType {
-    case mutualFriends
-    case discoverShows
-    case discoverList
-    case buzz
-}
-
-protocol DiscoverItem {
-    var type: DiscoverItemType { get }
-    var sectionTitle: String { get }
-    var rowCount: Int { get }
-}
+//enum DiscoverItemType {
+//    case mutualFriends
+//    case discoverShows
+//    case discoverList
+//    case buzz
+//}
+//
+//protocol DiscoverItem {
+//    var type: DiscoverItemType { get }
+//    var sectionTitle: String { get }
+//    var rowCount: Int { get }
+//}
 
 class DiscoverViewController2: UIViewController {
 
@@ -28,31 +28,17 @@ class DiscoverViewController2: UIViewController {
     private let searchBar = SearchBar()
     private let refreshControl = UIRefreshControl()
 
-    private var mutualFriends: [MutualFriend] = [
-        MutualFriend(name: "Lucy Xu", profile: "", username: "lucyxu", numMutual: 5),
-        MutualFriend(name: "Haiying Weng", profile: "", username: "haiyingweng", numMutual: 2),
-        MutualFriend(name: "Alanna Zhou", profile: "", username: "alannazhou", numMutual: 9),
-        MutualFriend(name: "Cindy Huang", profile: "", username: "cindyhuang", numMutual: 4),
-        MutualFriend(name: "Olivia Li", profile: "", username: "oliviali", numMutual: 2),
-        MutualFriend(name: "Vivi Yue", profile: "", username: "viviyue", numMutual: 9)
-    ]
+    private var mutualFriends: [FriendRecommendation] = []
+    private var shows: [SimpleMedia] = []
+    private var lists: [MediaList] = []
 
-    private var shows: [SimpleMedia] = [
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: ""),
-        SimpleMedia(id: 0, title: "Media", posterPic: "")
-    ]
-
-    private var sections = [1, 2, 3]
+    private let sections = [1,2,3,4,5,6,7,8]
+    private var discoverSections: [String] = []
+    private var discoverContent: [String: Any] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
-        view.isSkeletonable = true
 
         searchBar.placeholder = "Search movies, shows, people, lists"
         searchBar.delegate = self
@@ -97,12 +83,70 @@ class DiscoverViewController2: UIViewController {
     }
 
     @objc func refreshDiscoverData() {
+        fetchDiscoverShows()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchDiscoverShows()
+    }
+
+    func fetchDiscoverShows() {
+        NetworkManager.discoverShows { [weak self] mediaList in
+            guard let self = self else { return }
+
+            var discoverContentSections: [String] = []
+
+            if let mutualFriends = mediaList.friendRecommendations {
+                discoverContentSections.append(MutualFriendsTableViewCell.reuseIdentifier)
+                self.mutualFriends = mutualFriends
+                print("We got mutual friends!!!")
+            }
+
+            if let friendLists = mediaList.friendsLsts {
+                discoverContentSections.append(RecommendedListsTableViewCell.reuseIdentifier)
+            }
+
+            if let friendsShows = mediaList.friendShows {
+                discoverContentSections.append(RecommendedShowsTableViewCell.reuseIdentifier)
+            }
+
+            discoverContentSections.append(RecommendedShowsTableViewCell.reuseIdentifier)
+            self.shows = mediaList.trendingShows
+
+            discoverContentSections.append(RecommendedListsTableViewCell.reuseIdentifier)
+            self.lists = mediaList.trendingLsts
+
+//            if let friendComments = mediaList.friendComments {
+//            }
+
+            self.discoverFeedTableView.reloadData()
+        }
+            
+
+
+
+//            DispatchQueue.main.async {
+//                mediaList.map { obj in
+//                    print("here is obj", obj)
+//                }
+//                print(mediaList)
+//                self.discoverShows[0] = mediaList.trendingTvs
+//                self.discoverShows[1] = mediaList.trendingMovies
+//                self.discoverShows[2] = mediaList.trendingAnimes
+//                self.discoverFeedTableView.reloadData()
+//                self.discoverFeedTableView.hideSkeleton()
+//                // Maybe find better place to put this
+//                self.refreshControl.endRefreshing()
+//            }
+//        }
+    }
+
 
 }
 
@@ -133,10 +177,10 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else if indexPath.row == 2 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendedListsTableViewCell.reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: shows)
+            cell.configure(with: lists)
             return cell
         } else {
-            return UITableViewCell()
+            return BuzzTableViewCell()
         }
     }
 
@@ -148,7 +192,7 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
         } else if indexPath.row == 2 {
             return 620
         } else {
-            return 100
+            return 300
         }
     }
 

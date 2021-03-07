@@ -12,7 +12,7 @@ class RecommendedListsTableViewCell: UITableViewCell {
 
     private var recommendedShowsCollectionView: UICollectionView!
     private let titleLabel = UILabel()
-    private var shows: [SimpleMedia] = []
+    private var lsts: [MediaList] = []
 
     weak var delegate: MediaControllerDelegate?
     static var reuseIdentifier = "RecommendedListsTableViewCell"
@@ -66,8 +66,8 @@ class RecommendedListsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with shows: [SimpleMedia]) {
-        self.shows = shows
+    func configure(with lsts: [MediaList]) {
+        self.lsts = lsts
         recommendedShowsCollectionView.reloadData()
     }
 }
@@ -75,21 +75,21 @@ class RecommendedListsTableViewCell: UITableViewCell {
 extension RecommendedListsTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shows.count
+        return lsts.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedListsCollectionViewCell.reuseIdentifier, for: indexPath) as? RecommendedListsCollectionViewCell else { return UICollectionViewCell()
         }
-        let show = shows[indexPath.row]
-        cell.configure(with: show)
+        let list = lsts[indexPath.row]
+        cell.configure(with: list)
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let show = shows[indexPath.item]
-        delegate?.showMediaViewController(id: show.id, mediaImageUrl: show.posterPic)
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let list = lsts[indexPath.item]
+//        delegate?.showMediaViewController(id: show.id, mediaImageUrl: show.posterPic)
+//    }
 }
 
 extension RecommendedListsTableViewCell: UICollectionViewDelegate {

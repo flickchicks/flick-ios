@@ -70,7 +70,9 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     func configure(with media: SimpleMedia) {
         mediaId = media.id
-        imageView.image = UIImage(named: "defaultMovie")
+        if let imageUrl = URL(string: media.posterPic ?? "defaultMovie") {
+            self.imageView.kf.setImage(with: imageUrl)
+        }
     }
 
     required init?(coder: NSCoder) {

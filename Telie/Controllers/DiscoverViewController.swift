@@ -74,18 +74,18 @@ class DiscoverViewController: UIViewController {
     }
     
     func fetchDiscoverShows() {
-        NetworkManager.discoverShows { [weak self] mediaList in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.discoverShows[0] = mediaList.trendingTvs
-                self.discoverShows[1] = mediaList.trendingMovies
-                self.discoverShows[2] = mediaList.trendingAnimes
-                self.discoverFeedTableView.reloadData()
-                self.discoverFeedTableView.hideSkeleton()
-                // Maybe find better place to put this
-                self.refreshControl.endRefreshing()
-            }
-        }
+//        NetworkManager.discoverShows { [weak self] mediaList in
+//            guard let self = self else { return }
+//            DispatchQueue.main.async {
+//                self.discoverShows[0] = mediaList.trendingTvs
+//                self.discoverShows[1] = mediaList.trendingMovies
+//                self.discoverShows[2] = mediaList.trendingAnimes
+//                self.discoverFeedTableView.reloadData()
+//                self.discoverFeedTableView.hideSkeleton()
+//                // Maybe find better place to put this
+//                self.refreshControl.endRefreshing()
+//            }
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -76,11 +76,11 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
     }
 
-    func configure(for friend: MutualFriend) {
-        profileImageView.image = UIImage(named: friend.profile)
+    func configure(for friend: FriendRecommendation) {
+        profileImageView.image = UIImage(named: friend.profilePic)
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
-        mutualFriendsLabel.text = "\(friend.numMutual) Mutual Friends"
+        mutualFriendsLabel.text = "\(friend.numMutualFriends) Mutual Friends"
     }
 
     required init?(coder: NSCoder) {

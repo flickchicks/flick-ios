@@ -25,7 +25,7 @@ class BuzzTableViewCell: UITableViewCell {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
-        profileImageView.layer.cornerRadius = 20
+        profileImageView.layer.cornerRadius = 2
         profileImageView.layer.borderWidth = 1.5
         profileImageView.layer.borderColor = UIColor.movieWhite.cgColor
         profileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor

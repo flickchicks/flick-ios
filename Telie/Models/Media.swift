@@ -12,6 +12,7 @@ struct SimpleMedia: Codable {
     var id: Int
     var title: String
     var posterPic: String?
+//    var isTv: Bool?
 }
 
 struct Media: Codable {

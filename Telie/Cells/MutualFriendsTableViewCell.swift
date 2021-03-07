@@ -21,7 +21,7 @@ class MutualFriendsTableViewCell: UITableViewCell {
 
     private let titleLabel = UILabel()
     private var mutualFriendsCollectionView: UICollectionView!
-    private var mutualFriends: [MutualFriend] = []
+    private var mutualFriends: [FriendRecommendation] = []
 
     static var reuseIdentifier = "MutualFriendsTableViewCell"
 
@@ -73,7 +73,7 @@ class MutualFriendsTableViewCell: UITableViewCell {
 
     }
 
-    func configure(with mutualFriends: [MutualFriend]) {
+    func configure(with mutualFriends: [FriendRecommendation]) {
         self.mutualFriends = mutualFriends
         mutualFriendsCollectionView.reloadData()
     }

@@ -22,12 +22,16 @@ struct MediaList: Codable {
     var name: String
     var pic: String?
     var isSaved: Bool
+    var description: String?
     var isPrivate: Bool
     var isWatchLater: Bool
     var collaborators: [UserProfile]
     var owner: UserProfile
     var shows: [SimpleMedia]
     var tags: [Tag]
+    var numLikes: Int
+    var hasLiked: Bool
+    var likers: [UserProfile]
 }
 
 struct NotificationMediaList: Codable {

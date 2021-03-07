@@ -650,12 +650,14 @@ class NetworkManager {
     /// [GET] Get lists search result by query [updated as of 9/3/20]
     static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
         var discoverShowURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/discover/")!)
+        print("\(hostEndpoint)/api/discover/")
         discoverShowURLRequest.httpMethod = "GET"
         discoverShowURLRequest.cachePolicy = .returnCacheDataElseLoad
         
         AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                print("here is my data: ", data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let showsData = try? jsonDecoder.decode(Response<DiscoverContent>.self, from: data) {
@@ -663,6 +665,7 @@ class NetworkManager {
                     completion(shows)
                 }
             case .failure(let error):
+                print("i failed")
                 print(error.localizedDescription)
             }
         }
