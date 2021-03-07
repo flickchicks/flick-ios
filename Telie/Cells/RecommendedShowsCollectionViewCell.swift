@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
@@ -38,7 +39,6 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(userImageView)
 
-        detailLabel.text = "Saved by Lucy"
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
@@ -65,13 +65,19 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(17)
             make.trailing.equalToSuperview()
         }
-
     }
 
     func configure(with media: SimpleMedia) {
         mediaId = media.id
         if let imageUrl = URL(string: media.posterPic ?? "defaultMovie") {
-            self.imageView.kf.setImage(with: imageUrl)
+            imageView.kf.setImage(with: imageUrl)
+        }
+        if let saved = media.savedToLsts,
+           saved.count > 0 {
+            if let profilePic = saved[0].savedBy.profilePic {
+                userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(saved[0].savedBy.id)"))
+            }
+            detailLabel.text = "Saved by \(saved[0].savedBy.name)"
         }
     }
 

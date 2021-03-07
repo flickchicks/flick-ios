@@ -16,7 +16,14 @@ class DiscoverViewController2: UIViewController {
     private let refreshControl = UIRefreshControl()
     private var discoverContent: DiscoverContent? = nil
     private var discoverSectionsArray: [String] = []
-    private var discoverSections: [String: String] = [:]
+    private var discoverSections: [String: String] = [
+        "friendRecs" : MutualFriendsTableViewCell.reuseIdentifier,
+        "friendShows": RecommendedShowsTableViewCell.reuseIdentifier,
+        "friendLsts": RecommendedListsTableViewCell.reuseIdentifier,
+        "trendingLsts": RecommendedListsTableViewCell.reuseIdentifier,
+        "trendingShows": RecommendedShowsTableViewCell.reuseIdentifier,
+        "buzz": BuzzTableViewCell.reuseIdentifier
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,29 +94,24 @@ class DiscoverViewController2: UIViewController {
             DispatchQueue.main.async {
                 self.discoverContent = mediaList
 
-                if let _ = mediaList.friendRecommendations {
-                    self.discoverSections.updateValue(MutualFriendsTableViewCell.reuseIdentifier, forKey: "friendRecs")
+                if mediaList.friendRecommendations.count > 0 {
                     self.discoverSectionsArray.append("friendRecs")
                 }
 
-                if let _ = mediaList.friendLsts {
-                    self.discoverSections.updateValue(RecommendedListsTableViewCell.reuseIdentifier, forKey: "friendLsts")
-                    self.discoverSectionsArray.append("friendLsts")
-                }
-
-                if let _ = mediaList.friendShows {
-                    self.discoverSections.updateValue(RecommendedShowsTableViewCell.reuseIdentifier, forKey: "friendShows")
+                if mediaList.friendShows.count > 0 {
                     self.discoverSectionsArray.append("friendShows")
                 }
 
-                if let friendComments = mediaList.friendComments {
-                    self.discoverSections.updateValue(BuzzTableViewCell.reuseIdentifier, forKey: "buzz")
-                    self.discoverSectionsArray.append(contentsOf: repeatElement("buzz", count: friendComments.count))
+                if mediaList.friendLsts.count > 0 {
+                    self.discoverSectionsArray.append("friendLsts")
                 }
 
-                self.discoverSections.updateValue(RecommendedListsTableViewCell.reuseIdentifier, forKey: "trendingLsts")
+                let numFriendComments = mediaList.friendComments.count
+                if numFriendComments > 0 {
+                    self.discoverSectionsArray.append(contentsOf: repeatElement("buzz", count: numFriendComments))
+                }
+
                 self.discoverSectionsArray.append("trendingLsts")
-                self.discoverSections.updateValue(RecommendedShowsTableViewCell.reuseIdentifier, forKey: "trendingShows")
                 self.discoverSectionsArray.append("trendingShows")
                 self.discoverFeedTableView.reloadData()
             }
@@ -162,7 +164,7 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
             return cell
         case "buzz":
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? BuzzTableViewCell else { return UITableViewCell() }
-            cell.configure(with: (discoverContent?.friendComments?[indexPath.row - 3])!)
+            cell.configure(with: (discoverContent?.friendComments[indexPath.row - 3])!)
             return cell
         default:
             return UITableViewCell()

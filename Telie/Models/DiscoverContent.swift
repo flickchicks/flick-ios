@@ -8,12 +8,12 @@
 
 struct DiscoverContent: Codable {
 
-    var friendRecommendations: [FriendRecommendation]?
-    var friendLsts: [MediaList]?
+    var friendRecommendations: [FriendRecommendation]
+    var friendLsts: [MediaList]
     var trendingLsts: [MediaList]
     var trendingShows: [SimpleMedia]
-    var friendShows: [SimpleMedia]?
-    var friendComments: [FriendComment]?
+    var friendShows: [SimpleMedia]
+    var friendComments: [FriendComment]
 }
 
 struct SimpleMedia2: Codable {
