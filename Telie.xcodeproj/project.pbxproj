@@ -98,6 +98,14 @@
 		D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */; };
 		D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */; };
 		D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */; };
+		D46A364825F4B6ED00EADA9F /* DiscoverViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */; };
+		D46A364D25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */; };
+		D46A365225F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */; };
+		D46A365725F4B77400EADA9F /* RecommendedListsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */; };
+		D46A365C25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A365B25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift */; };
+		D46A366125F4B7C600EADA9F /* MutualFriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A366025F4B7C600EADA9F /* MutualFriendsTableViewCell.swift */; };
+		D46A366625F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A366525F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift */; };
+		D46A366B25F4B80200EADA9F /* BuzzTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */; };
 		D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F6E249E7727008D5484 /* SortListModalView.swift */; };
 		D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F72249EF279008D5484 /* SortSelection.swift */; };
 		D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */; };
@@ -106,12 +114,10 @@
 		D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F7C249F843C008D5484 /* Collaborator.swift */; };
 		D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */; };
 		D474D17224B132A7006795F6 /* EnterNameModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D474D17124B132A7006795F6 /* EnterNameModalView.swift */; };
-		D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478667F2478B4F0009E42FE /* HomeViewController.swift */; };
 		D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */; };
 		D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668F24798ADA009E42FE /* UIColor+Shared.swift */; };
 		D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786693247A09F5009E42FE /* ProfileViewController.swift */; };
 		D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786695247A0A03009E42FE /* DiscoverViewController.swift */; };
-		D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786697247A0DF4009E42FE /* TabPageViewController.swift */; };
 		D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786699247C05E4009E42FE /* NetworkManager.swift */; };
 		D478669C247C0625009E42FE /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669B247C0625009E42FE /* Response.swift */; };
 		D478669F247C57D2009E42FE /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669E247C57D2009E42FE /* Media.swift */; };
@@ -265,6 +271,14 @@
 		D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizeCollectionView.swift; sourceTree = "<group>"; };
 		D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
 		D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectionModalView.swift; sourceTree = "<group>"; };
+		D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController2.swift; sourceTree = "<group>"; };
+		D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedShowsTableViewCell.swift; sourceTree = "<group>"; };
+		D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedShowsCollectionViewCell.swift; sourceTree = "<group>"; };
+		D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedListsTableViewCell.swift; sourceTree = "<group>"; };
+		D46A365B25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecommendedListsCollectionViewCell.swift; path = Telie/Cells/RecommendedListsCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		D46A366025F4B7C600EADA9F /* MutualFriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutualFriendsTableViewCell.swift; sourceTree = "<group>"; };
+		D46A366525F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutualFriendCollectionViewCell.swift; sourceTree = "<group>"; };
+		D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzzTableViewCell.swift; sourceTree = "<group>"; };
 		D46B3F6E249E7727008D5484 /* SortListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListModalView.swift; sourceTree = "<group>"; };
 		D46B3F72249EF279008D5484 /* SortSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelection.swift; sourceTree = "<group>"; };
 		D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOptionTableViewCell.swift; sourceTree = "<group>"; };
@@ -273,12 +287,10 @@
 		D46B3F7C249F843C008D5484 /* Collaborator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collaborator.swift; sourceTree = "<group>"; };
 		D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		D474D17124B132A7006795F6 /* EnterNameModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameModalView.swift; sourceTree = "<group>"; };
-		D478667F2478B4F0009E42FE /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D478668F24798ADA009E42FE /* UIColor+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Shared.swift"; sourceTree = "<group>"; };
 		D4786693247A09F5009E42FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D4786695247A0A03009E42FE /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
-		D4786697247A0DF4009E42FE /* TabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPageViewController.swift; sourceTree = "<group>"; };
 		D4786699247C05E4009E42FE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D478669B247C0625009E42FE /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		D478669E247C57D2009E42FE /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
@@ -510,11 +522,9 @@
 				80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */,
 				80F00F6124AAFE8C0051B8FF /* AddMediaViewController.swift */,
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
-				D478667F2478B4F0009E42FE /* HomeViewController.swift */,
 				3095FF012479CC3900F08C60 /* ListViewController.swift */,
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
 				D4786695247A0A03009E42FE /* DiscoverViewController.swift */,
-				D4786697247A0DF4009E42FE /* TabPageViewController.swift */,
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
@@ -528,6 +538,7 @@
 				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
+				D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -548,6 +559,7 @@
 				D40ED7D925950E8F004C2F2C /* TableViewCells */,
 				D40ED7D825950E84004C2F2C /* CollectionViewCells */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
+				D46A365B25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift */,
 				D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */,
 				3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */,
 				D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */,
@@ -576,6 +588,12 @@
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
 				803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */,
 				803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */,
+				D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */,
+				D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */,
+				D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */,
+				D46A366025F4B7C600EADA9F /* MutualFriendsTableViewCell.swift */,
+				D46A366525F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift */,
+				D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -897,15 +915,19 @@
 			files = (
 				D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */,
 				D4E4E67825B13675000D8341 /* LaunchViewController.swift in Sources */,
+				D46A366125F4B7C600EADA9F /* MutualFriendsTableViewCell.swift in Sources */,
+				D46A365C25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift in Sources */,
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D4E4E6DE25B60D53000D8341 /* AboutViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
+				D46A366B25F4B80200EADA9F /* BuzzTableViewCell.swift in Sources */,
 				80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */,
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
 				D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */,
 				D40A06B624EE2F8100631E75 /* CommentSpoilerModalView.swift in Sources */,
 				803E5FF425AABEE1004CF4B7 /* Provider.swift in Sources */,
+				D46A365725F4B77400EADA9F /* RecommendedListsTableViewCell.swift in Sources */,
 				80F00F6A24AEA1F70051B8FF /* SearchBar.swift in Sources */,
 				80E7F93B25B666EA00B545C8 /* CustomNavigationController.swift in Sources */,
 				802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */,
@@ -930,6 +952,7 @@
 				803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */,
 				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
+				D46A366625F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift in Sources */,
 				80F00F7824BA50920051B8FF /* ConfirmationModalView.swift in Sources */,
 				D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */,
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
@@ -961,6 +984,7 @@
 				D425B99024E9B44200FB13A5 /* MediaCardVewController.swift in Sources */,
 				806E76EA25BF90F500B82ECE /* GroupViewController.swift in Sources */,
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
+				D46A365225F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
 				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
 				803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */,
@@ -973,6 +997,7 @@
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
 				D40ED7D4259471D7004C2F2C /* TrendingContentCollectionViewCell.swift in Sources */,
+				D46A364D25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift in Sources */,
 				D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */,
 				D40ED7E12595C6B1004C2F2C /* DiscoverTableViewHeaderFooterView.swift in Sources */,
 				D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */,
@@ -1006,11 +1031,10 @@
 				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
-				D4786698247A0DF4009E42FE /* TabPageViewController.swift in Sources */,
+				D46A364825F4B6ED00EADA9F /* DiscoverViewController2.swift in Sources */,
 				D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
-				D47866802478B4F0009E42FE /* HomeViewController.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
 				80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */,
 				80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */,
