@@ -58,6 +58,7 @@ class RecommendedListsTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.height.equalTo(530)
+            make.bottom.equalToSuperview().inset(30)
         }
 
     }

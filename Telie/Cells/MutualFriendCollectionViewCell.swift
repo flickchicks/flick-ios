@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MutualFriendCollectionViewCell: UICollectionViewCell {
 
-    static let reuseIdentifier = "MutualFriendCollectionViewCell"
-
-    private let profileImageView = UIImageView()
     private let nameLabel = UILabel()
-    private let usernameLabel = UILabel()
     private let mutualFriendsLabel = UILabel()
+    private let profileImageView = UIImageView()
+    private let usernameLabel = UILabel()
+
+    static let reuseIdentifier = "MutualFriendCollectionViewCell"
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -77,10 +78,15 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(for friend: FriendRecommendation) {
-        profileImageView.image = UIImage(named: friend.profilePic)
+        profileImageView.kf.setImage(
+            with: Base64ImageDataProvider(base64String: friend.profilePic,
+                                          cacheKey: "userid-\(friend.id)"
+            )
+        )
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
-        mutualFriendsLabel.text = "\(friend.numMutualFriends) Mutual Friends"
+        let numMutualFriends = friend.numMutualFriends
+        mutualFriendsLabel.text = "\(numMutualFriends) Mutual Friend\(numMutualFriends > 1 ? "s" : "")"
     }
 
     required init?(coder: NSCoder) {

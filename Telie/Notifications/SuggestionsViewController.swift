@@ -136,3 +136,4 @@ extension SuggestionsViewController: SuggestionsDelegate {
 //        suggestionsTableView.reloadData()
     }
 }
+

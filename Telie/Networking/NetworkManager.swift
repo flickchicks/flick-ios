@@ -653,16 +653,22 @@ class NetworkManager {
         print("\(hostEndpoint)/api/discover/")
         discoverShowURLRequest.httpMethod = "GET"
         discoverShowURLRequest.cachePolicy = .returnCacheDataElseLoad
+        discoverShowURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
+
+        print(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken))
         
         AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 print("here is my data: ", data)
+                debugPrint(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let showsData = try? jsonDecoder.decode(Response<DiscoverContent>.self, from: data) {
                     let shows = showsData.data
                     completion(shows)
+                } else {
+                    print("cant decode")
                 }
             case .failure(let error):
                 print("i failed")

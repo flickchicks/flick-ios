@@ -8,33 +8,15 @@
 
 import UIKit
 
-//enum DiscoverItemType {
-//    case mutualFriends
-//    case discoverShows
-//    case discoverList
-//    case buzz
-//}
-//
-//protocol DiscoverItem {
-//    var type: DiscoverItemType { get }
-//    var sectionTitle: String { get }
-//    var rowCount: Int { get }
-//}
-
 class DiscoverViewController2: UIViewController {
 
     // MARK: - Private View Vars
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private let searchBar = SearchBar()
     private let refreshControl = UIRefreshControl()
-
-    private var mutualFriends: [FriendRecommendation] = []
-    private var shows: [SimpleMedia] = []
-    private var lists: [MediaList] = []
-
-    private let sections = [1,2,3,4,5,6,7,8]
-    private var discoverSections: [String] = []
-    private var discoverContent: [String: Any] = [:]
+    private var discoverContent: DiscoverContent? = nil
+    private var discoverSectionsArray: [String] = []
+    private var discoverSections: [String: String] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +30,7 @@ class DiscoverViewController2: UIViewController {
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
+        discoverFeedTableView.rowHeight = UITableView.automaticDimension
         discoverFeedTableView.estimatedRowHeight = 500.0
         discoverFeedTableView.estimatedSectionHeaderHeight = 15.0
         discoverFeedTableView.backgroundColor = .clear
@@ -56,6 +39,7 @@ class DiscoverViewController2: UIViewController {
         discoverFeedTableView.register(MutualFriendsTableViewCell.self, forCellReuseIdentifier: MutualFriendsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedShowsTableViewCell.self, forCellReuseIdentifier: RecommendedShowsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedListsTableViewCell.self, forCellReuseIdentifier: RecommendedListsTableViewCell.reuseIdentifier)
+        discoverFeedTableView.register(BuzzTableViewCell.self, forCellReuseIdentifier: BuzzTableViewCell.reuseIdentifier)
 
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -100,51 +84,36 @@ class DiscoverViewController2: UIViewController {
         NetworkManager.discoverShows { [weak self] mediaList in
             guard let self = self else { return }
 
-            var discoverContentSections: [String] = []
+            DispatchQueue.main.async {
+                self.discoverContent = mediaList
 
-            if let mutualFriends = mediaList.friendRecommendations {
-                discoverContentSections.append(MutualFriendsTableViewCell.reuseIdentifier)
-                self.mutualFriends = mutualFriends
-                print("We got mutual friends!!!")
+                if let _ = mediaList.friendRecommendations {
+                    self.discoverSections.updateValue(MutualFriendsTableViewCell.reuseIdentifier, forKey: "friendRecs")
+                    self.discoverSectionsArray.append("friendRecs")
+                }
+
+                if let _ = mediaList.friendLsts {
+                    self.discoverSections.updateValue(RecommendedListsTableViewCell.reuseIdentifier, forKey: "friendLsts")
+                    self.discoverSectionsArray.append("friendLsts")
+                }
+
+                if let _ = mediaList.friendShows {
+                    self.discoverSections.updateValue(RecommendedShowsTableViewCell.reuseIdentifier, forKey: "friendShows")
+                    self.discoverSectionsArray.append("friendShows")
+                }
+
+                if let friendComments = mediaList.friendComments {
+                    self.discoverSections.updateValue(BuzzTableViewCell.reuseIdentifier, forKey: "buzz")
+                    self.discoverSectionsArray.append(contentsOf: repeatElement("buzz", count: friendComments.count))
+                }
+
+                self.discoverSections.updateValue(RecommendedListsTableViewCell.reuseIdentifier, forKey: "trendingLsts")
+                self.discoverSectionsArray.append("trendingLsts")
+                self.discoverSections.updateValue(RecommendedShowsTableViewCell.reuseIdentifier, forKey: "trendingShows")
+                self.discoverSectionsArray.append("trendingShows")
+                self.discoverFeedTableView.reloadData()
             }
-
-            if let friendLists = mediaList.friendsLsts {
-                discoverContentSections.append(RecommendedListsTableViewCell.reuseIdentifier)
-            }
-
-            if let friendsShows = mediaList.friendShows {
-                discoverContentSections.append(RecommendedShowsTableViewCell.reuseIdentifier)
-            }
-
-            discoverContentSections.append(RecommendedShowsTableViewCell.reuseIdentifier)
-            self.shows = mediaList.trendingShows
-
-            discoverContentSections.append(RecommendedListsTableViewCell.reuseIdentifier)
-            self.lists = mediaList.trendingLsts
-
-//            if let friendComments = mediaList.friendComments {
-//            }
-
-            self.discoverFeedTableView.reloadData()
         }
-            
-
-
-
-//            DispatchQueue.main.async {
-//                mediaList.map { obj in
-//                    print("here is obj", obj)
-//                }
-//                print(mediaList)
-//                self.discoverShows[0] = mediaList.trendingTvs
-//                self.discoverShows[1] = mediaList.trendingMovies
-//                self.discoverShows[2] = mediaList.trendingAnimes
-//                self.discoverFeedTableView.reloadData()
-//                self.discoverFeedTableView.hideSkeleton()
-//                // Maybe find better place to put this
-//                self.refreshControl.endRefreshing()
-//            }
-//        }
     }
 
 
@@ -163,37 +132,42 @@ extension DiscoverViewController2: UISearchBarDelegate {
 extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections.count
+        return discoverSectionsArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MutualFriendsTableViewCell.reuseIdentifier, for: indexPath) as? MutualFriendsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: mutualFriends)
-            return cell
-        } else if indexPath.row == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendedShowsTableViewCell.reuseIdentifier, for: indexPath) as? RecommendedShowsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: shows)
-            return cell
-        } else if indexPath.row == 2 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecommendedListsTableViewCell.reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: lists)
-            return cell
-        } else {
-            return BuzzTableViewCell()
-        }
-    }
+        guard indexPath.row < discoverSectionsArray.count,
+              let reuseIdentifier = discoverSections[discoverSectionsArray[indexPath.row]] else { return UITableViewCell() }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 200
-        } else if indexPath.row == 1 {
-            return 575
-        } else if indexPath.row == 2 {
-            return 620
-        } else {
-            return 300
+        switch discoverSectionsArray[indexPath.row] {
+        case "friendRecs":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? MutualFriendsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: discoverContent?.friendRecommendations ?? [])
+                return cell
+        case "friendLsts":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: discoverContent?.friendLsts ?? [])
+            return cell
+        case "friendShows":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedShowsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: discoverContent?.friendShows ?? [])
+            return cell
+        case "trendingLsts":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: discoverContent?.trendingLsts ?? [])
+            return cell
+        case "trendingShows":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedShowsTableViewCell else { return UITableViewCell() }
+            cell.configure(with: discoverContent?.trendingShows ?? [])
+            return cell
+        case "buzz":
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? BuzzTableViewCell else { return UITableViewCell() }
+            cell.configure(with: (discoverContent?.friendComments?[indexPath.row - 3])!)
+            return cell
+        default:
+            return UITableViewCell()
         }
+
     }
 
 }

@@ -69,6 +69,7 @@ class MutualFriendsTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.height.equalTo(124)
+            make.bottom.equalToSuperview().inset(30)
         }
 
     }

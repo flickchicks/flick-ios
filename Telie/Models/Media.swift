@@ -12,7 +12,17 @@ struct SimpleMedia: Codable {
     var id: Int
     var title: String
     var posterPic: String?
-//    var isTv: Bool?
+    var extApiId: Int?
+    var extApiSource: String?
+    var isTv: Bool?
+    var directors: String?
+    var savedToLsts: [SimpleMediaList2]?
+}
+
+struct SimpleMediaList2: Codable {
+    let lstId: Int
+    let lstName: String
+    let savedBy: UserProfile
 }
 
 struct Media: Codable {

@@ -9,7 +9,7 @@
 struct DiscoverContent: Codable {
 
     var friendRecommendations: [FriendRecommendation]?
-    var friendsLsts: [MediaList]?
+    var friendLsts: [MediaList]?
     var trendingLsts: [MediaList]
     var trendingShows: [SimpleMedia]
     var friendShows: [SimpleMedia]?
@@ -40,8 +40,8 @@ struct FriendComment: Codable {
     var id: Int
     var isSpoiler: Bool?
     var numLikes: Int
-    var hasLiked: Bool
-    var isReadable: Bool
+//    var hasLiked: Bool
+//    var isReadable: Bool
     var owner: UserProfile
     var message: String
     var show: SimpleMedia

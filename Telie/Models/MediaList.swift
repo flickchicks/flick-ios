@@ -21,8 +21,8 @@ struct MediaList: Codable {
     var id: Int
     var name: String
     var pic: String?
-    var isSaved: Bool
     var description: String?
+    var isSaved: Bool
     var isPrivate: Bool
     var isWatchLater: Bool
     var collaborators: [UserProfile]
