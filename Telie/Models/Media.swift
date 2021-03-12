@@ -16,6 +16,7 @@ struct SimpleMedia: Codable {
     var extApiSource: String?
     var isTv: Bool?
     var directors: String?
+    var plot: String?
     var savedToLsts: [SimpleMediaList2]?
 }
 

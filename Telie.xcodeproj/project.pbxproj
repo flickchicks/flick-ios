@@ -117,7 +117,6 @@
 		D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */; };
 		D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478668F24798ADA009E42FE /* UIColor+Shared.swift */; };
 		D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786693247A09F5009E42FE /* ProfileViewController.swift */; };
-		D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786695247A0A03009E42FE /* DiscoverViewController.swift */; };
 		D478669A247C05E4009E42FE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4786699247C05E4009E42FE /* NetworkManager.swift */; };
 		D478669C247C0625009E42FE /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669B247C0625009E42FE /* Response.swift */; };
 		D478669F247C57D2009E42FE /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = D478669E247C57D2009E42FE /* Media.swift */; };
@@ -290,7 +289,6 @@
 		D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabOptionCollectionViewCell.swift; sourceTree = "<group>"; };
 		D478668F24798ADA009E42FE /* UIColor+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Shared.swift"; sourceTree = "<group>"; };
 		D4786693247A09F5009E42FE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		D4786695247A0A03009E42FE /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		D4786699247C05E4009E42FE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D478669B247C0625009E42FE /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		D478669E247C57D2009E42FE /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
@@ -420,13 +418,6 @@
 			path = Group;
 			sourceTree = "<group>";
 		};
-		D40ED7D825950E84004C2F2C /* CollectionViewCells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CollectionViewCells;
-			sourceTree = "<group>";
-		};
 		D40ED7D925950E8F004C2F2C /* TableViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,7 +515,6 @@
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				3095FF012479CC3900F08C60 /* ListViewController.swift */,
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
-				D4786695247A0A03009E42FE /* DiscoverViewController.swift */,
 				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
@@ -557,7 +547,6 @@
 			isa = PBXGroup;
 			children = (
 				D40ED7D925950E8F004C2F2C /* TableViewCells */,
-				D40ED7D825950E84004C2F2C /* CollectionViewCells */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
 				D46A365B25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift */,
 				D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */,
@@ -971,7 +960,6 @@
 				80F00F6824AD8D080051B8FF /* SelectIndicatorView.swift in Sources */,
 				D474D17224B132A7006795F6 /* EnterNameModalView.swift in Sources */,
 				D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */,
-				D4786696247A0A03009E42FE /* DiscoverViewController.swift in Sources */,
 				D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */,
 				D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,

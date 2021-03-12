@@ -17,11 +17,16 @@ struct MutualFriend {
 
 }
 
+protocol DiscoverDelegate: class {
+    func navigateFriend(id: Int)
+}
+
 class MutualFriendsTableViewCell: UITableViewCell {
 
     private let titleLabel = UILabel()
     private var mutualFriendsCollectionView: UICollectionView!
     private var mutualFriends: [FriendRecommendation] = []
+    weak var discoverDelegate: DiscoverDelegate?
 
     static var reuseIdentifier = "MutualFriendsTableViewCell"
 
@@ -103,6 +108,12 @@ extension MutualFriendsTableViewCell: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 98, height: 124)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let friend = mutualFriends[indexPath.item]
+        print("Friend ID: ", friend.id)
+        discoverDelegate?.navigateFriend(id: friend.id)
     }
 
 }

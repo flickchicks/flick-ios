@@ -15,6 +15,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let userImageView = UIImageView()
     private let detailLabel = UILabel()
+    private let listLabel = UILabel()
     private var mediaId: Int!
 
     static let reuseIdentifier = "RecommendedShowsCollectionViewCell"
@@ -43,6 +44,10 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
 
+        listLabel.font = .systemFont(ofSize: 12)
+        listLabel.textColor = .mediumGray
+        contentView.addSubview(listLabel)
+
         setupConstraints()
     }
 
@@ -65,6 +70,12 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(17)
             make.trailing.equalToSuperview()
         }
+
+        listLabel.snp.makeConstraints { make in
+            make.top.equalTo(detailLabel.snp.bottom).offset(4)
+            make.leading.trailing.equalTo(detailLabel)
+            make.height.equalTo(15)
+        }
     }
 
     func configure(with media: SimpleMedia) {
@@ -78,6 +89,9 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
                 userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(saved[0].savedBy.id)"))
             }
             detailLabel.text = "Saved by \(saved[0].savedBy.name)"
+        }
+        if let savedList = media.savedToLsts, savedList.count > 0 {
+            listLabel.text = savedList[0].lstName
         }
     }
 

@@ -92,7 +92,7 @@ class BuzzTableViewCell: UITableViewCell {
             mediaImageView.image = UIImage(named: "defaultMovie")
         }
         mediaTitleLabel.text = comment.show.title
-        mediaDescriptionLabel.text = "falsdjflsadfjjdlsk"
+        mediaDescriptionLabel.text = comment.show.plot ?? "No show plot."
     }
 
     required init?(coder: NSCoder) {
@@ -137,6 +137,7 @@ class BuzzTableViewCell: UITableViewCell {
         mediaDescriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(mediaTitleLabel.snp.bottom)
             make.leading.trailing.equalTo(mediaTitleLabel)
+            make.bottom.equalToSuperview().inset(15)
         }
 
         commentTextView.snp.makeConstraints { make in

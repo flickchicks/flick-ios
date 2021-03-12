@@ -88,11 +88,14 @@ class DiscoverViewController2: UIViewController {
     }
 
     func fetchDiscoverShows() {
+
         NetworkManager.discoverShows { [weak self] mediaList in
             guard let self = self else { return }
 
             DispatchQueue.main.async {
                 self.discoverContent = mediaList
+
+                self.discoverSectionsArray = []
 
                 if mediaList.friendRecommendations.count > 0 {
                     self.discoverSectionsArray.append("friendRecs")
@@ -113,6 +116,7 @@ class DiscoverViewController2: UIViewController {
 
                 self.discoverSectionsArray.append("trendingLsts")
                 self.discoverSectionsArray.append("trendingShows")
+                print(self.discoverSectionsArray)
                 self.discoverFeedTableView.reloadData()
             }
         }
@@ -145,6 +149,7 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
         case "friendRecs":
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? MutualFriendsTableViewCell else { return UITableViewCell() }
             cell.configure(with: discoverContent?.friendRecommendations ?? [])
+            cell.discoverDelegate = self
                 return cell
         case "friendLsts":
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
@@ -153,6 +158,7 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
         case "friendShows":
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedShowsTableViewCell else { return UITableViewCell() }
             cell.configure(with: discoverContent?.friendShows ?? [])
+            cell.delegate = self
             return cell
         case "trendingLsts":
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? RecommendedListsTableViewCell else { return UITableViewCell() }
@@ -169,7 +175,20 @@ extension DiscoverViewController2: UITableViewDelegate, UITableViewDataSource {
         default:
             return UITableViewCell()
         }
+    }
+}
 
+extension DiscoverViewController2: DiscoverDelegate, MediaControllerDelegate {
+    func presentInfoAlert(message: String) {
+        print("presentInfoAlert")
     }
 
+    func navigateFriend(id: Int) {
+        let profileViewController = ProfileViewController(isHome: false, userId: id)
+        navigationController?.pushViewController(profileViewController, animated: true)
+    }
+
+    func showMediaViewController(id: Int, mediaImageUrl: String?) {
+        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
+    }
 }
