@@ -117,7 +117,7 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: suggestionCellReuseIdentifier, for: indexPath) as? SuggestionTableViewCell else { return UITableViewCell() }
-        cell.configure(with: suggestions[indexPath.row], index: indexPath.row)
+        cell.configure(with: suggestions[indexPath.row])
         cell.delegate = self
         return cell
     }
@@ -131,8 +131,12 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
 }
 
 extension SuggestionsViewController: SuggestionsDelegate {
-    func likeSuggestion(index: Int) {
-//        suggestions[index].liked.toggle()
-//        suggestionsTableView.reloadData()
+    func likeSuggestion(suggestion: Suggestion) {
+        NetworkManager.likeSuggestion(suggestionId: suggestion.id) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.getSuggetions()
+            }
+        }
     }
 }
