@@ -98,7 +98,7 @@
 		D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */; };
 		D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */; };
 		D464666624FD3E4100E5A5AB /* ProfileSelectionModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */; };
-		D46A364825F4B6ED00EADA9F /* DiscoverViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */; };
+		D46A364825F4B6ED00EADA9F /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A364725F4B6EC00EADA9F /* DiscoverViewController.swift */; };
 		D46A364D25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */; };
 		D46A365225F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */; };
 		D46A365725F4B77400EADA9F /* RecommendedListsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */; };
@@ -270,7 +270,7 @@
 		D45DC63424B954F600838DBF /* SelfSizeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizeCollectionView.swift; sourceTree = "<group>"; };
 		D4621FD624EE04400026381F /* LeftAlignedFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedFlowLayout.swift; sourceTree = "<group>"; };
 		D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectionModalView.swift; sourceTree = "<group>"; };
-		D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController2.swift; sourceTree = "<group>"; };
+		D46A364725F4B6EC00EADA9F /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedShowsTableViewCell.swift; sourceTree = "<group>"; };
 		D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedShowsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedListsTableViewCell.swift; sourceTree = "<group>"; };
@@ -460,6 +460,7 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D440925825FCDEDD00A4690A /* Discover */,
 				8015159025BE41D9002313B9 /* Group */,
 				D4CE248C25BCC04D007C45C5 /* Notifications */,
 				D4621FD524EE04270026381F /* Layouts */,
@@ -498,6 +499,20 @@
 			path = TelieUITests;
 			sourceTree = "<group>";
 		};
+		D440925825FCDEDD00A4690A /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				D46A364725F4B6EC00EADA9F /* DiscoverViewController.swift */,
+				D46A366025F4B7C600EADA9F /* MutualFriendsTableViewCell.swift */,
+				D46A366525F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift */,
+				D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */,
+				D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */,
+				D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */,
+				D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */,
+			);
+			path = Discover;
+			sourceTree = "<group>";
+		};
 		D4621FD524EE04270026381F /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -528,7 +543,6 @@
 				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
-				D46A364725F4B6EC00EADA9F /* DiscoverViewController2.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -577,12 +591,6 @@
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
 				803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */,
 				803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */,
-				D46A364C25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift */,
-				D46A365125F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift */,
-				D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */,
-				D46A366025F4B7C600EADA9F /* MutualFriendsTableViewCell.swift */,
-				D46A366525F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift */,
-				D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1019,7 +1027,7 @@
 				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
-				D46A364825F4B6ED00EADA9F /* DiscoverViewController2.swift in Sources */,
+				D46A364825F4B6ED00EADA9F /* DiscoverViewController.swift in Sources */,
 				D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
