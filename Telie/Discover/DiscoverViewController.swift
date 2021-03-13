@@ -14,7 +14,8 @@ enum DiscoverSection {
          friendLsts,
          trendingLsts,
          trendingShows,
-         buzz
+         buzz,
+         footer
 
     func reuseIdentifier() -> String {
         switch self {
@@ -26,6 +27,8 @@ enum DiscoverSection {
             return RecommendedListsTableViewCell.reuseIdentifier
         case .buzz:
             return BuzzTableViewCell.reuseIdentifier
+        case .footer:
+            return DiscoverFooterTableViewCell.reuseIdentifier
         }
     }
 }
@@ -62,6 +65,7 @@ class DiscoverViewController: UIViewController {
         discoverFeedTableView.register(RecommendedShowsTableViewCell.self, forCellReuseIdentifier: RecommendedShowsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(RecommendedListsTableViewCell.self, forCellReuseIdentifier: RecommendedListsTableViewCell.reuseIdentifier)
         discoverFeedTableView.register(BuzzTableViewCell.self, forCellReuseIdentifier: BuzzTableViewCell.reuseIdentifier)
+        discoverFeedTableView.register(DiscoverFooterTableViewCell.self, forCellReuseIdentifier: DiscoverFooterTableViewCell.reuseIdentifier)
 
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -137,6 +141,7 @@ class DiscoverViewController: UIViewController {
 
                 self.discoverSections.append(.trendingLsts)
                 self.discoverSections.append(.trendingShows)
+                self.discoverSections.append(.footer)
 
                 self.spinner.stopAnimating()
                 self.refreshControl.endRefreshing()
@@ -201,6 +206,10 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
                     as? BuzzTableViewCell else { return UITableViewCell() }
             cell.configure(with: (discoverContent.friendComments[indexPath.row - 3]))
             cell.discoverDelegate = self
+            return cell
+        case .footer:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+                    as? DiscoverFooterTableViewCell else { return UITableViewCell() }
             return cell
         }
     }

@@ -82,6 +82,7 @@
 		D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99124EC194D00FB13A5 /* MediaSummaryTableViewCell.swift */; };
 		D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */; };
 		D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */; };
+		D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
 		D44B1C3824FBF9D000EC2FAE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */; };
@@ -252,6 +253,7 @@
 		D425B99124EC194D00FB13A5 /* MediaSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRatingsTableViewCell.swift; sourceTree = "<group>"; };
 		D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThoughtsTableViewCell.swift; sourceTree = "<group>"; };
+		D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFooterTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 				D46A365625F4B77400EADA9F /* RecommendedListsTableViewCell.swift */,
 				D46A365B25F4B79D00EADA9F /* RecommendedListsCollectionViewCell.swift */,
 				D46A366A25F4B80200EADA9F /* BuzzTableViewCell.swift */,
+				D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */,
 			);
 			path = Discover;
 			sourceTree = "<group>";
@@ -911,6 +914,7 @@
 				D41FE8B62477C7A40048900F /* LoginViewController.swift in Sources */,
 				D4E4E6DE25B60D53000D8341 /* AboutViewController.swift in Sources */,
 				D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */,
+				D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
 				D46A366B25F4B80200EADA9F /* BuzzTableViewCell.swift in Sources */,
 				80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */,
@@ -1211,14 +1215,14 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.telie.telie-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.flick.flick-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEV";
@@ -1235,14 +1239,14 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.telie.telie-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.flick.flick-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEV;
@@ -1405,14 +1409,14 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.telie.telie-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.flick.flick-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG PROD";
@@ -1527,14 +1531,14 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.telie.telie-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.flick.flick-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = PROD;
@@ -1655,14 +1659,14 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.3;
+				CURRENT_PROJECT_VERSION = 1.2.1;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.telie.telie-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.flick.flick-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG LOCAL";
