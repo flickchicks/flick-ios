@@ -782,6 +782,19 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Like a suggestion [updated as of 3/6/21]
+    static func likeSuggestion(suggestionId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/suggestions/\(suggestionId)/like/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - Push Notifications
 
     /// [POST] Enable push notifications by sending device token [updated as of 1/23/21]

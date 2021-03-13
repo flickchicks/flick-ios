@@ -20,18 +20,21 @@ struct Notification: Codable {
     var collaboratorsRemoved: [UserProfile]
     var friendRequestAccepted: Bool?
     var createdAt: String
+    var group: Group?
+    var suggestion: Suggestion?
 }
 
 
 enum NotificationEnum {
     case AcceptedIncomingFriendRequest(fromUser: UserProfile, createdAt: String)
     case AcceptedOutgoingFriendRequest(fromUser: UserProfile, createdAt: String)
-    case IncomingFriendRequest(fromUser: UserProfile, createdAt: String)
+    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String, createdAt: String)
     case CollaborationInvite(fromUser: UserProfile, list: NotificationMediaList, createdAt: String)
+    case GroupInvite(fromUser: UserProfile, group: Group?, createdAt: String)
+    case IncomingFriendRequest(fromUser: UserProfile, createdAt: String)
     case ListShowsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, numChanged: Int, createdAt: String)
     case ListCollaboratorsEdit(fromUser: UserProfile, list: NotificationMediaList, type: ListEditType, collaborators: [UserProfile], createdAt: String)
     case ListOwnershipEdit(fromUser: UserProfile, list: NotificationMediaList, newOwner: UserProfile, createdAt: String)
-    case ActivityLike(fromUser: UserProfile, likedContent: ActivityLike.ActivityLikeType, media: String, createdAt: String)
 }
 
 

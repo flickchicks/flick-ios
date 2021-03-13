@@ -185,7 +185,18 @@ class NotificationTableViewCell: UITableViewCell {
             .boldFont14(list.name)
             .normalFont14(".")
     }
-    
+
+    private func setupGroupInvite(fromUser: UserProfile, group: Group?, createdAt: String) {
+        setupProfileImageView(user: fromUser)
+        setupDateLabel(createdAt: createdAt)
+        notificationLabel.attributedText =
+            NSMutableAttributedString()
+            .boldFont14(fromUser.name)
+            .normalFont14(" invited you to group ")
+            .boldFont14(group?.name ?? "")
+            .normalFont14(".")
+    }
+
     private func setupDateLabel(createdAt: String){
         let dateLabelText = Date().getDateLabelText(createdAt: createdAt)
         dateLabel.text = dateLabelText
@@ -207,6 +218,8 @@ class NotificationTableViewCell: UITableViewCell {
             setupListCollaboratorsEdit(fromUser: fromUser, list: list, type: type, collaborators: collaborators, createdAt: createdAt)
         case .CollaborationInvite(let fromUser, let media, let createdAt):
             setupCollaborationInviteCell(fromUser: fromUser, list: media, createdAt: createdAt)
+        case .GroupInvite(fromUser: let fromUser, group: let group, createdAt: let createdAt):
+            setupGroupInvite(fromUser: fromUser, group: group, createdAt: createdAt)
         default:
             break
         }
