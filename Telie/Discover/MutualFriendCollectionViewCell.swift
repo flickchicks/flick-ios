@@ -51,7 +51,6 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 64, height: 64))
             make.top.centerX.equalToSuperview()
@@ -74,14 +73,11 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
             make.centerX.width.equalToSuperview()
             make.height.equalTo(15)
         }
-
     }
 
     func configure(for friend: FriendRecommendation) {
         profileImageView.kf.setImage(
-            with: Base64ImageDataProvider(base64String: friend.profilePic,
-                                          cacheKey: "userid-\(friend.id)"
-            )
+            with: Base64ImageDataProvider(base64String: friend.profilePic, cacheKey: "userid-\(friend.id)")
         )
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"

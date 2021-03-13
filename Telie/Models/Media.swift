@@ -17,10 +17,11 @@ struct SimpleMedia: Codable {
     var isTv: Bool?
     var directors: String?
     var plot: String?
-    var savedToLsts: [SimpleMediaList2]?
+    var tags: [Tag]?
+    var savedToLsts: [SavedToLst]?
 }
 
-struct SimpleMediaList2: Codable {
+struct SavedToLst: Codable {
     let lstId: Int
     let lstName: String
     let savedBy: UserProfile

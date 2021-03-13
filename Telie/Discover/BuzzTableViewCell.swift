@@ -16,10 +16,15 @@ class BuzzTableViewCell: UITableViewCell {
     private let commentTextView = UITextView()
     private let dateLabel = UILabel()
     private let summaryView = UIView()
+    private let mediaDetailLabel = UILabel()
     private let mediaImageView = UIImageView()
     private let mediaTitleLabel = UILabel()
     private let mediaDescriptionLabel = UILabel()
 
+    private var show: SimpleMedia?
+    private var user: UserProfile?
+
+    weak var discoverDelegate: DiscoverDelegate?
     static let reuseIdentifier = "BuzzTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -28,29 +33,23 @@ class BuzzTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
 
+        let profileTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleProfileTap)
+        )
+        profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
+
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.borderWidth = 1.5
+        profileImageView.isUserInteractionEnabled = true
         profileImageView.layer.borderColor = UIColor.movieWhite.cgColor
         profileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
         contentView.addSubview(profileImageView)
 
-        buzzLabel.textColor = .darkBlue
-        buzzLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(buzzLabel)
 
-        commentTextView.isEditable = false
-        commentTextView.isScrollEnabled = false
-        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-        commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
-        commentTextView.font = .systemFont(ofSize: 14)
-        commentTextView.textColor = .darkBlue
-        commentTextView.layer.cornerRadius = 16
-        contentView.addSubview(commentTextView)
-
-        dateLabel.text = "4d"
         dateLabel.textColor = .mediumGray
         dateLabel.font = .systemFont(ofSize: 10)
         contentView.addSubview(dateLabel)
@@ -65,34 +64,66 @@ class BuzzTableViewCell: UITableViewCell {
         mediaTitleLabel.numberOfLines = 0
         summaryView.addSubview(mediaTitleLabel)
 
+        mediaDetailLabel.font = .systemFont(ofSize: 12)
+        mediaDetailLabel.textColor = .mediumGray
+        summaryView.addSubview(mediaDetailLabel)
+
         mediaDescriptionLabel.font = .systemFont(ofSize: 10)
         mediaDescriptionLabel.textColor = .darkBlue
         mediaDescriptionLabel.numberOfLines = 0
         summaryView.addSubview(mediaDescriptionLabel)
 
+        let summaryTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleCommentTap)
+        )
         summaryView.backgroundColor = .movieWhite
         summaryView.layer.cornerRadius = 12
+        summaryView.isUserInteractionEnabled = true
+        summaryView.addGestureRecognizer(summaryTapGestureRecognizer)
         contentView.addSubview(summaryView)
 
-        setupConstraints()
 
+        let commentTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleCommentTap)
+        )
+        commentTextView.isEditable = false
+        commentTextView.isScrollEnabled = false
+        commentTextView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
+        commentTextView.font = .systemFont(ofSize: 14)
+        commentTextView.textColor = .darkBlue
+        commentTextView.isUserInteractionEnabled = true
+        commentTextView.layer.cornerRadius = 16
+        commentTextView.addGestureRecognizer(commentTapGestureRecognizer)
+        contentView.addSubview(commentTextView)
+
+        setupConstraints()
     }
 
-    func configure(with comment: FriendComment) {
+    func configure(with comment: Comment) {
+        show = comment.show
+        user = comment.owner
+
         profileImageView.kf.setImage(
             with: Base64ImageDataProvider(base64String: comment.owner.profilePic ?? "",
                                           cacheKey: "userid-\(comment.owner.id)"
             )
         )
-        buzzLabel.text = "\(comment.owner.username) commented..."
+        buzzLabel.attributedText =
+            NSMutableAttributedString()
+            .boldFont14(comment.owner.username)
+            .normalFont14(" commented...")
         commentTextView.text = comment.message
-        if let imageUrl = URL(string: comment.show.posterPic ?? "") {
+        if let imageUrl = URL(string: comment.show?.posterPic ?? "") {
             mediaImageView.kf.setImage(with: imageUrl)
         } else {
             mediaImageView.image = UIImage(named: "defaultMovie")
         }
-        mediaTitleLabel.text = comment.show.title
-        mediaDescriptionLabel.text = comment.show.plot ?? "No show plot."
+        mediaTitleLabel.text = comment.show?.title
+        let tags = comment.show?.tags?.map { $0.name }
+        mediaDetailLabel.text = tags?.prefix(2).joined(separator: ", ")
+        mediaDescriptionLabel.text = comment.show?.plot ?? "No show plot."
+        dateLabel.text = Date().getDateLabelText(createdAt: comment.createdAt)
     }
 
     required init?(coder: NSCoder) {
@@ -100,7 +131,6 @@ class BuzzTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.size.equalTo(CGSize(width: 40, height: 40))
@@ -134,8 +164,14 @@ class BuzzTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().inset(12)
         }
 
+        mediaDetailLabel.snp.makeConstraints { make in
+            make.top.equalTo(mediaTitleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(mediaTitleLabel)
+            make.height.equalTo(15)
+        }
+
         mediaDescriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(mediaTitleLabel.snp.bottom)
+            make.top.equalTo(mediaDetailLabel.snp.bottom).offset(8)
             make.leading.trailing.equalTo(mediaTitleLabel)
             make.bottom.equalToSuperview().inset(15)
         }
@@ -151,7 +187,15 @@ class BuzzTableViewCell: UITableViewCell {
             make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             make.height.equalTo(17)
         }
-
     }
 
+    @objc func handleProfileTap() {
+        guard let user = user else { return }
+        discoverDelegate?.navigateFriend(id: user.id)
+    }
+
+    @objc func handleCommentTap() {
+        guard let show = show else { return }
+        discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
+    }
 }

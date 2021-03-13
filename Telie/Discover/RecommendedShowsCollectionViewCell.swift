@@ -11,12 +11,11 @@ import Kingfisher
 
 class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
-    // MARK: - Private View Variables
-    private let imageView = UIImageView()
-    private let userImageView = UIImageView()
     private let detailLabel = UILabel()
+    private let imageView = UIImageView()
     private let listLabel = UILabel()
     private var mediaId: Int!
+    private let userImageView = UIImageView()
 
     static let reuseIdentifier = "RecommendedShowsCollectionViewCell"
 
@@ -52,7 +51,6 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-
         imageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 312, height: 468))
             make.top.leading.equalToSuperview()
@@ -83,15 +81,13 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         if let imageUrl = URL(string: media.posterPic ?? "defaultMovie") {
             imageView.kf.setImage(with: imageUrl)
         }
-        if let saved = media.savedToLsts,
-           saved.count > 0 {
-            if let profilePic = saved[0].savedBy.profilePic {
-                userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(saved[0].savedBy.id)"))
-            }
-            detailLabel.text = "Saved by \(saved[0].savedBy.name)"
-        }
-        if let savedList = media.savedToLsts, savedList.count > 0 {
-            listLabel.text = savedList[0].lstName
+        if let savedToLsts = media.savedToLsts,
+           savedToLsts.count > 0,
+           let profilePic = savedToLsts[0].savedBy.profilePic {
+                let savedByUser = savedToLsts[0].savedBy
+                userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(savedByUser.id)"))
+            detailLabel.text = "Saved by \(savedByUser.name)"
+            listLabel.text = savedToLsts[0].lstName
         }
     }
 

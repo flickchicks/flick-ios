@@ -8,26 +8,19 @@
 
 import UIKit
 
-struct MutualFriend {
-
-    let name: String
-    let profile: String
-    let username: String
-    let numMutual: Int
-
-}
-
 protocol DiscoverDelegate: class {
     func navigateFriend(id: Int)
+    func navigateList(id: Int)
+    func navigateShow(id: Int, mediaImageUrl: String?)
 }
 
 class MutualFriendsTableViewCell: UITableViewCell {
 
-    private let titleLabel = UILabel()
-    private var mutualFriendsCollectionView: UICollectionView!
     private var mutualFriends: [FriendRecommendation] = []
-    weak var discoverDelegate: DiscoverDelegate?
+    private var mutualFriendsCollectionView: UICollectionView!
+    private let titleLabel = UILabel()
 
+    weak var discoverDelegate: DiscoverDelegate?
     static var reuseIdentifier = "MutualFriendsTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -55,7 +48,6 @@ class MutualFriendsTableViewCell: UITableViewCell {
         contentView.addSubview(mutualFriendsCollectionView)
 
         setupConstraints()
-
     }
 
     required init?(coder: NSCoder) {
@@ -63,7 +55,6 @@ class MutualFriendsTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-
         titleLabel.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
             make.leading.equalToSuperview().offset(24)
@@ -76,7 +67,6 @@ class MutualFriendsTableViewCell: UITableViewCell {
             make.height.equalTo(124)
             make.bottom.equalToSuperview().inset(30)
         }
-
     }
 
     func configure(with mutualFriends: [FriendRecommendation]) {
@@ -91,29 +81,25 @@ extension MutualFriendsTableViewCell: UICollectionViewDelegate {
 }
 
 extension MutualFriendsTableViewCell: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mutualFriends.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MutualFriendCollectionViewCell.reuseIdentifier, for: indexPath) as? MutualFriendCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MutualFriendCollectionViewCell.reuseIdentifier, for: indexPath)
+                as? MutualFriendCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(for: mutualFriends[indexPath.item])
         return cell
     }
-
 }
 
 extension MutualFriendsTableViewCell: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 98, height: 124)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let friend = mutualFriends[indexPath.item]
-        print("Friend ID: ", friend.id)
         discoverDelegate?.navigateFriend(id: friend.id)
     }
-
 }

@@ -11,10 +11,10 @@ import UIKit
 class RecommendedShowsTableViewCell: UITableViewCell {
 
     private var recommendedShowsCollectionView: UICollectionView!
-    private let titleLabel = UILabel()
     private var shows: [SimpleMedia] = []
+    private let titleLabel = UILabel()
 
-    weak var delegate: MediaControllerDelegate?
+    weak var discoverDelegate: DiscoverDelegate?
     static var reuseIdentifier = "RecommendedShowsTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -28,11 +28,11 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         titleLabel.textColor = .darkBlueGray2
         contentView.addSubview(titleLabel)
 
-        let discoverLayout = UICollectionViewFlowLayout()
-        discoverLayout.scrollDirection = .horizontal
-        discoverLayout.minimumInteritemSpacing = 16
+        let horizontalLayout = UICollectionViewFlowLayout()
+        horizontalLayout.scrollDirection = .horizontal
+        horizontalLayout.minimumInteritemSpacing = 16
 
-        recommendedShowsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: discoverLayout)
+        recommendedShowsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: horizontalLayout)
         recommendedShowsCollectionView.backgroundColor = .clear
         recommendedShowsCollectionView.delegate = self
         recommendedShowsCollectionView.dataSource = self
@@ -47,7 +47,6 @@ class RecommendedShowsTableViewCell: UITableViewCell {
     }
 
     func setupConstraints() {
-
         titleLabel.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
             make.leading.equalToSuperview().offset(24)
@@ -57,10 +56,9 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         recommendedShowsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.height.equalTo(500)
+            make.height.equalTo(512)
             make.bottom.equalToSuperview().inset(30)
         }
-
     }
 
     required init?(coder: NSCoder) {
@@ -89,7 +87,7 @@ extension RecommendedShowsTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let show = shows[indexPath.item]
-        delegate?.showMediaViewController(id: show.id, mediaImageUrl: show.posterPic)
+        discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
     }
 }
 
@@ -99,6 +97,6 @@ extension RecommendedShowsTableViewCell: UICollectionViewDelegate {
 
 extension RecommendedShowsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 312, height: 500)
+        return CGSize(width: 312, height: 512)
     }
 }

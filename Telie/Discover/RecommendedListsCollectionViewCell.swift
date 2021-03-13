@@ -12,12 +12,13 @@ import Kingfisher
 class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Variables
+    private let detailLabel = UILabel()
+    private let listLabel = UILabel()
     private let mediaOneImageView = UIImageView()
     private let mediaTwoImageView = UIImageView()
     private let mediaThreeImageView = UIImageView()
-    private let userImageView = UIImageView()
-    private let detailLabel = UILabel()
     private var mediaId: Int!
+    private let userImageView = UIImageView()
 
     static let reuseIdentifier = "RecommendedListsCollectionViewCell"
 
@@ -71,6 +72,10 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
 
+        listLabel.font = .systemFont(ofSize: 12)
+        listLabel.textColor = .mediumGray
+        contentView.addSubview(listLabel)
+
         setupConstraints()
     }
 
@@ -104,30 +109,42 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
 
+        listLabel.snp.makeConstraints { make in
+            make.top.equalTo(detailLabel.snp.bottom).offset(4)
+            make.leading.trailing.equalTo(detailLabel)
+            make.height.equalTo(15)
+        }
     }
 
     func configure(with list: MediaList) {
         if list.shows.count >= 3,
-           let imageUrl1 = URL(string: list.shows[2].posterPic ?? "") {
+           let imageUrl1 = URL(string: list.shows[2].posterPic ?? "defaultMovie") {
             mediaOneImageView.kf.setImage(with: imageUrl1)
         }
 
         if list.shows.count >= 2,
-           let imageUrl2 = URL(string: list.shows[1].posterPic ?? "") {
+           let imageUrl2 = URL(string: list.shows[1].posterPic ?? "defaultMovie") {
             mediaTwoImageView.kf.setImage(with: imageUrl2)
         }
 
         if list.shows.count >= 1,
-           let imageUrl3 = URL(string: list.shows[0].posterPic ?? "") {
+           let imageUrl3 = URL(string: list.shows[0].posterPic ?? "defaultMovie") {
             mediaThreeImageView.kf.setImage(with: imageUrl3)
         }
 
 
         if let profilePic = list.owner.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(list.owner.id)"))
+            userImageView.kf.setImage(
+                with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(list.owner.id)")
+            )
         }
-        detailLabel.text = "Created by \(list.owner.name)"
 
+        detailLabel.text = "Created by \(list.owner.name)"
+        if list.numLikes > 0 {
+            listLabel.text = "\(list.name) · \(list.numLikes) Like\(list.numLikes > 1 ? "s": "")"
+        } else {
+            listLabel.text = "\(list.name)"
+        }
     }
 
     required init?(coder: NSCoder) {

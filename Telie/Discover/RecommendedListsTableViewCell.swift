@@ -14,7 +14,7 @@ class RecommendedListsTableViewCell: UITableViewCell {
     private let titleLabel = UILabel()
     private var lsts: [MediaList] = []
 
-    weak var delegate: MediaControllerDelegate?
+    weak var discoverDelegate: DiscoverDelegate?
     static var reuseIdentifier = "RecommendedListsTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -28,11 +28,11 @@ class RecommendedListsTableViewCell: UITableViewCell {
         titleLabel.textColor = .darkBlueGray2
         contentView.addSubview(titleLabel)
 
-        let discoverLayout = UICollectionViewFlowLayout()
-        discoverLayout.scrollDirection = .horizontal
-        discoverLayout.minimumInteritemSpacing = 16
+        let horizontalLayout = UICollectionViewFlowLayout()
+        horizontalLayout.scrollDirection = .horizontal
+        horizontalLayout.minimumInteritemSpacing = 16
 
-        recommendedShowsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: discoverLayout)
+        recommendedShowsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: horizontalLayout)
         recommendedShowsCollectionView.backgroundColor = .clear
         recommendedShowsCollectionView.delegate = self
         recommendedShowsCollectionView.dataSource = self
@@ -57,7 +57,7 @@ class RecommendedListsTableViewCell: UITableViewCell {
         recommendedShowsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.height.equalTo(530)
+            make.height.equalTo(536)
             make.bottom.equalToSuperview().inset(30)
         }
 
@@ -74,7 +74,6 @@ class RecommendedListsTableViewCell: UITableViewCell {
 }
 
 extension RecommendedListsTableViewCell: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return lsts.count
     }
@@ -87,10 +86,9 @@ extension RecommendedListsTableViewCell: UICollectionViewDataSource {
         return cell
     }
 
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let list = lsts[indexPath.item]
-//        delegate?.showMediaViewController(id: show.id, mediaImageUrl: show.posterPic)
-//    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.discoverDelegate?.navigateList(id: lsts[indexPath.item].id)
+    }
 }
 
 extension RecommendedListsTableViewCell: UICollectionViewDelegate {
@@ -99,6 +97,6 @@ extension RecommendedListsTableViewCell: UICollectionViewDelegate {
 
 extension RecommendedListsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 340, height: 530)
+        return CGSize(width: 340, height: 536)
     }
 }
