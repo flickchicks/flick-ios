@@ -28,6 +28,7 @@ struct MediaList: Codable {
     var owner: UserProfile
     var shows: [SimpleMedia]
     var tags: [Tag]
+    var hasLiked: Bool?
 }
 
 struct NotificationMediaList: Codable {

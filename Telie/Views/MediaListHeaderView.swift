@@ -20,6 +20,7 @@ class MediaListHeaderView: UICollectionReusableView {
     private let addButton = UIButton()
     private let containerView = UIView()
     private let editButton = UIButton()
+    private let likeButton = UIButton()
     private let roundTopView = RoundTopView(hasShadow: true)
 //    private let sortButton = UIButton()
 
@@ -48,6 +49,11 @@ class MediaListHeaderView: UICollectionReusableView {
         editButton.isHidden = true
         addSubview(editButton)
 
+        likeButton.addTarget(self, action: #selector(likeList), for: .touchUpInside)
+        likeButton.layer.cornerRadius = buttonSize.width / 2
+        likeButton.isHidden = true
+        addSubview(likeButton)
+
 //        sortButton.addTarget(self, action: #selector(sortMedia), for: .touchUpInside)
 //        sortButton.layer.cornerRadius = buttonSize.width / 2
 //        addSubview(sortButton)
@@ -60,7 +66,12 @@ class MediaListHeaderView: UICollectionReusableView {
             make.centerY.equalTo(roundTopView.snp.top)
             make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
             make.size.equalTo(buttonSize)
-            
+        }
+
+        likeButton.snp.makeConstraints { make in
+            make.centerY.equalTo(roundTopView.snp.top)
+            make.trailing.equalTo(roundTopView.snp.trailing).inset(40)
+            make.size.equalTo(buttonSize)
         }
 
 //        sortButton.snp.makeConstraints { make in
@@ -87,12 +98,14 @@ class MediaListHeaderView: UICollectionReusableView {
 
     }
 
-    func configure(isEmptyList: Bool, canModifyMedia: Bool) {
+    func configure(isEmptyList: Bool, canModifyMedia: Bool, hasLiked: Bool) {
         self.isEmptyList = isEmptyList
         editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
+        likeButton.setImage(UIImage(named: hasLiked ? "likedButton" : "likeButton"), for: .normal)
 //        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)
         addButton.isHidden = !canModifyMedia
         editButton.isHidden = !canModifyMedia
+        likeButton.isHidden = canModifyMedia
     }
 
     @objc func addMedia() {
@@ -109,6 +122,10 @@ class MediaListHeaderView: UICollectionReusableView {
         if !isEmptyList {
             delegate?.sortMedia()
         }
+    }
+
+    @objc func likeList() {
+
     }
 
     required init?(coder aDecoder: NSCoder) {
