@@ -127,7 +127,7 @@ class EditProfileViewController: UIViewController {
         bioFieldLabel.textColor = .mediumGray
         view.addSubview(bioFieldLabel)
 
-        bioTextLimitLabel.text = "0 / 150"
+        bioTextLimitLabel.text = "\(user.bio?.count ?? 0) / 150"
         bioTextLimitLabel.textAlignment = .right
         bioTextLimitLabel.font = .systemFont(ofSize: 10)
         bioTextLimitLabel.textColor = .mediumGray
@@ -365,13 +365,9 @@ extension EditProfileViewController: UITextViewDelegate {
             textView.resignFirstResponder()
         }
         let currentText = textView.text ?? ""
-        // Attempt to read the range they are trying to change, or terminate if we can't
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        // Add their new text to the existing text
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-        let charCount = updatedText.count
-        bioTextLimitLabel.text = "\(charCount) / 150"
-        return charCount <= 150
+        let updatedTextCount = currentText.count + text.count - range.length
+        bioTextLimitLabel.text = "\(updatedTextCount) / 150"
+        return updatedTextCount < 150
     }
 
 }
