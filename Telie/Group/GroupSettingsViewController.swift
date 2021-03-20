@@ -195,7 +195,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let section = sections[section]
         switch section.type {
         case .details:
-            return section.settingItems.count + group.members.count
+            return section.settingItems.count + (group.members?.count ?? 0)
         default:
             return section.settingItems.count
         }
@@ -211,8 +211,9 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
             return cell
         } else {
             // Setup cell for group member
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell else { return UITableViewCell() }
-            let member = group.members[indexPath.row - section.settingItems.count]
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: UserTableViewCell.reuseIdentifier, for: indexPath) as? UserTableViewCell,
+                  let members = group.members else { return UITableViewCell() }
+            let member = members[indexPath.row - section.settingItems.count]
             cell.configure(user: member)
             return cell
         }

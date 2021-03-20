@@ -87,8 +87,8 @@ class GroupTableViewCell: UITableViewCell {
     func configure(for group: Group) {
         self.group = group
         nameLabel.text = group.name
-        let membersNames = group.members.map { $0.username }
-        membersLabel.text = membersNames.joined(separator: ", ")
+        let membersNames = group.members?.map { $0.username }
+        membersLabel.text = membersNames?.joined(separator: ", ")
         usersCollectionView.reloadData()
     }
 
@@ -97,7 +97,7 @@ class GroupTableViewCell: UITableViewCell {
 extension GroupTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return min(3, group?.members.count ?? 0)
+        return min(3, group?.members?.count ?? 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
