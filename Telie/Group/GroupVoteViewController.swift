@@ -117,6 +117,7 @@ class GroupVoteViewController: UIViewController {
         mediaInformationTableView.layoutIfNeeded()
         mediaInformationTableView.contentInset = UIEdgeInsets(top: 24, left: 10, bottom: 24, right: 10)
         mediaInformationTableView.layer.cornerRadius = 25
+        mediaInformationTableView.isScrollEnabled = false
         mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: MediaSummaryTableViewCell.reuseIdentifier)
         view.addSubview(mediaInformationTableView)
 
@@ -320,6 +321,10 @@ class GroupVoteViewController: UIViewController {
         guard let media = currentMedia else { return }
         self.ideas.removeLast()
         NetworkManager.voteForIdea(groupId: groupId, mediaId: media.id, vote: vote) { _ in }
+        // Send haptic feedback
+        let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .light)
+        impactFeedbackgenerator.prepare()
+        impactFeedbackgenerator.impactOccurred()
     }
 
 }
