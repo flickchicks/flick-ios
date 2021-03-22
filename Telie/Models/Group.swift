@@ -11,7 +11,7 @@ import Foundation
 struct Group: Codable {
     var id: Int
     var name: String
-    var members: [UserProfile]
+    var members: [UserProfile]?
     var shows: [Media]?
 }
 

@@ -124,7 +124,7 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let user = isSearching ? users[indexPath.row] : friends[indexPath.row]
-        let isAdded = group.members.contains { user.id == $0.id }
+        let isAdded = (group.members ?? []).contains { user.id == $0.id }
         cell.configureForAdd(user: user, isAdded: isAdded)
         cell.delegate = self
         return cell
