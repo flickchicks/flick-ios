@@ -46,8 +46,8 @@ class UserTableViewCell: UITableViewCell {
     func configure(user: UserProfile) {
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let profilePic = user.profilePic {
-            userProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+            userProfileImageView.kf.setImage(with: imageUrl)
         }
     }
     

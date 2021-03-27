@@ -94,7 +94,6 @@ class ProfileViewController: UIViewController {
         }
         
         view.addSubview(listsTableView)
-    
 
         setupConstraints()
         setupSections()

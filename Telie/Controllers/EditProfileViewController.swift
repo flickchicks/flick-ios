@@ -83,8 +83,8 @@ class EditProfileViewController: UIViewController {
         imagePickerController.allowsEditing = false
         imagePickerController.mediaTypes = ["public.image"]
 
-        if let profilePic = user.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
         }
         
         profileImageView.contentMode = .scaleAspectFill
@@ -334,7 +334,9 @@ class EditProfileViewController: UIViewController {
             let username = userNameTextField.text,
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
-            let base64ProfileImage = didChangeProfilePic ? profileImageView.image?.pngData()?.base64EncodedString() : nil
+            let base64ProfileImage = didChangeProfilePic ?
+                "data:image/png;base64, \(profileImageView.image!.pngData()!.base64EncodedString())" :
+                nil
             let updatedUser = User(
                 username: username,
                 name: name,

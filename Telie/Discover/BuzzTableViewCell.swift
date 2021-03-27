@@ -104,11 +104,10 @@ class BuzzTableViewCell: UITableViewCell {
         show = comment.show
         user = comment.owner
 
-        profileImageView.kf.setImage(
-            with: Base64ImageDataProvider(base64String: comment.owner.profilePic ?? "",
-                                          cacheKey: "userid-\(comment.owner.id)"
-            )
-        )
+        if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
+        }
+
         buzzLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(comment.owner.username)

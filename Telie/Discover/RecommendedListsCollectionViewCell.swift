@@ -132,11 +132,8 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             mediaThreeImageView.kf.setImage(with: imageUrl3)
         }
 
-
-        if let profilePic = list.owner.profilePic {
-            userImageView.kf.setImage(
-                with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(list.owner.id)")
-            )
+        if let imageUrl = URL(string: list.owner.profilePicUrl ?? "") {
+            userImageView.kf.setImage(with: imageUrl)
         }
 
         detailLabel.text = "Created by \(list.owner.name)"

@@ -66,8 +66,8 @@ class EditUserTableViewCell: UITableViewCell {
         self.isAddUser = true
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let profilePic = user.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+            userImageView.kf.setImage(with: imageUrl)
         }
         if isAdded {
             editButton.isEnabled = false
@@ -94,8 +94,8 @@ class EditUserTableViewCell: UITableViewCell {
     func configureForRemove(user: UserProfile, isOwner: Bool) {
         self.user = user
         nameLabel.text = user.name
-        if let profilePic = user.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+            userImageView.kf.setImage(with: imageUrl)
         }
         if isOwner {
             usernameLabel.text = "Owner"

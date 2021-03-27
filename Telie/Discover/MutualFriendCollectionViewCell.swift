@@ -76,9 +76,10 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(for friend: FriendRecommendation) {
-        profileImageView.kf.setImage(
-            with: Base64ImageDataProvider(base64String: friend.profilePic, cacheKey: "userid-\(friend.id)")
-        )
+
+        if let imageUrl = URL(string: friend.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
+        }
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
         let numMutualFriends = friend.numMutualFriends
