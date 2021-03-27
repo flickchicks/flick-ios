@@ -188,7 +188,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         // TODO: Add logic to calculate difference between createdDate and currentDate
         commentDateLabel.text = Date().getDateLabelText(createdAt: comment.createdAt)
         // TODO: Add logic to discover if comment has been liked by user
-        let heartImage = comment.hasLiked ? "filledHeart" : "heart"
+        let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         commentLikeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let profilePic = comment.owner.profilePic {
             commentProfileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))

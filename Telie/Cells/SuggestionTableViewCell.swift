@@ -230,8 +230,7 @@ class SuggestionTableViewCell: UITableViewCell {
             releaseDateLabel.text = String(dateReleased.prefix(4))
         }
         synopsisLabel.text = suggestion.show.plot
-        let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
-        dateLabel.text = dateLabelText
+        dateLabel.text = Date().getDateLabelText(createdAt: suggestion.createdAt)
         if let hasLiked = suggestion.hasLiked {
             let heartImage = hasLiked ? "filledHeart" : "heart"
             likeButton.setImage(UIImage(named: heartImage), for: .normal)

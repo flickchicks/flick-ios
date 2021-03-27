@@ -650,8 +650,10 @@ class NetworkManager {
     /// [GET] Get lists search result by query [updated as of 9/3/20]
     static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
         var discoverShowURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/discover/")!)
+        print("\(hostEndpoint)/api/discover/")
         discoverShowURLRequest.httpMethod = "GET"
         discoverShowURLRequest.cachePolicy = .returnCacheDataElseLoad
+        discoverShowURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {

@@ -140,3 +140,4 @@ extension SuggestionsViewController: SuggestionsDelegate {
         }
     }
 }
+
