@@ -80,7 +80,7 @@ class EditProfileViewController: UIViewController {
         profileSelectionModalView.profileSelectionDelegate = self
 
         imagePickerController.delegate = self
-        imagePickerController.allowsEditing = false
+        imagePickerController.allowsEditing = true
         imagePickerController.mediaTypes = ["public.image"]
 
         if let imageUrl = URL(string: user.profilePicUrl ?? "") {
