@@ -19,7 +19,7 @@ struct FriendRecommendation: Codable {
     let id: Int
     let username: String
     let name: String
-    let profilePic: String
+    let profilePic: String?
     let profilePicUrl: String?
     let numMutualFriends: Int
 }

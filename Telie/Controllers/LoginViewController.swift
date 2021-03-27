@@ -134,7 +134,7 @@ class LoginViewController: UIViewController {
                         base64Str = "data:image/png;base64, \(profileImagePngData.base64EncodedString())"
                     }
                 }
-
+                print(base64Str)
                 self.authenticateUser(
                     name: name,
                     email: email,

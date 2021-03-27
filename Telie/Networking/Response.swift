@@ -21,7 +21,8 @@ struct Authorization: Codable {
     var authToken: String
     var username: String
     var name: String
-    var profilePic: String
+    var profilePic: String?
+    var profilePicUrl: String?
     var socialIdToken: String
     var socialId: String
     var socialIdTokenType: String
