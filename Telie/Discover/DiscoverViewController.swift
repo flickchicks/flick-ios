@@ -180,25 +180,25 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
         case .friendLsts:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                     as? RecommendedListsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: discoverContent.friendLsts)
+            cell.configure(with: discoverContent.friendLsts, header: "📔 Lists You'll Love")
             cell.discoverDelegate = self
             return cell
         case .friendShows:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                     as? RecommendedShowsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: discoverContent.friendShows)
+            cell.configure(with: discoverContent.friendShows, header: "📺 Shows For You")
             cell.discoverDelegate = self
             return cell
         case .trendingLsts:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                     as? RecommendedListsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: discoverContent.trendingLsts)
+            cell.configure(with: discoverContent.trendingLsts, header: "🔥 Trending Lists")
             cell.discoverDelegate = self
             return cell
         case .trendingShows:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                     as? RecommendedShowsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: discoverContent.trendingShows)
+            cell.configure(with: discoverContent.trendingShows, header: "🍿 Trending Shows")
             cell.discoverDelegate = self
             return cell
         case .buzz:

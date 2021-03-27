@@ -30,6 +30,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         contentView.addSubview(imageView)
 
+        userImageView.isHidden = true
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.masksToBounds = true
         userImageView.clipsToBounds = true
@@ -84,11 +85,13 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         if let savedToLsts = media.savedToLsts,
            savedToLsts.count > 0,
            let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
+                userImageView.isHidden = false
                 let savedByUser = savedToLsts[0].savedBy
                 userImageView.kf.setImage(with: imageUrl)
-
             detailLabel.text = "Saved by \(savedByUser.name)"
             listLabel.text = savedToLsts[0].lstName
+        } else {
+            userImageView.isHidden = true
         }
     }
 
@@ -99,6 +102,9 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        userImageView.image = nil
+        detailLabel.text = ""
+        listLabel.text = ""
     }
 
 }

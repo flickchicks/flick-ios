@@ -153,6 +153,7 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaOneImageView.image = nil
         mediaTwoImageView.image = nil
         mediaThreeImageView.image = nil
+        userImageView.image = nil
     }
 
 }

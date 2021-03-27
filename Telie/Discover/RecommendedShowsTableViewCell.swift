@@ -23,7 +23,6 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
 
-        titleLabel.text = "📺 Shows For You"
         titleLabel.font = .boldSystemFont(ofSize: 14)
         titleLabel.textColor = .darkBlueGray2
         contentView.addSubview(titleLabel)
@@ -65,7 +64,8 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with shows: [SimpleMedia]) {
+    func configure(with shows: [SimpleMedia], header: String) {
+        titleLabel.text = header
         self.shows = shows
         recommendedShowsCollectionView.reloadData()
     }

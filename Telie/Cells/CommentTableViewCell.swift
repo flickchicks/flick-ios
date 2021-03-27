@@ -170,7 +170,7 @@ class CommentTableViewCell: UITableViewCell {
         }
         let dateLabelText = Date().getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
-        let heartImage = comment.hasLiked ? "filledHeart" : "heart"
+        let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
