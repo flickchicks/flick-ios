@@ -14,6 +14,7 @@ struct User: Codable {
     var name: String
     var bio: String?
     var profilePic: String?
+    var profilePicUrl: String?
     var phoneNumber: String?
     var socialIdToken: String?
     var socialIdTokenType: String?
