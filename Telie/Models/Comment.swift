@@ -9,19 +9,13 @@
 import Foundation
 
 struct Comment: Codable {
-
     var createdAt: String
     var id: Int
     var isSpoiler: Bool?
     var numLikes: Int
-    var hasLiked: Bool
-    var isReadable: Bool
+    var hasLiked: Bool?
+    var isReadable: Bool?
     var owner: UserProfile
     var message: String
-
-}
-
-struct Likers: Codable {
-    var liker: UserProfile
-    var createdAt: String
+    var show: SimpleMedia?
 }

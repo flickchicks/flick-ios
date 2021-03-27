@@ -21,6 +21,7 @@ struct MediaList: Codable {
     var id: Int
     var name: String
     var pic: String?
+    var description: String?
     var isSaved: Bool
     var isPrivate: Bool
     var isWatchLater: Bool
@@ -28,6 +29,9 @@ struct MediaList: Codable {
     var owner: UserProfile
     var shows: [SimpleMedia]
     var tags: [Tag]
+    var numLikes: Int
+    var hasLiked: Bool
+    var likers: [UserProfile]
 }
 
 struct NotificationMediaList: Codable {
