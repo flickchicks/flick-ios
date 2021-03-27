@@ -60,7 +60,6 @@ class NetworkManager {
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                print("success")
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let authorizationData = try? jsonDecoder.decode(Response<Authorization>.self, from: data) {
