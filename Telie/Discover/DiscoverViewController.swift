@@ -47,7 +47,7 @@ class DiscoverViewController: UIViewController {
         type: .orbit,
         color: .gradientPurple
     )
-    private let spinnerMessageLabel = UILabel()
+//    private let spinnerMessageLabel = UILabel()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -83,11 +83,12 @@ class DiscoverViewController: UIViewController {
 
         view.addSubview(discoverFeedTableView)
 
-        spinnerMessageLabel.text = "Loading suggestions..."
-        spinnerMessageLabel.font = .systemFont(ofSize: 14)
-        spinnerMessageLabel.textColor = .gradientPurple
-        spinnerMessageLabel.isHidden = false
-        view.addSubview(spinnerMessageLabel)
+//        spinnerMessageLabel.text = "Loading suggestions..."
+//        spinnerMessageLabel.font = .systemFont(ofSize: 14)
+//        spinnerMessageLabel.textColor = .gradientPurple
+//        spinnerMessageLabel.isHidden = false
+//        view.addSubview(spinnerMessageLabel)
+
         view.addSubview(spinner)
         spinner.startAnimating()
 
@@ -110,11 +111,11 @@ class DiscoverViewController: UIViewController {
             make.center.equalToSuperview()
         }
 
-        spinnerMessageLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(spinner)
-            make.top.equalTo(spinner.snp.bottom)
-            make.height.equalTo(15)
-        }
+//        spinnerMessageLabel.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(spinner)
+//            make.top.equalTo(spinner.snp.bottom)
+//            make.height.equalTo(15)
+//        }
     }
 
     @objc func refreshDiscoverData() {
@@ -161,7 +162,7 @@ class DiscoverViewController: UIViewController {
                 self.discoverSections.append(.footer)
 
                 self.spinner.stopAnimating()
-                self.spinnerMessageLabel.isHidden = true
+//                self.spinnerMessageLabel.isHidden = true
                 self.refreshControl.endRefreshing()
                 self.discoverFeedTableView.reloadData()
             }

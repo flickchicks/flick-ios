@@ -58,14 +58,10 @@ class MediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.hero.isEnabled = true
-        self.hero.modalAnimationType = .selectBy(presenting:.zoom, dismissing:.zoomOut)
-
         expandedCardHeight = 0.9 * view.frame.height
         collapsedCardHeight = 0.4 * view.frame.height
         mediaImageHeight = 0.6 * view.frame.height
 
-        mediaImageView.hero.modifiers = [.translate(y:100)]
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
