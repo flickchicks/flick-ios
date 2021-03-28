@@ -29,7 +29,7 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
         profileImageView.layer.cornerRadius = 32
         profileImageView.layer.borderWidth = 1.5
         profileImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        profileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(profileImageView)
 
         nameLabel.textColor = .darkBlue
@@ -83,7 +83,7 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
         let numMutualFriends = friend.numMutualFriends
-        mutualFriendsLabel.text = "\(numMutualFriends) Mutual Friend\(numMutualFriends > 1 ? "s" : "")"
+        mutualFriendsLabel.text = "\(numMutualFriends) mutual friend\(numMutualFriends > 1 ? "s" : "")"
     }
 
     required init?(coder: NSCoder) {

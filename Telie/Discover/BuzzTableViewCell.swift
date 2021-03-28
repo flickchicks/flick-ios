@@ -45,7 +45,7 @@ class BuzzTableViewCell: UITableViewCell {
         profileImageView.layer.borderWidth = 1.5
         profileImageView.isUserInteractionEnabled = true
         profileImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        profileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(profileImageView)
 
         contentView.addSubview(buzzLabel)
@@ -136,15 +136,21 @@ class BuzzTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(23)
         }
 
+        buzzLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
+            make.trailing.equalTo(commentTextView)
+            make.height.equalTo(17)
+        }
+
         dateLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(23)
             make.centerY.equalTo(buzzLabel)
-            make.width.equalTo(22)
-            make.height.equalTo(12)
+            make.size.equalTo(CGSize(width: 22, height: 12))
         }
 
         summaryView.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 271, height: 122))
+            make.height.equalTo(122)
             make.leading.equalTo(commentTextView)
             make.trailing.equalTo(dateLabel.snp.centerX)
             make.top.equalTo(commentTextView.snp.bottom).inset(8)
@@ -180,12 +186,6 @@ class BuzzTableViewCell: UITableViewCell {
             make.trailing.equalTo(dateLabel.snp.leading)
             make.top.equalTo(profileImageView.snp.bottom)
         }
-
-        buzzLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileImageView)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
-            make.height.equalTo(17)
-        }
     }
 
     @objc func handleProfileTap() {
@@ -196,5 +196,10 @@ class BuzzTableViewCell: UITableViewCell {
     @objc func handleCommentTap() {
         guard let show = show else { return }
         discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
     }
 }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Hero
 
 class CustomNavigationController: UINavigationController {
 
@@ -20,6 +20,7 @@ class CustomNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPopRecognizer()
+        self.hero.navigationAnimationType = .none
     }
 
     // MARK: - Setup

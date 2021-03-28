@@ -65,7 +65,7 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.cornerRadius = 10
         userImageView.layer.borderWidth = 1.5
         userImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
         detailLabel.font = .boldSystemFont(ofSize: 14)

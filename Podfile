@@ -26,6 +26,8 @@ target 'Telie' do
 	# Data Loading
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.15.0'
+	pod 'NVActivityIndicatorView'
+	pod 'Hero'
 
   target 'TelieTests' do
     inherit! :search_paths

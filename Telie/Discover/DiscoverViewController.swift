@@ -6,6 +6,8 @@
 //  Copyright © 2021 Telie. All rights reserved.
 //
 
+import Hero
+import NVActivityIndicatorView
 import UIKit
 
 enum DiscoverSection {
@@ -40,7 +42,12 @@ class DiscoverViewController: UIViewController {
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private var discoverSections: [DiscoverSection] = []
     private let searchBar = SearchBar()
-    private let spinner = UIActivityIndicatorView(style: .large)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 100, height: 100),
+        type: .orbit,
+        color: .lightPurple
+    )
+    private let spinnerMessageLabel = UILabel()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -76,7 +83,11 @@ class DiscoverViewController: UIViewController {
 
         view.addSubview(discoverFeedTableView)
 
-        spinner.hidesWhenStopped = true
+        spinnerMessageLabel.text = "Loading suggestions..."
+        spinnerMessageLabel.font = .systemFont(ofSize: 14)
+        spinnerMessageLabel.textColor = .lightPurple
+        spinnerMessageLabel.isHidden = false
+        view.addSubview(spinnerMessageLabel)
         view.addSubview(spinner)
         spinner.startAnimating()
 
@@ -97,6 +108,12 @@ class DiscoverViewController: UIViewController {
 
         spinner.snp.makeConstraints { make in
             make.center.equalToSuperview()
+        }
+
+        spinnerMessageLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(spinner)
+            make.top.equalTo(spinner.snp.bottom)
+            make.height.equalTo(15)
         }
     }
 
@@ -144,6 +161,7 @@ class DiscoverViewController: UIViewController {
                 self.discoverSections.append(.footer)
 
                 self.spinner.stopAnimating()
+                self.spinnerMessageLabel.isHidden = true
                 self.refreshControl.endRefreshing()
                 self.discoverFeedTableView.reloadData()
             }
@@ -186,8 +204,9 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
         case .friendShows:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
                     as? RecommendedShowsTableViewCell else { return UITableViewCell() }
-            cell.configure(with: discoverContent.friendShows, header: "📺 Shows For You")
+            cell.configure(with: discoverContent.friendShows, header: "📺 Picks for You")
             cell.discoverDelegate = self
+            cell.hero.id = "mediaImageView"
             return cell
         case .trendingLsts:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
@@ -222,7 +241,8 @@ extension DiscoverViewController: DiscoverDelegate {
     }
 
     func navigateShow(id: Int, mediaImageUrl: String?) {
-        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
+//        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
+        present(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
     }
 
     func navigateList(id: Int) {

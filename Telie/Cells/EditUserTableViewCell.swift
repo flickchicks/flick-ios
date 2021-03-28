@@ -45,7 +45,7 @@ class EditUserTableViewCell: UITableViewCell {
 
         userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = 20
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.masksToBounds = true
         contentView.addSubview(userImageView)

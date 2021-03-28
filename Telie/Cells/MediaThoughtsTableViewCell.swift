@@ -53,7 +53,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         commentProfileImageView.isUserInteractionEnabled = true
         commentProfileImageView.addGestureRecognizer(profileTapGestureRecognizer)
-        commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
+        commentProfileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         commentProfileImageView.contentMode = .scaleAspectFit
         commentProfileImageView.layer.cornerRadius = 20
         commentProfileImageView.layer.masksToBounds = true

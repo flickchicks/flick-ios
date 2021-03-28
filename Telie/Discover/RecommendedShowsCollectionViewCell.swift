@@ -24,6 +24,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .clear
 
+        imageView.hero.id = "mediaImageView"
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
@@ -37,7 +38,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.cornerRadius = 10
         userImageView.layer.borderWidth = 1.5
         userImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
         detailLabel.font = .boldSystemFont(ofSize: 14)
@@ -83,11 +84,12 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             imageView.kf.setImage(with: imageUrl)
         }
         if let savedToLsts = media.savedToLsts,
-           savedToLsts.count > 0,
-           let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
-                userImageView.isHidden = false
-                let savedByUser = savedToLsts[0].savedBy
+           savedToLsts.count > 0 {
+            userImageView.isHidden = false
+            let savedByUser = savedToLsts[0].savedBy
+            if let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
                 userImageView.kf.setImage(with: imageUrl)
+            }
             detailLabel.text = "Saved by \(savedByUser.name)"
             listLabel.text = savedToLsts[0].lstName
         } else {

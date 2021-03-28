@@ -33,7 +33,7 @@ class CollaboratorTableViewCell: UITableViewCell {
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.cornerRadius = 20
         userImageView.layer.masksToBounds = true
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         addSubview(userImageView)
 
         selectIndicatorView.layer.backgroundColor = UIColor.white.cgColor
