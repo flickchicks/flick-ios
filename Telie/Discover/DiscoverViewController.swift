@@ -45,7 +45,7 @@ class DiscoverViewController: UIViewController {
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 100, height: 100),
         type: .orbit,
-        color: .lightPurple
+        color: .gradientPurple
     )
     private let spinnerMessageLabel = UILabel()
     private let refreshControl = UIRefreshControl()
@@ -85,7 +85,7 @@ class DiscoverViewController: UIViewController {
 
         spinnerMessageLabel.text = "Loading suggestions..."
         spinnerMessageLabel.font = .systemFont(ofSize: 14)
-        spinnerMessageLabel.textColor = .lightPurple
+        spinnerMessageLabel.textColor = .gradientPurple
         spinnerMessageLabel.isHidden = false
         view.addSubview(spinnerMessageLabel)
         view.addSubview(spinner)
@@ -206,7 +206,6 @@ extension DiscoverViewController: UITableViewDelegate, UITableViewDataSource {
                     as? RecommendedShowsTableViewCell else { return UITableViewCell() }
             cell.configure(with: discoverContent.friendShows, header: "📺 Picks for You")
             cell.discoverDelegate = self
-            cell.hero.id = "mediaImageView"
             return cell
         case .trendingLsts:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
@@ -241,8 +240,7 @@ extension DiscoverViewController: DiscoverDelegate {
     }
 
     func navigateShow(id: Int, mediaImageUrl: String?) {
-//        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
-        present(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
+        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
     }
 
     func navigateList(id: Int) {

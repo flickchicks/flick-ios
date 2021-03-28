@@ -13,6 +13,7 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Variables
     private let detailLabel = UILabel()
+    private let listImageView = UIImageView()
     private let listLabel = UILabel()
     private let mediaOneImageView = UIImageView()
     private let mediaTwoImageView = UIImageView()
@@ -72,6 +73,9 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
 
+        listImageView.image = UIImage(named: "listIcon")
+        contentView.addSubview(listImageView)
+
         listLabel.font = .systemFont(ofSize: 12)
         listLabel.textColor = .mediumGray
         contentView.addSubview(listLabel)
@@ -109,11 +113,19 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
 
+        listImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 10, height: 14))
+            make.leading.equalTo(detailLabel)
+            make.centerY.equalTo(listLabel)
+        }
+
         listLabel.snp.makeConstraints { make in
             make.top.equalTo(detailLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(detailLabel)
+            make.trailing.equalTo(detailLabel)
+            make.leading.equalTo(listImageView.snp.trailing).offset(4)
             make.height.equalTo(15)
         }
+        
     }
 
     func configure(with list: MediaList) {

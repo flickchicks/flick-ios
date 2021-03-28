@@ -190,18 +190,15 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         self.comments = comments
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
-        if numComments == 0 { return }
+        if numComments == 0 {
+            setCommentViewFullWidth()
+            return
+        }
         let comment = comments[comments.count-1]
 //        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
-        print(comment.message.count, "fdsfsdf")
         if comment.message.count > 46 || comment.message.count == 0 {
-            commentTextView.snp.remakeConstraints { remake in
-                remake.top.equalTo(commentProfileImageView)
-                remake.trailing.equalTo(commentDateLabel.snp.leading).offset(-38)
-                remake.leading.equalTo(commentOwnerLabel)
-                remake.bottom.equalToSuperview().inset(8)
-            }
+            setCommentViewFullWidth()
         }
         viewSpoilerButton.isHidden = true
 //        viewSpoilerButton.isHidden = !comment.isSpoiler
@@ -230,6 +227,14 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         }
     }
 
+    private func setCommentViewFullWidth() {
+        commentTextView.snp.remakeConstraints { remake in
+            remake.top.equalTo(commentProfileImageView)
+            remake.trailing.equalTo(commentDateLabel.snp.leading).offset(-38)
+            remake.leading.equalTo(commentOwnerLabel)
+            remake.bottom.equalToSuperview().inset(8)
+        }
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

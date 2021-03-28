@@ -55,7 +55,7 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         recommendedShowsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.height.equalTo(512)
+            make.height.equalTo(514)
             make.bottom.equalToSuperview().inset(30)
         }
     }
@@ -97,6 +97,6 @@ extension RecommendedShowsTableViewCell: UICollectionViewDelegate {
 
 extension RecommendedShowsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 312, height: 512)
+        return CGSize(width: 312, height: 514)
     }
 }

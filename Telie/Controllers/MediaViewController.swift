@@ -66,7 +66,6 @@ class MediaViewController: UIViewController {
         mediaImageHeight = 0.6 * view.frame.height
 
         mediaImageView.hero.modifiers = [.translate(y:100)]
-        mediaImageView.hero.id = "mediaImageView"
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
