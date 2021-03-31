@@ -104,10 +104,11 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showAddCollaboratorsModal() {
-        addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
-        addCollaboratorModalView.modalDelegate = self
-        addCollaboratorModalView.listSettingsDelegate = self
-        showModalPopup(view: addCollaboratorModalView)
+        present(AddCollaboratorViewController(owner: list.owner, collaborators: list.collaborators), animated: true)
+//        addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
+//        addCollaboratorModalView.modalDelegate = self
+//        addCollaboratorModalView.listSettingsDelegate = self
+//        showModalPopup(view: addCollaboratorModalView)
     }
 
     private func showDeleteConfirmationModal() {
@@ -172,7 +173,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.addToMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
             guard let self = self else { return }
             self.list = list
-            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
+//            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
         }
     }
 
@@ -180,7 +181,7 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.removeFromMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
             guard let self = self else { return }
             self.list = list
-            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
+//            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
         }
     }
 

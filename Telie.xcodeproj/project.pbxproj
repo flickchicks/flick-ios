@@ -89,6 +89,9 @@
 		D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B1C3924FC662600EC2FAE /* UIImage.swift */; };
 		D44BC12725A047F300D10DAB /* UsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44BC12625A047F300D10DAB /* UsersViewController.swift */; };
 		D44BC12C25A052DD00D10DAB /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44BC12B25A052DD00D10DAB /* UserTableViewCell.swift */; };
+		D458B3C9261420B7006A23A1 /* SaveMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */; };
+		D458B3D1261426B9006A23A1 /* SaveToListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */; };
+		D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */; };
 		D45A3D7B25A8485B0094161A /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3D7A25A8485B0094161A /* FriendRequest.swift */; };
 		D45A3E1925A9A7E90094161A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3E1825A9A7E90094161A /* Keys.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
@@ -260,6 +263,9 @@
 		D44B1C3924FC662600EC2FAE /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		D44BC12625A047F300D10DAB /* UsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewController.swift; sourceTree = "<group>"; };
 		D44BC12B25A052DD00D10DAB /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveMediaViewController.swift; sourceTree = "<group>"; };
+		D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveToListTableViewCell.swift; sourceTree = "<group>"; };
+		D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorViewController.swift; sourceTree = "<group>"; };
 		D45A3D7A25A8485B0094161A /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		D45A3E1825A9A7E90094161A /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
@@ -457,6 +463,8 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D458B3D5261431A0006A23A1 /* List */,
+				D458B3C726142082006A23A1 /* Media */,
 				D440925825FCDEDD00A4690A /* Discover */,
 				8015159025BE41D9002313B9 /* Group */,
 				D4CE248C25BCC04D007C45C5 /* Notifications */,
@@ -512,6 +520,25 @@
 			path = Discover;
 			sourceTree = "<group>";
 		};
+		D458B3C726142082006A23A1 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				D444974E24B566C700D72FED /* MediaViewController.swift */,
+				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
+				D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */,
+				D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		D458B3D5261431A0006A23A1 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		D4621FD524EE04270026381F /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,10 +556,8 @@
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				3095FF012479CC3900F08C60 /* ListViewController.swift */,
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
-				D444974E24B566C700D72FED /* MediaViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
-				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
 				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
@@ -964,6 +989,7 @@
 				80E7F91525B5415400B545C8 /* ModalView.swift in Sources */,
 				D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */,
 				80F00F6824AD8D080051B8FF /* SelectIndicatorView.swift in Sources */,
+				D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */,
 				D474D17224B132A7006795F6 /* EnterNameModalView.swift in Sources */,
 				D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */,
 				D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */,
@@ -980,6 +1006,7 @@
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46A365225F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
+				D458B3C9261420B7006A23A1 /* SaveMediaViewController.swift in Sources */,
 				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
 				803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */,
 				D4F0FB4B24CC544900DEF826 /* UILabel.swift in Sources */,
@@ -1023,6 +1050,7 @@
 				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
+				D458B3D1261426B9006A23A1 /* SaveToListTableViewCell.swift in Sources */,
 				D46A364825F4B6ED00EADA9F /* DiscoverViewController.swift in Sources */,
 				D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */,
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,

@@ -150,10 +150,11 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        let listsModalView = MediaListsModalView(type: .saveMedia, currentList: nil)
-        listsModalView.modalDelegate = self
-        listsModalView.saveMediaDelegate = self
-        showModalPopup(view: listsModalView)
+        present(SaveMediaViewController(), animated: true)
+//        let listsModalView = MediaListsModalView(type: .saveMedia, currentList: nil)
+//        listsModalView.modalDelegate = self
+//        listsModalView.saveMediaDelegate = self
+//        showModalPopup(view: listsModalView)
     }
 
     @objc func shareButtonTapped() {

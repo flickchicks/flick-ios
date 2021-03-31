@@ -1,60 +1,48 @@
 //
-//  ListTableViewCell.swift
-//  Flick
+//  SaveToListTableViewCell.swift
+//  Telie
 //
-//  Created by Lucy Xu on 5/30/20.
-//  Copyright © 2020 flick. All rights reserved.
+//  Created by Lucy Xu on 3/30/21.
+//  Copyright © 2021 Telie. All rights reserved.
 //
 
 import UIKit
-import SkeletonView
 
-protocol ListTableViewCellDelegate: class {
-    func pushListViewController(listId: Int)
-    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?)
-}
-
-class ListTableViewCell: UITableViewCell {
+class SaveToListTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private var mediaCollectionView: UICollectionView!
-    private let seeAllButton = UIButton()
+    private let saveToListButton = RoundedButton(style: .purple, title: "Add")
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
     private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
-    weak var delegate: ListTableViewCellDelegate?
     private var list: SimpleMediaList!
     private let lockImageView = UIImageView()
     private var media: [SimpleMedia] = []
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
-    private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
 
-    static let reuseIdentifier = "ListCellReuseIdentifier"
+    static let reuseIdentifier = "SaveToListTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = .white
-        contentView.backgroundColor = .white
-        isSkeletonable = true
-        contentView.isSkeletonable = true
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
 
-        titleLabel.text = "                   " // Setting empty spaces for skeleton view
         titleLabel.skeletonCornerRadius = 6
         titleLabel.linesCornerRadius = 6
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
-        
+
         titleLabel.isSkeletonable = true
         contentView.addSubview(titleLabel)
 
-        seeAllButton.setTitle("See all", for: .normal)
-        seeAllButton.setTitleColor(.darkBlueGray2, for: .normal)
-        seeAllButton.titleLabel?.font = .boldSystemFont(ofSize: 12)
-        seeAllButton.addTarget(self, action: #selector(seeAllMedia), for: .touchUpInside)
-        contentView.addSubview(seeAllButton)
+        saveToListButton.titleLabel?.font = .systemFont(ofSize: 12)
+        saveToListButton.layer.cornerRadius = 10
+        saveToListButton.addTarget(self, action: #selector(saveToListTapped), for: .touchUpInside)
+        contentView.addSubview(saveToListButton)
 
         let mediaLayout = UICollectionViewFlowLayout()
         mediaLayout.minimumInteritemSpacing = 12
@@ -62,7 +50,6 @@ class ListTableViewCell: UITableViewCell {
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaLayout)
         mediaCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: mediaCellReuseIdentifier)
-        mediaCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: seeAllCellReuseIdentifier)
         mediaCollectionView.delegate = self
         mediaCollectionView.dataSource = self
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
@@ -90,10 +77,6 @@ class ListTableViewCell: UITableViewCell {
         }
     }
 
-    @objc private func seeAllMedia() {
-        delegate?.pushListViewController(listId: list.id)
-    }
-
     private func setupConstraints() {
         let padding = 12
 
@@ -103,11 +86,10 @@ class ListTableViewCell: UITableViewCell {
             make.height.equalTo(17)
         }
 
-        seeAllButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.equalTo(mediaCollectionView.snp.top)
-            make.trailing.equalToSuperview().inset(10)
-            make.width.equalTo(80)
+        saveToListButton.snp.makeConstraints { make in
+            make.bottom.equalTo(titleLabel)
+            make.size.equalTo(CGSize(width: 42, height: 20))
+            make.trailing.equalToSuperview().inset(24)
         }
 
         mediaCollectionView.snp.makeConstraints { make in
@@ -157,65 +139,34 @@ class ListTableViewCell: UITableViewCell {
         collaboratorsPreviewView.users = []
     }
 
+    @objc func saveToListTapped() {
+        print("saved")
+    }
+
 }
 
-
-extension ListTableViewCell: SkeletonCollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.item == 10 || indexPath.row >= media.count {
-            delegate?.pushListViewController(listId: list.id)
-        } else {
-            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic)
-        }
-    }
-}
-
-extension ListTableViewCell: SkeletonCollectionViewDataSource {
-    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return indexPath.item == 10 ? seeAllCellReuseIdentifier : mediaCellReuseIdentifier
-    }
-    
-    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
-    }
+extension SaveToListTableViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // If list is empty, show 4 filler cells
         if media.isEmpty {
             return 4
         } else {
-            return media.count == 10 ? media.count + 1 : media.count
+            return media.count
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 10 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seeAllCellReuseIdentifier, for: indexPath)
-            cell.backgroundColor = .lightGray2
-            cell.clipsToBounds = true
-            cell.layer.cornerRadius = 8
-            let seeAllLabel = UILabel()
-            seeAllLabel.text = "See All"
-            seeAllLabel.textColor = .darkBlueGray2
-            seeAllLabel.font = .systemFont(ofSize: 12)
-            cell.contentView.addSubview(seeAllLabel)
-            seeAllLabel.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-            return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
-            if media.count != 0 {
-                let media = self.media[indexPath.row]
-                cell.configure(media: media)
-            }
-            return cell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mediaCellReuseIdentifier, for: indexPath) as? MediaInListCollectionViewCell else { return UICollectionViewCell() }
+        if media.count != 0 {
+            let media = self.media[indexPath.row]
+            cell.configure(media: media)
         }
+        return cell
     }
-
 }
 
-extension ListTableViewCell: UICollectionViewDelegateFlowLayout {
+extension SaveToListTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 120)
     }

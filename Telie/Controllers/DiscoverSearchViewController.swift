@@ -53,6 +53,15 @@ class DiscoverSearchViewController: UIViewController {
         searchResultPageCollectionView.isScrollEnabled = false
         view.addSubview(searchResultPageCollectionView)
 
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(leftSwipeDetected))
+        leftSwipeGestureRecognizer.direction = .left
+
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(rightSwipeDetected))
+        rightSwipeGestureRecognizer.direction = .right
+
+        view.addGestureRecognizer(leftSwipeGestureRecognizer)
+        view.addGestureRecognizer(rightSwipeGestureRecognizer)
+
         searchBar.becomeFirstResponder()
 
         setupConstraints()
@@ -142,6 +151,16 @@ class DiscoverSearchViewController: UIViewController {
 
     @objc private func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc func leftSwipeDetected() {
+        let newPosition = currentPosition < tabs.count - 1 ? currentPosition + 1 : currentPosition
+        setCurrentPosition(position: newPosition)
+    }
+
+    @objc func rightSwipeDetected() {
+        let newPosition = currentPosition > 0 ? currentPosition - 1 : currentPosition
+        setCurrentPosition(position: newPosition)
     }
 
 }

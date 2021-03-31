@@ -25,7 +25,7 @@ class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private var listsTableView: UITableView!
+    private let listsTableView = UITableView(frame: .zero, style: .plain)
     private var bottomPaddingView = UIView()
 
     // MARK: - Private Data Vars
@@ -68,7 +68,6 @@ class ProfileViewController: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
 
-        listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self
         listsTableView.backgroundColor = .clear
