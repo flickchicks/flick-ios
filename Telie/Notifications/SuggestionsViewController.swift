@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class SuggestionsViewController: UIViewController {
 
@@ -14,7 +15,11 @@ class SuggestionsViewController: UIViewController {
     private let emptyStateView = EmptyStateView(type: .suggestions)
     private let suggestionsTableView = UITableView(frame: .zero)
     private let refreshControl = UIRefreshControl()
-    private let spinner = UIActivityIndicatorView(style: .large)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
     
     // MARK: - Private Data Vars
     private var suggestions: [Suggestion] = []

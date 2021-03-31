@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 import SnapKit
 
@@ -19,7 +20,11 @@ class AddCollaboratorModalView: ModalView {
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
     private let subtitleLabel = UILabel()
     private let noFriendsLabel = UILabel()
 
@@ -94,7 +99,6 @@ class AddCollaboratorModalView: ModalView {
         inviteCollaboratorsTableView.separatorStyle = .none
         inviteCollaboratorsTableView.keyboardDismissMode = .onDrag
 
-        spinner.hidesWhenStopped = true
         if friends.isEmpty {
             addSubview(spinner)
             spinner.startAnimating()

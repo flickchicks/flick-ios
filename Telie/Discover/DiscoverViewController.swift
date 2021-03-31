@@ -43,11 +43,10 @@ class DiscoverViewController: UIViewController {
     private var discoverSections: [DiscoverSection] = []
     private let searchBar = SearchBar()
     private let spinner = NVActivityIndicatorView(
-        frame: CGRect(x: 0, y: 0, width: 100, height: 100),
-        type: .orbit,
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
         color: .gradientPurple
     )
-//    private let spinnerMessageLabel = UILabel()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -83,12 +82,6 @@ class DiscoverViewController: UIViewController {
 
         view.addSubview(discoverFeedTableView)
 
-//        spinnerMessageLabel.text = "Loading suggestions..."
-//        spinnerMessageLabel.font = .systemFont(ofSize: 14)
-//        spinnerMessageLabel.textColor = .gradientPurple
-//        spinnerMessageLabel.isHidden = false
-//        view.addSubview(spinnerMessageLabel)
-
         view.addSubview(spinner)
         spinner.startAnimating()
 
@@ -111,11 +104,6 @@ class DiscoverViewController: UIViewController {
             make.center.equalToSuperview()
         }
 
-//        spinnerMessageLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(spinner)
-//            make.top.equalTo(spinner.snp.bottom)
-//            make.height.equalTo(15)
-//        }
     }
 
     @objc func refreshDiscoverData() {
@@ -162,7 +150,6 @@ class DiscoverViewController: UIViewController {
                 self.discoverSections.append(.footer)
 
                 self.spinner.stopAnimating()
-//                self.spinnerMessageLabel.isHidden = true
                 self.refreshControl.endRefreshing()
                 self.discoverFeedTableView.reloadData()
             }

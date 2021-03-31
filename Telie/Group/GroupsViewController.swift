@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class GroupsViewController: UIViewController {
 
@@ -15,7 +16,11 @@ class GroupsViewController: UIViewController {
     private let emptyStateView = EmptyStateView(type: .group)
     private let groupsTableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
-    private let spinner = UIActivityIndicatorView(style: .large)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
 
     // MARK: - Private View Vars
     private var groups: [Group] = []

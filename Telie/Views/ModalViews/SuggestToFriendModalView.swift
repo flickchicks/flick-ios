@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 protocol SuggestToFriendDelegate: class {
@@ -24,7 +25,11 @@ class SuggestToFriendModalView: ModalView {
     private let messageTextField = UITextField()
     private let onlyFriendSeeLabel = UILabel()
     private var shareButton = UIButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
     private let suggestToFriendLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -96,7 +101,6 @@ class SuggestToFriendModalView: ModalView {
         friendsTableView.showsVerticalScrollIndicator = false
         containerView.addSubview(friendsTableView)
 
-        spinner.hidesWhenStopped = true
         if friends.isEmpty {
             friendsTableView.backgroundView = spinner
             spinner.startAnimating()

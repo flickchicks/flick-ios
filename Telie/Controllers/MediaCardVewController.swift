@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 class MediaCardViewController: UIViewController {
@@ -17,7 +18,11 @@ class MediaCardViewController: UIViewController {
     // MARK: - Private View Vars
     private let commentAreaView = CommentAreaView()
     private let handleIndicatorView = UIView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
 
     // MARK: - Private Data Vars
     private let handleIndicatorViewSize = CGSize(width: 64, height: 5)

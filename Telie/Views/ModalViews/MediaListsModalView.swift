@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 class NewListButton: UIButton {
@@ -65,7 +66,11 @@ class MediaListsModalView: ModalView {
     private var doneButton = UIButton()
     private let listsTableView = UITableView()
     private let newListButton = NewListButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -104,7 +109,6 @@ class MediaListsModalView: ModalView {
         listsTableView.bounces = false
         containerView.addSubview(listsTableView)
 
-        spinner.hidesWhenStopped = true
         if lists.isEmpty {
             listsTableView.backgroundView = spinner
             spinner.startAnimating()

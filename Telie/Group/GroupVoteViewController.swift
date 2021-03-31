@@ -6,6 +6,7 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 protocol GroupVoteDelegate: class {
@@ -22,7 +23,11 @@ class GroupVoteViewController: UIViewController {
     private let noIdeasLabel = UILabel()
     private let numIdeasLabel = UILabel()
     private let posterImageView = UIImageView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
     private let voteMaybeButton = UIButton()
     private let voteNoButton = UIButton()
     private let voteYesButton = UIButton()
@@ -140,7 +145,6 @@ class GroupVoteViewController: UIViewController {
         voteYesButton.addTarget(self, action: #selector(voteYesButtonPressed), for: .touchUpInside)
         view.addSubview(voteYesButton)
 
-        spinner.hidesWhenStopped = true
         view.addSubview(spinner)
         spinner.startAnimating()
 

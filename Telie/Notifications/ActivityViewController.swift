@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
 class ActivityViewController: UIViewController {
 
@@ -14,7 +15,11 @@ class ActivityViewController: UIViewController {
     private let activityTableView = UITableView(frame: .zero, style: .grouped)
     private let emptyStateView = EmptyStateView(type: .activity)
     private let refreshControl = UIRefreshControl()
-    private let spinner = UIActivityIndicatorView(style: .large)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
 
     // MARK: - Private Data Vars
     private var friendRequests: [NotificationEnum] = []

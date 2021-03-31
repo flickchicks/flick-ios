@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import SnapKit
 import UIKit
 
@@ -32,7 +33,11 @@ class ListViewController: UIViewController {
     private var mediaCollectionView: UICollectionView!
     private let settingsButton = UIButton()
     private var sortListModalView: SortListModalView!
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .circleStrokeSpin,
+        color: .gradientPurple
+    )
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
