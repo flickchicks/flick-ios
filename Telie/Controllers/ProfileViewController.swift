@@ -324,7 +324,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return 0
         case .lists:
-            return 80
+            return 95
         }
     }
 
@@ -395,6 +395,12 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
+    }
+
+    func showLists() {
+    }
+
+    func showLikedLists() {
     }
 }
 
