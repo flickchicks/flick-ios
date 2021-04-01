@@ -370,6 +370,11 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
         navigationController?.pushViewController(editVC, animated: true)
     }
 
+    func likeList() {
+        guard let list = list else { return }
+        NetworkManager.likeList(listId: list.id) { _ in }
+    }
+
     func sortMedia() {
         sortListModalView = SortListModalView()
         sortListModalView.modalDelegate = self

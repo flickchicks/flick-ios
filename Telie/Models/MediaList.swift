@@ -31,7 +31,6 @@ struct MediaList: Codable {
     var tags: [Tag]
     var numLikes: Int
     var hasLiked: Bool
-    var likers: [UserProfile]
 }
 
 struct NotificationMediaList: Codable {

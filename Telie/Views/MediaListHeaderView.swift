@@ -11,6 +11,7 @@ import UIKit
 protocol MediaListHeaderDelegate: class {
     func addMedia()
     func editMedia()
+    func likeList()
     func sortMedia()
 }
 
@@ -26,6 +27,7 @@ class MediaListHeaderView: UICollectionReusableView {
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
+    private var hasLiked = false
     var isEmptyList = true
 
     weak var delegate: MediaListHeaderDelegate?
@@ -99,6 +101,7 @@ class MediaListHeaderView: UICollectionReusableView {
     }
 
     func configure(isEmptyList: Bool, canModifyMedia: Bool, hasLiked: Bool) {
+        self.hasLiked = hasLiked
         self.isEmptyList = isEmptyList
         editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
         likeButton.setImage(UIImage(named: hasLiked ? "likedButton" : "likeButton"), for: .normal)
@@ -125,7 +128,8 @@ class MediaListHeaderView: UICollectionReusableView {
     }
 
     @objc func likeList() {
-
+        likeButton.setImage(UIImage(named: hasLiked ? "likeButton" : "likedButton"), for: .normal)
+        delegate?.likeList()
     }
 
     required init?(coder aDecoder: NSCoder) {

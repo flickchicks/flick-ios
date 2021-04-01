@@ -320,6 +320,19 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Like a list [updated as of 3/31/21]
+    static func likeList(listId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/like/", method: .post, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - Friends
 
     /// [GET] Get all friends of a user [updated as of 8/7/20]
