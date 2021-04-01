@@ -97,8 +97,13 @@ class ActivityViewController: UIViewController {
     }
     
     private func getActivity() {
-        NetworkManager.getNotifications { [weak self] notifications in
+        NetworkManager.getNotifications { [weak self] notifs in
             guard let self = self else { return }
+
+            // Only display supported notifications
+            let notifTypes = ["list_invite", "incoming_friend_request_accepted", "outgoing_friend_request_accepted", "list_edit", "group_invite", "suggestion_like"]
+            let notifications = notifs.filter { notifTypes.contains($0.notifType) }
+
             DispatchQueue.main.async {
                 /* Note: Every element in returned notifications needs to be mapped to a corresponding object in our notifications array so depending on mistakes on the backend or frontend, there might be some inconsistencies in mapping the objects. I also make assumptions on the presence of values for optionals depending on the notification type, which may cause issues. For the most part this shouldn't be an issue. We can also revisit this later if need be.
                 */
@@ -122,9 +127,10 @@ class ActivityViewController: UIViewController {
                         else {
                             return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved, createdAt: $0.createdAt)
                         }
+                    } else if $0.notifType == "group_invite" {
+                        return .GroupInvite(fromUser: $0.fromUser, group: $0.group, createdAt: $0.createdAt)
                     } else {
-                        // TODO: Revisit after backend finishes notifications
-                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: "Love from Another Star", createdAt: $0.createdAt)
+                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: $0.suggestion?.show.title ?? "", createdAt: $0.createdAt)
                     }
                 }
                 self.getFriendRequests()
@@ -184,6 +190,9 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .ListOwnershipEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+            case .GroupInvite(_, let group, _):
+                guard let group = group else { return }
+                navigationController?.pushViewController(GroupViewController(group: group), animated: true)
             default:
                 break
             }

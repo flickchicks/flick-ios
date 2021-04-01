@@ -30,6 +30,7 @@ class CollaboratorTableViewCell: UITableViewCell {
         ownerLabel.font = .systemFont(ofSize: 16)
         ownerLabel.textColor = .mediumGray
 
+        userImageView.contentMode = .scaleAspectFill
         userImageView.layer.cornerRadius = 20
         userImageView.layer.masksToBounds = true
         userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor

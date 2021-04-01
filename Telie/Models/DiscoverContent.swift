@@ -7,7 +7,18 @@
 //
 
 struct DiscoverContent: Codable {
-    var trendingMovies: [SimpleMedia]
-    var trendingTvs: [SimpleMedia]
-    var trendingAnimes: [SimpleMedia]
+    var friendRecommendations: [FriendRecommendation]
+    var friendLsts: [MediaList]
+    var trendingLsts: [MediaList]
+    var trendingShows: [SimpleMedia]
+    var friendShows: [SimpleMedia]
+    var friendComments: [Comment]
+}
+
+struct FriendRecommendation: Codable {
+    let id: Int
+    let username: String
+    let name: String
+    let profilePic: String
+    let numMutualFriends: Int
 }

@@ -650,8 +650,10 @@ class NetworkManager {
     /// [GET] Get lists search result by query [updated as of 9/3/20]
     static func discoverShows(completion: @escaping (DiscoverContent) -> Void) {
         var discoverShowURLRequest = URLRequest(url: URL(string:"\(hostEndpoint)/api/discover/")!)
+        print("\(hostEndpoint)/api/discover/")
         discoverShowURLRequest.httpMethod = "GET"
         discoverShowURLRequest.cachePolicy = .returnCacheDataElseLoad
+        discoverShowURLRequest.setValue("Token \(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) ?? "")", forHTTPHeaderField: "Authorization")
         
         AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {
@@ -681,7 +683,6 @@ class NetworkManager {
         AF.request(notificationsURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                debugPrint(data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let notificationsData = try? jsonDecoder.decode(Response<[Notification]>.self, from: data) {
@@ -763,6 +764,19 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/suggest/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [POST] Like a suggestion [updated as of 3/6/21]
+    static func likeSuggestion(suggestionId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/suggestions/\(suggestionId)/like/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success:
                 completion(true)

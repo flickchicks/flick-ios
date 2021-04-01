@@ -222,12 +222,14 @@ class GroupVoteViewController: UIViewController {
     @objc private func longPressedPoster(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             mediaInformationTableView.isHidden = false
+            moreInfoView.isHidden = true
             // Send haptic feedback when long press begins
             let impactFeedbackgenerator = UIImpactFeedbackGenerator(style: .medium)
             impactFeedbackgenerator.prepare()
             impactFeedbackgenerator.impactOccurred()
         } else if sender.state == .ended {
             mediaInformationTableView.isHidden = true
+            moreInfoView.isHidden = false
         }
     }
 

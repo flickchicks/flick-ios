@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 protocol SuggestionsDelegate: class {
-    func likeSuggestion(index: Int)
+    func likeSuggestion(suggestion: Suggestion)
 }
 
 class SuggestionTableViewCell: UITableViewCell {
@@ -35,8 +35,7 @@ class SuggestionTableViewCell: UITableViewCell {
 
     // MARK: - Private Data Vars
     weak var delegate: SuggestionsDelegate?
-    private var index: Int!
-
+    private var suggestion: Suggestion?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -82,6 +81,7 @@ class SuggestionTableViewCell: UITableViewCell {
         containerView.addSubview(mediaImageView)
 
         likeButton.addTarget(self, action: #selector(likeSuggestion), for: .touchUpInside)
+        likeButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
         contentView.addSubview(likeButton)
 
         mediaTitleLabel.font = .boldSystemFont(ofSize: 14)
@@ -197,11 +197,17 @@ class SuggestionTableViewCell: UITableViewCell {
     }
 
     @objc func likeSuggestion() {
-        delegate?.likeSuggestion(index: index)
+        suggestion?.hasLiked?.toggle()
+        guard let suggestion = suggestion else { return }
+        if let hasLiked = suggestion.hasLiked {
+            let heartImage = hasLiked ? "filledHeart" : "heart"
+            likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        }
+        delegate?.likeSuggestion(suggestion: suggestion)
     }
 
-    func configure(with suggestion: Suggestion, index: Int) {
-        self.index = index
+    func configure(with suggestion: Suggestion) {
+        self.suggestion = suggestion
         notificationLabel.attributedText =
             NSMutableAttributedString()
             .boldFont14(suggestion.fromUser.name)
@@ -224,10 +230,11 @@ class SuggestionTableViewCell: UITableViewCell {
             releaseDateLabel.text = String(dateReleased.prefix(4))
         }
         synopsisLabel.text = suggestion.show.plot
-        let dateLabelText = Date().getDateLabelText(createdAt: suggestion.createdAt)
-        dateLabel.text = dateLabelText
-//        let heartImage = suggestion.liked ? "filledHeart" : "heart"
-        likeButton.setImage(UIImage(named: "heart"), for: .normal)
+        dateLabel.text = Date().getDateLabelText(createdAt: suggestion.createdAt)
+        if let hasLiked = suggestion.hasLiked {
+            let heartImage = hasLiked ? "filledHeart" : "heart"
+            likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        }
     }
 
     override func prepareForReuse() {
