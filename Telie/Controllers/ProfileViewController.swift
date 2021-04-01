@@ -36,7 +36,9 @@ class ProfileViewController: UIViewController {
     private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private var friends: [UserProfile] = []
     private var isCurrentUser: Bool = false
+    private var isLikedSelected: Bool = false
     private var isHome: Bool = false
+    private var likedLists: [SimpleMediaList] = []
     private var mediaLists: [SimpleMediaList] = []
     private var sections = [Section]()
     private let refreshControl = UIRefreshControl()
@@ -65,7 +67,7 @@ class ProfileViewController: UIViewController {
         bottomPaddingView.layer.zPosition = 0
         bottomPaddingView.backgroundColor = .white
         view.addSubview(bottomPaddingView)
-        
+
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
 
         listsTableView = UITableView(frame: .zero, style: .plain)
@@ -83,8 +85,8 @@ class ProfileViewController: UIViewController {
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
+        listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         listsTableView.isSkeletonable = true
-        listsTableView.layer.zPosition = 1
 
         // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
@@ -92,25 +94,23 @@ class ProfileViewController: UIViewController {
         } else {
             listsTableView.addSubview(refreshControl)
         }
-        
+
         view.addSubview(listsTableView)
-    
 
         setupConstraints()
         setupSections()
 
         listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
     }
-    
+
     private func setupConstraints() {
-        
         listsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         bottomPaddingView.snp.makeConstraints { make in
-            make.height.equalTo(300)
+            make.height.equalTo(view.frame.height - 310)
             make.leading.trailing.bottom.equalTo(listsTableView)
         }
 
@@ -164,6 +164,9 @@ class ProfileViewController: UIViewController {
     
     @objc func refreshProfile() {
         updateUser()
+        if isLikedSelected {
+            getLikedLists()
+        }
     }
 
     private func setupSections() {
@@ -234,6 +237,28 @@ class ProfileViewController: UIViewController {
         refreshControl.endRefreshing()
     }
 
+    private func getLikedLists() {
+        guard let user = user else { return }
+        NetworkManager.getLikedLists(userId: user.id) { [weak self] likedLists in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.likedLists = likedLists
+                self.listsTableView.reloadData()
+            }
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Only allow bouncing for top of scroll view
+        if scrollView.contentOffset.y > 10 {
+            listsTableView.bounces = false
+        } else {
+            listsTableView.bounces = true
+        }
+        if scrollView.contentOffset.y < -170 {
+            scrollView.contentOffset = CGPoint(x: 0, y: -170)
+        }
+    }
 }
 
 extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSource {
@@ -268,7 +293,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return 1
         case .lists:
-            return mediaLists.count
+            return isLikedSelected ? likedLists.count : mediaLists.count
         }
     }
 
@@ -284,7 +309,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
             return cell
         case .lists:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
-            cell.configure(for: mediaLists[indexPath.item])
+            cell.configure(for: isLikedSelected ? likedLists[indexPath.item] : mediaLists[indexPath.item])
             cell.delegate = self
             return cell
         }
@@ -398,9 +423,14 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showLists() {
+        isLikedSelected = false
+        listsTableView.reloadData()
     }
 
     func showLikedLists() {
+        isLikedSelected = true
+        listsTableView.reloadData()
+        getLikedLists()
     }
 }
 

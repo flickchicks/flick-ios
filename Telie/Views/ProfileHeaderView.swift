@@ -17,6 +17,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     private let createListButton = UIButton()
     private let containerView = UIView()
     private let friendButton = UIButton()
+    private var isLikedSelected = false
     private let likedListsButton = UIButton()
     private let listsButton = UIButton()
     private let roundTopView = RoundTopView(hasShadow: true)
@@ -141,11 +142,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         listsButton.setTitleColor(.darkBlue, for: .normal)
         listsButton.backgroundColor = .lightPurple
         listsButton.layer.borderWidth = 0
-
         likedListsButton.setTitleColor(.mediumGray, for: .normal)
         likedListsButton.backgroundColor = .white
         likedListsButton.layer.borderWidth = 1
         likedListsButton.layer.borderColor = UIColor.lightGray2.cgColor
+
+        if isLikedSelected {
+            delegate?.showLists()
+        }
+        isLikedSelected = false
     }
 
     @objc private func likedListsButtonTapped() {
@@ -157,6 +162,11 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         listsButton.backgroundColor = .white
         listsButton.layer.borderWidth = 1
         listsButton.layer.borderColor = UIColor.lightGray2.cgColor
+
+        if !isLikedSelected {
+            delegate?.showLikedLists()
+        }
+        isLikedSelected = true
     }
 
     required init?(coder aDecoder: NSCoder) {

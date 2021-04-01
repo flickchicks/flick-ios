@@ -333,6 +333,23 @@ class NetworkManager {
         }
     }
 
+    /// [GET] Get all liked lists [updated as of 4/1/31]
+    static func getLikedLists(userId: Int, completion: @escaping ([SimpleMediaList]) -> Void) {
+        AF.request("\(hostEndpoint)/api/user/\(userId)/liked-lists/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaListsData = try? jsonDecoder.decode(Response<[SimpleMediaList]>.self, from: data) {
+                    let mediaLists = mediaListsData.data
+                    completion(mediaLists)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     // MARK: - Friends
 
     /// [GET] Get all friends of a user [updated as of 8/7/20]
