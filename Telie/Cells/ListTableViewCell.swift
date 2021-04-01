@@ -17,15 +17,15 @@ protocol ListTableViewCellDelegate: class {
 class ListTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
+    private let listInfoStackView = UIStackView()
+    private let iconImageView = UIImageView()
     private var mediaCollectionView: UICollectionView!
     private let seeAllButton = UIButton()
     private let titleLabel = UILabel()
 
-    // MARK: - Private Data Vars
-    private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
+    // MARK: - Data Vars
     weak var delegate: ListTableViewCellDelegate?
     private var list: SimpleMediaList!
-    private let lockImageView = UIImageView()
     private var media: [SimpleMedia] = []
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
     private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
@@ -39,6 +39,17 @@ class ListTableViewCell: UITableViewCell {
         isSkeletonable = true
         contentView.isSkeletonable = true
 
+        listInfoStackView.axis = .horizontal
+        listInfoStackView.alignment = .center
+        listInfoStackView.spacing = 8
+        contentView.addSubview(listInfoStackView)
+
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 16, height: 14))
+        }
+        listInfoStackView.addArrangedSubview(iconImageView)
+
         titleLabel.text = "                   " // Setting empty spaces for skeleton view
         titleLabel.skeletonCornerRadius = 6
         titleLabel.linesCornerRadius = 6
@@ -46,7 +57,7 @@ class ListTableViewCell: UITableViewCell {
         titleLabel.font = .boldSystemFont(ofSize: 14)
         
         titleLabel.isSkeletonable = true
-        contentView.addSubview(titleLabel)
+        listInfoStackView.addArrangedSubview(titleLabel)
 
         seeAllButton.setTitle("See all", for: .normal)
         seeAllButton.setTitleColor(.darkBlueGray2, for: .normal)
@@ -69,23 +80,7 @@ class ListTableViewCell: UITableViewCell {
         mediaCollectionView.isSkeletonable = true
         contentView.addSubview(mediaCollectionView)
 
-        lockImageView.image = UIImage(named: "lock")
-        lockImageView.isHidden = true
-        contentView.addSubview(lockImageView)
-        collaboratorsPreviewView.isHidden = true
-        contentView.addSubview(collaboratorsPreviewView)
-
         setupConstraints()
-    }
-
-    func setupCollaborators(collaborators: [UserProfile]) {
-        collaboratorsPreviewView.users = collaborators
-
-        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
-
-        collaboratorsPreviewView.snp.updateConstraints { update in
-            update.width.equalTo(collaboratorsPreviewWidth)
-        }
     }
 
     @objc private func seeAllMedia() {
@@ -95,10 +90,11 @@ class ListTableViewCell: UITableViewCell {
     private func setupConstraints() {
         let padding = 12
 
-        titleLabel.snp.makeConstraints { make in
+        listInfoStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(padding)
             make.leading.equalToSuperview().offset(34)
-            make.height.equalTo(17)
+            make.trailing.equalTo(seeAllButton.snp.leading).offset(-10)
+            make.height.equalTo(20)
         }
 
         seeAllButton.snp.makeConstraints { make in
@@ -114,20 +110,6 @@ class ListTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(padding)
             make.height.equalTo(120)
         }
-
-        lockImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(13)
-            make.width.equalTo(10)
-            make.centerY.equalTo(titleLabel)
-        }
-
-        collaboratorsPreviewView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(20)
-            make.width.equalTo(0) // Temporarily set as 0, but it will be updated when configuring the cell
-            make.bottom.equalTo(titleLabel)
-        }
     }
 
     func configure(for list: SimpleMediaList) {
@@ -136,12 +118,14 @@ class ListTableViewCell: UITableViewCell {
         // If there are no shows added, show empty state but no scroll
         mediaCollectionView.isScrollEnabled = self.media.count != 0
         titleLabel.text = list.name
-        let listCollaborators = [list.owner] + list.collaborators
-        lockImageView.isHidden = !list.isPrivate
-        // collaboratorsPreviewView does not show if list is private
-        collaboratorsPreviewView.isHidden = list.isPrivate
-        if listCollaborators.count > 1 {
-            setupCollaborators(collaborators: listCollaborators)
+        if list.collaborators.count > 0 {
+            iconImageView.isHidden = false
+            iconImageView.image = UIImage(named: "peopleIcon")
+        } else if list.isPrivate {
+            iconImageView.isHidden = false
+            iconImageView.image = UIImage(named: "lock")
+        } else {
+            iconImageView.isHidden = true
         }
         mediaCollectionView.reloadData()
     }
@@ -149,12 +133,6 @@ class ListTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        collaboratorsPreviewView.users = []
-    }
-
 }
 
 
