@@ -100,9 +100,10 @@ class MediaListHeaderView: UICollectionReusableView {
 
     }
 
-    func configure(isEmptyList: Bool, canModifyMedia: Bool, hasLiked: Bool) {
-        self.hasLiked = hasLiked
-        self.isEmptyList = isEmptyList
+    func configure(for list: MediaList?, canModifyMedia: Bool) {
+        guard let list = list else { return }
+        self.hasLiked = list.hasLiked
+        self.isEmptyList = list.shows.count == 0
         editButton.setImage(UIImage(named: isEmptyList ? "editButtonInactive" : "editButton"), for: .normal)
         likeButton.setImage(UIImage(named: hasLiked ? "likedButton" : "likeButton"), for: .normal)
 //        sortButton.setImage(UIImage(named: isEmptyList ? "sortButtonInactive" : "sortButton"), for: .normal)

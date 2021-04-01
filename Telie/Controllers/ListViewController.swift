@@ -294,10 +294,7 @@ extension ListViewController: UICollectionViewDataSource {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
             // An user can modify media of this list if is the owner or a collaborator
             let canModifyMedia: Bool = list?.owner.id == currentUserId || list?.collaborators.contains { $0.id == currentUserId } ?? false
-            let hasLiked: Bool = list?.hasLiked ?? false
-            headerView.configure(isEmptyList: section.items.count == 0,
-                                 canModifyMedia: canModifyMedia,
-                                 hasLiked: hasLiked)
+            headerView.configure(for: list, canModifyMedia: canModifyMedia)
             headerView.delegate = self
             return headerView
         }
