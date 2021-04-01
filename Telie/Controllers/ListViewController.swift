@@ -58,6 +58,7 @@ class ListViewController: UIViewController {
 
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
+        listNameLabel.numberOfLines = 0
         view.addSubview(listNameLabel)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
@@ -154,8 +155,7 @@ class ListViewController: UIViewController {
     private func setupConstraints() {
         listNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(22)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
 
         mediaCollectionView.snp.makeConstraints { make in
@@ -180,14 +180,14 @@ class ListViewController: UIViewController {
         }
 
         arrowToAddButtonView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(260)
+            make.top.equalTo(mediaCollectionView.snp.top).offset(120)
             make.trailing.equalToSuperview().inset(40)
             make.size.equalTo(arrowSize)
         }
 
         emptyListImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(280)
+            make.top.equalTo(mediaCollectionView.snp.top).offset(140)
             make.size.equalTo(emptyListSize)
         }
     }
