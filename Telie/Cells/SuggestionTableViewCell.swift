@@ -214,6 +214,8 @@ class SuggestionTableViewCell: UITableViewCell {
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
         if let imageUrl = URL(string: suggestion.fromUser.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
+        } else {
+            profileImageView.kf.setImage(with: URL(string: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"))
         }
         
         messageLabel.text = suggestion.message

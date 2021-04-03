@@ -13,9 +13,9 @@ struct Comment: Codable {
     var id: Int
     var isSpoiler: Bool?
     var numLikes: Int
-    var hasLiked: Bool?
-    var isReadable: Bool?
     var owner: UserProfile
     var message: String
     var show: SimpleMedia?
+    var hasLiked: Bool?
+    var isReadable: Bool?
 }

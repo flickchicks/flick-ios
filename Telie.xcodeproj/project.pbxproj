@@ -92,6 +92,7 @@
 		D458B3C9261420B7006A23A1 /* SaveMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */; };
 		D458B3D1261426B9006A23A1 /* SaveToListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */; };
 		D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */; };
+		D458B3DC26143760006A23A1 /* SuggestToFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */; };
 		D45A3D7B25A8485B0094161A /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3D7A25A8485B0094161A /* FriendRequest.swift */; };
 		D45A3E1925A9A7E90094161A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3E1825A9A7E90094161A /* Keys.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
@@ -266,6 +267,7 @@
 		D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveMediaViewController.swift; sourceTree = "<group>"; };
 		D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveToListTableViewCell.swift; sourceTree = "<group>"; };
 		D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorViewController.swift; sourceTree = "<group>"; };
+		D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestToFriendViewController.swift; sourceTree = "<group>"; };
 		D45A3D7A25A8485B0094161A /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		D45A3E1825A9A7E90094161A /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				D425B98F24E9B44100FB13A5 /* MediaCardVewController.swift */,
 				D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */,
 				D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */,
+				D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -974,6 +977,7 @@
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				D46A366625F4B7E800EADA9F /* MutualFriendCollectionViewCell.swift in Sources */,
 				80F00F7824BA50920051B8FF /* ConfirmationModalView.swift in Sources */,
+				D458B3DC26143760006A23A1 /* SuggestToFriendViewController.swift in Sources */,
 				D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */,
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,

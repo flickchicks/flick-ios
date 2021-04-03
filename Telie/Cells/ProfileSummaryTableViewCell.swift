@@ -161,6 +161,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         bioLabel.text = user.bio
         if let imageUrl = URL(string: user.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
+        } else {
+            profileImageView.kf.setImage(with: URL(string: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"))
         }
         // Show settings buttons only if current user is at Home
         settingsButton.isHidden = !isHome

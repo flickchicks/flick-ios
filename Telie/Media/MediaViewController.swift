@@ -307,10 +307,7 @@ extension MediaViewController: ShareMediaDelegate, SuggestToFriendDelegate {
 
     func showSuggestToFriendView() {
         if let media = media {
-            suggestToFriendView = SuggestToFriendModalView(media: media)
-            suggestToFriendView.modalDelegate = self
-            suggestToFriendView.suggestToFriendDelegate = self
-            showModalPopup(view: suggestToFriendView)
+            present(SuggestToFriendViewController(media: media), animated: true)
         }
     }
 

@@ -12,12 +12,11 @@ struct SimpleMedia: Codable {
     var id: Int
     var title: String
     var posterPic: String?
-    var extApiId: Int?
-    var extApiSource: String?
     var isTv: Bool?
     var directors: String?
     var plot: String?
     var tags: [Tag]?
+    var dateReleased: String?
     var savedToLsts: [SavedToLst]?
 }
 
