@@ -93,6 +93,7 @@
 		D458B3D1261426B9006A23A1 /* SaveToListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */; };
 		D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */; };
 		D458B3DC26143760006A23A1 /* SuggestToFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */; };
+		D458B40726191A7A006A23A1 /* CustomBannerColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B40626191A79006A23A1 /* CustomBannerColors.swift */; };
 		D45A3D7B25A8485B0094161A /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3D7A25A8485B0094161A /* FriendRequest.swift */; };
 		D45A3E1925A9A7E90094161A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3E1825A9A7E90094161A /* Keys.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
@@ -268,6 +269,7 @@
 		D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveToListTableViewCell.swift; sourceTree = "<group>"; };
 		D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorViewController.swift; sourceTree = "<group>"; };
 		D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestToFriendViewController.swift; sourceTree = "<group>"; };
+		D458B40626191A79006A23A1 /* CustomBannerColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBannerColors.swift; sourceTree = "<group>"; };
 		D45A3D7A25A8485B0094161A /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		D45A3E1825A9A7E90094161A /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				D4FB449124B11CB7003CA71A /* Constants.swift */,
 				80C4444F25F433BA009572B4 /* Keys.plist */,
 				D45A3E1825A9A7E90094161A /* Keys.swift */,
+				D458B40626191A79006A23A1 /* CustomBannerColors.swift */,
 			);
 			path = Supporting;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */,
 				806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
+				D458B40726191A7A006A23A1 /* CustomBannerColors.swift in Sources */,
 				806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,

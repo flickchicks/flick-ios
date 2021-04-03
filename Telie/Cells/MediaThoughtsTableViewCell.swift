@@ -211,7 +211,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             commentProfileImageView.kf.setImage(with: imageUrl)
         } else {
-            commentProfileImageView.kf.setImage(with: URL(string: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"))
+            commentProfileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         commentNumLikeLabel.text = comment.numLikes > 0 ? "\(comment.numLikes)" : ""
         seeAllCommentsButton.isHidden = false
