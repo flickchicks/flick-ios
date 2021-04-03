@@ -20,7 +20,7 @@ class AddCollaboratorViewController: UIViewController {
     private let inviteTitleLabel = UILabel()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .circleStrokeSpin,
+        type: .ballSpinFadeLoader,
         color: .gradientPurple
     )
     private let subtitleLabel = UILabel()

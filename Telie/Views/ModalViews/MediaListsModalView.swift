@@ -68,7 +68,7 @@ class MediaListsModalView: ModalView {
     private let newListButton = NewListButton()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
-        type: .circleStrokeSpin,
+        type: .ballSpinFadeLoader,
         color: .gradientPurple
     )
     private let titleLabel = UILabel()

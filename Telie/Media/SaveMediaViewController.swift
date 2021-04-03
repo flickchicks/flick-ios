@@ -14,7 +14,7 @@ class SaveMediaViewController: UIViewController {
     // MARK: - Private View Vars
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .circleStrokeSpin,
+        type: .ballSpinFadeLoader,
         color: .gradientPurple
     )
     private let listsTableView = UITableView(frame: .zero)
