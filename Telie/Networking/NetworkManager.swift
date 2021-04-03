@@ -654,12 +654,10 @@ class NetworkManager {
         AF.request(discoverShowURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                print("successful data return", data)
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 debugPrint(data)
                 if let showsData = try? jsonDecoder.decode(Response<DiscoverContent>.self, from: data) {
-                    print("successful decode")
                     let shows = showsData.data
                     completion(shows)
                 }
