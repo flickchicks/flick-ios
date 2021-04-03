@@ -22,7 +22,7 @@ class NetworkManager {
     }
 
     #if LOCAL
-    private static let hostEndpoint = "http://localhost:8000"
+    private static let hostEndpoint = "http://\(Keys.serverURL)"
     #else
     private static let hostEndpoint = "http://\(Keys.serverURL)"
     #endif
@@ -56,11 +56,8 @@ class NetworkManager {
             "social_id_token": socialIdToken,
             "social_id_token_type": socialIdTokenType
         ]
-        
-        print("\(hostEndpoint)/api/authenticate/")
 
         AF.request("\(hostEndpoint)/api/authenticate/", method: .post, parameters: parameters, encoding: JSONEncoding.default).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -289,7 +286,6 @@ class NetworkManager {
             "tags": tagIds,
         ]
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

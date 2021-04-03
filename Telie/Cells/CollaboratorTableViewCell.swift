@@ -54,10 +54,9 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
         nameLabel.text = collaborator.name
-        if let profilePic = collaborator.profilePic {
-            userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(collaborator.id)"))
+        if let imageUrl = URL(string: collaborator.profilePicUrl ?? "") {
+            userImageView.kf.setImage(with: imageUrl)
         }
-        
         if isOwner {
             addSubview(ownerLabel)
             setupOwnerConstraints()

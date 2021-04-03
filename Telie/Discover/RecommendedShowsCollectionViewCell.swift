@@ -83,9 +83,10 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         }
         if let savedToLsts = media.savedToLsts,
            savedToLsts.count > 0,
-           let profilePic = savedToLsts[0].savedBy.profilePic {
+           let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
                 let savedByUser = savedToLsts[0].savedBy
-                userImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(savedByUser.id)"))
+                userImageView.kf.setImage(with: imageUrl)
+
             detailLabel.text = "Saved by \(savedByUser.name)"
             listLabel.text = savedToLsts[0].lstName
         }

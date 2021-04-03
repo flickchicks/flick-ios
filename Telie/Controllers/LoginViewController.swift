@@ -131,7 +131,7 @@ class LoginViewController: UIViewController {
                     if let profileURLData = profileURLData,
                        let profileImage = UIImage(data: profileURLData),
                        let profileImagePngData = profileImage.pngData() {
-                        base64Str = profileImagePngData.base64EncodedString()
+                        base64Str = "data:image/png;base64, \(profileImagePngData.base64EncodedString())"
                     }
                 }
 
@@ -159,8 +159,7 @@ class LoginViewController: UIViewController {
             profilePic: profilePic,
             socialId: socialId,
             socialIdToken: socialIdToken,
-            socialIdTokenType: socialIdTokenType) { [weak self] authorizationToken in
-            guard let self = self else { return }
+            socialIdTokenType: socialIdTokenType) { authorizationToken in
             DispatchQueue.main.async {
                 UserDefaults.standard.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
                 // This is to get the SceneDelegate object from your view controller

@@ -163,8 +163,8 @@ class FriendRequestTableViewCell: UITableViewCell {
         let friendRequestString = NSMutableAttributedString(string: " sent you a friend request")
         friendLabelString.append(friendRequestString)
         notificationLabel.attributedText = friendLabelString
-        if let profilePic = fromUser.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(fromUser.id)"))
+        if let imageUrl = URL(string: fromUser.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
         }
     }
 

@@ -212,9 +212,10 @@ class SuggestionTableViewCell: UITableViewCell {
             NSMutableAttributedString()
             .boldFont14(suggestion.fromUser.name)
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
-        if let profilePic = suggestion.fromUser.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(suggestion.fromUser.id)"))
+        if let imageUrl = URL(string: suggestion.fromUser.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
         }
+        
         messageLabel.text = suggestion.message
         mediaTitleLabel.text = suggestion.show.title
         if let posterImageUrl = URL(string: suggestion.show.posterPic ?? "") {

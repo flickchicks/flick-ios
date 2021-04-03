@@ -154,8 +154,8 @@ class CommentTableViewCell: UITableViewCell {
         // TODO: Complete logic to detect if comment has been liked
         let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
-        if let profilePic = comment.owner.profilePic {
-            profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(comment.owner.id)"))
+        if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
+            profileImageView.kf.setImage(with: imageUrl)
         }
         viewSpoilerButton.isHidden = true
 //        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler

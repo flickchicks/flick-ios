@@ -40,8 +40,8 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
         if shouldShowEllipsis {
             profileImageView.image = UIImage(named: "ellipsis")
         } else {
-            if let user = user, let profilePic = user.profilePic {
-                profileImageView.kf.setImage(with: Base64ImageDataProvider(base64String: profilePic, cacheKey: "userid-\(user.id)"))
+            if let imageUrl = URL(string: user?.profilePicUrl ?? "") {
+                profileImageView.kf.setImage(with: imageUrl)
             }
         }
     }
