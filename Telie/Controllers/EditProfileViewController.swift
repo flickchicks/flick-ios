@@ -335,7 +335,7 @@ class EditProfileViewController: UIViewController {
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
             let base64ProfileImage = didChangeProfilePic ?
-                "data:image/png;base64, \(profileImageView.image!.pngData()!.base64EncodedString())" :
+                "data:image/png;base64, \(profileImageView.image?.pngData()?.base64EncodedString() ?? "")" :
                 nil
             let updatedUser = User(
                 username: username,
