@@ -58,6 +58,7 @@ class ListViewController: UIViewController {
 
         listNameLabel.textAlignment = .center
         listNameLabel.font = .boldSystemFont(ofSize: 20)
+        listNameLabel.numberOfLines = 0
         view.addSubview(listNameLabel)
 
         let mediaCollectionViewLayout = UICollectionViewFlowLayout()
@@ -154,8 +155,7 @@ class ListViewController: UIViewController {
     private func setupConstraints() {
         listNameLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(22)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
 
         mediaCollectionView.snp.makeConstraints { make in
@@ -180,14 +180,14 @@ class ListViewController: UIViewController {
         }
 
         arrowToAddButtonView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(260)
+            make.top.equalTo(mediaCollectionView.snp.top).offset(120)
             make.trailing.equalToSuperview().inset(40)
             make.size.equalTo(arrowSize)
         }
 
         emptyListImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(280)
+            make.top.equalTo(mediaCollectionView.snp.top).offset(140)
             make.size.equalTo(emptyListSize)
         }
     }
@@ -294,8 +294,7 @@ extension ListViewController: UICollectionViewDataSource {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as? MediaListHeaderView else { return UICollectionReusableView() }
             // An user can modify media of this list if is the owner or a collaborator
             let canModifyMedia: Bool = list?.owner.id == currentUserId || list?.collaborators.contains { $0.id == currentUserId } ?? false
-            headerView.configure(isEmptyList: section.items.count == 0,
-                                 canModifyMedia: canModifyMedia)
+            headerView.configure(for: list, canModifyMedia: canModifyMedia)
             headerView.delegate = self
             return headerView
         }
@@ -366,6 +365,11 @@ extension ListViewController: MediaListHeaderDelegate, ModalDelegate {
         guard let list = list else { return }
         let editVC = EditListViewController(list: list)
         navigationController?.pushViewController(editVC, animated: true)
+    }
+
+    func likeList() {
+        guard let list = list else { return }
+        NetworkManager.likeList(listId: list.id) { _ in }
     }
 
     func sortMedia() {
