@@ -126,7 +126,7 @@ class AboutViewController: UIViewController {
     }
     
     @objc func showPrivacyPolicy() {
-        if let url = URL(string: "https://telie.netlify.app/") {
+        if let url = URL(string: "https://telie.app/privacy/") {
             UIApplication.shared.open(url)
         }
     }

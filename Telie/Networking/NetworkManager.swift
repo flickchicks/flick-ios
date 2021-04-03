@@ -316,6 +316,36 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Like a list [updated as of 3/31/21]
+    static func likeList(listId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/lsts/\(listId)/like/", method: .post, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [GET] Get all liked lists [updated as of 4/1/31]
+    static func getLikedLists(userId: Int, completion: @escaping ([SimpleMediaList]) -> Void) {
+        AF.request("\(hostEndpoint)/api/user/\(userId)/liked-lists/", method: .get, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let mediaListsData = try? jsonDecoder.decode(Response<[SimpleMediaList]>.self, from: data) {
+                    let mediaLists = mediaListsData.data
+                    completion(mediaLists)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     // MARK: - Friends
 
     /// [GET] Get all friends of a user [updated as of 8/7/20]

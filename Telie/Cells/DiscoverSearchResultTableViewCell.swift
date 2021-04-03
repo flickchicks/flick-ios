@@ -109,7 +109,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         updateConstraintsForCircleImage()
         iconImageView.isHidden = true
         subtitleLabel.isHidden = isCurrentUser
-        subtitleLabel.text = "@\(user.username) • \(user.numMutualFriends ?? 0) mutual friends"
+        subtitleLabel.text = "@\(user.username) • \(user.numMutualFriends ?? 0) mutual friend\(user.numMutualFriends ?? 0 > 1 ? "s" : "")"
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true

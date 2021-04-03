@@ -41,6 +41,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Private View Vars
     private let accountInfoDescriptionLabel = UILabel()
     private let accountInfoTitleLabel = UILabel()
+    private let backButton = UIButton()
     private let bioFieldLabel = UILabel()
     private let bioTextView = UITextView()
     private let bioTextLimitLabel = UILabel()
@@ -51,14 +52,18 @@ class EditProfileViewController: UIViewController {
     private let nameTextField = ProfileInputTextField()
     private let profileImageView = UIImageView()
     private let profileSelectionModalView = ProfileSelectionModalView()
+    private let saveButton = UIButton()
     private let selectImageButton = UIButton()
+    private let spinner = UIActivityIndicatorView(style: .medium)
     private let userNameFieldLabel = UILabel()
     private let userNameTextField = ProfileInputTextField()
 
-    // MARK: - Private Data Vars
+    // MARK: - Data Vars
+    private let backButtonSize = CGSize(width: 22, height: 18)
     weak var delegate: EditProfileDelegate?
     private var didChangeProfilePic = false
     private let profileImageSize = CGSize(width: 100, height: 100)
+    private let saveButtonSize = CGSize(width: 33, height: 17)
     private var user: UserProfile
 
     init(user: UserProfile) {
@@ -129,7 +134,7 @@ class EditProfileViewController: UIViewController {
         bioFieldLabel.textColor = .mediumGray
         view.addSubview(bioFieldLabel)
 
-        bioTextLimitLabel.text = "0 / 150"
+        bioTextLimitLabel.text = "\(user.bio?.count ?? 0) / 150"
         bioTextLimitLabel.textAlignment = .right
         bioTextLimitLabel.font = .systemFont(ofSize: 10)
         bioTextLimitLabel.textColor = .mediumGray
@@ -173,6 +178,15 @@ class EditProfileViewController: UIViewController {
         linkedAccountLabel.textColor = .black
         view.addSubview(linkedAccountLabel)
 
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(.gradientPurple, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
+        saveButton.addTarget(self, action: #selector(saveProfileInformation), for: .touchUpInside)
+
         setupConstraints()
     }
 
@@ -187,10 +201,6 @@ class EditProfileViewController: UIViewController {
     }
 
     private func setupNavigationBar() {
-        let backButtonSize = CGSize(width: 22, height: 18)
-        // TODO: Update save button size
-        let saveButtonSize = CGSize(width: 33, height: 17)
-
         navigationController?.navigationBar.barTintColor = .movieWhite
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.layer.masksToBounds = false
@@ -200,26 +210,9 @@ class EditProfileViewController: UIViewController {
         navigationController?.navigationBar.layer.shadowRadius = 8
         navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
-        let backButton = UIButton()
-        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
-        backButton.tintColor = .black
-        backButton.snp.makeConstraints { make in
-            make.size.equalTo(backButtonSize)
-        }
-
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         let backBarButtonItem = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
-        let saveButton = UIButton()
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.setTitleColor(.gradientPurple, for: .normal)
-        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
-        saveButton.snp.makeConstraints { make in
-            make.size.equalTo(saveButtonSize)
-        }
-
-        saveButton.addTarget(self, action: #selector(saveProfileInformation), for: .touchUpInside)
         let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
         navigationItem.rightBarButtonItem = saveBarButtonItem
     }
@@ -303,6 +296,14 @@ class EditProfileViewController: UIViewController {
             make.top.equalTo(linkedAccountFieldLabel.snp.bottom).offset(4)
         }
 
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
+
+        saveButton.snp.makeConstraints { make in
+            make.size.equalTo(saveButtonSize)
+        }
+
     }
 
     @objc func backButtonPressed() {
@@ -323,6 +324,7 @@ class EditProfileViewController: UIViewController {
                     // Username does not yet exists so we can update user info
                     self.updateUserInfo()
                 } else {
+                    self.stopNavBarSpinner()
                     self.presentInfoAlert(message: "Username invalid or already taken", completion: nil)
                 }
             }
@@ -337,7 +339,7 @@ class EditProfileViewController: UIViewController {
             let bio = bioTextView.text {
             // Only update profilePic if it's changed
             let base64ProfileImage = didChangeProfilePic ?
-                "data:image/png;base64, \(profileImageView.image!.pngData()!.base64EncodedString())" :
+                "data:image/png;base64, \(profileImageView.image?.pngData()?.base64EncodedString() ?? "")" :
                 nil
             let updatedUser = User(
                 username: username,
@@ -348,6 +350,7 @@ class EditProfileViewController: UIViewController {
                 socialIdToken: user.socialIdToken,
                 socialIdTokenType: user.socialIdTokenType
             )
+            startNavBarSpinner()
             NetworkManager.updateUserProfile(user: updatedUser) { [ weak self] user in
                 guard let self = self else { return }
                 self.user = user
@@ -355,9 +358,24 @@ class EditProfileViewController: UIViewController {
                 if self.didChangeProfilePic {
                     ImageCache.default.removeImage(forKey: "userid-\(user.id)")
                 }
-                self.navigationController?.popViewController(animated: true)
+                DispatchQueue.main.async {
+                    self.stopNavBarSpinner()
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
+    }
+
+    func startNavBarSpinner() {
+        let barButton = UIBarButtonItem(customView: spinner)
+        navigationItem.rightBarButtonItem = barButton
+        spinner.startAnimating()
+    }
+
+    func stopNavBarSpinner() {
+        spinner.stopAnimating()
+        let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
+        navigationItem.rightBarButtonItem = saveBarButtonItem
     }
 
 }
@@ -369,13 +387,9 @@ extension EditProfileViewController: UITextViewDelegate {
             textView.resignFirstResponder()
         }
         let currentText = textView.text ?? ""
-        // Attempt to read the range they are trying to change, or terminate if we can't
-        guard let stringRange = Range(range, in: currentText) else { return false }
-        // Add their new text to the existing text
-        let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-        let charCount = updatedText.count
-        bioTextLimitLabel.text = "\(charCount) / 150"
-        return charCount <= 150
+        let updatedTextCount = currentText.count + text.count - range.length
+        bioTextLimitLabel.text = "\(updatedTextCount) / 150"
+        return updatedTextCount < 150
     }
 
 }

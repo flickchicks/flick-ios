@@ -317,6 +317,9 @@ class AddMediaViewController: UIViewController {
         isSelectedHidden.toggle()
         chevronButton.setImage(UIImage(named: isSelectedHidden ? "downChevron" : "upChevron"), for: .normal)
         showSelectedMedia()
+        if type == .toGroup {
+            quickAddButton.isHidden = !isSelectedHidden
+        }
     }
 
     @objc private func quickAddTapped() {

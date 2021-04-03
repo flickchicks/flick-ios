@@ -96,8 +96,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        let padding = 20
-
         profileImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.centerX.equalToSuperview()
@@ -138,8 +136,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
 
         settingsButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 44, height: 44))
-            make.top.equalToSuperview().offset(15)
-            make.trailing.equalToSuperview().inset(padding)
+            make.top.equalToSuperview().offset(5)
+            make.trailing.equalToSuperview().inset(10)
         }
     }
 
