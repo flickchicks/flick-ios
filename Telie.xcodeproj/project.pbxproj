@@ -93,6 +93,7 @@
 		D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */; };
 		D458B3DC26143760006A23A1 /* SuggestToFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */; };
 		D458B40726191A7A006A23A1 /* CustomBannerColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B40626191A79006A23A1 /* CustomBannerColors.swift */; };
+		D458B40F26195469006A23A1 /* InviteUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D458B40E26195468006A23A1 /* InviteUserTableViewCell.swift */; };
 		D45A3D7B25A8485B0094161A /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3D7A25A8485B0094161A /* FriendRequest.swift */; };
 		D45A3E1925A9A7E90094161A /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45A3E1825A9A7E90094161A /* Keys.swift */; };
 		D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45DC62E24B933B000838DBF /* MediaSummary.swift */; };
@@ -268,6 +269,7 @@
 		D458B3D6261431B0006A23A1 /* AddCollaboratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorViewController.swift; sourceTree = "<group>"; };
 		D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestToFriendViewController.swift; sourceTree = "<group>"; };
 		D458B40626191A79006A23A1 /* CustomBannerColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBannerColors.swift; sourceTree = "<group>"; };
+		D458B40E26195468006A23A1 /* InviteUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteUserTableViewCell.swift; sourceTree = "<group>"; };
 		D45A3D7A25A8485B0094161A /* FriendRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		D45A3E1825A9A7E90094161A /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		D45DC62E24B933B000838DBF /* MediaSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummary.swift; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
 				803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */,
 				803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */,
+				D458B40E26195468006A23A1 /* InviteUserTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -969,6 +972,7 @@
 				D492728824DED27600FA5F2A /* String.swift in Sources */,
 				8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */,
 				D44BC12C25A052DD00D10DAB /* UserTableViewCell.swift in Sources */,
+				D458B40F26195469006A23A1 /* InviteUserTableViewCell.swift in Sources */,
 				D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */,
 				D492727E24DE50A100FA5F2A /* ActivityViewController.swift in Sources */,
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
