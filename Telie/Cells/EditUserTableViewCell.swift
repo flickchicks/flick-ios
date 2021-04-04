@@ -52,6 +52,7 @@ class EditUserTableViewCell: UITableViewCell {
 
         editButton.setTitleColor(.darkBlueGray2, for: .normal)
         editButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        editButton.titleLabel?.textAlignment = .center
         editButton.backgroundColor = .lightGray2
         editButton.titleEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         editButton.layer.cornerRadius = 12.5
@@ -61,14 +62,18 @@ class EditUserTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
-    func configureForAdd(user: UserProfile, isAdded: Bool) {
+    func configureUser(user: UserProfile) {
         self.user = user
-        self.isAddUser = true
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let imageUrl = URL(string: user.profilePicUrl ?? "") {
             userImageView.kf.setImage(with: imageUrl)
         }
+    }
+
+    func configureForAdd(user: UserProfile, isAdded: Bool) {
+        configureUser(user: user)
+        self.isAddUser = true
         if isAdded {
             editButton.isEnabled = false
             editButton.backgroundColor = .clear
@@ -92,17 +97,12 @@ class EditUserTableViewCell: UITableViewCell {
     }
 
     func configureForRemove(user: UserProfile, isOwner: Bool) {
-        self.user = user
-        nameLabel.text = user.name
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
-        }
+        configureUser(user: user)
         if isOwner {
             usernameLabel.text = "Owner"
             editButton.isHidden = true
         } else {
             self.isAddUser = false
-            usernameLabel.text = "@\(user.username)"
             editButton.isHidden = false
             editButton.setTitle("Remove", for: .normal)
             editButton.layer.borderWidth = 1
@@ -151,6 +151,7 @@ class EditUserTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         userImageView.image = nil
+        editButton.isHidden = false
     }
 
 }

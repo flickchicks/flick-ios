@@ -162,7 +162,11 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let collaborator = listFriends[indexPath.row]
-        cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
+        if editMode == "Remove" {
+            cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
+        } else {
+            cell.configureForAdd(user: collaborator, isAdded: collaborators.contains { $0.id == collaborator.id })
+        }
         cell.delegate = self
         return cell
     }
@@ -199,6 +203,16 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
             }
         }
         currentSearchText = searchText
+        collaboratorsTableView.reloadData()
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if currentSearchText.isEmpty {
+            editMode = "Remove"
+            listFriends = collaborators
+        } else {
+            editMode = "Invite"
+        }
         collaboratorsTableView.reloadData()
     }
 
