@@ -20,7 +20,6 @@ enum CardState {case collapsed, expanded }
 class MediaViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var suggestToFriendView: SuggestToFriendModalView!
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()

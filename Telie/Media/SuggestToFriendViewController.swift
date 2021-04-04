@@ -6,6 +6,7 @@
 //  Copyright © 2021 Telie. All rights reserved.
 //
 
+import NotificationBannerSwift
 import NVActivityIndicatorView
 import UIKit
 
@@ -21,8 +22,14 @@ class SuggestToFriendViewController: UIViewController {
     private let messageTextField = UITextField()
     private let onlyFriendSeeLabel = UILabel()
     private var shareButton = UIButton()
+    private let saveButton = UIButton()
+    private let saveSpinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .ballSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let spinner = NVActivityIndicatorView(
-        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
         type: .ballSpinFadeLoader,
         color: .gradientPurple
     )
@@ -50,6 +57,12 @@ class SuggestToFriendViewController: UIViewController {
         onlyFriendSeeLabel.textColor = .darkBlueGray2
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
         view.addSubview(onlyFriendSeeLabel)
+
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(.gradientPurple, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        view.addSubview(saveButton)
 
         mediaIconImageView.image = UIImage(named: media.isTv ? "tv" : "film")
         view.addSubview(mediaIconImageView)
@@ -98,18 +111,10 @@ class SuggestToFriendViewController: UIViewController {
         friendsTableView.showsVerticalScrollIndicator = false
         view.addSubview(friendsTableView)
 
-        if friends.isEmpty {
-            friendsTableView.backgroundView = spinner
-            spinner.startAnimating()
-        }
+        view.addSubview(spinner)
+        spinner.startAnimating()
 
-//        cancelButton = RoundedButton(style: .gray, title: "Cancel")
-//        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-//        view.addSubview(cancelButton)
-//
-//        shareButton = RoundedButton(style: .purple, title: "Share")
-//        shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
-//        view.addSubview(shareButton)
+        view.addSubview(saveSpinner)
 
         setupConstraints()
         getFriends()
@@ -131,6 +136,16 @@ class SuggestToFriendViewController: UIViewController {
         onlyFriendSeeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
             make.top.equalTo(suggestToFriendLabel.snp.bottom).offset(4)
+        }
+
+        saveButton.snp.makeConstraints { make in
+            make.centerY.equalTo(suggestToFriendLabel)
+            make.trailing.equalToSuperview().inset(4)
+            make.size.equalTo(CGSize(width: 66, height: 34))
+        }
+
+        saveSpinner.snp.makeConstraints { make in
+            make.center.equalTo(saveButton)
         }
 
         mediaPosterImageView.snp.makeConstraints { make in
@@ -169,17 +184,11 @@ class SuggestToFriendViewController: UIViewController {
             make.bottom.equalToSuperview()
         }
 
-//        shareButton.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(62.5)
-//            make.size.equalTo(buttonSize)
-//            make.bottom.equalToSuperview().inset(verticalPadding)
-//        }
-//
-//        cancelButton.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(62.5)
-//            make.size.equalTo(buttonSize)
-//            make.bottom.equalToSuperview().inset(verticalPadding)
-//        }
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(friendsTableView)
+        }
+
     }
 
     private func getFriends() {
@@ -202,14 +211,38 @@ class SuggestToFriendViewController: UIViewController {
         selectedIndexPaths = []
     }
 
-    @objc private func shareTapped() {
+    @objc private func saveButtonPressed() {
+        saveButton.isHidden = true
+        saveSpinner.startAnimating()
+        guard selectedFriends.count > 0 else {
+            saveButton.isHidden = false
+            saveSpinner.stopAnimating()
+            return
+        }
         let selectedFriendIds = selectedFriends.map { $0.id }
-//        if !selectedFriendIds.isEmpty {
-//            suggestToFriendDelegate?.suggestMediaToFriends(mediaId: media.id, friendIds: selectedFriendIds, message: messageTextField.text ?? "")
-//        }
-    }
-
-    @objc private func cancelTapped() {
+        NetworkManager.suggestMediaToFriends(friendIds: selectedFriendIds, mediaId: media.id, message: messageTextField.text ?? "") { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.dismiss(animated: true) {
+                    let banner = FloatingNotificationBanner(
+                        subtitle: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
+                        subtitleFont: .boldSystemFont(ofSize: 14),
+                        subtitleColor: .black,
+                        subtitleTextAlign: .center,
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show(
+                        queuePosition: .front,
+                        bannerPosition: .top,
+                        queue: .default,
+                        edgeInsets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
+                        cornerRadius: 20
+                    )
+                }
+                self.saveSpinner.stopAnimating()
+            }
+        }
     }
 
 }
