@@ -22,7 +22,7 @@ class DiscoverSearchResultViewController: UIViewController {
     private let emptyStateView = EmptyStateView(type: .search)
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .ballSpinFadeLoader,
+        type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
     private let resultsTableView = UITableView()

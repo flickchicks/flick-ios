@@ -14,7 +14,6 @@ class AddCollaboratorViewController: UIViewController {
     // MARK: - Private View Vars
     private var collaboratorsTableView: UITableView!
     private let collaboratorsTitleLabel = UILabel()
-    private let copyLinkButton = UIButton()
     private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
@@ -70,12 +69,6 @@ class AddCollaboratorViewController: UIViewController {
         inviteTitleLabel.textColor = .black
         inviteTitleLabel.font = .boldSystemFont(ofSize: 18)
         view.addSubview(inviteTitleLabel)
-
-        copyLinkButton.setTitle("Copy link", for: .normal)
-        copyLinkButton.setTitleColor(.mediumGray, for: .normal)
-        copyLinkButton.titleLabel?.font = .systemFont(ofSize: 10)
-        copyLinkButton.addTarget(self, action: #selector(copyLink), for: .touchUpInside)
-//        containerView.addSubview(copyLinkButton)
 
         inviteSearchBar.placeholder = "Search friends"
         inviteSearchBar.delegate = self
@@ -152,12 +145,6 @@ class AddCollaboratorViewController: UIViewController {
             make.size.equalTo(inviteTitleLabelSize)
         }
 
-//        copyLinkButton.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(horizontalPadding)
-//            make.centerY.equalTo(inviteTitleLabel)
-//            make.size.equalTo(copyLinkButtonSize)
-//        }
-
         inviteSearchBar.snp.makeConstraints { make in
             make.leading.trailing.equalTo(collaboratorsTableView)
             make.height.equalTo(40)
@@ -195,10 +182,6 @@ class AddCollaboratorViewController: UIViewController {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc func copyLink() {
-
     }
 
     func updateCollaborators(updatedList: MediaList) {

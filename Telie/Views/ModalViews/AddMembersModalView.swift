@@ -19,7 +19,7 @@ class AddMembersModalView: ModalView {
     private let searchBar = SearchBar()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
-        type: .ballSpinFadeLoader,
+        type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
     private let titleLabel = UILabel()

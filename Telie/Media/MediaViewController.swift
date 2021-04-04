@@ -298,23 +298,11 @@ extension MediaViewController: CreateListDelegate {
 
 }
 
-extension MediaViewController: ShareMediaDelegate, SuggestToFriendDelegate {
+extension MediaViewController: ShareMediaDelegate {
 
     func showSuggestToFriendView() {
         if let media = media {
             present(SuggestToFriendViewController(media: media), animated: true)
-        }
-    }
-
-    func suggestMediaToFriends(mediaId: Int, friendIds: [Int], message: String) {
-        NetworkManager.suggestMediaToFriends(friendIds: friendIds, mediaId: mediaId, message: message) { [weak self] success in
-            guard let self = self else { return }
-            if success {
-                self.presentInfoAlert(message: "Suggested to friend\(friendIds.count > 1 ? "s" : "")", completion: nil)
-                self.suggestToFriendView.clearSelectedFriends()
-            } else {
-                self.presentInfoAlert(message: "Failed to suggest to friend", completion: nil)
-            }
         }
     }
     

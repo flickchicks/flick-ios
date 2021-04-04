@@ -15,12 +15,17 @@ class SaveMediaViewController: UIViewController {
     // MARK: - Private View Vars
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .ballSpinFadeLoader,
+        type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
     private let listsTableView = UITableView(frame: .zero)
     private var lists: [SimpleMediaList] = []
     private let newListButton = UIButton()
+    private let newListSpinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
 
     private let mediaId: Int
@@ -59,9 +64,13 @@ class SaveMediaViewController: UIViewController {
         listsTableView.showsVerticalScrollIndicator = false
         view.addSubview(listsTableView)
 
-        newListButton.setImage(UIImage(named: "plusIcon"), for: .normal)
+        newListButton.setTitle("Add", for: .normal)
+        newListButton.setTitleColor(.gradientPurple, for: .normal)
+        newListButton.titleLabel?.font = .systemFont(ofSize: 14)
         newListButton.addTarget(self, action: #selector(newListButtonPressed), for: .touchUpInside)
         view.addSubview(newListButton)
+
+        view.addSubview(newListSpinner)
         view.addSubview(spinner)
 
         spinner.startAnimating()
@@ -90,8 +99,12 @@ class SaveMediaViewController: UIViewController {
 
         newListButton.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
-            make.trailing.equalToSuperview().inset(6)
-            make.size.equalTo(CGSize(width: 40, height: 40))
+            make.trailing.equalToSuperview().inset(4)
+            make.size.equalTo(CGSize(width: 66, height: 34))
+        }
+
+        newListSpinner.snp.makeConstraints { make in
+            make.center.equalTo(newListButton)
         }
 
     }
@@ -157,8 +170,12 @@ extension SaveMediaViewController: UITableViewDataSource {
 extension SaveMediaViewController: SaveMediaDelegate {
 
     func saveMedia(selectedList: SimpleMediaList) {
+        newListSpinner.startAnimating()
+        newListButton.isHidden = true
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
             guard let self = self else { return }
+            self.newListSpinner.stopAnimating()
+            self.newListButton.isHidden = false
             self.showSaveMessage(listName: list.name)
         }
     }
@@ -183,8 +200,12 @@ extension SaveMediaViewController: ModalDelegate {
 extension SaveMediaViewController: CreateListDelegate {
 
     func createList(title: String) {
+        newListSpinner.startAnimating()
+        newListButton.isHidden = true
         NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
             guard let self = self else { return }
+            self.newListSpinner.stopAnimating()
+            self.newListButton.isHidden = false
             self.showSaveMessage(listName: mediaList.name)
         }
     }
