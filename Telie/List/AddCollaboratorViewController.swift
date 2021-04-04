@@ -67,7 +67,6 @@ class AddCollaboratorViewController: UIViewController {
         collaboratorsTableView.alwaysBounceVertical = false
         collaboratorsTableView.showsVerticalScrollIndicator = false
         collaboratorsTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
-        collaboratorsTableView.register(InviteUserTableViewCell.self, forCellReuseIdentifier: InviteUserTableViewCell.reuseIdentifier)
         collaboratorsTableView.separatorStyle = .none
         view.addSubview(collaboratorsTableView)
 
@@ -106,10 +105,20 @@ class AddCollaboratorViewController: UIViewController {
             make.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
+        inviteSearchBar.placeholder = "Search friends"
+        inviteSearchBar.delegate = self
+        view.addSubview(inviteSearchBar)
+
+        inviteSearchBar.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(collaboratorsTableView)
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(20)
+            make.height.equalTo(40)
+        }
+
         collaboratorsTableView.snp.makeConstraints { make in
             make.leading.equalTo(collaboratorsTitleLabel)
             make.trailing.equalToSuperview().inset(horizontalPadding)
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(20)
+            make.top.equalTo(inviteSearchBar.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
     }
@@ -127,26 +136,14 @@ class AddCollaboratorViewController: UIViewController {
 
 extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        print("tableview")
         let headerView = UIView()
         headerView.backgroundColor = .white
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
         headerLabel.font = .boldSystemFont(ofSize: 12)
-//        headerLabel.text = section == 0 ? "Invite" : "Collaborators"
-        if section == 0 {
-            headerLabel.text = "Invite"
-        } else {
-            if editMode == "Remove" {
-                headerLabel.text = "Collaborators"
-            } else {
-                headerLabel.text = "Friends"
-            }
-        }
+        headerLabel.text = editMode == "Invite" ? "Friends" : "Collaborators"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview()
@@ -155,7 +152,7 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? 1 : listFriends.count
+        return listFriends.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -163,21 +160,24 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
-            let collaborator = listFriends[indexPath.row]
-            cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
-            cell.delegate = self
-            return cell
-        } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: InviteUserTableViewCell.reuseIdentifier, for: indexPath) as? InviteUserTableViewCell else { return UITableViewCell() }
-            cell.configure(with: self)
-            return cell
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
+        let collaborator = listFriends[indexPath.row]
+        cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
+        cell.delegate = self
+        return cell
     }
 }
 
 extension AddCollaboratorViewController: UISearchBarDelegate {
+
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        if currentSearchText.isEmpty {
+            editMode = "Invite"
+            listFriends = allFriends
+            collaboratorsTableView.reloadData()
+        }
+        return true
+    }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty && !currentSearchText.isEmpty {
@@ -187,6 +187,7 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
             editMode = "Invite"
             listFriends = allFriends
         } else {
+            editMode = "Invite"
             if allFriends.count > 0 {
                 if searchText == "" {
                     listFriends = allFriends
@@ -201,9 +202,6 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
         collaboratorsTableView.reloadData()
     }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
 }
 
 extension AddCollaboratorViewController: EditUserCellDelegate {
