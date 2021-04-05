@@ -24,7 +24,6 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private var addCollaboratorModalView: AddCollaboratorModalView!
     private let addMediaMessageLabel = UILabel()
     private let arrowToAddButtonView = UIImageView()
     private let backButton = UIButton()

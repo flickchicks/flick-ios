@@ -257,7 +257,7 @@ class NetworkManager {
             "shows": mediaIds,
             "tags": tagIds,
         ]
-        print("fdsfsdfsdf")
+        print("Adding to media list")
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):

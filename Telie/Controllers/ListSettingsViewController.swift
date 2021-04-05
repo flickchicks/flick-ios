@@ -26,7 +26,6 @@ enum ListSetting: String {
 class ListSettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var addCollaboratorModalView: AddCollaboratorModalView!
     private let settingsTableView = UITableView()
 
     // MARK: - Private Data Vars
@@ -104,11 +103,7 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showAddCollaboratorsModal() {
-        present(AddCollaboratorViewController(owner: list.owner, collaborators: list.collaborators), animated: true)
-//        addCollaboratorModalView = AddCollaboratorModalView(owner: list.owner, collaborators: list.collaborators)
-//        addCollaboratorModalView.modalDelegate = self
-//        addCollaboratorModalView.listSettingsDelegate = self
-//        showModalPopup(view: addCollaboratorModalView)
+        present(AddCollaboratorViewController(owner: list.owner, collaborators: list.collaborators, list: list), animated: true)
     }
 
     private func showDeleteConfirmationModal() {

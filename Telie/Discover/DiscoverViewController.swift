@@ -38,24 +38,35 @@ enum DiscoverSection {
 class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
+    private let buyMeCofeeButton = UIButton()
     private var discoverContent: DiscoverContent? = nil
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private var discoverSections: [DiscoverSection] = []
-    private let searchBar = SearchBar()
+    private let searchButton = UIButton()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
         type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
+    private let titleLabel = UILabel()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        searchBar.placeholder = "Search movies, shows, people, lists"
-        searchBar.delegate = self
-        view.addSubview(searchBar)
+        titleLabel.text = "Telie"
+        titleLabel.textColor = .black
+        titleLabel.font = .boldSystemFont(ofSize: 24)
+        view.addSubview(titleLabel)
+
+        buyMeCofeeButton.setImage(UIImage(named: "buyMeCoffeeIcon"), for: .normal)
+        buyMeCofeeButton.addTarget(self, action: #selector(buyMeCoffeeButtonPressed), for: .touchUpInside)
+        view.addSubview(buyMeCofeeButton)
+
+        searchButton.setImage(UIImage(named: "searchButtonIcon"), for: .normal)
+        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
+        view.addSubview(searchButton)
 
         refreshControl.addTarget(self, action: #selector(refreshDiscoverData), for: .valueChanged)
 
@@ -89,14 +100,27 @@ class DiscoverViewController: UIViewController {
     }
 
     func setupConstraints() {
-        searchBar.snp.makeConstraints { make in
+
+        titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(40)
+            make.leading.equalToSuperview().inset(16)
+            make.size.equalTo(CGSize(width: 55, height: 29))
+        }
+
+        searchButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 36, height: 36))
+            make.centerY.equalTo(titleLabel)
+            make.trailing.equalToSuperview().inset(20)
+        }
+
+        buyMeCofeeButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 36, height: 36))
+            make.centerY.equalTo(titleLabel)
+            make.trailing.equalTo(searchButton.snp.leading).offset(-7)
         }
 
         discoverFeedTableView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.leading.trailing.bottom.equalToSuperview()
         }
 
@@ -108,6 +132,16 @@ class DiscoverViewController: UIViewController {
 
     @objc func refreshDiscoverData() {
         fetchDiscoverShows()
+    }
+
+    @objc func searchButtonPressed() {
+        navigationController?.pushViewController(DiscoverSearchViewController(), animated: true)
+    }
+
+    @objc func buyMeCoffeeButtonPressed() {
+        if let url = URL(string: "https://www.buymeacoffee.com/telie") {
+            UIApplication.shared.open(url)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -154,14 +188,6 @@ class DiscoverViewController: UIViewController {
                 self.discoverFeedTableView.reloadData()
             }
         }
-    }
-}
-
-extension DiscoverViewController: UISearchBarDelegate {
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        let searchVC = DiscoverSearchViewController()
-        navigationController?.pushViewController(searchVC, animated: true)
-        return false
     }
 }
 

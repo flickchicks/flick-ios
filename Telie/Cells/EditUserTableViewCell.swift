@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import NVActivityIndicatorView
 
 protocol EditUserCellDelegate: class {
     func addUserTapped(user: UserProfile)
@@ -18,13 +19,19 @@ class EditUserTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let editButton = UIButton()
+    private let editLabel = UILabel()
     private let nameLabel = UILabel()
-    private let userImageView = UIImageView()
+    private let profileImageView = UIImageView()
     private let usernameLabel = UILabel()
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .ballSpinFadeLoader,
+        color: .gradientPurple
+    )
 
     // MARK: - Data Vars
     weak var delegate: EditUserCellDelegate?
-    private var isAddUser: Bool?
+    private var editMode = CollaboratorEditMode.add
     static let reuseIdentifier = "EditUserCellReuseIdentifier"
     private var user: UserProfile?
 
@@ -43,12 +50,12 @@ class EditUserTableViewCell: UITableViewCell {
         usernameLabel.sizeToFit()
         contentView.addSubview(usernameLabel)
 
-        userImageView.clipsToBounds = true
-        userImageView.layer.cornerRadius = 20
-        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
-        userImageView.contentMode = .scaleAspectFill
-        userImageView.layer.masksToBounds = true
-        contentView.addSubview(userImageView)
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 20
+        profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.masksToBounds = true
+        contentView.addSubview(profileImageView)
 
         editButton.setTitleColor(.darkBlueGray2, for: .normal)
         editButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
@@ -56,57 +63,54 @@ class EditUserTableViewCell: UITableViewCell {
         editButton.backgroundColor = .lightGray2
         editButton.titleEdgeInsets = UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10)
         editButton.layer.cornerRadius = 12.5
+        editButton.layer.borderWidth = 1
+        editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         contentView.addSubview(editButton)
+
+        editLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        editLabel.textColor = .mediumGray
+        editLabel.textAlignment = .right
+        editLabel.isHidden = true
+        contentView.addSubview(editLabel)
+
+        contentView.addSubview(spinner)
 
         setupConstraints()
     }
 
-    func configureUser(user: UserProfile) {
+    func configureUser(user: UserProfile, editMode: CollaboratorEditMode) {
         self.user = user
+        self.editMode = editMode
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         if let imageUrl = URL(string: user.profilePicUrl ?? "") {
-            userImageView.kf.setImage(with: imageUrl)
+            profileImageView.kf.setImage(with: imageUrl)
         }
     }
 
-    func configureForAdd(user: UserProfile, isAdded: Bool) {
-        configureUser(user: user)
-        self.isAddUser = true
+    func configureForAdd(user: UserProfile, editMode: CollaboratorEditMode, isAdded: Bool) {
+        configureUser(user: user, editMode: editMode)
         if isAdded {
-            editButton.isEnabled = false
-            editButton.backgroundColor = .clear
-            editButton.setTitle("Added", for: .normal)
-            editButton.layer.borderWidth = 0
-            editButton.titleEdgeInsets.right = 0
-            editButton.snp.updateConstraints { update in
-                update.width.equalTo(58)
-            }
+            editButton.isHidden = true
+            editLabel.isHidden = false
+            editLabel.text = "Added"
         } else {
-            editButton.isEnabled = true
-            editButton.backgroundColor = .lightGray2
             editButton.setTitle("Add", for: .normal)
-            editButton.layer.borderWidth = 1
-            editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
-            editButton.titleEdgeInsets.right = 10
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(48)
             }
         }
     }
 
-    func configureForRemove(user: UserProfile, isOwner: Bool) {
-        configureUser(user: user)
+    func configureForRemove(user: UserProfile, editMode: CollaboratorEditMode, isOwner: Bool) {
+        configureUser(user: user, editMode: editMode)
         if isOwner {
             usernameLabel.text = "Owner"
             editButton.isHidden = true
         } else {
-            self.isAddUser = false
             editButton.isHidden = false
             editButton.setTitle("Remove", for: .normal)
-            editButton.layer.borderWidth = 1
-            editButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
             editButton.snp.updateConstraints { update in
                 update.width.equalTo(74)
             }
@@ -118,22 +122,28 @@ class EditUserTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        let userImageSize = CGSize(width: 40, height: 40)
-
-        userImageView.snp.makeConstraints { make in
-            make.size.equalTo(userImageSize)
+        profileImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 40, height: 40))
             make.centerY.leading.equalToSuperview()
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(userImageView.snp.trailing).offset(12)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(12)
             make.trailing.equalTo(editButton.snp.leading).offset(-10)
-            make.top.equalTo(userImageView)
+            make.top.equalTo(profileImageView)
         }
 
         usernameLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel)
             make.top.equalTo(nameLabel.snp.bottom).offset(4)
+        }
+
+        editLabel.snp.makeConstraints  { make in
+            make.edges.equalTo(editButton)
+        }
+
+        spinner.snp.makeConstraints  { make in
+            make.edges.equalTo(editButton)
         }
 
         editButton.snp.makeConstraints { make in
@@ -144,14 +154,18 @@ class EditUserTableViewCell: UITableViewCell {
     }
 
     @objc func editButtonTapped() {
-        guard let user = user, let isAddUser = isAddUser else { return }
-        isAddUser ? delegate?.addUserTapped(user: user) : delegate?.removeUserTapped(user: user)
+        guard let user = user else { return }
+        spinner.startAnimating()
+        editButton.isHidden = true
+        editMode == .add ? delegate?.addUserTapped(user: user) : delegate?.removeUserTapped(user: user)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        userImageView.image = nil
+        profileImageView.image = nil
         editButton.isHidden = false
+        editLabel.isHidden = true
+        spinner.stopAnimating()
     }
 
 }

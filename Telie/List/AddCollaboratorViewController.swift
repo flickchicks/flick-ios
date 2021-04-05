@@ -8,6 +8,11 @@
 
 import UIKit
 import NVActivityIndicatorView
+import NotificationBannerSwift
+
+enum CollaboratorEditMode {
+    case add, remove
+}
 
 class AddCollaboratorViewController: UIViewController {
 
@@ -23,25 +28,25 @@ class AddCollaboratorViewController: UIViewController {
         color: .gradientPurple
     )
     private let subtitleLabel = UILabel()
-    private var currentSearchText = ""
 
     // MARK: - Private Data Vars
     private var allFriends: [UserProfile] = []
     private let collaboratorCellHeight = 57
     private var collaborators: [UserProfile]
+    private var currentSearchText = ""
     private var friends: [UserProfile] = []
+    private var list: MediaList
     private var listFriends: [UserProfile] = []
     private var owner: UserProfile
     private let addCollaboratorButton = UIButton()
 
-    private var editMode = "Remove"
+    private var editMode = CollaboratorEditMode.remove
 
-    weak var listSettingsDelegate: ListSettingsDelegate?
-
-    init(owner: UserProfile, collaborators: [UserProfile]) {
+    init(owner: UserProfile, collaborators: [UserProfile], list: MediaList) {
         self.owner = owner
-        self.collaborators = [owner] + collaborators
-        self.listFriends = [owner] + collaborators
+        self.collaborators = [owner] + list.collaborators
+        self.listFriends = [owner] + list.collaborators
+        self.list = list
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -77,7 +82,7 @@ class AddCollaboratorViewController: UIViewController {
             DispatchQueue.main.async {
                 self.allFriends = friends
                 self.friends = friends
-                self.listFriends = self.editMode == "Remove" ? self.collaborators : friends
+                self.listFriends = self.editMode == .remove ? self.collaborators : friends
                 self.spinner.stopAnimating()
             }
         }
@@ -105,7 +110,7 @@ class AddCollaboratorViewController: UIViewController {
             make.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
-        inviteSearchBar.placeholder = "Search friends"
+        inviteSearchBar.placeholder = "Search to invite friends"
         inviteSearchBar.delegate = self
         view.addSubview(inviteSearchBar)
 
@@ -143,7 +148,7 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
         headerLabel.font = .boldSystemFont(ofSize: 12)
-        headerLabel.text = editMode == "Invite" ? "Friends" : "Collaborators"
+        headerLabel.text = editMode == .add ? "Friends" : "Collaborators"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview()
@@ -162,10 +167,11 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let collaborator = listFriends[indexPath.row]
-        if editMode == "Remove" {
-            cell.configureForRemove(user: collaborator, isOwner: owner.id == collaborator.id)
-        } else {
-            cell.configureForAdd(user: collaborator, isAdded: collaborators.contains { $0.id == collaborator.id })
+        switch editMode {
+        case .add:
+            cell.configureForAdd(user: collaborator, editMode: editMode, isAdded: collaborators.contains { $0.id == collaborator.id })
+        case .remove:
+            cell.configureForRemove(user: collaborator, editMode: editMode, isOwner: owner.id == collaborator.id)
         }
         cell.delegate = self
         return cell
@@ -176,7 +182,7 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
 
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         if currentSearchText.isEmpty {
-            editMode = "Invite"
+            editMode = .add
             listFriends = allFriends
             collaboratorsTableView.reloadData()
         }
@@ -185,13 +191,13 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty && !currentSearchText.isEmpty {
-            editMode = "Remove"
+            editMode = .remove
             listFriends = collaborators
         } else if searchText.isEmpty && currentSearchText.isEmpty {
-            editMode = "Invite"
+            editMode = .add
             listFriends = allFriends
         } else {
-            editMode = "Invite"
+            editMode = .add
             if allFriends.count > 0 {
                 if searchText == "" {
                     listFriends = allFriends
@@ -208,10 +214,10 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         if currentSearchText.isEmpty {
-            editMode = "Remove"
+            editMode = .remove
             listFriends = collaborators
         } else {
-            editMode = "Invite"
+            editMode = .add
         }
         collaboratorsTableView.reloadData()
     }
@@ -221,11 +227,36 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
 extension AddCollaboratorViewController: EditUserCellDelegate {
 
     func addUserTapped(user: UserProfile) {
-        listSettingsDelegate?.addCollaborator(collaborator: user)
+        NetworkManager.addToMediaList(listId: list.id, collaboratorIds: [user.id]) { [weak self] list in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.list = list
+                self.collaborators = [self.owner] + list.collaborators
+                let banner = StatusBarNotificationBanner(
+                    title: "Added \(user.username) to list.",
+                    style: .info
+                )
+                banner.show()
+                self.collaboratorsTableView.reloadData()
+            }
+        }
     }
 
     func removeUserTapped(user: UserProfile) {
-        listSettingsDelegate?.removeCollaborator(collaborator: user)
+        NetworkManager.removeFromMediaList(listId: list.id, collaboratorIds: [user.id]) { [weak self] list in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.list = list
+                self.collaborators = [self.owner] + list.collaborators
+                self.listFriends = [self.owner] + list.collaborators
+                let banner = StatusBarNotificationBanner(
+                    title: "Removed \(user.username) from list.",
+                    style: .info
+                )
+                banner.show()
+                self.collaboratorsTableView.reloadData()
+            }
+        }
     }
 
 }

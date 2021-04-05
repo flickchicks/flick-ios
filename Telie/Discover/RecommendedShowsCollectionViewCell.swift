@@ -29,6 +29,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "defaultMovie")
         contentView.addSubview(imageView)
 
         userImageView.isHidden = true
@@ -114,7 +115,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.image = nil
+        imageView.image = UIImage(named: "defaultMovie")
         userImageView.image = nil
         detailLabel.text = ""
         listLabel.text = ""

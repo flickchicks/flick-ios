@@ -35,7 +35,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaOneImageView.contentMode = .scaleAspectFill
         mediaOneImageView.layer.borderColor = UIColor.movieWhite.cgColor
         mediaOneImageView.layer.borderWidth = 1.5
-        mediaOneImageView.layer.backgroundColor = UIColor.mediumGray.cgColor
         contentView.addSubview(mediaOneImageView)
 
         mediaTwoImageView.layer.cornerRadius = 12
@@ -45,7 +44,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaTwoImageView.contentMode = .scaleAspectFill
         mediaTwoImageView.layer.borderWidth = 1.5
         mediaTwoImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        mediaTwoImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
 
         contentView.addSubview(mediaTwoImageView)
 
@@ -56,7 +54,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaThreeImageView.contentMode = .scaleAspectFill
         mediaThreeImageView.layer.borderWidth = 1.5
         mediaThreeImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        mediaThreeImageView.layer.backgroundColor = UIColor.lightGray.cgColor
 
         contentView.addSubview(mediaThreeImageView)
 
@@ -162,9 +159,9 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        mediaOneImageView.image = nil
-        mediaTwoImageView.image = nil
-        mediaThreeImageView.image = nil
+        mediaOneImageView.image = UIImage(named: "defaultMovie")
+        mediaTwoImageView.image = UIImage(named: "defaultMovie")
+        mediaThreeImageView.image = UIImage(named: "defaultMovie")
         userImageView.image = nil
     }
 

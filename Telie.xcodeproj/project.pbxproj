@@ -112,7 +112,6 @@
 		D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F6E249E7727008D5484 /* SortListModalView.swift */; };
 		D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F72249EF279008D5484 /* SortSelection.swift */; };
 		D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */; };
-		D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */; };
 		D46B3F7B249F82AE008D5484 /* CollaboratorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F7A249F82AE008D5484 /* CollaboratorTableViewCell.swift */; };
 		D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B3F7C249F843C008D5484 /* Collaborator.swift */; };
 		D474109E25CEE64B0062E2B4 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */; };
@@ -287,7 +286,6 @@
 		D46B3F6E249E7727008D5484 /* SortListModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortListModalView.swift; sourceTree = "<group>"; };
 		D46B3F72249EF279008D5484 /* SortSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelection.swift; sourceTree = "<group>"; };
 		D46B3F74249EF70C008D5484 /* SortOptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOptionTableViewCell.swift; sourceTree = "<group>"; };
-		D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollaboratorsModalView.swift; sourceTree = "<group>"; };
 		D46B3F7A249F82AE008D5484 /* CollaboratorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollaboratorTableViewCell.swift; sourceTree = "<group>"; };
 		D46B3F7C249F843C008D5484 /* Collaborator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collaborator.swift; sourceTree = "<group>"; };
 		D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
@@ -659,7 +657,6 @@
 		D4A030562502C95700F21D2E /* ModalViews */ = {
 			isa = PBXGroup;
 			children = (
-				D46B3F78249F7D80008D5484 /* AddCollaboratorsModalView.swift */,
 				D46B3F6E249E7727008D5484 /* SortListModalView.swift */,
 				80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */,
 				D474D17124B132A7006795F6 /* EnterNameModalView.swift */,
@@ -982,7 +979,6 @@
 				D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */,
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
-				D46B3F79249F7D80008D5484 /* AddCollaboratorsModalView.swift in Sources */,
 				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
 				803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
