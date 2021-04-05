@@ -19,7 +19,6 @@ class MediaCommentsViewController: UIViewController {
     private var comments: [Comment]!
     private var mediaId: Int!
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
-    private var shouldScrollToBottom = true
 
     init(comments: [Comment], mediaId: Int) {
         super.init(nibName: nil, bundle: nil)

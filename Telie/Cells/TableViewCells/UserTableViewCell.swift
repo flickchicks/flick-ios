@@ -46,7 +46,7 @@ class UserTableViewCell: UITableViewCell {
     func configure(user: UserProfile) {
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             userProfileImageView.kf.setImage(with: imageUrl)
         } else {
             userProfileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))

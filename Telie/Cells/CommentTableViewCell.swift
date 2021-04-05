@@ -39,6 +39,7 @@ class CommentTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.isUserInteractionEnabled = true
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
@@ -160,6 +161,7 @@ class CommentTableViewCell: UITableViewCell {
 //        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         nameLabel.text = comment.owner.name
+        // TODO: Find better way to dynamically resize comment cell
         if comment.message.count > 46 {
             commentTextView.snp.remakeConstraints { remake in
                 remake.top.equalTo(profileImageView)
@@ -174,8 +176,6 @@ class CommentTableViewCell: UITableViewCell {
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         viewSpoilerButton.isHidden = true
         numLikeLabel.text = comment.numLikes > 0 ? "\(comment.numLikes)" : ""

@@ -79,7 +79,8 @@ class SuggestToFriendViewController: UIViewController {
         mediaPosterImageView.backgroundColor = .lightGray
         mediaPosterImageView.layer.cornerRadius = 8
         mediaPosterImageView.layer.masksToBounds = true
-        if let imageUrl = URL(string: media.posterPic ?? "") {
+        if let posterPic = media.posterPic,
+           let imageUrl = URL(string: posterPic) {
             mediaPosterImageView.kf.setImage(with: imageUrl)
         } else {
             mediaPosterImageView.image = UIImage(named: "defaultMovie")

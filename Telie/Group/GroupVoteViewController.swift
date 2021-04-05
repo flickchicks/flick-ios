@@ -6,9 +6,9 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import NotificationBannerSwift
 import NVActivityIndicatorView
 import UIKit
-import NotificationBannerSwift
 
 protocol GroupVoteDelegate: class {
     func hideNavigationBarItems()

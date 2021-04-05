@@ -6,9 +6,9 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
 import NVActivityIndicatorView
+import UIKit
 
 protocol EditUserCellDelegate: class {
     func addUserTapped(user: UserProfile)
@@ -22,12 +22,12 @@ class EditUserTableViewCell: UITableViewCell {
     private let editLabel = UILabel()
     private let nameLabel = UILabel()
     private let profileImageView = UIImageView()
-    private let usernameLabel = UILabel()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
         type: .ballSpinFadeLoader,
         color: .gradientPurple
     )
+    private let usernameLabel = UILabel()
 
     // MARK: - Data Vars
     weak var delegate: EditUserCellDelegate?
@@ -50,6 +50,7 @@ class EditUserTableViewCell: UITableViewCell {
         usernameLabel.sizeToFit()
         contentView.addSubview(usernameLabel)
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
@@ -84,7 +85,7 @@ class EditUserTableViewCell: UITableViewCell {
         self.editMode = editMode
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
     }

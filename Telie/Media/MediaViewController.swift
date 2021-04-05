@@ -6,10 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import Hero
 import Kingfisher
-import UIKit
 import NotificationBannerSwift
+import UIKit
 
 protocol SaveMediaDelegate: class {
     func saveMedia(selectedList: SimpleMediaList)

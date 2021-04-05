@@ -6,9 +6,9 @@
 //  Copyright © 2021 Telie. All rights reserved.
 //
 
-import UIKit
-import NVActivityIndicatorView
 import NotificationBannerSwift
+import NVActivityIndicatorView
+import UIKit
 
 enum CollaboratorEditMode {
     case add, remove

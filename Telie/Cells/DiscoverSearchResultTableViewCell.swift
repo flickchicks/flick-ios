@@ -113,7 +113,7 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         resultImageView.layer.cornerRadius = circleImageViewSize.width / 2
         resultImageView.isHidden = false
         listPreviewView.isHidden = true
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             resultImageView.kf.setImage(with: imageUrl)
         } else {
             resultImageView.image = nil

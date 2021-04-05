@@ -91,14 +91,16 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     func configure(with media: SimpleMedia) {
         mediaId = media.id
-        if let imageUrl = URL(string: media.posterPic ?? "defaultMovie") {
+        if let posterPic = media.posterPic,
+           let imageUrl = URL(string: posterPic) {
             imageView.kf.setImage(with: imageUrl)
         }
         if let savedToLsts = media.savedToLsts,
            savedToLsts.count > 0 {
             userImageView.isHidden = false
             let savedByUser = savedToLsts[0].savedBy
-            if let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
+            if let profilePicUrl = savedToLsts[0].savedBy.profilePicUrl,
+               let imageUrl = URL(string: profilePicUrl) {
                 userImageView.kf.setImage(with: imageUrl)
             }
             detailLabel.text = "Saved by \(savedByUser.name)"

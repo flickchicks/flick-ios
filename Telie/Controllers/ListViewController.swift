@@ -6,10 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import NVActivityIndicatorView
-import SnapKit
-import UIKit
 import NotificationBannerSwift
+import NVActivityIndicatorView
+import UIKit
 
 class ListViewController: UIViewController {
 

@@ -27,6 +27,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         selectionStyle = .none
         isSkeletonable = true
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.isSkeletonable = true
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
@@ -157,10 +158,8 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         // Show settings buttons only if current user is at Home
         settingsButton.isHidden = !isHome

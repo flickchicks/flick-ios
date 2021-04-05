@@ -53,6 +53,7 @@ class FriendRequestTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         containerView.addSubview(dateLabel)
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
@@ -165,8 +166,6 @@ class FriendRequestTableViewCell: UITableViewCell {
         notificationLabel.attributedText = friendLabelString
         if let imageUrl = URL(string: fromUser.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
     }
 

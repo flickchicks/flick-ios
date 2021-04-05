@@ -23,6 +23,7 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .clear
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
@@ -77,10 +78,9 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
     func configure(for friend: FriendRecommendation) {
 
-        if let imageUrl = URL(string: friend.profilePicUrl ?? "") {
+        if let profilePicUrl = friend.profilePicUrl,
+           let imageUrl = URL(string: profilePicUrl) {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
@@ -94,7 +94,7 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = nil
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
 
 }

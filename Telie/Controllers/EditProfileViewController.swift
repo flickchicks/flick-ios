@@ -89,17 +89,16 @@ class EditProfileViewController: UIViewController {
         imagePickerController.allowsEditing = true
         imagePickerController.mediaTypes = ["public.image"]
 
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
-            profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
-        }
-        
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
+            profileImageView.kf.setImage(with: imageUrl)
+        } else {
+            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
+        }
         view.addSubview(profileImageView)
 
         selectImageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)

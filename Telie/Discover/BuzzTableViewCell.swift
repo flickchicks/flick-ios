@@ -38,6 +38,7 @@ class BuzzTableViewCell: UITableViewCell {
         )
         profileImageView.addGestureRecognizer(profileTapGestureRecognizer)
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
@@ -104,10 +105,8 @@ class BuzzTableViewCell: UITableViewCell {
         show = comment.show
         user = comment.owner
 
-        if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: comment.owner.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
 
         buzzLabel.attributedText =

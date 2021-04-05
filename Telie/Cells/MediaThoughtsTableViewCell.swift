@@ -197,6 +197,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let comment = comments[comments.count-1]
 //        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
+        // TODO: Fix comment cell resize logic here
         if comment.message.count > 46 || comment.message.count == 0 {
             setCommentViewFullWidth()
         }

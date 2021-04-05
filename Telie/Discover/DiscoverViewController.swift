@@ -6,7 +6,6 @@
 //  Copyright © 2021 Telie. All rights reserved.
 //
 
-import Hero
 import NVActivityIndicatorView
 import UIKit
 

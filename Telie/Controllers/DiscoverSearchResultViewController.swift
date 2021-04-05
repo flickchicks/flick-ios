@@ -7,8 +7,8 @@
 //
 
 import NVActivityIndicatorView
-import UIKit
 import SkeletonView
+import UIKit
 
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)

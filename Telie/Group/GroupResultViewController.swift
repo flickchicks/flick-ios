@@ -6,8 +6,8 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
-import UIKit
 import NVActivityIndicatorView
+import UIKit
 
 class GroupResultViewController: UIViewController {
 

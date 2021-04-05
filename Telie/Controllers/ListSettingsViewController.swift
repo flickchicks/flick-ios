@@ -10,9 +10,7 @@ import UIKit
 import NotificationBannerSwift
 
 protocol ListSettingsDelegate: class {
-    func addCollaborator(collaborator: UserProfile)
     func deleteList()
-    func removeCollaborator(collaborator: UserProfile)
     func renameList(to name: String)
     func updatePrivacy(to isPrivate: Bool)
 }
@@ -164,22 +162,6 @@ extension ListSettingsViewController: ModalDelegate {
 }
 
 extension ListSettingsViewController: ListSettingsDelegate {
-
-    func addCollaborator(collaborator: UserProfile) {
-        NetworkManager.addToMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-//            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
-        }
-    }
-
-    func removeCollaborator(collaborator: UserProfile) {
-        NetworkManager.removeFromMediaList(listId: list.id, collaboratorIds: [collaborator.id]) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-//            self.addCollaboratorModalView.updateCollaborators(updatedList: list)
-        }
-    }
 
     func deleteList() {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in

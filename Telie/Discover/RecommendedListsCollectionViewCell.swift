@@ -141,7 +141,8 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             mediaThreeImageView.kf.setImage(with: imageUrl3)
         }
 
-        if let imageUrl = URL(string: list.owner.profilePicUrl ?? "") {
+        if let profilePicUrl = list.owner.profilePicUrl,
+           let imageUrl = URL(string: profilePicUrl) {
             userImageView.kf.setImage(with: imageUrl)
         }
 

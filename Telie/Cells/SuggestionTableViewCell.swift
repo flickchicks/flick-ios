@@ -57,6 +57,7 @@ class SuggestionTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         contentView.addSubview(dateLabel)
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
@@ -214,8 +215,6 @@ class SuggestionTableViewCell: UITableViewCell {
             .normalFont14(" suggested a \(suggestion.show.isTv ? "TV show" : "movie").")
         if let imageUrl = URL(string: suggestion.fromUser.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         
         messageLabel.text = suggestion.message

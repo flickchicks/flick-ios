@@ -6,8 +6,8 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
 import NVActivityIndicatorView
+import UIKit
 
 class SuggestionsViewController: UIViewController {
 
