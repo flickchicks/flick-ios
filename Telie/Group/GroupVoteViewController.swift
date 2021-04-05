@@ -8,6 +8,7 @@
 
 import NVActivityIndicatorView
 import UIKit
+import NotificationBannerSwift
 
 protocol GroupVoteDelegate: class {
     func hideNavigationBarItems()
@@ -357,7 +358,11 @@ extension GroupVoteViewController: AddMediaDelegate {
 
     func reloadMedia() {
         getPendingIdeas()
-        presentInfoAlert(message: "Ideas added", completion: nil)
+        let banner = StatusBarNotificationBanner(
+            title: "Ideas added",
+            style: .info
+        )
+        banner.show()
     }
 
 }

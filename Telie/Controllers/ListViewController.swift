@@ -9,6 +9,7 @@
 import NVActivityIndicatorView
 import SnapKit
 import UIKit
+import NotificationBannerSwift
 
 class ListViewController: UIViewController {
 
@@ -419,7 +420,11 @@ extension ListViewController: AddMediaDelegate {
 
     func reloadMedia() {
         getMediaList()
-        presentInfoAlert(message: "Added items to list", completion: nil)
+        let banner = StatusBarNotificationBanner(
+            title: "Added items to list",
+            style: .info
+        )
+        banner.show()
     }
 
 }

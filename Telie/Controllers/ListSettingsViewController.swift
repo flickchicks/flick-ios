@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 protocol ListSettingsDelegate: class {
     func addCollaborator(collaborator: UserProfile)
@@ -203,7 +204,11 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
             self.list = list
-            self.presentInfoAlert(message: "Renamed to \(list.name)", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Renamed to \(list.name)",
+                style: .info
+            )
+            banner.show()
         }
     }
 
@@ -213,7 +218,11 @@ extension ListSettingsViewController: ListSettingsDelegate {
         NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
             guard let self = self else { return }
             self.list = list
-            self.presentInfoAlert(message: "Updated to \(list.isPrivate ? "private" : "public")", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Updated to \(list.isPrivate ? "private" : "public")",
+                style: .info
+            )
+            banner.show()
         }
     }
 

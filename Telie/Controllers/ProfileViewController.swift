@@ -8,6 +8,7 @@
 
 import UIKit
 import SkeletonView
+import NotificationBannerSwift
 
 enum FriendsLayoutMode { case expanded, condensed }
 
@@ -381,7 +382,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
 
     func createFriendRequest() {
         guard let user = user else {
-            presentInfoAlert(message: "Cannot send request", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Cannot send request",
+                style: .warning
+            )
+            banner.show()
             return
         }
         // Create friend request if not already friends and accept request if there's an incoming request
@@ -389,7 +394,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         case .notFriends:
             NetworkManager.createFriendRequest(friendId: user.id) { success in
                 guard success else { return }
-                self.presentInfoAlert(message: "Friend request sent", completion: nil)
+                let banner = StatusBarNotificationBanner(
+                    title: "Friend request sent",
+                    style: .info
+                )
+                banner.show()
                 self.user?.friendStatus = .outgoingRequest
                 DispatchQueue.main.async {
                     self.listsTableView.reloadData()
@@ -398,7 +407,11 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         case .incomingRequest:
             NetworkManager.acceptFriendRequest(friendId: user.id) { success in
                 guard success else { return }
-                self.presentInfoAlert(message: "Friend request accepted", completion: nil)
+                let banner = StatusBarNotificationBanner(
+                    title: "Friend request accepted",
+                    style: .info
+                )
+                banner.show()
                 self.user?.friendStatus = .friends
                 DispatchQueue.main.async {
                     self.listsTableView.reloadData()

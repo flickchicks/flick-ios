@@ -8,6 +8,7 @@
 
 import UIKit
 import NVActivityIndicatorView
+import NotificationBannerSwift
 
 class ActivityViewController: UIViewController {
 
@@ -251,7 +252,11 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ActivityViewController: ActivityDelegate {
     func refreshActivity(message: String) {
-        presentInfoAlert(message: message, completion: nil)
+        let banner = StatusBarNotificationBanner(
+            title: message,
+            style: .info
+        )
+        banner.show()
         getActivity()
     }
 }

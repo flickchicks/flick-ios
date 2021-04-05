@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import NotificationBannerSwift
 
 class ProfileInputTextField: UITextField {
 
@@ -325,7 +326,12 @@ class EditProfileViewController: UIViewController {
                     self.updateUserInfo()
                 } else {
                     self.stopNavBarSpinner()
-                    self.presentInfoAlert(message: "Username invalid or already taken", completion: nil)
+                    let banner = StatusBarNotificationBanner(
+                        title: "Username invalid or already taken",
+                        style: .warning
+                    )
+                    banner.show()
+
                 }
             }
         } else {
