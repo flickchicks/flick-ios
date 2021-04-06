@@ -166,15 +166,17 @@ extension ListSettingsViewController: ListSettingsDelegate {
     func deleteList() {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Deleted \(self.list.name)") {
-                let controllers = self.navigationController?.viewControllers
-                // Controllers are reversed because recent stack is at the end of the list
-                for controller in controllers?.reversed() ?? [] {
-                    if controller is ProfileViewController || controller is TabBarController {
-                        self.navigationController?.popToViewController(controller, animated: true)
-                        return
-                    }
+            let banner = StatusBarNotificationBanner(
+                title: "Deleted \(self.list.name)",
+                style: .info
+            )
+            banner.show()
+            let controllers = self.navigationController?.viewControllers
+            // Controllers are reversed because recent stack is at the end of the list
+            for controller in controllers?.reversed() ?? [] {
+                if controller is ProfileViewController || controller is TabBarController {
+                    self.navigationController?.popToViewController(controller, animated: true)
+                    return
                 }
             }
         }

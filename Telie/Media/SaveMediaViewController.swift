@@ -10,6 +10,10 @@ import NotificationBannerSwift
 import NVActivityIndicatorView
 import UIKit
 
+enum MediaListsModalViewType {
+    case saveMedia, moveMedia
+}
+
 class SaveMediaViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -27,13 +31,16 @@ class SaveMediaViewController: UIViewController {
         color: .gradientPurple
     )
     private let titleLabel = UILabel()
+    weak var editListDelegate: EditListDelegate?
 
     private let mediaId: Int
+    private let type: MediaListsModalViewType
 
     // MARK: - Private Data Vars
 
-    init(mediaId: Int) {
+    init(mediaId: Int, type: MediaListsModalViewType) {
         self.mediaId = mediaId
+        self.type = type
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,7 +53,7 @@ class SaveMediaViewController: UIViewController {
 
         view.backgroundColor = .movieWhite
 
-        titleLabel.text = "Save to list"
+        titleLabel.text = type == .saveMedia ? "Save to list" : "Move to list"
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: 14)
@@ -140,7 +147,13 @@ extension SaveMediaViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = lists[indexPath.item]
-        saveMedia(selectedList: list)
+        if type == .moveMedia {
+            dismiss(animated: true) { () in
+                self.editListDelegate?.moveMedia(selectedList: list)
+            }
+        } else {
+            saveMedia(selectedList: list)
+        }
     }
 
 }
@@ -172,23 +185,16 @@ extension SaveMediaViewController: SaveMediaDelegate {
 
     func presentCreateNewList() {
         let newListViewController = NewListViewController(type: .createList)
-//        newListViewController.createListDelegate = self
+        newListViewController.createListDelegate = self
         present(newListViewController, animated: true)
     }
 
 }
 
-//extension SaveMediaViewController: CreateListDelegate {
-//
-//    func createList(title: String) {
-//        newListSpinner.startAnimating()
-//        newListButton.isHidden = true
-//        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
-//            guard let self = self else { return }
-//            self.newListSpinner.stopAnimating()
-//            self.newListButton.isHidden = false
-//            self.showSaveMessage(listName: mediaList.name)
-//        }
-//    }
-//
-//}
+extension SaveMediaViewController: CreateListDelegate {
+    func createList(list: MediaList) {
+        getLists()
+        listsTableView.reloadData()
+    }
+
+}

@@ -231,7 +231,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
-        let confirmMessage = selectedMedia.count > 1 ?
+        let confirmMessage = selectedMedia.count == 1 ?
         "Are you sure you want to remove this item from this list?" :
         "Are you sure you want to remove these \(selectedMedia.count) items from this list?"
         let deleteConfirmationModalView = ConfirmationModalView(message: confirmMessage, type: .removeMedia)
@@ -241,10 +241,9 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
-        let listsModalView = MediaListsModalView(type: .moveMedia, currentList: list)
-        listsModalView.modalDelegate = self
-        listsModalView.editListDelegate = self
-        showModalPopup(view: listsModalView)
+        let moveMediaViewController = SaveMediaViewController(mediaId: 0, type: .moveMedia)
+        moveMediaViewController.editListDelegate = self
+        present(moveMediaViewController, animated: true)
     }
 
     private func setActionsActive(_ isActive: Bool) {
@@ -302,6 +301,7 @@ extension EditListViewController: EditListDelegate {
 
     func moveMedia(selectedList: SimpleMediaList) {
         let mediaIds = selectedMedia.map { $0.id }
+        print("mvoign")
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(

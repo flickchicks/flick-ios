@@ -149,7 +149,7 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        present(SaveMediaViewController(mediaId: mediaId), animated: true)
+        present(SaveMediaViewController(mediaId: mediaId, type: .saveMedia), animated: true)
     }
 
     @objc func shareButtonTapped() {
