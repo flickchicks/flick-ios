@@ -163,16 +163,8 @@ extension GroupsViewController: ModalDelegate, CreateGroupDelegate {
         modalView.removeFromSuperview()
     }
 
-    func createGroup(title: String) {
-        NetworkManager.createGroup(name: title) { [weak self] group in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.groups.append(group)
-                self.groupsTableView.reloadData()
-                let groupViewController = GroupViewController(group: group, shouldAddMembers: true)
-                self.navigationController?.pushViewController(groupViewController, animated: true)
-            }
-        }
+    func createGroup(group: Group) {
+        navigationController?.pushViewController(GroupViewController(group: group, shouldAddMembers: true), animated: true)
     }
 
 }

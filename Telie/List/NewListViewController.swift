@@ -11,15 +11,15 @@ import NVActivityIndicatorView
 import UIKit
 
 protocol CreateGroupDelegate: class {
-    func createGroup(title: String)
+    func createGroup(group: Group)
 }
 
 protocol CreateListDelegate: class {
-    func createList(title: String)
+    func createList(list: MediaList)
 }
 
 protocol RenameGroupDelegate: class {
-    func renameGroup(title: String)
+    func renameGroup(group: Group)
 }
 
 enum EnterNameModalType {
@@ -46,6 +46,13 @@ class NewListViewController: UIViewController {
     private let nameTextField = UITextField()
     private let newListButton = UIButton()
     private let titleLabel = UILabel()
+    var list: MediaList?
+    var group: Group?
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
 
     // MARK: - Data Vars
     weak var createGroupDelegate: CreateGroupDelegate?
@@ -88,6 +95,8 @@ class NewListViewController: UIViewController {
         newListButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
         view.addSubview(newListButton)
 
+        view.addSubview(spinner)
+
         setupConstraints()
     }
 
@@ -118,6 +127,10 @@ class NewListViewController: UIViewController {
             make.trailing.equalToSuperview().inset(4)
             make.size.equalTo(CGSize(width: 66, height: 34))
         }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(newListButton)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -128,15 +141,47 @@ class NewListViewController: UIViewController {
         guard let nameText = nameTextField.text,
             nameText.trimmingCharacters(in: .whitespaces) != ""
             else { return }
+        spinner.startAnimating()
+        newListButton.isHidden = true
         switch type {
         case .createGroup:
-            createGroupDelegate?.createGroup(title: nameText)
+            NetworkManager.createGroup(name: nameText) { [weak self] group in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) { () in
+                        self.createGroupDelegate?.createGroup(group: group)
+                    }
+                }
+            }
         case .createList:
-            createListDelegate?.createList(title: nameText)
+            NetworkManager.createNewMediaList(listName: nameText) { [weak self] mediaList in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) { () in
+                        self.createListDelegate?.createList(list: mediaList)
+                    }
+                }
+            }
         case .renameGroup:
-            renameGroupDelegate?.renameGroup(title: nameText)
+            guard let group = group else { return }
+            NetworkManager.updateGroup(id: group.id, name: nameText) { [weak self] group in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true) { () in
+                        self.renameGroupDelegate?.renameGroup(group: group)
+                    }
+                }
+            }
         case .renameList:
-            listSettingsDelegate?.renameList(to: nameText)
+            guard let list = list else { return }
+            var updatedList = list
+            updatedList.name = nameText
+            NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
+                guard let self = self else { return }
+                self.dismiss(animated: true) { () in
+                    self.listSettingsDelegate?.renameList(to: nameText)
+                }
+            }
         }
     }
 

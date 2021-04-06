@@ -172,31 +172,23 @@ extension SaveMediaViewController: SaveMediaDelegate {
 
     func presentCreateNewList() {
         let newListViewController = NewListViewController(type: .createList)
-        newListViewController.createListDelegate = self
+//        newListViewController.createListDelegate = self
         present(newListViewController, animated: true)
     }
 
 }
 
-extension SaveMediaViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
-
-}
-
-extension SaveMediaViewController: CreateListDelegate {
-
-    func createList(title: String) {
-        newListSpinner.startAnimating()
-        newListButton.isHidden = true
-        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
-            guard let self = self else { return }
-            self.newListSpinner.stopAnimating()
-            self.newListButton.isHidden = false
-            self.showSaveMessage(listName: mediaList.name)
-        }
-    }
-
-}
+//extension SaveMediaViewController: CreateListDelegate {
+//
+//    func createList(title: String) {
+//        newListSpinner.startAnimating()
+//        newListButton.isHidden = true
+//        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
+//            guard let self = self else { return }
+//            self.newListSpinner.stopAnimating()
+//            self.newListButton.isHidden = false
+//            self.showSaveMessage(listName: mediaList.name)
+//        }
+//    }
+//
+//}

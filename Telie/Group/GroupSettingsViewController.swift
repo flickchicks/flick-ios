@@ -172,6 +172,7 @@ class GroupSettingsViewController: UIViewController {
     private func showRenameGroupModal() {
         let newGroupViewController = NewListViewController(type: .renameGroup)
         newGroupViewController.renameGroupDelegate = self
+        newGroupViewController.group = group
         present(newGroupViewController, animated: true)
     }
 
@@ -290,14 +291,9 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
         modalView.removeFromSuperview()
     }
 
-    func renameGroup(title: String) {
-        NetworkManager.updateGroup(id: group.id, name: title) { [weak self] group in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.group = group
-                self.reloadDetailsSection()
-            }
-        }
+    func renameGroup(group: Group) {
+        self.group = group
+        self.reloadDetailsSection()
     }
 
     func reloadGroupMembers(group: Group) {

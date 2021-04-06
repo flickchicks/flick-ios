@@ -423,12 +423,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         }
     }
 
-    func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title) { [weak self] mediaList in
-            guard let self = self else { return }
-            let listViewController = ListViewController(listId: mediaList.id)
-            self.navigationController?.pushViewController(listViewController, animated: true)
-        }
+    func createList(list: MediaList) {
+        let listViewController = ListViewController(listId: list.id)
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 
     func dismissModal(modalView: UIView) {

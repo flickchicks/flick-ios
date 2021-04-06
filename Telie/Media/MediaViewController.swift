@@ -281,25 +281,25 @@ extension MediaViewController: SaveMediaDelegate {
 
     func presentCreateNewList() {
         let newListViewController = NewListViewController(type: .createList)
-        newListViewController.createListDelegate = self
+//        newListViewController.createListDelegate = self
         present(newListViewController, animated: true)
     }
 
 }
 
-extension MediaViewController: CreateListDelegate {
-
-    func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { mediaList in
-            let banner = StatusBarNotificationBanner(
-                title: "Saved to \(mediaList.name)",
-                style: .info
-            )
-            banner.show()
-        }
-    }
-
-}
+//extension MediaViewController: CreateListDelegate {
+//
+//    func createList(title: String) {
+//        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { mediaList in
+//            let banner = StatusBarNotificationBanner(
+//                title: "Saved to \(mediaList.name)",
+//                style: .info
+//            )
+//            banner.show()
+//        }
+//    }
+//
+//}
 
 extension MediaViewController: ShareMediaDelegate {
 

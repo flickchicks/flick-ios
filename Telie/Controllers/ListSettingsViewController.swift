@@ -115,6 +115,7 @@ class ListSettingsViewController: UIViewController {
     private func showRenameListModal() {
         let newGroupViewController = NewListViewController(type: .renameList)
         newGroupViewController.listSettingsDelegate = self
+        newGroupViewController.list = list
         present(newGroupViewController, animated: true)
     }
 
@@ -180,17 +181,11 @@ extension ListSettingsViewController: ListSettingsDelegate {
     }
 
     func renameList(to name: String) {
-        var updatedList = list
-        updatedList.name = name
-        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-            let banner = StatusBarNotificationBanner(
-                title: "Renamed to \(list.name)",
-                style: .info
-            )
-            banner.show()
-        }
+        let banner = StatusBarNotificationBanner(
+            title: "Renamed to \(name)",
+            style: .info
+        )
+        banner.show()
     }
 
     func updatePrivacy(to isPrivate: Bool) {
