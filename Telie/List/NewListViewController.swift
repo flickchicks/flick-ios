@@ -1,12 +1,13 @@
 //
-//  EnterNameModalView.swift
-//  Flick
+//  NewListViewController.swift
+//  Telie
 //
-//  Created by Lucy Xu on 7/4/20.
-//  Copyright © 2020 flick. All rights reserved.
+//  Created by Lucy Xu on 4/5/21.
+//  Copyright © 2021 Telie. All rights reserved.
 //
 
-import Foundation
+import NotificationBannerSwift
+import NVActivityIndicatorView
 import UIKit
 
 protocol CreateGroupDelegate: class {
@@ -38,12 +39,12 @@ enum EnterNameModalType {
     }
 }
 
-class EnterNameModalView: ModalView {
+class NewListViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var cancelButton = UIButton()
     private var doneButton = UIButton()
     private let nameTextField = UITextField()
+    private let newListButton = UIButton()
     private let titleLabel = UILabel()
 
     // MARK: - Data Vars
@@ -51,16 +52,20 @@ class EnterNameModalView: ModalView {
     weak var createListDelegate: CreateListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     weak var renameGroupDelegate: RenameGroupDelegate?
-    private var type: EnterNameModalType!
+    private let type: EnterNameModalType
 
     init(type: EnterNameModalType) {
-        super.init()
         self.type = type
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    override func viewDidLoad() {
+        view.backgroundColor = .movieWhite
 
         titleLabel.text = type.titleText
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 18)
-        containerView.addSubview(titleLabel)
+        view.addSubview(titleLabel)
 
         nameTextField.textColor = .black
         nameTextField.placeholder = "Name"
@@ -68,41 +73,37 @@ class EnterNameModalView: ModalView {
         nameTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 9, height: 36))
         nameTextField.leftViewMode = .always
         nameTextField.borderStyle = .none
-        nameTextField.layer.backgroundColor = UIColor.white.cgColor
+        nameTextField.layer.backgroundColor = UIColor.movieWhite.cgColor
         nameTextField.layer.masksToBounds = false
         nameTextField.layer.shadowColor = UIColor.mediumGray.cgColor
         nameTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         nameTextField.layer.shadowOpacity = 1.0
         nameTextField.layer.shadowRadius = 0.0
         nameTextField.delegate = self
-        containerView.addSubview(nameTextField)
+        view.addSubview(nameTextField)
 
-        doneButton = RoundedButton(style: .purple, title: "Done")
-        doneButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
-        containerView.addSubview(doneButton)
-
-        cancelButton = RoundedButton(style: .gray, title: "Cancel")
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        containerView.addSubview(cancelButton)
+        newListButton.setTitle("Save", for: .normal)
+        newListButton.setTitleColor(.gradientPurple, for: .normal)
+        newListButton.titleLabel?.font = .systemFont(ofSize: 14)
+        newListButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        view.addSubview(newListButton)
 
         setupConstraints()
     }
 
-    func setupConstraints() {
-        let buttonSize = CGSize(width: 84, height: 40)
-        let containerViewSize = CGSize(width: 325, height: 220)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        nameTextField.becomeFirstResponder()
+    }
+
+    private func setupConstraints() {
         let horizontalPadding = 24
         let titleLabelSize = CGSize(width: 144, height: 22)
         let verticalPadding = 36
 
-        containerView.snp.makeConstraints { make in
-            make.size.equalTo(containerViewSize)
-            make.center.equalToSuperview()
-        }
-
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(verticalPadding)
-            make.leading.trailing.equalTo(containerView).inset(horizontalPadding)
+            make.top.equalToSuperview().offset(verticalPadding)
+            make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.size.equalTo(titleLabelSize)
         }
 
@@ -112,17 +113,15 @@ class EnterNameModalView: ModalView {
             make.height.equalTo(25)
         }
 
-        cancelButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(62.5)
-            make.size.equalTo(buttonSize)
-            make.top.equalTo(nameTextField.snp.bottom).offset(verticalPadding)
+        newListButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel)
+            make.trailing.equalToSuperview().inset(4)
+            make.size.equalTo(CGSize(width: 66, height: 34))
         }
+    }
 
-        doneButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(62.5)
-            make.size.equalTo(buttonSize)
-            make.top.equalTo(nameTextField.snp.bottom).offset(verticalPadding)
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     @objc func doneTapped() {
@@ -138,23 +137,12 @@ class EnterNameModalView: ModalView {
             renameGroupDelegate?.renameGroup(title: nameText)
         case .renameList:
             listSettingsDelegate?.renameList(to: nameText)
-        case .none:
-            break
         }
-        dismissModal()
-    }
-
-    @objc func cancelTapped() {
-        dismissModal()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
 }
 
-extension EnterNameModalView: UITextFieldDelegate {
+extension NewListViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

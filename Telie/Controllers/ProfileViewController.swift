@@ -70,6 +70,8 @@ class ProfileViewController: UIViewController {
         view.addSubview(bottomPaddingView)
 
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
         listsTableView.dataSource = self
         listsTableView.delegate = self
@@ -374,10 +376,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterNameModalView(type: .createList)
-        createListModalView.modalDelegate = self
-        createListModalView.createListDelegate = self
-        showModalPopup(view: createListModalView)
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
     func createFriendRequest() {

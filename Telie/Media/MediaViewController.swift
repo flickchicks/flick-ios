@@ -280,10 +280,9 @@ extension MediaViewController: SaveMediaDelegate {
     }
 
     func presentCreateNewList() {
-        let createListModal = EnterNameModalView(type: .createList)
-        createListModal.modalDelegate = self
-        createListModal.createListDelegate = self
-        showModalPopup(view: createListModal)
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
 }

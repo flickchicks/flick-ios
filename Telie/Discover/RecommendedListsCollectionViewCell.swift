@@ -148,7 +148,7 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
         detailLabel.text = "Created by \(list.owner.name)"
         if list.numLikes > 0 {
-            listLabel.text = "\(list.name) · \(list.numLikes) Like\(list.numLikes > 1 ? "s": "")"
+            listLabel.text = "\(list.name) • \(list.numLikes) Like\(list.numLikes > 1 ? "s": "")"
         } else {
             listLabel.text = "\(list.name)"
         }

@@ -44,7 +44,7 @@ class SaveMediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .offWhite
+        view.backgroundColor = .movieWhite
 
         titleLabel.text = "Save to list"
         titleLabel.textColor = .black
@@ -127,21 +127,11 @@ class SaveMediaViewController: UIViewController {
 
     func showSaveMessage(listName: String) {
         dismiss(animated: true) {
-            let banner = FloatingNotificationBanner(
-                subtitle: "Saved to \(listName)",
-                subtitleFont: .boldSystemFont(ofSize: 14),
-                subtitleColor: .black,
-                subtitleTextAlign: .center,
-                style: .info,
-                colors: CustomBannerColors()
+            let banner = StatusBarNotificationBanner(
+                title: "Saved to \(listName)",
+                style: .info
             )
-            banner.show(
-                queuePosition: .front,
-                bannerPosition: .top,
-                queue: .default,
-                edgeInsets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-                cornerRadius: 20
-            )
+            banner.show()
         }
     }
 }
@@ -181,10 +171,9 @@ extension SaveMediaViewController: SaveMediaDelegate {
     }
 
     func presentCreateNewList() {
-        let createListModal = EnterNameModalView(type: .createList)
-        createListModal.modalDelegate = self
-        createListModal.createListDelegate = self
-        showModalPopup(view: createListModal)
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
 }

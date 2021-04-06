@@ -47,16 +47,17 @@ class DiscoverViewController: UIViewController {
         type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
-    private let titleLabel = UILabel()
+    private let titleLabel = UIImageView()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        titleLabel.text = "Telie"
-        titleLabel.textColor = .black
-        titleLabel.font = .boldSystemFont(ofSize: 24)
+//        titleLabel.text = "Telie"
+//        titleLabel.textColor = .black
+//        titleLabel.font = .boldSystemFont(ofSize: 24)
+        titleLabel.image = UIImage(named: "logomark")
         view.addSubview(titleLabel)
 
         buyMeCofeeButton.setImage(UIImage(named: "buyMeCoffeeIcon"), for: .normal)
@@ -68,6 +69,8 @@ class DiscoverViewController: UIViewController {
         view.addSubview(searchButton)
 
         refreshControl.addTarget(self, action: #selector(refreshDiscoverData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self
@@ -103,7 +106,8 @@ class DiscoverViewController: UIViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.leading.equalToSuperview().inset(16)
-            make.size.equalTo(CGSize(width: 55, height: 29))
+            make.size.equalTo(CGSize(width: 90, height: 29))
+//            make.size.equalTo(CGSize(width: 55, height: 29))
         }
 
         searchButton.snp.makeConstraints { make in

@@ -113,10 +113,9 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showRenameListModal() {
-        let renameListModalView = EnterNameModalView(type: .renameList)
-        renameListModalView.modalDelegate = self
-        renameListModalView.listSettingsDelegate = self
-        showModalPopup(view: renameListModalView)
+        let newGroupViewController = NewListViewController(type: .renameList)
+        newGroupViewController.listSettingsDelegate = self
+        present(newGroupViewController, animated: true)
     }
 
 }

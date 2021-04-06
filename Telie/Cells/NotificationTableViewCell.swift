@@ -94,6 +94,9 @@ class NotificationTableViewCell: UITableViewCell {
     private func setupProfileImageView(user: UserProfile) {
         if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
+        } else {
+            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
+
         }
     }
 
@@ -224,11 +227,6 @@ class NotificationTableViewCell: UITableViewCell {
         default:
             break
         }
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        profileImageView.image = nil
     }
 
 }

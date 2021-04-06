@@ -32,6 +32,8 @@ class ActivityViewController: UIViewController {
         view.backgroundColor = .offWhite
         
         refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
         activityTableView.isHidden = true
         activityTableView.delegate = self

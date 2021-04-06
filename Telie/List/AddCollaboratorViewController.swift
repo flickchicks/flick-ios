@@ -24,7 +24,7 @@ class AddCollaboratorViewController: UIViewController {
     private let inviteTitleLabel = UILabel()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .ballSpinFadeLoader,
+        type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
     private let subtitleLabel = UILabel()
@@ -51,6 +51,10 @@ class AddCollaboratorViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         view.backgroundColor = .white
 
         collaboratorsTitleLabel.text = "Collaborators"
@@ -69,8 +73,11 @@ class AddCollaboratorViewController: UIViewController {
         collaboratorsTableView.delegate = self
         collaboratorsTableView.allowsMultipleSelection = true
         collaboratorsTableView.isScrollEnabled = true
-        collaboratorsTableView.alwaysBounceVertical = false
+        collaboratorsTableView.alwaysBounceVertical = true
+        collaboratorsTableView.bounces = true
         collaboratorsTableView.showsVerticalScrollIndicator = false
+        // TODO: Revisit content inset amount
+        collaboratorsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         collaboratorsTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
         collaboratorsTableView.separatorStyle = .none
         view.addSubview(collaboratorsTableView)
@@ -89,8 +96,19 @@ class AddCollaboratorViewController: UIViewController {
 
     }
 
-    @objc func addCollaboratorButtonPressed() {
+    @objc func keyboardWillShow(sender: NSNotification) {
+        if let keyboardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            collaboratorsTableView.snp.updateConstraints { update in
+                update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(keyboardHeight)
+            }
+        }
+    }
 
+    @objc func keyboardWillHide(sender: NSNotification) {
+        collaboratorsTableView.snp.updateConstraints { update in
+            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
 
     private func setupConstraints() {
@@ -124,7 +142,7 @@ class AddCollaboratorViewController: UIViewController {
             make.leading.equalTo(collaboratorsTitleLabel)
             make.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(inviteSearchBar.snp.bottom).offset(10)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
 

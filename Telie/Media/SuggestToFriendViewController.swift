@@ -225,21 +225,11 @@ class SuggestToFriendViewController: UIViewController {
             guard let self = self else { return }
             if success {
                 self.dismiss(animated: true) {
-                    let banner = FloatingNotificationBanner(
-                        subtitle: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
-                        subtitleFont: .boldSystemFont(ofSize: 14),
-                        subtitleColor: .black,
-                        subtitleTextAlign: .center,
-                        style: .info,
-                        colors: CustomBannerColors()
+                    let banner = StatusBarNotificationBanner(
+                        title: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
+                        style: .info
                     )
-                    banner.show(
-                        queuePosition: .front,
-                        bannerPosition: .top,
-                        queue: .default,
-                        edgeInsets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-                        cornerRadius: 20
-                    )
+                    banner.show()
                 }
                 self.saveSpinner.stopAnimating()
             }

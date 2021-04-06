@@ -49,6 +49,8 @@ class GroupsViewController: UIViewController {
         view.addSubview(createGroupButton)
 
         refreshControl.addTarget(self, action: #selector(refreshGroups), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         groupsTableView.refreshControl = refreshControl
         
         emptyStateView.isHidden = true
@@ -89,10 +91,9 @@ class GroupsViewController: UIViewController {
     }
 
     @objc private func createGroupPressed() {
-        let createGroupModalView = EnterNameModalView(type: .createGroup)
-        createGroupModalView.modalDelegate = self
-        createGroupModalView.createGroupDelegate = self
-        showModalPopup(view: createGroupModalView)
+        let newGroupViewController = NewListViewController(type: .createGroup)
+        newGroupViewController.createGroupDelegate = self
+        present(newGroupViewController, animated: true)
     }
 
     @objc private func refreshGroups() {
