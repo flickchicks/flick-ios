@@ -47,17 +47,17 @@ class DiscoverViewController: UIViewController {
         type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
-    private let titleLabel = UIImageView()
+
+    private let titleLabel = UILabel()
     private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-//        titleLabel.text = "Telie"
-//        titleLabel.textColor = .black
-//        titleLabel.font = .boldSystemFont(ofSize: 24)
-        titleLabel.image = UIImage(named: "logomark")
+        titleLabel.text = "Telie"
+        titleLabel.textColor = .black
+        titleLabel.font = .boldSystemFont(ofSize: 24)
         view.addSubview(titleLabel)
 
         buyMeCofeeButton.setImage(UIImage(named: "buyMeCoffeeIcon"), for: .normal)
@@ -106,8 +106,7 @@ class DiscoverViewController: UIViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.leading.equalToSuperview().inset(16)
-            make.size.equalTo(CGSize(width: 90, height: 29))
-//            make.size.equalTo(CGSize(width: 55, height: 29))
+            make.size.equalTo(CGSize(width: 55, height: 29))
         }
 
         searchButton.snp.makeConstraints { make in

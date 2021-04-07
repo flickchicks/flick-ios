@@ -41,7 +41,6 @@ class SaveMediaViewController: UIViewController {
     init(mediaId: Int, type: MediaListsModalViewType) {
         self.mediaId = mediaId
         self.type = type
-        print("this is my type", type)
         super.init(nibName: nil, bundle: nil)
     }
     

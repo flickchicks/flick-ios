@@ -287,20 +287,6 @@ extension MediaViewController: SaveMediaDelegate {
 
 }
 
-//extension MediaViewController: CreateListDelegate {
-//
-//    func createList(title: String) {
-//        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { mediaList in
-//            let banner = StatusBarNotificationBanner(
-//                title: "Saved to \(mediaList.name)",
-//                style: .info
-//            )
-//            banner.show()
-//        }
-//    }
-//
-//}
-
 extension MediaViewController: ShareMediaDelegate {
 
     func showSuggestToFriendView() {
