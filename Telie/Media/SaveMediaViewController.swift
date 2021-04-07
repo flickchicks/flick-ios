@@ -52,7 +52,7 @@ class SaveMediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .movieWhite
+        view.backgroundColor = .white
 
         titleLabel.text = type == .saveMedia ? "Save to list" : "Move to list"
         titleLabel.textColor = .black
@@ -72,7 +72,7 @@ class SaveMediaViewController: UIViewController {
         listsTableView.showsVerticalScrollIndicator = false
         view.addSubview(listsTableView)
 
-        newListButton.setTitle("Add", for: .normal)
+        newListButton.setTitle("New", for: .normal)
         newListButton.setTitleColor(.gradientPurple, for: .normal)
         newListButton.titleLabel?.font = .systemFont(ofSize: 14)
         newListButton.addTarget(self, action: #selector(newListButtonPressed), for: .touchUpInside)
@@ -81,7 +81,6 @@ class SaveMediaViewController: UIViewController {
         view.addSubview(newListSpinner)
         view.addSubview(spinner)
 
-        spinner.startAnimating()
         getLists()
         setupConstraints()
 
@@ -118,6 +117,8 @@ class SaveMediaViewController: UIViewController {
     }
 
     private func getLists() {
+        listsTableView.isHidden = true
+        spinner.startAnimating()
         NetworkManager.getUserProfile { [weak self] user in
             guard let self = self, let user = user else { return }
             DispatchQueue.main.async {
@@ -125,6 +126,7 @@ class SaveMediaViewController: UIViewController {
                 self.spinner.stopAnimating()
                 self.listsTableView.isHidden = false
                 self.listsTableView.reloadData()
+                self.spinner.stopAnimating()
             }
         }
     }
@@ -148,16 +150,7 @@ extension SaveMediaViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = lists[indexPath.item]
-//        print("did select row at", type)
-//        if type == .moveMedia {
-//            print("type move")
-//            dismiss(animated: true) { () in
-//                self.editListDelegate?.moveMedia(selectedList: list)
-//            }
-//        } else {
-//            print("saving")
         saveMedia(selectedList: list)
-//        }
     }
 
 }
@@ -204,7 +197,5 @@ extension SaveMediaViewController: SaveMediaDelegate {
 extension SaveMediaViewController: CreateListDelegate {
     func createList(list: MediaList) {
         getLists()
-        listsTableView.reloadData()
     }
-
 }

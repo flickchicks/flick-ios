@@ -250,11 +250,6 @@ extension AddCollaboratorViewController: EditUserCellDelegate {
             DispatchQueue.main.async {
                 self.list = list
                 self.collaborators = [self.owner] + list.collaborators
-                let banner = StatusBarNotificationBanner(
-                    title: "Added \(user.username) to list.",
-                    style: .info
-                )
-                banner.show()
                 self.collaboratorsTableView.reloadData()
             }
         }
@@ -267,11 +262,6 @@ extension AddCollaboratorViewController: EditUserCellDelegate {
                 self.list = list
                 self.collaborators = [self.owner] + list.collaborators
                 self.listFriends = [self.owner] + list.collaborators
-                let banner = StatusBarNotificationBanner(
-                    title: "Removed \(user.username) from list.",
-                    style: .info
-                )
-                banner.show()
                 self.collaboratorsTableView.reloadData()
             }
         }

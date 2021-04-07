@@ -16,7 +16,6 @@ class GroupViewController: UIViewController {
     private var tabCollectionView: UICollectionView!
     private var tabContainerView = UIView()
     private var tabPageViewController: GroupTabPageViewController
-    private var addMembersModalView: AddMembersModalView!
 
     // MARK: - Private Data Vars
     private var activeTabIndex = 0
@@ -29,7 +28,6 @@ class GroupViewController: UIViewController {
     init(group: Group, shouldAddMembers: Bool = false) {
         self.group = group
         self.tabPageViewController = GroupTabPageViewController(groupId: group.id)
-        self.addMembersModalView = AddMembersModalView(group: group)
         self.shouldAddMembers = shouldAddMembers
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,8 +40,8 @@ class GroupViewController: UIViewController {
         super.viewDidLoad()
 
         if shouldAddMembers {
-            addMembersModalView.modalDelegate = self
-            showModalPopup(view: addMembersModalView)
+            let addMembersViewController = AddMembersToGroupsViewController(group: group)
+            present(addMembersViewController, animated: true)
             shouldAddMembers = false
         }
 
@@ -210,15 +208,6 @@ extension GroupViewController: GroupVoteDelegate {
         navigationItem.leftBarButtonItem?.isEnabled = true
         settingsButton.tintColor = .mediumGray
         navigationItem.rightBarButtonItem?.isEnabled = true
-    }
-
-}
-
-
-extension GroupViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
     }
 
 }

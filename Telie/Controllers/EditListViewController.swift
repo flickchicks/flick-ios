@@ -231,7 +231,6 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
-        guard selectedMedia.count > 0 else { return }
         let confirmMessage = selectedMedia.count == 1 ?
         "Are you sure you want to remove this item from this list?" :
         "Are you sure you want to remove these \(selectedMedia.count) items from this list?"
@@ -242,7 +241,6 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
-        guard selectedMedia.count > 0 else { return }
         let moveMediaViewController = SaveMediaViewController(mediaId: 0, type: .moveMedia)
         moveMediaViewController.editListDelegate = self
         present(moveMediaViewController, animated: true)
@@ -303,6 +301,15 @@ extension EditListViewController: EditListDelegate {
 
     func moveMedia(selectedList: SimpleMediaList) {
         let mediaIds = selectedMedia.map { $0.id }
+
+        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+            guard let self = self else { return }
+            self.list = list
+            self.media = list.shows
+            self.setActionsActive(list.shows.count != 0)
+            self.mediaCollectionView.reloadData()
+        }
+
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
@@ -312,14 +319,6 @@ extension EditListViewController: EditListDelegate {
             banner.show()
             self.selectedMedia = []
         }
-
-        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
-            guard let self = self else { return }
-
-            self.list = list
-            self.media = list.shows
-            self.mediaCollectionView.reloadData()
-        }
     }
 
     func removeMediaFromList() {
@@ -327,14 +326,15 @@ extension EditListViewController: EditListDelegate {
         NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
-                title: "Removed \(self.selectedMedia.count) items",
+                title: "Removed from list",
                 style: .info
             )
             banner.show()
             self.list = list
             self.media = list.shows
-            self.mediaCollectionView.reloadData()
             self.selectedMedia = []
+            self.setActionsActive(list.shows.count != 0)
+            self.mediaCollectionView.reloadData()
         }
     }
 

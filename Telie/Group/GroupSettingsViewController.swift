@@ -152,10 +152,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showAddMembersModal() {
-        let addMembersModalView = AddMembersModalView(group: group)
-        addMembersModalView.modalDelegate = self
-        addMembersModalView.delegate = self
-        showModalPopup(view: addMembersModalView)
+        let addMembersViewController = AddMembersToGroupsViewController(group: group)
+        addMembersViewController.delegate = self
+        present(addMembersViewController, animated: true)
     }
 
     private func showClearIdeasModal() {

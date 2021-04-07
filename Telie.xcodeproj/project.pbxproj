@@ -34,7 +34,7 @@
 		806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */; };
 		806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */; };
 		806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */; };
-		806E772225C2517D00B82ECE /* AddMembersModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E772125C2517C00B82ECE /* AddMembersModalView.swift */; };
+		806E772225C2517D00B82ECE /* AddMembersToGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */; };
 		806E777625C4FEBE00B82ECE /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E777525C4FEBE00B82ECE /* Group.swift */; };
 		8080A66225CE2F4300A8FD9E /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */; };
 		8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */; };
@@ -194,7 +194,7 @@
 		806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingResultTableViewCell.swift; sourceTree = "<group>"; };
 		806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsViewController.swift; sourceTree = "<group>"; };
 		806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingTableViewCell.swift; sourceTree = "<group>"; };
-		806E772125C2517C00B82ECE /* AddMembersModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersModalView.swift; sourceTree = "<group>"; };
+		806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersToGroupsViewController.swift; sourceTree = "<group>"; };
 		806E777525C4FEBE00B82ECE /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
@@ -415,6 +415,7 @@
 				806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */,
 				806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */,
 				8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */,
+				806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */,
 				8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */,
 			);
 			path = Group;
@@ -662,7 +663,6 @@
 				D464666524FD3E4100E5A5AB /* ProfileSelectionModalView.swift */,
 				803E5EF2259C05F5004CF4B7 /* ShareMediaModalView.swift */,
 				80E7F91425B5415400B545C8 /* ModalView.swift */,
-				806E772125C2517C00B82ECE /* AddMembersModalView.swift */,
 			);
 			path = ModalViews;
 			sourceTree = "<group>";
@@ -1036,7 +1036,7 @@
 				806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */,
 				D41FE8B42477C7A40048900F /* SceneDelegate.swift in Sources */,
 				D4F64D3B24830CF000A5A2E5 /* ListTableViewCell.swift in Sources */,
-				806E772225C2517D00B82ECE /* AddMembersModalView.swift in Sources */,
+				806E772225C2517D00B82ECE /* AddMembersToGroupsViewController.swift in Sources */,
 				D4FB449224B11CB7003CA71A /* Constants.swift in Sources */,
 				80E3A1A324A597FA0084203A /* ProfileHeaderView.swift in Sources */,
 				D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */,

@@ -67,7 +67,7 @@ class NewListViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        view.backgroundColor = .movieWhite
+        view.backgroundColor = .white
 
         titleLabel.text = type.titleText
         titleLabel.textColor = .black
@@ -80,7 +80,7 @@ class NewListViewController: UIViewController {
         nameTextField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 9, height: 36))
         nameTextField.leftViewMode = .always
         nameTextField.borderStyle = .none
-        nameTextField.layer.backgroundColor = UIColor.movieWhite.cgColor
+        nameTextField.layer.backgroundColor = UIColor.white.cgColor
         nameTextField.layer.masksToBounds = false
         nameTextField.layer.shadowColor = UIColor.mediumGray.cgColor
         nameTextField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)

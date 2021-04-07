@@ -58,7 +58,7 @@ class SuggestToFriendViewController: UIViewController {
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
         view.addSubview(onlyFriendSeeLabel)
 
-        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitle("Send", for: .normal)
         saveButton.setTitleColor(.gradientPurple, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 14)
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
