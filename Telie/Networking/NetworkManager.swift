@@ -257,7 +257,6 @@ class NetworkManager {
             "shows": mediaIds,
             "tags": tagIds,
         ]
-        print("Adding to media list")
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -266,8 +265,6 @@ class NetworkManager {
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
                     completion(mediaList)
-                } else {
-                    print("wrong didnt go through why", mediaIds)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

@@ -28,9 +28,8 @@ class SaveMediaViewController: UIViewController {
     )
     private let titleLabel = UILabel()
 
-    private let mediaId: Int
-
     // MARK: - Private Data Vars
+    private let mediaId: Int
 
     init(mediaId: Int) {
         self.mediaId = mediaId
