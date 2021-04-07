@@ -231,6 +231,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
+        guard selectedMedia.count > 0 else { return }
         let confirmMessage = selectedMedia.count == 1 ?
         "Are you sure you want to remove this item from this list?" :
         "Are you sure you want to remove these \(selectedMedia.count) items from this list?"
@@ -241,6 +242,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
+        guard selectedMedia.count > 0 else { return }
         let moveMediaViewController = SaveMediaViewController(mediaId: 0, type: .moveMedia)
         moveMediaViewController.editListDelegate = self
         present(moveMediaViewController, animated: true)
@@ -301,11 +303,10 @@ extension EditListViewController: EditListDelegate {
 
     func moveMedia(selectedList: SimpleMediaList) {
         let mediaIds = selectedMedia.map { $0.id }
-        print("mvoign")
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
-                title: "Moved \(self.selectedMedia.count) items to \(selectedList.name)",
+                title: "Moved to \(selectedList.name)",
                 style: .info
             )
             banner.show()

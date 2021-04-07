@@ -41,6 +41,7 @@ class SaveMediaViewController: UIViewController {
     init(mediaId: Int, type: MediaListsModalViewType) {
         self.mediaId = mediaId
         self.type = type
+        print("this is my type", type)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -147,13 +148,16 @@ extension SaveMediaViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = lists[indexPath.item]
-        if type == .moveMedia {
-            dismiss(animated: true) { () in
-                self.editListDelegate?.moveMedia(selectedList: list)
-            }
-        } else {
-            saveMedia(selectedList: list)
-        }
+//        print("did select row at", type)
+//        if type == .moveMedia {
+//            print("type move")
+//            dismiss(animated: true) { () in
+//                self.editListDelegate?.moveMedia(selectedList: list)
+//            }
+//        } else {
+//            print("saving")
+        saveMedia(selectedList: list)
+//        }
     }
 
 }
@@ -175,11 +179,17 @@ extension SaveMediaViewController: SaveMediaDelegate {
     func saveMedia(selectedList: SimpleMediaList) {
         newListSpinner.startAnimating()
         newListButton.isHidden = true
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
-            guard let self = self else { return }
-            self.newListSpinner.stopAnimating()
-            self.newListButton.isHidden = false
-            self.showSaveMessage(listName: list.name)
+        if type == .moveMedia {
+            dismiss(animated: true) { () in
+                self.editListDelegate?.moveMedia(selectedList: selectedList)
+            }
+        } else {
+            NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
+                guard let self = self else { return }
+                self.newListSpinner.stopAnimating()
+                self.newListButton.isHidden = false
+                self.showSaveMessage(listName: list.name)
+            }
         }
     }
 
