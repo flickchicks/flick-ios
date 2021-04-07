@@ -309,7 +309,8 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
                 self.group = group
                 let banner = StatusBarNotificationBanner(
                     title: "Ideas cleared",
-                    style: .info
+                    style: .info,
+                    colors: CustomBannerColors()
                 )
                 banner.show()
             }

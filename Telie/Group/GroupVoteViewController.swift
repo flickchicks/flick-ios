@@ -360,7 +360,8 @@ extension GroupVoteViewController: AddMediaDelegate {
         getPendingIdeas()
         let banner = StatusBarNotificationBanner(
             title: "Ideas added",
-            style: .info
+            style: .info,
+            colors: CustomBannerColors()
         )
         banner.show()
     }

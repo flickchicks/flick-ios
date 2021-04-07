@@ -227,7 +227,8 @@ class SuggestToFriendViewController: UIViewController {
                 self.dismiss(animated: true) {
                     let banner = StatusBarNotificationBanner(
                         title: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
-                        style: .info
+                        style: .info,
+                        colors: CustomBannerColors()
                     )
                     banner.show()
                 }

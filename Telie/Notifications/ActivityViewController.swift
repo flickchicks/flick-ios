@@ -256,7 +256,8 @@ extension ActivityViewController: ActivityDelegate {
     func refreshActivity(message: String) {
         let banner = StatusBarNotificationBanner(
             title: message,
-            style: .info
+            style: .info,
+            colors: CustomBannerColors()
         )
         banner.show()
         getActivity()

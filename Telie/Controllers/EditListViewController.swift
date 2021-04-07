@@ -314,7 +314,8 @@ extension EditListViewController: EditListDelegate {
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
                 title: "Moved to \(selectedList.name)",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
             self.selectedMedia = []
@@ -327,7 +328,8 @@ extension EditListViewController: EditListDelegate {
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
                 title: "Removed from list",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
             self.list = list

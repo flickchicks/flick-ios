@@ -273,7 +273,8 @@ extension MediaViewController: SaveMediaDelegate {
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { list in
             let banner = StatusBarNotificationBanner(
                 title: "Saved to \(selectedList.name)",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
         }
@@ -281,7 +282,6 @@ extension MediaViewController: SaveMediaDelegate {
 
     func presentCreateNewList() {
         let newListViewController = NewListViewController(type: .createList)
-//        newListViewController.createListDelegate = self
         present(newListViewController, animated: true)
     }
 

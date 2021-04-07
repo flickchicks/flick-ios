@@ -397,7 +397,8 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
                 guard success else { return }
                 let banner = StatusBarNotificationBanner(
                     title: "Friend request sent",
-                    style: .info
+                    style: .info,
+                    colors: CustomBannerColors()
                 )
                 banner.show()
                 self.user?.friendStatus = .outgoingRequest
@@ -410,7 +411,8 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
                 guard success else { return }
                 let banner = StatusBarNotificationBanner(
                     title: "Friend request accepted",
-                    style: .info
+                    style: .info,
+                    colors: CustomBannerColors()
                 )
                 banner.show()
                 self.user?.friendStatus = .friends

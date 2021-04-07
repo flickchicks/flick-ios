@@ -138,7 +138,8 @@ class SaveMediaViewController: UIViewController {
         dismiss(animated: true) {
             let banner = StatusBarNotificationBanner(
                 title: "Saved to \(listName)",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
         }

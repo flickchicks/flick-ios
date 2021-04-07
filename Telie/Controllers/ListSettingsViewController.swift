@@ -168,7 +168,8 @@ extension ListSettingsViewController: ListSettingsDelegate {
             guard let self = self else { return }
             let banner = StatusBarNotificationBanner(
                 title: "Deleted \(self.list.name)",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
             let controllers = self.navigationController?.viewControllers
@@ -185,7 +186,8 @@ extension ListSettingsViewController: ListSettingsDelegate {
     func renameList(to name: String) {
         let banner = StatusBarNotificationBanner(
             title: "Renamed to \(name)",
-            style: .info
+            style: .info,
+            colors: CustomBannerColors()
         )
         banner.show()
     }
@@ -198,7 +200,8 @@ extension ListSettingsViewController: ListSettingsDelegate {
             self.list = list
             let banner = StatusBarNotificationBanner(
                 title: "Updated to \(list.isPrivate ? "private" : "public")",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
         }

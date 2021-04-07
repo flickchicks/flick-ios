@@ -421,7 +421,8 @@ extension ListViewController: AddMediaDelegate {
         getMediaList()
         let banner = StatusBarNotificationBanner(
             title: "Added items to list",
-            style: .info
+            style: .info,
+            colors: CustomBannerColors()
         )
         banner.show()
     }
