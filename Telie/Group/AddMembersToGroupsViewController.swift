@@ -62,7 +62,6 @@ class AddMembersToGroupsViewController: UIViewController {
         view.addSubview(spinner)
 
         if friends.isEmpty {
-//            usersTableView.backgroundView = spinner
             spinner.startAnimating()
         }
 

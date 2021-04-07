@@ -265,8 +265,6 @@ class NetworkManager {
                 if let mediaListData = try? jsonDecoder.decode(Response<MediaList>.self, from: data) {
                     let mediaList = mediaListData.data
                     completion(mediaList)
-                } else {
-                    print("wrong didnt go through why", mediaIds)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

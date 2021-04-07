@@ -31,12 +31,11 @@ class SaveMediaViewController: UIViewController {
         color: .gradientPurple
     )
     private let titleLabel = UILabel()
-    weak var editListDelegate: EditListDelegate?
-
-    private let mediaId: Int
-    private let type: MediaListsModalViewType
 
     // MARK: - Private Data Vars
+    weak var editListDelegate: EditListDelegate?
+    private let mediaId: Int
+    private let type: MediaListsModalViewType
 
     init(mediaId: Int, type: MediaListsModalViewType) {
         self.mediaId = mediaId

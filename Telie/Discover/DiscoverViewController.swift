@@ -41,15 +41,14 @@ class DiscoverViewController: UIViewController {
     private var discoverContent: DiscoverContent? = nil
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private var discoverSections: [DiscoverSection] = []
+    private let refreshControl = UIRefreshControl()
     private let searchButton = UIButton()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
         type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
-
     private let titleLabel = UILabel()
-    private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
