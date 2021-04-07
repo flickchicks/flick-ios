@@ -145,7 +145,6 @@ class NetworkManager {
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
         AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -233,7 +232,6 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -501,7 +499,6 @@ class NetworkManager {
     static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
         let parameters: [String: Any] = [:]
         AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

@@ -29,7 +29,7 @@ class UserTableViewCell: UITableViewCell {
         userProfileImageView.layer.masksToBounds = true
         userProfileImageView.clipsToBounds = true
         userProfileImageView.layer.cornerRadius = 20
-        userProfileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userProfileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userProfileImageView)
         
         nameLabel.font = .systemFont(ofSize: 16)
@@ -46,8 +46,10 @@ class UserTableViewCell: UITableViewCell {
     func configure(user: UserProfile) {
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             userProfileImageView.kf.setImage(with: imageUrl)
+        } else {
+            userProfileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
     }
     

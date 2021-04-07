@@ -30,6 +30,8 @@ class ListTableViewCell: UITableViewCell {
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
     private let seeAllCellReuseIdentifier = "SeeAllCellReuseIdentifier"
 
+    static let reuseIdentifier = "ListCellReuseIdentifier"
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 

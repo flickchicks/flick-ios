@@ -6,8 +6,8 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import Foundation
 import Kingfisher
+import NotificationBannerSwift
 import UIKit
 
 protocol SaveMediaDelegate: class {
@@ -20,7 +20,6 @@ enum CardState {case collapsed, expanded }
 class MediaViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var suggestToFriendView: SuggestToFriendModalView!
     private var mediaCardViewController: MediaCardViewController!
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
@@ -150,10 +149,7 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        let listsModalView = MediaListsModalView(type: .saveMedia, currentList: nil)
-        listsModalView.modalDelegate = self
-        listsModalView.saveMediaDelegate = self
-        showModalPopup(view: listsModalView)
+        present(SaveMediaViewController(mediaId: mediaId), animated: true)
     }
 
     @objc func shareButtonTapped() {
@@ -274,10 +270,12 @@ extension MediaViewController: ModalDelegate {
 extension MediaViewController: SaveMediaDelegate {
 
     func saveMedia(selectedList: SimpleMediaList) {
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
-            guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Saved to \(selectedList.name)", completion: nil)
+        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { list in
+            let banner = StatusBarNotificationBanner(
+                title: "Saved to \(selectedList.name)",
+                style: .info
+            )
+            banner.show()
         }
     }
 
@@ -293,35 +291,22 @@ extension MediaViewController: SaveMediaDelegate {
 extension MediaViewController: CreateListDelegate {
 
     func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
-            guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Saved to \(mediaList.name)", completion: nil)
+        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { mediaList in
+            let banner = StatusBarNotificationBanner(
+                title: "Saved to \(mediaList.name)",
+                style: .info
+            )
+            banner.show()
         }
     }
 
 }
 
-extension MediaViewController: ShareMediaDelegate, SuggestToFriendDelegate {
+extension MediaViewController: ShareMediaDelegate {
 
     func showSuggestToFriendView() {
         if let media = media {
-            suggestToFriendView = SuggestToFriendModalView(media: media)
-            suggestToFriendView.modalDelegate = self
-            suggestToFriendView.suggestToFriendDelegate = self
-            showModalPopup(view: suggestToFriendView)
-        }
-    }
-
-    func suggestMediaToFriends(mediaId: Int, friendIds: [Int], message: String) {
-        NetworkManager.suggestMediaToFriends(friendIds: friendIds, mediaId: mediaId, message: message) { [weak self] success in
-            guard let self = self else { return }
-            if success {
-                self.presentInfoAlert(message: "Suggested to friend\(friendIds.count > 1 ? "s" : "")", completion: nil)
-                self.suggestToFriendView.clearSelectedFriends()
-            } else {
-                self.presentInfoAlert(message: "Failed to suggest to friend", completion: nil)
-            }
+            present(SuggestToFriendViewController(media: media), animated: true)
         }
     }
     

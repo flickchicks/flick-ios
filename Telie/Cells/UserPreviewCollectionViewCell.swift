@@ -42,6 +42,8 @@ class UserPreviewCollectionViewCell: UICollectionViewCell {
         } else {
             if let imageUrl = URL(string: user?.profilePicUrl ?? "") {
                 profileImageView.kf.setImage(with: imageUrl)
+            } else {
+                profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
             }
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 protocol EditListDelegate: class {
     func moveMedia(selectedList: SimpleMediaList)
@@ -300,8 +301,11 @@ extension EditListViewController: EditListDelegate {
         let mediaIds = selectedMedia.map { $0.id }
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Moved \(self.selectedMedia.count) items to \(selectedList.name)", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Moved \(self.selectedMedia.count) items to \(selectedList.name)",
+                style: .info
+            )
+            banner.show()
             self.selectedMedia = []
         }
 
@@ -318,8 +322,11 @@ extension EditListViewController: EditListDelegate {
         let mediaIds = selectedMedia.map { $0.id }
         NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Removed \(self.selectedMedia.count) items", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Removed \(self.selectedMedia.count) items",
+                style: .info
+            )
+            banner.show()
             self.list = list
             self.media = list.shows
             self.mediaCollectionView.reloadData()

@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class CustomNavigationController: UINavigationController {
 
     // MARK: - Properties

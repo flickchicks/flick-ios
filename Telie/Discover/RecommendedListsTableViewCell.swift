@@ -23,7 +23,6 @@ class RecommendedListsTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
 
-        titleLabel.text = "📔 Lists You'll Love"
         titleLabel.font = .boldSystemFont(ofSize: 14)
         titleLabel.textColor = .darkBlueGray2
         contentView.addSubview(titleLabel)
@@ -67,7 +66,8 @@ class RecommendedListsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with lsts: [MediaList]) {
+    func configure(with lsts: [MediaList], header: String) {
+        titleLabel.text = header
         self.lsts = lsts
         recommendedShowsCollectionView.reloadData()
     }

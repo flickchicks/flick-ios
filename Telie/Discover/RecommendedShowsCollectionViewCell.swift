@@ -13,6 +13,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     private let detailLabel = UILabel()
     private let imageView = UIImageView()
+    private let listImageView = UIImageView()
     private let listLabel = UILabel()
     private var mediaId: Int!
     private let userImageView = UIImageView()
@@ -28,20 +29,25 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "defaultMovie")
         contentView.addSubview(imageView)
 
+        userImageView.isHidden = true
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.masksToBounds = true
         userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = 10
         userImageView.layer.borderWidth = 1.5
         userImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
+
+        listImageView.image = UIImage(named: "listIcon")
+        contentView.addSubview(listImageView)
 
         listLabel.font = .systemFont(ofSize: 12)
         listLabel.textColor = .mediumGray
@@ -69,26 +75,39 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
 
+        listImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 10, height: 14))
+            make.leading.equalTo(detailLabel)
+            make.centerY.equalTo(listLabel)
+        }
+
         listLabel.snp.makeConstraints { make in
             make.top.equalTo(detailLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(detailLabel)
+            make.trailing.equalTo(detailLabel)
+            make.leading.equalTo(listImageView.snp.trailing).offset(4)
             make.height.equalTo(15)
         }
     }
 
     func configure(with media: SimpleMedia) {
         mediaId = media.id
-        if let imageUrl = URL(string: media.posterPic ?? "defaultMovie") {
+        if let posterPic = media.posterPic,
+           let imageUrl = URL(string: posterPic) {
             imageView.kf.setImage(with: imageUrl)
         }
         if let savedToLsts = media.savedToLsts,
-           savedToLsts.count > 0,
-           let imageUrl = URL(string: savedToLsts[0].savedBy.profilePicUrl ?? "") {
-                let savedByUser = savedToLsts[0].savedBy
+           savedToLsts.count > 0 {
+            userImageView.isHidden = false
+            let savedByUser = savedToLsts[0].savedBy
+            if let profilePicUrl = savedToLsts[0].savedBy.profilePicUrl,
+               let imageUrl = URL(string: profilePicUrl) {
                 userImageView.kf.setImage(with: imageUrl)
-
+            }
             detailLabel.text = "Saved by \(savedByUser.name)"
             listLabel.text = savedToLsts[0].lstName
+        } else {
+            userImageView.isHidden = true
+            listImageView.isHidden = true
         }
     }
 
@@ -98,7 +117,10 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.image = nil
+        imageView.image = UIImage(named: "defaultMovie")
+        userImageView.image = nil
+        detailLabel.text = ""
+        listLabel.text = ""
     }
 
 }

@@ -23,7 +23,6 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
 
-        titleLabel.text = "📺 Shows For You"
         titleLabel.font = .boldSystemFont(ofSize: 14)
         titleLabel.textColor = .darkBlueGray2
         contentView.addSubview(titleLabel)
@@ -56,7 +55,7 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         recommendedShowsCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.height.equalTo(512)
+            make.height.equalTo(514)
             make.bottom.equalToSuperview().inset(30)
         }
     }
@@ -65,7 +64,8 @@ class RecommendedShowsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with shows: [SimpleMedia]) {
+    func configure(with shows: [SimpleMedia], header: String) {
+        titleLabel.text = header
         self.shows = shows
         recommendedShowsCollectionView.reloadData()
     }
@@ -97,6 +97,6 @@ extension RecommendedShowsTableViewCell: UICollectionViewDelegate {
 
 extension RecommendedShowsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 312, height: 512)
+        return CGSize(width: 312, height: 514)
     }
 }

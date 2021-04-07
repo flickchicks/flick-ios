@@ -24,8 +24,11 @@ target 'Telie' do
 	pod 'SPPermissions/Notification'
 
 	# Data Loading
+	pod 'NotificationBannerSwift', '~> 3.0.0'
 	pod 'SkeletonView'
 	pod 'Kingfisher', '~> 5.15.0'
+	pod 'NVActivityIndicatorView'
+	pod 'Hero'
 
   target 'TelieTests' do
     inherit! :search_paths

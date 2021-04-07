@@ -24,6 +24,7 @@ class CommentTableViewCell: UITableViewCell {
     private let dateLabel = UILabel()
     private let likeButton = UIButton()
     private let nameLabel = UILabel()
+    private let numLikeLabel = UILabel()
     private let profileImageView = UIImageView()
     private let viewSpoilerButton = UIButton()
 
@@ -38,9 +39,10 @@ class CommentTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.isUserInteractionEnabled = true
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
-        profileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
+        profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         profileImageView.layer.cornerRadius = 20
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
@@ -53,7 +55,7 @@ class CommentTableViewCell: UITableViewCell {
         
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
-        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 6, bottom: 12, right: 6)
         commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
         commentTextView.font = .systemFont(ofSize: 12)
         commentTextView.textColor = .black
@@ -72,6 +74,11 @@ class CommentTableViewCell: UITableViewCell {
 
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         contentView.addSubview(likeButton)
+        
+        numLikeLabel.textAlignment = .center
+        numLikeLabel.font = .systemFont(ofSize: 8)
+        numLikeLabel.textColor = .mediumGray
+        contentView.addSubview(numLikeLabel)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -124,7 +131,6 @@ class CommentTableViewCell: UITableViewCell {
 
         commentTextView.snp.makeConstraints { make in
             make.top.equalTo(profileImageView)
-            make.trailing.equalTo(dateLabel.snp.leading).offset(-38)
             make.leading.equalTo(nameLabel)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
@@ -133,6 +139,12 @@ class CommentTableViewCell: UITableViewCell {
             make.size.equalTo(heartImageSize)
             make.trailing.equalToSuperview()
             make.centerY.equalTo(commentTextView)
+        }
+        
+        numLikeLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(likeButton)
+            make.size.equalTo(CGSize(width: 25, height: 9))
+            make.top.equalTo(likeButton.snp.bottom).offset(2)
         }
 
         viewSpoilerButton.snp.makeConstraints { make in
@@ -149,21 +161,36 @@ class CommentTableViewCell: UITableViewCell {
 //        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         nameLabel.text = comment.owner.name
+        // TODO: Find better way to dynamically resize comment cell
+        if comment.message.count > 46 {
+            commentTextView.snp.remakeConstraints { remake in
+                remake.top.equalTo(profileImageView)
+                remake.trailing.equalTo(dateLabel.snp.leading).offset(-38)
+                remake.leading.equalTo(nameLabel)
+                remake.bottom.equalToSuperview().inset(8)
+            }
+        }
         let dateLabelText = Date().getDateLabelText(createdAt: comment.createdAt)
         dateLabel.text = dateLabelText
-        // TODO: Complete logic to detect if comment has been liked
         let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
         }
         viewSpoilerButton.isHidden = true
+        numLikeLabel.text = comment.numLikes > 0 ? "\(comment.numLikes)" : ""
 //        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImageView.image = nil
+        likeButton.imageView?.image = nil
+        commentTextView.snp.remakeConstraints { remake in
+            remake.top.equalTo(profileImageView)
+            remake.leading.equalTo(nameLabel)
+            remake.bottom.equalToSuperview().inset(8)
+        }
     }
 
 }

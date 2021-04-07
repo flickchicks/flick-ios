@@ -6,6 +6,7 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 protocol AddMembersDelegate: class {
@@ -16,7 +17,11 @@ class AddMembersModalView: ModalView {
 
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
     private let usersTableView = UITableView()
 
@@ -49,7 +54,6 @@ class AddMembersModalView: ModalView {
         usersTableView.keyboardDismissMode = .onDrag
         containerView.addSubview(usersTableView)
 
-        spinner.hidesWhenStopped = true
         if friends.isEmpty {
             usersTableView.backgroundView = spinner
             spinner.startAnimating()
@@ -125,7 +129,7 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let user = isSearching ? users[indexPath.row] : friends[indexPath.row]
         let isAdded = (group.members ?? []).contains { user.id == $0.id }
-        cell.configureForAdd(user: user, isAdded: isAdded)
+        cell.configureForAdd(user: user, editMode: .add, isAdded: isAdded)
         cell.delegate = self
         return cell
     }

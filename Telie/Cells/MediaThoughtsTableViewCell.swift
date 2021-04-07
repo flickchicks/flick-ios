@@ -16,6 +16,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let commentDateLabel = UILabel()
     private let commentTextView = UITextView()
     private let commentLikeButton = UIButton()
+    private let commentNumLikeLabel = UILabel()
     private let commentOwnerLabel = UILabel()
     private let commentProfileImageView = UIImageView()
 //    private let noCommentLabel = UILabel()
@@ -52,7 +53,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let profileTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         commentProfileImageView.isUserInteractionEnabled = true
         commentProfileImageView.addGestureRecognizer(profileTapGestureRecognizer)
-        commentProfileImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
+        commentProfileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         commentProfileImageView.contentMode = .scaleAspectFit
         commentProfileImageView.layer.cornerRadius = 20
         commentProfileImageView.layer.masksToBounds = true
@@ -66,7 +67,7 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentTextView.addGestureRecognizer(tapGestureRecognizer)
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
-        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 6, bottom: 12, right: 6)
         commentTextView.layer.backgroundColor = UIColor.lightGray2.cgColor
         commentTextView.font = .systemFont(ofSize: 12)
         commentTextView.textColor = .black
@@ -84,6 +85,11 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
         commentLikeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
         commentCellView.addSubview(commentLikeButton)
+        
+        commentNumLikeLabel.textAlignment = .center
+        commentNumLikeLabel.font = .systemFont(ofSize: 8)
+        commentNumLikeLabel.textColor = .mediumGray
+        commentCellView.addSubview(commentNumLikeLabel)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -139,7 +145,8 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentOwnerLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.height.equalTo(labelHeight)
-            make.leading.trailing.equalTo(commentTextView)
+            make.leading.equalTo(commentProfileImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().inset(horizontalPadding)
         }
 
         commentDateLabel.snp.makeConstraints { make in
@@ -151,7 +158,6 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
         commentTextView.snp.makeConstraints { make in
             make.top.equalTo(commentProfileImageView)
-            make.trailing.equalToSuperview().inset(49)
             make.leading.equalTo(commentProfileImageView.snp.trailing).offset(8)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
@@ -160,6 +166,12 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.size.equalTo(heartImageSize)
             make.trailing.equalToSuperview()
             make.centerY.equalTo(commentTextView)
+        }
+        
+        commentNumLikeLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(commentLikeButton)
+            make.size.equalTo(CGSize(width: 25, height: 9))
+            make.top.equalTo(commentLikeButton.snp.bottom).offset(2)
         }
 
         viewSpoilerButton.snp.makeConstraints { make in
@@ -178,10 +190,17 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         self.comments = comments
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
-        if numComments == 0 { return }
+        if numComments == 0 {
+            setCommentViewFullWidth()
+            return
+        }
         let comment = comments[comments.count-1]
 //        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
+        // TODO: Fix comment cell resize logic here
+        if comment.message.count > 46 || comment.message.count == 0 {
+            setCommentViewFullWidth()
+        }
         viewSpoilerButton.isHidden = true
 //        viewSpoilerButton.isHidden = !comment.isSpoiler
         commentOwnerLabel.text = comment.owner.name
@@ -192,7 +211,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentLikeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             commentProfileImageView.kf.setImage(with: imageUrl)
+        } else {
+            commentProfileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
+        commentNumLikeLabel.text = comment.numLikes > 0 ? "\(comment.numLikes)" : ""
         seeAllCommentsButton.isHidden = false
     }
 
@@ -208,6 +230,14 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         }
     }
 
+    private func setCommentViewFullWidth() {
+        commentTextView.snp.remakeConstraints { remake in
+            remake.top.equalTo(commentProfileImageView)
+            remake.trailing.equalTo(commentDateLabel.snp.leading).offset(-38)
+            remake.leading.equalTo(commentOwnerLabel)
+            remake.bottom.equalToSuperview().inset(8)
+        }
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -216,6 +246,12 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         commentProfileImageView.image = nil
+        commentLikeButton.imageView?.image = nil
+        commentTextView.snp.remakeConstraints { remake in
+            remake.top.equalTo(commentProfileImageView)
+            remake.leading.equalTo(commentOwnerLabel)
+            remake.bottom.equalToSuperview().inset(8)
+        }
     }
 
 }

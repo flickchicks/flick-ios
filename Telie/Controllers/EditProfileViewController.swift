@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import NotificationBannerSwift
 
 class ProfileInputTextField: UITextField {
 
@@ -85,18 +86,19 @@ class EditProfileViewController: UIViewController {
         profileSelectionModalView.profileSelectionDelegate = self
 
         imagePickerController.delegate = self
-        imagePickerController.allowsEditing = false
+        imagePickerController.allowsEditing = true
         imagePickerController.mediaTypes = ["public.image"]
 
-        if let imageUrl = URL(string: user.profilePicUrl ?? "") {
-            profileImageView.kf.setImage(with: imageUrl)
-        }
-        
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 50
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
+            profileImageView.kf.setImage(with: imageUrl)
+        } else {
+            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
+        }
         view.addSubview(profileImageView)
 
         selectImageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
@@ -323,7 +325,12 @@ class EditProfileViewController: UIViewController {
                     self.updateUserInfo()
                 } else {
                     self.stopNavBarSpinner()
-                    self.presentInfoAlert(message: "Username invalid or already taken", completion: nil)
+                    let banner = StatusBarNotificationBanner(
+                        title: "Username invalid or already taken",
+                        style: .warning
+                    )
+                    banner.show()
+
                 }
             }
         } else {

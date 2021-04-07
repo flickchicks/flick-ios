@@ -16,6 +16,7 @@ struct SimpleMedia: Codable {
     var directors: String?
     var plot: String?
     var tags: [Tag]?
+    var dateReleased: String?
     var savedToLsts: [SavedToLst]?
 }
 

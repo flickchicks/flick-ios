@@ -37,17 +37,17 @@ class TabBarController: UITabBarController {
         let selectedGroupsIconImage = UIImage(named: "selectedGroupsIcon")
         groupsVC.tabBarItem = UITabBarItem(title: "Groups", image: groupsIconImage, selectedImage: selectedGroupsIconImage)
 
-        let profileVC = ProfileViewController(isHome: true, userId: nil)
-        let profileIconImage = UIImage(named: "profileIcon")
-        let selectedProfileIconImage = UIImage(named: "selectedProfileIcon")
-        profileVC.tabBarItem = UITabBarItem(title: "Profile", image: profileIconImage, selectedImage: selectedProfileIconImage)
-
         let notificationVC = AllNotificationsViewController()
         let notificationIconImage = UIImage(named: "notificationIcon")
         let selectedNotificationIconImage = UIImage(named: "selectedNotificationIcon")
         notificationVC.tabBarItem = UITabBarItem(title: "Notifications", image: notificationIconImage, selectedImage: selectedNotificationIconImage)
 
-        let tabBarList = [discoverVC, groupsVC, profileVC, notificationVC]
+        let profileVC = ProfileViewController(isHome: true, userId: nil)
+        let profileIconImage = UIImage(named: "profileIcon")
+        let selectedProfileIconImage = UIImage(named: "selectedProfileIcon")
+        profileVC.tabBarItem = UITabBarItem(title: "Profile", image: profileIconImage, selectedImage: selectedProfileIconImage)
+
+        let tabBarList = [discoverVC, groupsVC, notificationVC, profileVC]
 
         viewControllers = tabBarList
     }
