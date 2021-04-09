@@ -31,6 +31,8 @@ class SuggestionsViewController: UIViewController {
         view.backgroundColor = .offWhite
         
         refreshControl.addTarget(self, action: #selector(refreshSuggestionData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
         suggestionsTableView.isHidden = true
         suggestionsTableView.delegate = self

@@ -149,7 +149,7 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        present(SaveMediaViewController(mediaId: mediaId), animated: true)
+        present(SaveMediaViewController(mediaId: mediaId, type: .saveMedia), animated: true)
     }
 
     @objc func shareButtonTapped() {
@@ -273,31 +273,16 @@ extension MediaViewController: SaveMediaDelegate {
         NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { list in
             let banner = StatusBarNotificationBanner(
                 title: "Saved to \(selectedList.name)",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
         }
     }
 
     func presentCreateNewList() {
-        let createListModal = EnterNameModalView(type: .createList)
-        createListModal.modalDelegate = self
-        createListModal.createListDelegate = self
-        showModalPopup(view: createListModal)
-    }
-
-}
-
-extension MediaViewController: CreateListDelegate {
-
-    func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { mediaList in
-            let banner = StatusBarNotificationBanner(
-                title: "Saved to \(mediaList.name)",
-                style: .info
-            )
-            banner.show()
-        }
+        let newListViewController = NewListViewController(type: .createList)
+        present(newListViewController, animated: true)
     }
 
 }

@@ -24,7 +24,7 @@ class EditUserTableViewCell: UITableViewCell {
     private let profileImageView = UIImageView()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
-        type: .ballSpinFadeLoader,
+        type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
     private let usernameLabel = UILabel()
@@ -163,7 +163,7 @@ class EditUserTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        profileImageView.image = nil
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         editButton.isHidden = false
         editLabel.isHidden = true
         spinner.stopAnimating()

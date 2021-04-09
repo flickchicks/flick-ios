@@ -70,6 +70,8 @@ class ProfileViewController: UIViewController {
         view.addSubview(bottomPaddingView)
 
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
         listsTableView.dataSource = self
         listsTableView.delegate = self
@@ -374,10 +376,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterNameModalView(type: .createList)
-        createListModalView.modalDelegate = self
-        createListModalView.createListDelegate = self
-        showModalPopup(view: createListModalView)
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
     func createFriendRequest() {
@@ -396,7 +397,8 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
                 guard success else { return }
                 let banner = StatusBarNotificationBanner(
                     title: "Friend request sent",
-                    style: .info
+                    style: .info,
+                    colors: CustomBannerColors()
                 )
                 banner.show()
                 self.user?.friendStatus = .outgoingRequest
@@ -409,7 +411,8 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
                 guard success else { return }
                 let banner = StatusBarNotificationBanner(
                     title: "Friend request accepted",
-                    style: .info
+                    style: .info,
+                    colors: CustomBannerColors()
                 )
                 banner.show()
                 self.user?.friendStatus = .friends
@@ -422,12 +425,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         }
     }
 
-    func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title) { [weak self] mediaList in
-            guard let self = self else { return }
-            let listViewController = ListViewController(listId: mediaList.id)
-            self.navigationController?.pushViewController(listViewController, animated: true)
-        }
+    func createList(list: MediaList) {
+        let listViewController = ListViewController(listId: list.id)
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 
     func dismissModal(modalView: UIView) {

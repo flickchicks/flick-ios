@@ -113,10 +113,10 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showRenameListModal() {
-        let renameListModalView = EnterNameModalView(type: .renameList)
-        renameListModalView.modalDelegate = self
-        renameListModalView.listSettingsDelegate = self
-        showModalPopup(view: renameListModalView)
+        let newGroupViewController = NewListViewController(type: .renameList)
+        newGroupViewController.listSettingsDelegate = self
+        newGroupViewController.list = list
+        present(newGroupViewController, animated: true)
     }
 
 }
@@ -166,32 +166,30 @@ extension ListSettingsViewController: ListSettingsDelegate {
     func deleteList() {
         NetworkManager.deleteMediaList(listId: list.id) { [weak self] _ in
             guard let self = self else { return }
-
-            self.presentInfoAlert(message: "Deleted \(self.list.name)") {
-                let controllers = self.navigationController?.viewControllers
-                // Controllers are reversed because recent stack is at the end of the list
-                for controller in controllers?.reversed() ?? [] {
-                    if controller is ProfileViewController || controller is TabBarController {
-                        self.navigationController?.popToViewController(controller, animated: true)
-                        return
-                    }
+            let banner = StatusBarNotificationBanner(
+                title: "Deleted \(self.list.name)",
+                style: .info,
+                colors: CustomBannerColors()
+            )
+            banner.show()
+            let controllers = self.navigationController?.viewControllers
+            // Controllers are reversed because recent stack is at the end of the list
+            for controller in controllers?.reversed() ?? [] {
+                if controller is ProfileViewController || controller is TabBarController {
+                    self.navigationController?.popToViewController(controller, animated: true)
+                    return
                 }
             }
         }
     }
 
     func renameList(to name: String) {
-        var updatedList = list
-        updatedList.name = name
-        NetworkManager.updateMediaList(listId: list.id, list: updatedList) { [weak self] list in
-            guard let self = self else { return }
-            self.list = list
-            let banner = StatusBarNotificationBanner(
-                title: "Renamed to \(list.name)",
-                style: .info
-            )
-            banner.show()
-        }
+        let banner = StatusBarNotificationBanner(
+            title: "Renamed to \(name)",
+            style: .info,
+            colors: CustomBannerColors()
+        )
+        banner.show()
     }
 
     func updatePrivacy(to isPrivate: Bool) {
@@ -202,7 +200,8 @@ extension ListSettingsViewController: ListSettingsDelegate {
             self.list = list
             let banner = StatusBarNotificationBanner(
                 title: "Updated to \(list.isPrivate ? "private" : "public")",
-                style: .info
+                style: .info,
+                colors: CustomBannerColors()
             )
             banner.show()
         }

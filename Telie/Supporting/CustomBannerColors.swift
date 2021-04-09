@@ -14,7 +14,7 @@ class CustomBannerColors: BannerColorsProtocol {
     internal func color(for style: BannerStyle) -> UIColor {
         switch style {
             case .info:
-                return UIColor.lightPurple
+                return UIColor.gradientPurple
             default:
                 return UIColor.green
         }

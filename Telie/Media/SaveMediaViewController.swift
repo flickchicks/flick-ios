@@ -10,6 +10,10 @@ import NotificationBannerSwift
 import NVActivityIndicatorView
 import UIKit
 
+enum MediaListsModalViewType {
+    case saveMedia, moveMedia
+}
+
 class SaveMediaViewController: UIViewController {
 
     // MARK: - Private View Vars
@@ -29,10 +33,13 @@ class SaveMediaViewController: UIViewController {
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
+    weak var editListDelegate: EditListDelegate?
     private let mediaId: Int
+    private let type: MediaListsModalViewType
 
-    init(mediaId: Int) {
+    init(mediaId: Int, type: MediaListsModalViewType) {
         self.mediaId = mediaId
+        self.type = type
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -43,9 +50,9 @@ class SaveMediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .offWhite
+        view.backgroundColor = .white
 
-        titleLabel.text = "Save to list"
+        titleLabel.text = type == .saveMedia ? "Save to list" : "Move to list"
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: 14)
@@ -63,7 +70,7 @@ class SaveMediaViewController: UIViewController {
         listsTableView.showsVerticalScrollIndicator = false
         view.addSubview(listsTableView)
 
-        newListButton.setTitle("Add", for: .normal)
+        newListButton.setTitle("New", for: .normal)
         newListButton.setTitleColor(.gradientPurple, for: .normal)
         newListButton.titleLabel?.font = .systemFont(ofSize: 14)
         newListButton.addTarget(self, action: #selector(newListButtonPressed), for: .touchUpInside)
@@ -72,7 +79,6 @@ class SaveMediaViewController: UIViewController {
         view.addSubview(newListSpinner)
         view.addSubview(spinner)
 
-        spinner.startAnimating()
         getLists()
         setupConstraints()
 
@@ -109,6 +115,8 @@ class SaveMediaViewController: UIViewController {
     }
 
     private func getLists() {
+        listsTableView.isHidden = true
+        spinner.startAnimating()
         NetworkManager.getUserProfile { [weak self] user in
             guard let self = self, let user = user else { return }
             DispatchQueue.main.async {
@@ -116,6 +124,7 @@ class SaveMediaViewController: UIViewController {
                 self.spinner.stopAnimating()
                 self.listsTableView.isHidden = false
                 self.listsTableView.reloadData()
+                self.spinner.stopAnimating()
             }
         }
     }
@@ -126,21 +135,12 @@ class SaveMediaViewController: UIViewController {
 
     func showSaveMessage(listName: String) {
         dismiss(animated: true) {
-            let banner = FloatingNotificationBanner(
-                subtitle: "Saved to \(listName)",
-                subtitleFont: .boldSystemFont(ofSize: 14),
-                subtitleColor: .black,
-                subtitleTextAlign: .center,
+            let banner = StatusBarNotificationBanner(
+                title: "Saved to \(listName)",
                 style: .info,
                 colors: CustomBannerColors()
             )
-            banner.show(
-                queuePosition: .front,
-                bannerPosition: .top,
-                queue: .default,
-                edgeInsets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-                cornerRadius: 20
-            )
+            banner.show()
         }
     }
 }
@@ -171,42 +171,30 @@ extension SaveMediaViewController: SaveMediaDelegate {
     func saveMedia(selectedList: SimpleMediaList) {
         newListSpinner.startAnimating()
         newListButton.isHidden = true
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
-            guard let self = self else { return }
-            self.newListSpinner.stopAnimating()
-            self.newListButton.isHidden = false
-            self.showSaveMessage(listName: list.name)
+        if type == .moveMedia {
+            dismiss(animated: true) { () in
+                self.editListDelegate?.moveMedia(selectedList: selectedList)
+            }
+        } else {
+            NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
+                guard let self = self else { return }
+                self.newListSpinner.stopAnimating()
+                self.newListButton.isHidden = false
+                self.showSaveMessage(listName: list.name)
+            }
         }
     }
 
     func presentCreateNewList() {
-        let createListModal = EnterNameModalView(type: .createList)
-        createListModal.modalDelegate = self
-        createListModal.createListDelegate = self
-        showModalPopup(view: createListModal)
-    }
-
-}
-
-extension SaveMediaViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
 }
 
 extension SaveMediaViewController: CreateListDelegate {
-
-    func createList(title: String) {
-        newListSpinner.startAnimating()
-        newListButton.isHidden = true
-        NetworkManager.createNewMediaList(listName: title, mediaIds: [mediaId]) { [weak self] mediaList in
-            guard let self = self else { return }
-            self.newListSpinner.stopAnimating()
-            self.newListButton.isHidden = false
-            self.showSaveMessage(listName: mediaList.name)
-        }
+    func createList(list: MediaList) {
+        getLists()
     }
-
 }

@@ -41,6 +41,7 @@ class DiscoverViewController: UIViewController {
     private var discoverContent: DiscoverContent? = nil
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private var discoverSections: [DiscoverSection] = []
+    private let refreshControl = UIRefreshControl()
     private let searchButton = UIButton()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
@@ -48,7 +49,6 @@ class DiscoverViewController: UIViewController {
         color: .gradientPurple
     )
     private let titleLabel = UILabel()
-    private let refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +68,8 @@ class DiscoverViewController: UIViewController {
         view.addSubview(searchButton)
 
         refreshControl.addTarget(self, action: #selector(refreshDiscoverData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
         discoverFeedTableView.dataSource = self
         discoverFeedTableView.delegate = self

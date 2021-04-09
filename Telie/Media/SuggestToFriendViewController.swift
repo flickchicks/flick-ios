@@ -58,7 +58,7 @@ class SuggestToFriendViewController: UIViewController {
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
         view.addSubview(onlyFriendSeeLabel)
 
-        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitle("Share", for: .normal)
         saveButton.setTitleColor(.gradientPurple, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 14)
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
@@ -225,21 +225,12 @@ class SuggestToFriendViewController: UIViewController {
             guard let self = self else { return }
             if success {
                 self.dismiss(animated: true) {
-                    let banner = FloatingNotificationBanner(
-                        subtitle: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
-                        subtitleFont: .boldSystemFont(ofSize: 14),
-                        subtitleColor: .black,
-                        subtitleTextAlign: .center,
+                    let banner = StatusBarNotificationBanner(
+                        title: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
                         style: .info,
                         colors: CustomBannerColors()
                     )
-                    banner.show(
-                        queuePosition: .front,
-                        bannerPosition: .top,
-                        queue: .default,
-                        edgeInsets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
-                        cornerRadius: 20
-                    )
+                    banner.show()
                 }
                 self.saveSpinner.stopAnimating()
             }

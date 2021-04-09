@@ -32,6 +32,8 @@ class ActivityViewController: UIViewController {
         view.backgroundColor = .offWhite
         
         refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
         activityTableView.isHidden = true
         activityTableView.delegate = self
@@ -254,7 +256,8 @@ extension ActivityViewController: ActivityDelegate {
     func refreshActivity(message: String) {
         let banner = StatusBarNotificationBanner(
             title: message,
-            style: .info
+            style: .info,
+            colors: CustomBannerColors()
         )
         banner.show()
         getActivity()
