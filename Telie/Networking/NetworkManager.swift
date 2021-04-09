@@ -987,6 +987,19 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Clear group votes [updated as of 4/9/21]
+    static func clearVotes(id: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/votes/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     /// [GET] Get pending (unvoted) ideas [updated as of 2/4/21]
     static func getPendingIdeas(id: Int, completion: @escaping ((String, [Media])) -> Void) {
         AF.request("\(hostEndpoint)/api/groups/\(id)/pending/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
