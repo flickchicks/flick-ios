@@ -1039,5 +1039,19 @@ class NetworkManager {
         }
     }
 
+    /// [DELETE] Delete group [updated as of 4/9/21]
+    static func deleteGroup(groupId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(groupId)/", method: .delete, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+
 }
 

@@ -30,7 +30,6 @@ class GroupSettingTableViewCell: UITableViewCell {
         iconImageView.contentMode = .scaleAspectFill
         containerView.addSubview(iconImageView)
 
-        titleLabel.textColor = .darkBlue
         titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         containerView.addSubview(titleLabel)
 
@@ -60,8 +59,9 @@ class GroupSettingTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(icon: String, title: String) {
+    func configure(icon: String, textColor: UIColor, title: String) {
         iconImageView.image = UIImage(named: icon)
+        titleLabel.textColor = textColor
         titleLabel.text = title
     }
 
