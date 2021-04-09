@@ -173,7 +173,6 @@ class SettingsViewController: UIViewController {
     @objc func deleteAccount() {
         let confirmationModalView = ConfirmationModalView(
             message: "Delete your account?",
-            subMessage: "Your account data will be erased",
             type: .deleteAccount
         )
         confirmationModalView.modalDelegate = self

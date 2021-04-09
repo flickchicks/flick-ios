@@ -81,4 +81,8 @@ class GroupSettingTableViewCell: UITableViewCell {
         titleLabel.text = title
     }
 
+    override func prepareForReuse() {
+        descriptionLabel.text = nil
+    }
+
 }
