@@ -14,6 +14,7 @@ class SettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let aboutButton = UIButton()
+    private let deleteAccountButton = UIButton()
     private let editProfileButton = UIButton()
     private let logoutButton = UIButton()
     private let sendFeedbackButton = UIButton()
@@ -63,6 +64,13 @@ class SettingsViewController: UIViewController {
         logoutButton.contentHorizontalAlignment = .left
         logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
         view.addSubview(logoutButton)
+
+        deleteAccountButton.setTitle("Delete Account", for: .normal)
+        deleteAccountButton.setTitleColor(.flickRed, for: .normal)
+        deleteAccountButton.titleLabel?.font = .systemFont(ofSize: 18)
+        deleteAccountButton.contentHorizontalAlignment = .left
+        deleteAccountButton.addTarget(self, action: #selector(deleteAccount), for: .touchUpInside)
+        view.addSubview(deleteAccountButton)
 
         setupConstraints()
     }
@@ -115,6 +123,12 @@ class SettingsViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(22)
         }
+
+        deleteAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(logoutButton.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(22)
+        }
     }
 
     private func setupNavigationBar() {
@@ -156,10 +170,40 @@ class SettingsViewController: UIViewController {
         }
     }
 
+    @objc func deleteAccount() {
+        let confirmationModalView = ConfirmationModalView(
+            message: "Delete your account?",
+            subMessage: "Your account data will be erased",
+            type: .deleteAccount
+        )
+        confirmationModalView.modalDelegate = self
+        confirmationModalView.deleteAccountDelegate = self
+        showModalPopup(view: confirmationModalView)
+    }
+
 }
 
 extension SettingsViewController: EditProfileDelegate {
+
     func updateUser(user: UserProfile) {
         self.user = user
     }
+
+}
+
+extension SettingsViewController: ModalDelegate, DeleteAccountDelegate {
+
+    func dismissModal(modalView: UIView) {
+        modalView.removeFromSuperview()
+    }
+
+    func deleteUserAccount() {
+        NetworkManager.deleteUser { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.logout()
+            }
+        }
+    }
+
 }

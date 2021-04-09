@@ -160,6 +160,19 @@ class NetworkManager {
         }
     }
 
+    /// [DELETE] Delete user [updated as of 4/9/21]
+    static func deleteUser(completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/me/", method: .delete, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - List
 
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
