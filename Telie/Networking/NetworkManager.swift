@@ -159,6 +159,19 @@ class NetworkManager {
         }
     }
 
+    /// [DELETE] Delete user [updated as of 4/9/21]
+    static func deleteUser(completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/me/", method: .delete, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - List
 
     /// [POST] Create new list for a user with default/empty settings [updated as of 8/17/20]
@@ -955,18 +968,27 @@ class NetworkManager {
     }
 
     /// [POST] Clear group ideas [updated as of 2/4/21]
-    static func clearIdeas(id: Int, completion: @escaping (Group) -> Void) {
+    static func clearIdeas(id: Int, completion: @escaping (Bool) -> Void) {
         AF.request("\(hostEndpoint)/api/groups/\(id)/shows/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
-                    let group = groupData.data
-                    completion(group)
-                }
+            case .success:
+                completion(true)
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [POST] Clear group votes [updated as of 4/9/21]
+    static func clearVotes(id: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(id)/votes/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
             }
         }
     }
@@ -1022,6 +1044,20 @@ class NetworkManager {
             }
         }
     }
+
+    /// [DELETE] Delete group [updated as of 4/9/21]
+    static func deleteGroup(groupId: Int, completion: @escaping (Bool) -> Void) {
+        AF.request("\(hostEndpoint)/api/groups/\(groupId)/", method: .delete, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
 
 }
 

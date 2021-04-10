@@ -18,12 +18,13 @@ class GroupSettingsViewController: UIViewController {
     // MARK: - Table View Sections
     private struct Section {
         let type: SectionType
-        let header: String
-        let footer: String?
+        let header: String?
+        let hasFooter: Bool
         var settingItems: [GroupSettingsType]
     }
 
     private enum SectionType {
+        case delete
         case details
         case ideas
         case results
@@ -31,7 +32,9 @@ class GroupSettingsViewController: UIViewController {
 
     private enum GroupSettingsType {
         case addMembers
-        case clear
+        case clearIdeas
+        case clearVotes
+        case deleteGroup
         case rename
         case viewResults
 
@@ -39,8 +42,10 @@ class GroupSettingsViewController: UIViewController {
             switch self {
             case .addMembers:
                 return "circlePlus"
-            case .clear:
+            case .clearIdeas, .clearVotes:
                 return "refresh"
+            case .deleteGroup:
+                return "trashCan"
             case .rename:
                 return "pencil"
             case .viewResults:
@@ -48,12 +53,38 @@ class GroupSettingsViewController: UIViewController {
             }
         }
 
+        var textColor: UIColor {
+            switch self {
+            case .deleteGroup:
+                return .flickRed
+            default:
+                return .darkBlue
+            }
+        }
+
+        var descriptionText: String? {
+            switch self {
+            case .clearIdeas:
+                return "Remove the active ideas and votes so that you can start again"
+            case .clearVotes:
+                return "Keep the current ideas but reset votes"
+            case .viewResults:
+                return "See what the group has decided on so far"
+            default:
+                return nil
+            }
+        }
+
         func getTitle(group: Group?) -> String {
             switch self {
             case .addMembers:
                 return "Add members"
-            case .clear:
+            case .clearIdeas:
                 return "Clear current ideas"
+            case .clearVotes:
+                return "Clear current votes"
+            case .deleteGroup:
+                return "Delete group"
             case .rename:
                 return "Rename \"\(group?.name ?? "")\""
             case .viewResults:
@@ -116,10 +147,11 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func setupSections() {
-        let ideasSection = Section(type: .ideas, header: "Ideas", footer: "This removes the active ideas and votes so that you can start again", settingItems: [.clear])
-        let resultsSection = Section(type: .results, header: "Results", footer: "See what the group has decided on so far", settingItems: [.viewResults])
-        let detailsSection = Section(type: .details, header: "Details", footer: nil, settingItems: [.rename, .addMembers])
-        sections = [ideasSection, resultsSection, detailsSection]
+        let ideasSection = Section(type: .ideas, header: "Ideas", hasFooter: true, settingItems: [.clearIdeas, .clearVotes])
+        let resultsSection = Section(type: .results, header: "Results", hasFooter: true, settingItems: [.viewResults])
+        let detailsSection = Section(type: .details, header: "Details", hasFooter: false, settingItems: [.rename, .addMembers])
+        let deleteSection = Section(type: .delete, header: nil, hasFooter: false, settingItems: [.deleteGroup])
+        sections = [ideasSection, resultsSection, detailsSection, deleteSection]
     }
 
     private func setupNavigationBar() {
@@ -183,6 +215,37 @@ class GroupSettingsViewController: UIViewController {
         }
     }
 
+    private func clearVotes() {
+        NetworkManager.clearVotes(id: group.id) { success in
+            DispatchQueue.main.async {
+                if success {
+                    let banner = StatusBarNotificationBanner(
+                        title: "Votes cleared",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show()
+                }
+            }
+        }
+    }
+
+    private func deleteGroup() {
+        NetworkManager.deleteGroup(groupId: group.id) { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                let controllers = self.navigationController?.viewControllers
+                // Controllers are reversed because recent stack is at the end of the list
+                for controller in controllers?.reversed() ?? [] {
+                    if controller is TabBarController {
+                        self.navigationController?.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -207,7 +270,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
             // Setup cell for settings action item
             guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
             let item = section.settingItems[indexPath.row]
-            cell.configure(icon: item.icon, title: item.getTitle(group: group))
+            cell.configure(descriptionText: item.descriptionText, icon: item.icon, textColor: item.textColor, title: item.getTitle(group: group))
             return cell
         } else {
             // Setup cell for group member
@@ -220,6 +283,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard sections[section].header != nil else { return nil }
         let headerView = UIView()
         let headerLabel = UILabel()
         headerLabel.text = sections[section].header
@@ -234,33 +298,25 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard sections[section].footer != nil else { return nil }
-        let padding = 20
+        guard sections[section].hasFooter else { return nil }
         let footerView = UIView()
-        let footerLabel = UILabel()
         let spacerView = UIView()
-        footerLabel.text = sections[section].footer
-        footerLabel.textColor = .mediumGray
-        footerLabel.font = .systemFont(ofSize: 14)
-        footerLabel.numberOfLines = 0
-        footerView.addSubview(footerLabel)
-        footerLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(padding)
-            make.top.equalToSuperview().offset(6)
-        }
         spacerView.backgroundColor = .lightGray2
         footerView.addSubview(spacerView)
         spacerView.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.leading.trailing.equalToSuperview().inset(padding)
-            make.top.equalTo(footerLabel.snp.bottom).offset(16)
-            make.bottom.equalToSuperview().inset(10)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.bottom.equalToSuperview().inset(10)
         }
         return footerView
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 54
+        if sections[indexPath.section].type == .details && indexPath.row > 1 {
+            return 54
+        } else {
+            return UITableView.automaticDimension
+        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -272,8 +328,12 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         switch item {
         case .addMembers:
             showAddMembersModal()
-        case .clear:
+        case .clearIdeas:
             showClearIdeasModal()
+        case .clearVotes:
+            clearVotes()
+        case .deleteGroup:
+            deleteGroup()
         case .rename:
             showRenameGroupModal()
         case .viewResults:
@@ -303,16 +363,16 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
     }
 
     func clearIdeas() {
-        NetworkManager.clearIdeas(id: group.id) { [weak self] group in
-            guard let self = self else { return }
+        NetworkManager.clearIdeas(id: group.id) { success in
             DispatchQueue.main.async {
-                self.group = group
-                let banner = StatusBarNotificationBanner(
-                    title: "Ideas cleared",
-                    style: .info,
-                    colors: CustomBannerColors()
-                )
-                banner.show()
+                if success {
+                    let banner = StatusBarNotificationBanner(
+                        title: "Ideas cleared",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show()
+                }
             }
         }
     }

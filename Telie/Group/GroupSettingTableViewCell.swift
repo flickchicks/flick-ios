@@ -12,6 +12,7 @@ class GroupSettingTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
+    private let descriptionLabel = UILabel()
     private let iconImageView = UIImageView()
     private let titleLabel = UILabel()
 
@@ -27,10 +28,14 @@ class GroupSettingTableViewCell: UITableViewCell {
         containerView.layer.cornerRadius = 8
         contentView.addSubview(containerView)
 
+        descriptionLabel.textColor = .mediumGray
+        descriptionLabel.font = .systemFont(ofSize: 14)
+        descriptionLabel.numberOfLines = 0
+        contentView.addSubview(descriptionLabel)
+
         iconImageView.contentMode = .scaleAspectFill
         containerView.addSubview(iconImageView)
 
-        titleLabel.textColor = .darkBlue
         titleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         containerView.addSubview(titleLabel)
 
@@ -43,8 +48,15 @@ class GroupSettingTableViewCell: UITableViewCell {
 
     private func setupConstraints() {
         containerView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(6)
+            make.top.equalToSuperview().offset(6)
             make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(40)
+        }
+
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(containerView.snp.bottom).offset(4)
+            make.bottom.equalToSuperview().inset(6)
+            make.leading.trailing.equalTo(containerView)
         }
 
         iconImageView.snp.makeConstraints { make in
@@ -60,9 +72,17 @@ class GroupSettingTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(icon: String, title: String) {
+    func configure(descriptionText: String?, icon: String, textColor: UIColor, title: String) {
+        if let descriptionText = descriptionText {
+            descriptionLabel.text = descriptionText
+        }
         iconImageView.image = UIImage(named: icon)
+        titleLabel.textColor = textColor
         titleLabel.text = title
+    }
+
+    override func prepareForReuse() {
+        descriptionLabel.text = nil
     }
 
 }

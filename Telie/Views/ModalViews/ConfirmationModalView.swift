@@ -8,10 +8,14 @@
 
 import UIKit
 
-enum ConfirmationType { case clearIdeas, deleteList, removeMedia }
+enum ConfirmationType { case clearIdeas, deleteAccount, deleteList, removeMedia }
 
 protocol ClearIdeasDelegate: class {
     func clearIdeas()
+}
+
+protocol DeleteAccountDelegate: class {
+    func deleteUserAccount()
 }
 
 class ConfirmationModalView: ModalView {
@@ -22,8 +26,9 @@ class ConfirmationModalView: ModalView {
     private var purpleButton = UIButton()
     private let subMessageLabel = UILabel()
 
-    // MARK: - Private Data Var
+    // MARK: - Data Var
     weak var clearIdeasDelegate: ClearIdeasDelegate?
+    weak var deleteAccountDelegate: DeleteAccountDelegate?
     weak var editListDelegate: EditListDelegate?
     weak var listSettingsDelegate: ListSettingsDelegate?
     private var type: ConfirmationType
@@ -109,6 +114,8 @@ class ConfirmationModalView: ModalView {
         switch type {
         case .clearIdeas:
             clearIdeasDelegate?.clearIdeas()
+        case .deleteAccount:
+            deleteAccountDelegate?.deleteUserAccount()
         case .deleteList:
             listSettingsDelegate?.deleteList()
         case .removeMedia:
