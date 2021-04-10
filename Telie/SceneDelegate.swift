@@ -56,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 let tabBarController = TabBarController()
                 // If connected from notification tap, show notification tab
                 if connectionOptions.notificationResponse != nil {
-                    tabBarController.selectedIndex = 3
+                    tabBarController.selectedIndex = 2
                 }
                 window.rootViewController = CustomNavigationController(rootViewController: tabBarController)
             }

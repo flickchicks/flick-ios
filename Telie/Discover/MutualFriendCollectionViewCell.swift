@@ -23,13 +23,14 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .clear
 
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = true
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = 32
         profileImageView.layer.borderWidth = 1.5
         profileImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        profileImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(profileImageView)
 
         nameLabel.textColor = .darkBlue
@@ -77,17 +78,23 @@ class MutualFriendCollectionViewCell: UICollectionViewCell {
 
     func configure(for friend: FriendRecommendation) {
 
-        if let imageUrl = URL(string: friend.profilePicUrl ?? "") {
+        if let profilePicUrl = friend.profilePicUrl,
+           let imageUrl = URL(string: profilePicUrl) {
             profileImageView.kf.setImage(with: imageUrl)
         }
         nameLabel.text = friend.name
         usernameLabel.text = "@\(friend.username)"
         let numMutualFriends = friend.numMutualFriends
-        mutualFriendsLabel.text = "\(numMutualFriends) Mutual Friend\(numMutualFriends > 1 ? "s" : "")"
+        mutualFriendsLabel.text = "\(numMutualFriends) mutual friend\(numMutualFriends > 1 ? "s" : "")"
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
 
 }

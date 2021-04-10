@@ -8,6 +8,7 @@
 
 import UIKit
 import SkeletonView
+import NotificationBannerSwift
 
 enum FriendsLayoutMode { case expanded, condensed }
 
@@ -25,7 +26,7 @@ class ProfileViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private var listsTableView: UITableView!
+    private let listsTableView = UITableView(frame: .zero, style: .plain)
     private var bottomPaddingView = UIView()
 
     // MARK: - Private Data Vars
@@ -69,8 +70,9 @@ class ProfileViewController: UIViewController {
         view.addSubview(bottomPaddingView)
 
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
 
-        listsTableView = UITableView(frame: .zero, style: .plain)
         listsTableView.dataSource = self
         listsTableView.delegate = self
         listsTableView.backgroundColor = .clear
@@ -228,7 +230,7 @@ class ProfileViewController: UIViewController {
         // Change notification tab icon image if there's any notifications
         if isCurrentUser,
            let tabItems = tabBarController?.tabBar.items {
-            let notificationItem = tabItems[3]
+            let notificationItem = tabItems[2]
             if let numNotifs = user.numNotifs {
                 let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
                 notificationItem.image = UIImage(named: imageName)
@@ -374,15 +376,18 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     }
 
     func showCreateListModal() {
-        let createListModalView = EnterNameModalView(type: .createList)
-        createListModalView.modalDelegate = self
-        createListModalView.createListDelegate = self
-        showModalPopup(view: createListModalView)
+        let newListViewController = NewListViewController(type: .createList)
+        newListViewController.createListDelegate = self
+        present(newListViewController, animated: true)
     }
 
     func createFriendRequest() {
         guard let user = user else {
-            presentInfoAlert(message: "Cannot send request", completion: nil)
+            let banner = StatusBarNotificationBanner(
+                title: "Cannot send request",
+                style: .warning
+            )
+            banner.show()
             return
         }
         // Create friend request if not already friends and accept request if there's an incoming request
@@ -390,7 +395,12 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         case .notFriends:
             NetworkManager.createFriendRequest(friendId: user.id) { success in
                 guard success else { return }
-                self.presentInfoAlert(message: "Friend request sent", completion: nil)
+                let banner = StatusBarNotificationBanner(
+                    title: "Friend request sent",
+                    style: .info,
+                    colors: CustomBannerColors()
+                )
+                banner.show()
                 self.user?.friendStatus = .outgoingRequest
                 DispatchQueue.main.async {
                     self.listsTableView.reloadData()
@@ -399,7 +409,12 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         case .incomingRequest:
             NetworkManager.acceptFriendRequest(friendId: user.id) { success in
                 guard success else { return }
-                self.presentInfoAlert(message: "Friend request accepted", completion: nil)
+                let banner = StatusBarNotificationBanner(
+                    title: "Friend request accepted",
+                    style: .info,
+                    colors: CustomBannerColors()
+                )
+                banner.show()
                 self.user?.friendStatus = .friends
                 DispatchQueue.main.async {
                     self.listsTableView.reloadData()
@@ -410,12 +425,9 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         }
     }
 
-    func createList(title: String) {
-        NetworkManager.createNewMediaList(listName: title) { [weak self] mediaList in
-            guard let self = self else { return }
-            let listViewController = ListViewController(listId: mediaList.id)
-            self.navigationController?.pushViewController(listViewController, animated: true)
-        }
+    func createList(list: MediaList) {
+        let listViewController = ListViewController(listId: list.id)
+        navigationController?.pushViewController(listViewController, animated: true)
     }
 
     func dismissModal(modalView: UIView) {

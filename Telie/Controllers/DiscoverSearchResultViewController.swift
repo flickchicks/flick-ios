@@ -6,8 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
+import NVActivityIndicatorView
 import SkeletonView
+import UIKit
 
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)
@@ -19,6 +20,11 @@ class DiscoverSearchResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let emptyStateView = EmptyStateView(type: .search)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let resultsTableView = UITableView()
 
     // MARK: - Data Vars
@@ -49,6 +55,8 @@ class DiscoverSearchResultViewController: UIViewController {
         resultsTableView.keyboardDismissMode = .onDrag
         view.addSubview(resultsTableView)
 
+        view.addSubview(spinner)
+
         emptyStateView.isHidden = true
         view.addSubview(emptyStateView)
     
@@ -60,6 +68,11 @@ class DiscoverSearchResultViewController: UIViewController {
             make.top.equalToSuperview().offset(75)
             make.centerX.equalToSuperview()
         }
+
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(4)
+        }
     }
 
     func updateSearchResult(query: String) {
@@ -68,6 +81,7 @@ class DiscoverSearchResultViewController: UIViewController {
             clearContent()
             return
         }
+        spinner.startAnimating()
         switch searchType {
         case .movies:
             NetworkManager.searchMovies(query: query) { [weak self] movies in
@@ -75,8 +89,8 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.emptyStateView.isHidden = !movies.isEmpty
                     self.media = movies
+                    self.spinner.stopAnimating()
                     self.resultsTableView.reloadData()
-//                    self.resultsTableView.hideSkeleton()
                 }
             }
         case .shows:
@@ -85,6 +99,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.emptyStateView.isHidden = !shows.isEmpty
                     self.media = shows
+                    self.spinner.stopAnimating()
                     self.resultsTableView.reloadData()
                 }
             }
@@ -94,6 +109,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.emptyStateView.isHidden = !users.isEmpty
                     self.users = users
+                    self.spinner.stopAnimating()
                     self.resultsTableView.reloadData()
                 }
             }
@@ -103,6 +119,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.emptyStateView.isHidden = !tags.isEmpty
                     self.tags = tags
+                    self.spinner.stopAnimating()
                     self.resultsTableView.reloadData()
                 }
             }
@@ -112,6 +129,7 @@ class DiscoverSearchResultViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.emptyStateView.isHidden = !lists.isEmpty
                     self.lists = lists
+                    self.spinner.stopAnimating()
                     self.resultsTableView.reloadData()
                 }
             }

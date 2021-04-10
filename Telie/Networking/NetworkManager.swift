@@ -145,7 +145,6 @@ class NetworkManager {
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
         AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -246,7 +245,6 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -514,7 +512,6 @@ class NetworkManager {
     static func likeComment(commentId: Int, completion: @escaping (Comment) -> Void) {
         let parameters: [String: Any] = [:]
         AF.request("\(hostEndpoint)/api/comment/\(commentId)/like/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -971,18 +968,14 @@ class NetworkManager {
     }
 
     /// [POST] Clear group ideas [updated as of 2/4/21]
-    static func clearIdeas(id: Int, completion: @escaping (Group) -> Void) {
+    static func clearIdeas(id: Int, completion: @escaping (Bool) -> Void) {
         AF.request("\(hostEndpoint)/api/groups/\(id)/shows/clear/", method: .post, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
-            case .success(let data):
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                if let groupData = try? jsonDecoder.decode(Response<Group>.self, from: data) {
-                    let group = groupData.data
-                    completion(group)
-                }
+            case .success:
+                completion(true)
             case .failure(let error):
                 print(error.localizedDescription)
+                completion(false)
             }
         }
     }

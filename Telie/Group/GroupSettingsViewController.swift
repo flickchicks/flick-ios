@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 protocol GroupSettingsDelegate: class {
     func viewResults()
@@ -183,10 +184,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showAddMembersModal() {
-        let addMembersModalView = AddMembersModalView(group: group)
-        addMembersModalView.modalDelegate = self
-        addMembersModalView.delegate = self
-        showModalPopup(view: addMembersModalView)
+        let addMembersViewController = AddMembersToGroupsViewController(group: group)
+        addMembersViewController.delegate = self
+        present(addMembersViewController, animated: true)
     }
 
     private func showClearIdeasModal() {
@@ -201,10 +201,10 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showRenameGroupModal() {
-        let renameGroupModalView = EnterNameModalView(type: .renameGroup)
-        renameGroupModalView.modalDelegate = self
-        renameGroupModalView.renameGroupDelegate = self
-        showModalPopup(view: renameGroupModalView)
+        let newGroupViewController = NewListViewController(type: .renameGroup)
+        newGroupViewController.renameGroupDelegate = self
+        newGroupViewController.group = group
+        present(newGroupViewController, animated: true)
     }
 
     private func reloadDetailsSection() {
@@ -216,11 +216,15 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func clearVotes() {
-        NetworkManager.clearVotes(id: group.id) { [weak self] success in
-            guard let self = self else { return }
+        NetworkManager.clearVotes(id: group.id) { success in
             DispatchQueue.main.async {
                 if success {
-                    self.presentInfoAlert(message: "Votes cleared", completion: nil)
+                    let banner = StatusBarNotificationBanner(
+                        title: "Votes cleared",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show()
                 }
             }
         }
@@ -346,14 +350,9 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
         modalView.removeFromSuperview()
     }
 
-    func renameGroup(title: String) {
-        NetworkManager.updateGroup(id: group.id, name: title) { [weak self] group in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.group = group
-                self.reloadDetailsSection()
-            }
-        }
+    func renameGroup(group: Group) {
+        self.group = group
+        self.reloadDetailsSection()
     }
 
     func reloadGroupMembers(group: Group) {
@@ -364,11 +363,16 @@ extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMe
     }
 
     func clearIdeas() {
-        NetworkManager.clearIdeas(id: group.id) { [weak self] group in
-            guard let self = self else { return }
+        NetworkManager.clearIdeas(id: group.id) { success in
             DispatchQueue.main.async {
-                self.group = group
-                self.presentInfoAlert(message: "Ideas cleared", completion: nil)
+                if success {
+                    let banner = StatusBarNotificationBanner(
+                        title: "Ideas cleared",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show()
+                }
             }
         }
     }

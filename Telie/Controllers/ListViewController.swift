@@ -6,7 +6,8 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import SnapKit
+import NotificationBannerSwift
+import NVActivityIndicatorView
 import UIKit
 
 class ListViewController: UIViewController {
@@ -23,7 +24,6 @@ class ListViewController: UIViewController {
     }
 
     // MARK: - Private View Vars
-    private var addCollaboratorModalView: AddCollaboratorModalView!
     private let addMediaMessageLabel = UILabel()
     private let arrowToAddButtonView = UIImageView()
     private let backButton = UIButton()
@@ -32,7 +32,11 @@ class ListViewController: UIViewController {
     private var mediaCollectionView: UICollectionView!
     private let settingsButton = UIButton()
     private var sortListModalView: SortListModalView!
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
 
     // MARK: - Private Data Vars
     private let cellPadding: CGFloat = 20
@@ -415,7 +419,12 @@ extension ListViewController: AddMediaDelegate {
 
     func reloadMedia() {
         getMediaList()
-        presentInfoAlert(message: "Added items to list", completion: nil)
+        let banner = StatusBarNotificationBanner(
+            title: "Added items to list",
+            style: .info,
+            colors: CustomBannerColors()
+        )
+        banner.show()
     }
 
 }

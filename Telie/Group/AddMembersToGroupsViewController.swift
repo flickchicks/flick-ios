@@ -1,22 +1,27 @@
 //
-//  AddMembersModalView.swift
+//  AddMembersToGroupsViewController.swift
 //  Flick
 //
 //  Created by Haiying W on 1/27/21.
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 protocol AddMembersDelegate: class {
     func reloadGroupMembers(group: Group)
 }
 
-class AddMembersModalView: ModalView {
+class AddMembersToGroupsViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let searchBar = SearchBar()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
     private let usersTableView = UITableView()
 
@@ -30,16 +35,21 @@ class AddMembersModalView: ModalView {
 
     init(group: Group) {
         self.group = group
-        super.init()
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    override func viewDidLoad() {
+
+        view.backgroundColor = .white
 
         titleLabel.text = "Add members"
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 18)
-        containerView.addSubview(titleLabel)
+        view.addSubview(titleLabel)
 
         searchBar.placeholder = "Search"
         searchBar.delegate = self
-        containerView.addSubview(searchBar)
+        view.addSubview(searchBar)
 
         usersTableView.dataSource = self
         usersTableView.delegate = self
@@ -47,11 +57,11 @@ class AddMembersModalView: ModalView {
         usersTableView.register(EditUserTableViewCell.self, forCellReuseIdentifier: EditUserTableViewCell.reuseIdentifier)
         usersTableView.separatorStyle = .none
         usersTableView.keyboardDismissMode = .onDrag
-        containerView.addSubview(usersTableView)
+        view.addSubview(usersTableView)
 
-        spinner.hidesWhenStopped = true
+        view.addSubview(spinner)
+
         if friends.isEmpty {
-            usersTableView.backgroundView = spinner
             spinner.startAnimating()
         }
 
@@ -72,18 +82,12 @@ class AddMembersModalView: ModalView {
     }
 
     private func setupConstraints() {
-        let containerViewSize = CGSize(width: 325, height: 510)
         let horizontalPadding = 22
         let verticalPadding = 36
 
-        containerView.snp.makeConstraints { make in
-            make.size.equalTo(containerViewSize)
-            make.center.equalToSuperview()
-        }
-
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(verticalPadding)
-            make.leading.equalTo(containerView).offset(horizontalPadding)
+            make.top.equalToSuperview().offset(verticalPadding)
+            make.leading.equalToSuperview().offset(horizontalPadding)
             make.height.equalTo(22)
         }
 
@@ -98,6 +102,12 @@ class AddMembersModalView: ModalView {
             make.top.equalTo(searchBar.snp.bottom).offset(18)
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
+
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(usersTableView)
+        }
+
     }
 
     @objc private func searchUsers(timer: Timer) {
@@ -115,7 +125,7 @@ class AddMembersModalView: ModalView {
 
 }
 
-extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
+extension AddMembersToGroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isSearching ? users.count : friends.count
@@ -125,7 +135,7 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EditUserTableViewCell.reuseIdentifier, for: indexPath) as? EditUserTableViewCell else { return UITableViewCell() }
         let user = isSearching ? users[indexPath.row] : friends[indexPath.row]
         let isAdded = (group.members ?? []).contains { user.id == $0.id }
-        cell.configureForAdd(user: user, isAdded: isAdded)
+        cell.configureForAdd(user: user, editMode: .add, isAdded: isAdded)
         cell.delegate = self
         return cell
     }
@@ -136,7 +146,7 @@ extension AddMembersModalView: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension AddMembersModalView: UISearchBarDelegate {
+extension AddMembersToGroupsViewController: UISearchBarDelegate {
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -163,7 +173,7 @@ extension AddMembersModalView: UISearchBarDelegate {
 
 }
 
-extension AddMembersModalView: EditUserCellDelegate {
+extension AddMembersToGroupsViewController: EditUserCellDelegate {
 
     func addUserTapped(user: UserProfile) {
         NetworkManager.addToGroup(id: group.id, memberIds: [user.id]) { [weak self] group in

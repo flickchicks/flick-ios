@@ -33,7 +33,7 @@ class CollaboratorTableViewCell: UITableViewCell {
         userImageView.contentMode = .scaleAspectFill
         userImageView.layer.cornerRadius = 20
         userImageView.layer.masksToBounds = true
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         addSubview(userImageView)
 
         selectIndicatorView.layer.backgroundColor = UIColor.white.cgColor
@@ -54,8 +54,11 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     func configure(for collaborator: UserProfile, isOwner: Bool) {
         nameLabel.text = collaborator.name
-        if let imageUrl = URL(string: collaborator.profilePicUrl ?? "") {
+        if let profilePicUrl = collaborator.profilePicUrl,
+           let imageUrl = URL(string: profilePicUrl) {
             userImageView.kf.setImage(with: imageUrl)
+        } else {
+            userImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         }
         if isOwner {
             addSubview(ownerLabel)
@@ -108,7 +111,6 @@ class CollaboratorTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        userImageView.image = nil
     }
 
 }

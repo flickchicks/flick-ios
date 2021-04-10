@@ -6,13 +6,18 @@
 //  Copyright © 2021 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
 
 class GroupResultViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let resultsTableView = UITableView()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let votingStatusImageView = UIImageView()
     private let votingStatusLabel = UILabel()
 
@@ -47,7 +52,6 @@ class GroupResultViewController: UIViewController {
         resultsTableView.register(VotingResultTableViewCell.self, forCellReuseIdentifier: VotingResultTableViewCell.reuseIdentifier)
         view.addSubview(resultsTableView)
 
-        spinner.hidesWhenStopped = true
         if groupResult == nil {
             resultsTableView.backgroundView = spinner
             spinner.startAnimating()

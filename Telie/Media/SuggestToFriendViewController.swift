@@ -1,18 +1,16 @@
 //
-//  SuggestToFriendModalView.swift
-//  Flick
+//  SuggestToFriendViewController.swift
+//  Telie
 //
-//  Created by Haiying W on 12/29/20.
-//  Copyright © 2020 flick. All rights reserved.
+//  Created by Lucy Xu on 3/31/21.
+//  Copyright © 2021 Telie. All rights reserved.
 //
 
+import NotificationBannerSwift
+import NVActivityIndicatorView
 import UIKit
 
-protocol SuggestToFriendDelegate: class {
-    func suggestMediaToFriends(mediaId: Int, friendIds: [Int], message: String)
-}
-
-class SuggestToFriendModalView: ModalView {
+class SuggestToFriendViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var cancelButton = UIButton()
@@ -24,7 +22,17 @@ class SuggestToFriendModalView: ModalView {
     private let messageTextField = UITextField()
     private let onlyFriendSeeLabel = UILabel()
     private var shareButton = UIButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let saveButton = UIButton()
+    private let saveSpinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let suggestToFriendLabel = UILabel()
 
     // MARK: - Private Data Vars
@@ -34,23 +42,30 @@ class SuggestToFriendModalView: ModalView {
     private var selectedFriends: [UserProfile] = []
     private var selectedIndexPaths: [IndexPath] = []
 
-    weak var suggestToFriendDelegate: SuggestToFriendDelegate?
-
     init(media: Media) {
         self.media = media
-        super.init()
+        super.init(nibName: nil, bundle: nil)
+    }
 
+    override func viewDidLoad() {
+        view.backgroundColor = .white
         suggestToFriendLabel.text = "Suggest to friend"
         suggestToFriendLabel.font = .boldSystemFont(ofSize: 20)
-        containerView.addSubview(suggestToFriendLabel)
+        view.addSubview(suggestToFriendLabel)
 
         onlyFriendSeeLabel.text = "Only selected friend will see"
         onlyFriendSeeLabel.textColor = .darkBlueGray2
         onlyFriendSeeLabel.font = .systemFont(ofSize: 12)
-        containerView.addSubview(onlyFriendSeeLabel)
+        view.addSubview(onlyFriendSeeLabel)
+
+        saveButton.setTitle("Share", for: .normal)
+        saveButton.setTitleColor(.gradientPurple, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
+        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        view.addSubview(saveButton)
 
         mediaIconImageView.image = UIImage(named: media.isTv ? "tv" : "film")
-        containerView.addSubview(mediaIconImageView)
+        view.addSubview(mediaIconImageView)
 
         if let duration = media.duration?.inHourMinute,
            let dateReleased = media.dateReleased {
@@ -59,22 +74,23 @@ class SuggestToFriendModalView: ModalView {
         }
         mediaInfoLabel.textColor = .mediumGray
         mediaInfoLabel.font = .systemFont(ofSize: 12)
-        containerView.addSubview(mediaInfoLabel)
+        view.addSubview(mediaInfoLabel)
 
         mediaPosterImageView.backgroundColor = .lightGray
         mediaPosterImageView.layer.cornerRadius = 8
         mediaPosterImageView.layer.masksToBounds = true
-        if let imageUrl = URL(string: media.posterPic ?? "") {
+        if let posterPic = media.posterPic,
+           let imageUrl = URL(string: posterPic) {
             mediaPosterImageView.kf.setImage(with: imageUrl)
         } else {
             mediaPosterImageView.image = UIImage(named: "defaultMovie")
         }
-        containerView.addSubview(mediaPosterImageView)
+        view.addSubview(mediaPosterImageView)
 
         mediaNameLabel.text = media.title
         mediaNameLabel.numberOfLines = 0
         mediaNameLabel.font = .boldSystemFont(ofSize: 14)
-        containerView.addSubview(mediaNameLabel)
+        view.addSubview(mediaNameLabel)
 
         messageTextField.placeholder = "Add a short message"
         messageTextField.backgroundColor = .lightGray2
@@ -85,7 +101,7 @@ class SuggestToFriendModalView: ModalView {
         messageTextField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 39))
         messageTextField.rightViewMode = .always
         messageTextField.delegate = self
-        containerView.addSubview(messageTextField)
+        view.addSubview(messageTextField)
 
         friendsTableView.dataSource = self
         friendsTableView.delegate = self
@@ -94,21 +110,12 @@ class SuggestToFriendModalView: ModalView {
         friendsTableView.bounces = false
         friendsTableView.allowsMultipleSelection = true
         friendsTableView.showsVerticalScrollIndicator = false
-        containerView.addSubview(friendsTableView)
+        view.addSubview(friendsTableView)
 
-        spinner.hidesWhenStopped = true
-        if friends.isEmpty {
-            friendsTableView.backgroundView = spinner
-            spinner.startAnimating()
-        }
+        view.addSubview(spinner)
+        spinner.startAnimating()
 
-        cancelButton = RoundedButton(style: .gray, title: "Cancel")
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        containerView.addSubview(cancelButton)
-
-        shareButton = RoundedButton(style: .purple, title: "Share")
-        shareButton.addTarget(self, action: #selector(shareTapped), for: .touchUpInside)
-        containerView.addSubview(shareButton)
+        view.addSubview(saveSpinner)
 
         setupConstraints()
         getFriends()
@@ -119,15 +126,8 @@ class SuggestToFriendModalView: ModalView {
     }
 
     private func setupConstraints() {
-        let buttonSize = CGSize(width: 72, height: 40)
-        let containerViewSize = CGSize(width: 335, height: 630)
         let horizontalPadding = 24
         let verticalPadding = 30
-
-        containerView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(containerViewSize)
-        }
 
         suggestToFriendLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
@@ -137,6 +137,16 @@ class SuggestToFriendModalView: ModalView {
         onlyFriendSeeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(horizontalPadding)
             make.top.equalTo(suggestToFriendLabel.snp.bottom).offset(4)
+        }
+
+        saveButton.snp.makeConstraints { make in
+            make.centerY.equalTo(suggestToFriendLabel)
+            make.trailing.equalToSuperview().inset(4)
+            make.size.equalTo(CGSize(width: 66, height: 34))
+        }
+
+        saveSpinner.snp.makeConstraints { make in
+            make.center.equalTo(saveButton)
         }
 
         mediaPosterImageView.snp.makeConstraints { make in
@@ -172,20 +182,14 @@ class SuggestToFriendModalView: ModalView {
         friendsTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(horizontalPadding)
             make.top.equalTo(messageTextField.snp.bottom).offset(15)
-            make.bottom.equalTo(shareButton.snp.top).offset(-15)
+            make.bottom.equalToSuperview()
         }
 
-        shareButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(62.5)
-            make.size.equalTo(buttonSize)
-            make.bottom.equalToSuperview().inset(verticalPadding)
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(friendsTableView)
         }
 
-        cancelButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(62.5)
-            make.size.equalTo(buttonSize)
-            make.bottom.equalToSuperview().inset(verticalPadding)
-        }
     }
 
     private func getFriends() {
@@ -208,20 +212,34 @@ class SuggestToFriendModalView: ModalView {
         selectedIndexPaths = []
     }
 
-    @objc private func shareTapped() {
-        let selectedFriendIds = selectedFriends.map { $0.id }
-        if !selectedFriendIds.isEmpty {
-            suggestToFriendDelegate?.suggestMediaToFriends(mediaId: media.id, friendIds: selectedFriendIds, message: messageTextField.text ?? "")
+    @objc private func saveButtonPressed() {
+        saveButton.isHidden = true
+        saveSpinner.startAnimating()
+        guard selectedFriends.count > 0 else {
+            saveButton.isHidden = false
+            saveSpinner.stopAnimating()
+            return
         }
-    }
-
-    @objc private func cancelTapped() {
-        dismissModal()
+        let selectedFriendIds = selectedFriends.map { $0.id }
+        NetworkManager.suggestMediaToFriends(friendIds: selectedFriendIds, mediaId: media.id, message: messageTextField.text ?? "") { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                self.dismiss(animated: true) {
+                    let banner = StatusBarNotificationBanner(
+                        title: "Suggested to friend\(selectedFriendIds.count > 1 ? "s" : "")",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    banner.show()
+                }
+                self.saveSpinner.stopAnimating()
+            }
+        }
     }
 
 }
 
-extension SuggestToFriendModalView: UITableViewDelegate, UITableViewDataSource {
+extension SuggestToFriendViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friends.count
@@ -252,7 +270,7 @@ extension SuggestToFriendModalView: UITableViewDelegate, UITableViewDataSource {
 
 }
 
-extension SuggestToFriendModalView: UITextFieldDelegate {
+extension SuggestToFriendViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

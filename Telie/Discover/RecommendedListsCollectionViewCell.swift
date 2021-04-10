@@ -13,6 +13,7 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Variables
     private let detailLabel = UILabel()
+    private let listImageView = UIImageView()
     private let listLabel = UILabel()
     private let mediaOneImageView = UIImageView()
     private let mediaTwoImageView = UIImageView()
@@ -34,7 +35,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaOneImageView.contentMode = .scaleAspectFill
         mediaOneImageView.layer.borderColor = UIColor.movieWhite.cgColor
         mediaOneImageView.layer.borderWidth = 1.5
-        mediaOneImageView.layer.backgroundColor = UIColor.mediumGray.cgColor
         contentView.addSubview(mediaOneImageView)
 
         mediaTwoImageView.layer.cornerRadius = 12
@@ -44,7 +44,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaTwoImageView.contentMode = .scaleAspectFill
         mediaTwoImageView.layer.borderWidth = 1.5
         mediaTwoImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        mediaTwoImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
 
         contentView.addSubview(mediaTwoImageView)
 
@@ -55,7 +54,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaThreeImageView.contentMode = .scaleAspectFill
         mediaThreeImageView.layer.borderWidth = 1.5
         mediaThreeImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        mediaThreeImageView.layer.backgroundColor = UIColor.lightGray.cgColor
 
         contentView.addSubview(mediaThreeImageView)
 
@@ -65,12 +63,15 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.cornerRadius = 10
         userImageView.layer.borderWidth = 1.5
         userImageView.layer.borderColor = UIColor.movieWhite.cgColor
-        userImageView.layer.backgroundColor = UIColor.darkBlueGray2.cgColor
+        userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
         contentView.addSubview(detailLabel)
+
+        listImageView.image = UIImage(named: "listIcon")
+        contentView.addSubview(listImageView)
 
         listLabel.font = .systemFont(ofSize: 12)
         listLabel.textColor = .mediumGray
@@ -109,11 +110,19 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
 
+        listImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 10, height: 14))
+            make.leading.equalTo(detailLabel)
+            make.centerY.equalTo(listLabel)
+        }
+
         listLabel.snp.makeConstraints { make in
             make.top.equalTo(detailLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalTo(detailLabel)
+            make.trailing.equalTo(detailLabel)
+            make.leading.equalTo(listImageView.snp.trailing).offset(4)
             make.height.equalTo(15)
         }
+        
     }
 
     func configure(with list: MediaList) {
@@ -132,13 +141,14 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
             mediaThreeImageView.kf.setImage(with: imageUrl3)
         }
 
-        if let imageUrl = URL(string: list.owner.profilePicUrl ?? "") {
+        if let profilePicUrl = list.owner.profilePicUrl,
+           let imageUrl = URL(string: profilePicUrl) {
             userImageView.kf.setImage(with: imageUrl)
         }
 
         detailLabel.text = "Created by \(list.owner.name)"
         if list.numLikes > 0 {
-            listLabel.text = "\(list.name) · \(list.numLikes) Like\(list.numLikes > 1 ? "s": "")"
+            listLabel.text = "\(list.name) • \(list.numLikes) Like\(list.numLikes > 1 ? "s": "")"
         } else {
             listLabel.text = "\(list.name)"
         }
@@ -150,9 +160,10 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        mediaOneImageView.image = nil
-        mediaTwoImageView.image = nil
-        mediaThreeImageView.image = nil
+        mediaOneImageView.image = UIImage(named: "defaultMovie")
+        mediaTwoImageView.image = UIImage(named: "defaultMovie")
+        mediaThreeImageView.image = UIImage(named: "defaultMovie")
+        userImageView.image = nil
     }
 
 }

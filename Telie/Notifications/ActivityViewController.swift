@@ -6,6 +6,8 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NotificationBannerSwift
+import NVActivityIndicatorView
 import UIKit
 
 class ActivityViewController: UIViewController {
@@ -14,7 +16,11 @@ class ActivityViewController: UIViewController {
     private let activityTableView = UITableView(frame: .zero, style: .grouped)
     private let emptyStateView = EmptyStateView(type: .activity)
     private let refreshControl = UIRefreshControl()
-    private let spinner = UIActivityIndicatorView(style: .large)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 30, height: 30),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
 
     // MARK: - Private Data Vars
     private var friendRequests: [NotificationEnum] = []
@@ -26,6 +32,8 @@ class ActivityViewController: UIViewController {
         view.backgroundColor = .offWhite
         
         refreshControl.addTarget(self, action: #selector(refreshActivityData), for: .valueChanged)
+        refreshControl.tintColor = .gradientPurple
+        refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
         activityTableView.isHidden = true
         activityTableView.delegate = self
@@ -246,7 +254,12 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ActivityViewController: ActivityDelegate {
     func refreshActivity(message: String) {
-        presentInfoAlert(message: message, completion: nil)
+        let banner = StatusBarNotificationBanner(
+            title: message,
+            style: .info,
+            colors: CustomBannerColors()
+        )
+        banner.show()
         getActivity()
     }
 }
