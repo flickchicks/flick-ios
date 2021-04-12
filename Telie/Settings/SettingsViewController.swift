@@ -13,13 +13,17 @@ import Kingfisher
 class SettingsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let aboutButton = UIButton()
-    private let deleteAccountButton = UIButton()
-    private let editProfileButton = UIButton()
-    private let logoutButton = UIButton()
-    private let sendFeedbackButton = UIButton()
+    private let settingsTableView = UITableView(frame: .zero, style: .plain)
 
     // MARK: - Private Data Vars
+    private let settingsOptions: [SettingsOption] = [
+        .editProfile,
+        .buyCoffee,
+        .sendFeedback,
+        .about,
+        .logout,
+        .deleteAccount
+    ]
     private var user: UserProfile
 
     init(user: UserProfile) {
@@ -37,40 +41,14 @@ class SettingsViewController: UIViewController {
         title = "Settings"
         view.backgroundColor = .offWhite
 
-        editProfileButton.setTitle("Edit Profile", for: .normal)
-        editProfileButton.setTitleColor(.black, for: .normal)
-        editProfileButton.titleLabel?.font = .systemFont(ofSize: 18)
-        editProfileButton.addTarget(self, action: #selector(showEditProfile), for: .touchUpInside)
-        editProfileButton.contentHorizontalAlignment = .left
-        view.addSubview(editProfileButton)
-
-        sendFeedbackButton.setTitle("Send Feedback", for: .normal)
-        sendFeedbackButton.setTitleColor(.black, for: .normal)
-        sendFeedbackButton.titleLabel?.font = .systemFont(ofSize: 18)
-        sendFeedbackButton.contentHorizontalAlignment = .left
-        sendFeedbackButton.addTarget(self, action: #selector(sendFeedbackPressed), for: .touchUpInside)
-        view.addSubview(sendFeedbackButton)
-
-        aboutButton.setTitle("About", for: .normal)
-        aboutButton.setTitleColor(.black, for: .normal)
-        aboutButton.titleLabel?.font = .systemFont(ofSize: 18)
-        aboutButton.addTarget(self, action: #selector(showAboutVC), for: .touchUpInside)
-        aboutButton.contentHorizontalAlignment = .left
-        view.addSubview(aboutButton)
-
-        logoutButton.setTitle("Logout", for: .normal)
-        logoutButton.setTitleColor(.flickRed, for: .normal)
-        logoutButton.titleLabel?.font = .systemFont(ofSize: 18)
-        logoutButton.contentHorizontalAlignment = .left
-        logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
-        view.addSubview(logoutButton)
-
-        deleteAccountButton.setTitle("Delete Account", for: .normal)
-        deleteAccountButton.setTitleColor(.flickRed, for: .normal)
-        deleteAccountButton.titleLabel?.font = .systemFont(ofSize: 18)
-        deleteAccountButton.contentHorizontalAlignment = .left
-        deleteAccountButton.addTarget(self, action: #selector(deleteAccount), for: .touchUpInside)
-        view.addSubview(deleteAccountButton)
+        settingsTableView.dataSource = self
+        settingsTableView.delegate = self
+        settingsTableView.backgroundColor = .clear
+        settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.reuseIdentifier)
+        settingsTableView.contentInset = UIEdgeInsets(top: 20, left: 12, bottom: 20, right: 12)
+        settingsTableView.separatorStyle = .none
+        settingsTableView.isScrollEnabled = false
+        view.addSubview(settingsTableView)
 
         setupConstraints()
     }
@@ -93,41 +71,15 @@ class SettingsViewController: UIViewController {
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(LoginViewController())
     }
 
-    @objc func showEditProfile() {
+    func showEditProfile() {
         let editProfileViewController = EditProfileViewController(user: user)
         editProfileViewController.delegate = self
         navigationController?.pushViewController(editProfileViewController, animated: true)
     }
 
     private func setupConstraints() {
-        editProfileButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(22)
-        }
-
-        sendFeedbackButton.snp.makeConstraints { make in
-            make.top.equalTo(editProfileButton.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(22)
-        }
-
-        aboutButton.snp.makeConstraints { make in
-            make.top.equalTo(sendFeedbackButton.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(22)
-        }
-
-        logoutButton.snp.makeConstraints { make in
-            make.top.equalTo(aboutButton.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(22)
-        }
-
-        deleteAccountButton.snp.makeConstraints { make in
-            make.top.equalTo(logoutButton.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(22)
+        settingsTableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
 
@@ -160,17 +112,23 @@ class SettingsViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func showAboutVC() {
+    func showAboutVC() {
         navigationController?.pushViewController(AboutViewController(), animated: true)
     }
     
-    @objc func sendFeedbackPressed() {
+    func sendFeedback() {
         if let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSfU2Wn5uVFEuaWLmcBFZCm_UQiNRHKGKChgV8rgpLWFMtjp0Q/viewform") {
             UIApplication.shared.open(url)
         }
     }
 
-    @objc func deleteAccount() {
+    func buyMeACoffee() {
+        if let url = URL(string: "https://www.buymeacoffee.com/telie") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    func deleteAccount() {
         let confirmationModalView = ConfirmationModalView(
             message: "Delete your account?",
             type: .deleteAccount
@@ -205,4 +163,41 @@ extension SettingsViewController: ModalDelegate, DeleteAccountDelegate {
         }
     }
 
+}
+
+extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return settingsOptions.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 48
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.reuseIdentifier) as? SettingsTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(with: settingsOptions[indexPath.row])
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let settingOption = settingsOptions[indexPath.row]
+        switch settingOption {
+        case .editProfile:
+            showEditProfile()
+        case .buyCoffee:
+            buyMeACoffee()
+        case .sendFeedback:
+            sendFeedback()
+        case .about:
+            showAboutVC()
+        case .logout:
+            logout()
+        case .deleteAccount:
+            deleteAccount()
+        }
+    }
 }
