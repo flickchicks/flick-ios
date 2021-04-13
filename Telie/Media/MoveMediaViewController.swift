@@ -1,8 +1,8 @@
 //
-//  SaveMediaViewController.swift
+//  MoveMediaViewController.swift
 //  Telie
 //
-//  Created by Lucy Xu on 3/30/21.
+//  Created by Lucy Xu on 4/12/21.
 //  Copyright © 2021 Telie. All rights reserved.
 //
 
@@ -10,11 +10,7 @@ import NotificationBannerSwift
 import NVActivityIndicatorView
 import UIKit
 
-enum MediaListsModalViewType {
-    case saveMedia, moveMedia
-}
-
-class SaveMediaViewController: UIViewController {
+class MoveMediaViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let spinner = NVActivityIndicatorView(
@@ -23,7 +19,7 @@ class SaveMediaViewController: UIViewController {
         color: .gradientPurple
     )
     private let listsTableView = UITableView(frame: .zero)
-    private let saveListButton = UIButton()
+    private var lists: [SimpleMediaList] = []
     private let newListButton = UIButton()
     private let newListSpinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
@@ -34,25 +30,13 @@ class SaveMediaViewController: UIViewController {
 
     // MARK: - Private Data Vars
     weak var editListDelegate: EditListDelegate?
-    private var lists: [SimpleMediaList] = []
-    private let mediaId: Int
-    private var selectedLists: [Bool] = []
 
-    init(mediaId: Int) {
-        self.mediaId = mediaId
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
 
-        titleLabel.text = "Save to list"
+        titleLabel.text = "Move to list"
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: 14)
@@ -65,16 +49,10 @@ class SaveMediaViewController: UIViewController {
         listsTableView.backgroundColor = .clear
         listsTableView.register(SaveToListTableViewCell.self, forCellReuseIdentifier: SaveToListTableViewCell.reuseIdentifier)
         listsTableView.rowHeight = UITableView.automaticDimension
-        listsTableView.separatorStyle = .none
+        listsTableView.separatorStyle = .singleLine
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.showsVerticalScrollIndicator = false
         view.addSubview(listsTableView)
-
-        saveListButton.setTitle("Save", for: .normal)
-        saveListButton.setTitleColor(.gradientPurple, for: .normal)
-        saveListButton.titleLabel?.font = .systemFont(ofSize: 14)
-        saveListButton.addTarget(self, action: #selector(saveListButtonPressed), for: .touchUpInside)
-        view.addSubview(saveListButton)
 
         newListButton.setTitle("New", for: .normal)
         newListButton.setTitleColor(.gradientPurple, for: .normal)
@@ -110,18 +88,12 @@ class SaveMediaViewController: UIViewController {
 
         newListButton.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
-            make.leading.equalToSuperview().offset(4)
-            make.size.equalTo(CGSize(width: 66, height: 34))
-        }
-
-        saveListButton.snp.makeConstraints { make in
-            make.centerY.equalTo(titleLabel)
             make.trailing.equalToSuperview().inset(4)
             make.size.equalTo(CGSize(width: 66, height: 34))
         }
 
         newListSpinner.snp.makeConstraints { make in
-            make.center.equalTo(saveListButton)
+            make.center.equalTo(newListButton)
         }
 
     }
@@ -132,33 +104,11 @@ class SaveMediaViewController: UIViewController {
         NetworkManager.getUserProfile { [weak self] user in
             guard let self = self, let user = user else { return }
             DispatchQueue.main.async {
-                let lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
-                self.lists = lists
+                self.lists = (user.ownerLsts ?? []) + (user.collabLsts ?? [])
                 self.spinner.stopAnimating()
                 self.listsTableView.isHidden = false
-                self.selectedLists = lists.map { _ in return false}
                 self.listsTableView.reloadData()
                 self.spinner.stopAnimating()
-            }
-        }
-    }
-
-    @objc func saveListButtonPressed() {
-        newListSpinner.startAnimating()
-        self.saveListButton.isHidden = true
-        var lstsIds: [Int] = []
-        for (index, selected) in selectedLists.enumerated() {
-            if selected {
-                lstsIds.append(lists[index].id)
-            }
-        }
-        NetworkManager.addToLists(mediaId: mediaId, listIds: lstsIds) { [weak self] success in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                print(success)
-                self.newListSpinner.stopAnimating()
-                self.saveListButton.isHidden = false
-                self.showSaveMessage(message: "Saved to lists")
             }
         }
     }
@@ -167,10 +117,10 @@ class SaveMediaViewController: UIViewController {
         presentCreateNewList()
     }
 
-    func showSaveMessage(message: String) {
+    func showSaveMessage(listName: String) {
         dismiss(animated: true) {
             let banner = StatusBarNotificationBanner(
-                title: message,
+                title: "Saved to \(listName)",
                 style: .info,
                 colors: CustomBannerColors()
             )
@@ -179,52 +129,40 @@ class SaveMediaViewController: UIViewController {
     }
 }
 
-extension SaveMediaViewController: UITableViewDelegate {
+extension MoveMediaViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = indexPath.item
-        guard index <= selectedLists.count else { return }
-        selectedLists[index].toggle()
-        listsTableView.reloadData()
+        let list = lists[indexPath.item]
+        saveMedia(selectedList: list)
     }
 
 }
 
-extension SaveMediaViewController: UITableViewDataSource {
+extension MoveMediaViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return lists.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SaveToListTableViewCell.reuseIdentifier, for: indexPath) as? SaveToListTableViewCell else { return UITableViewCell() }
-        let index = indexPath.item
-        cell.configure(
-            for: lists[index],
-            isSelected: selectedLists[index],
-            index: index,
-            delegate: self
-        )
+        cell.configure(for: lists[indexPath.item], delegate: self)
         return cell
     }
 }
 
-extension SaveMediaViewController: SaveMediaDelegate {
+extension MoveMediaViewController: SaveMediaDelegate {
+    func selectMedia(selectedIndex: Int) {
+        let selectedList = lists[selectedIndex]
+        saveMedia(selectedList: selectedList)
+    }
+
 
     func saveMedia(selectedList: SimpleMediaList) {
         newListSpinner.startAnimating()
-        saveListButton.isHidden = true
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { [weak self] list in
-            guard let self = self else { return }
-            self.newListSpinner.stopAnimating()
-            self.saveListButton.isHidden = false
-            self.showSaveMessage(message: "Saved to \(list.name)")
+        newListButton.isHidden = true
+        dismiss(animated: true) { () in
+            self.editListDelegate?.moveMedia(selectedList: selectedList)
         }
-    }
-
-    func selectMedia(selectedIndex: Int) {
-        guard selectedIndex <= selectedLists.count else { return }
-        selectedLists[selectedIndex].toggle()
-        listsTableView.reloadData()
     }
 
     func presentCreateNewList() {
@@ -235,7 +173,7 @@ extension SaveMediaViewController: SaveMediaDelegate {
 
 }
 
-extension SaveMediaViewController: CreateListDelegate {
+extension MoveMediaViewController: CreateListDelegate {
     func createList(list: MediaList) {
         getLists()
     }

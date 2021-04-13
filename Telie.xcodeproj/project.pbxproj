@@ -82,6 +82,7 @@
 		D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */; };
 		D42669712624F42C005ECCED /* SettingsOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42669702624F42C005ECCED /* SettingsOption.swift */; };
 		D42669762624F57E005ECCED /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42669752624F57E005ECCED /* SettingsTableViewCell.swift */; };
+		D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D426697A26251B58005ECCED /* MoveMediaViewController.swift */; };
 		D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
@@ -257,6 +258,7 @@
 		D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThoughtsTableViewCell.swift; sourceTree = "<group>"; };
 		D42669702624F42C005ECCED /* SettingsOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOption.swift; sourceTree = "<group>"; };
 		D42669752624F57E005ECCED /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		D426697A26251B58005ECCED /* MoveMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveMediaViewController.swift; sourceTree = "<group>"; };
 		D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFooterTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */,
 				D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */,
 				D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */,
+				D426697A26251B58005ECCED /* MoveMediaViewController.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -992,6 +995,7 @@
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
+				D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */,
 				803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */,
 				D42669762624F57E005ECCED /* SettingsTableViewCell.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,

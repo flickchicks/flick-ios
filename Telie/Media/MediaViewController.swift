@@ -12,6 +12,7 @@ import UIKit
 
 protocol SaveMediaDelegate: class {
     func saveMedia(selectedList: SimpleMediaList)
+    func selectMedia(selectedIndex: Int)
     func presentCreateNewList()
 }
 
@@ -149,7 +150,7 @@ class MediaViewController: UIViewController {
     }
 
     @objc func saveMediaTapped() {
-        present(SaveMediaViewController(mediaId: mediaId, type: .saveMedia), animated: true)
+        present(SaveMediaViewController(mediaId: mediaId), animated: true)
     }
 
     @objc func shareButtonTapped() {
@@ -263,26 +264,6 @@ extension MediaViewController: ModalDelegate {
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
-    }
-
-}
-
-extension MediaViewController: SaveMediaDelegate {
-
-    func saveMedia(selectedList: SimpleMediaList) {
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: [mediaId]) { list in
-            let banner = StatusBarNotificationBanner(
-                title: "Saved to \(selectedList.name)",
-                style: .info,
-                colors: CustomBannerColors()
-            )
-            banner.show()
-        }
-    }
-
-    func presentCreateNewList() {
-        let newListViewController = NewListViewController(type: .createList)
-        present(newListViewController, animated: true)
     }
 
 }

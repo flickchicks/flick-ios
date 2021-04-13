@@ -241,8 +241,7 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func moveTapped() {
-        // TODO: Remove 0 from mediaId later - just a dummy filler value for now
-        let moveMediaViewController = SaveMediaViewController(mediaId: 0, type: .moveMedia)
+        let moveMediaViewController = MoveMediaViewController()
         moveMediaViewController.editListDelegate = self
         present(moveMediaViewController, animated: true)
     }
