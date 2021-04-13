@@ -144,18 +144,21 @@ class SaveMediaViewController: UIViewController {
     }
 
     @objc func saveListButtonPressed() {
-        newListSpinner.startAnimating()
-        self.saveListButton.isHidden = true
         var lstsIds: [Int] = []
         for (index, selected) in selectedLists.enumerated() {
             if selected {
                 lstsIds.append(lists[index].id)
             }
         }
+        guard lstsIds.count > 0 else {
+            dismiss(animated: true)
+            return
+        }
+        newListSpinner.startAnimating()
+        self.saveListButton.isHidden = true
         NetworkManager.addToLists(mediaId: mediaId, listIds: lstsIds) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                print(success)
                 self.newListSpinner.stopAnimating()
                 self.saveListButton.isHidden = false
                 self.showSaveMessage(message: "Saved to lists")
