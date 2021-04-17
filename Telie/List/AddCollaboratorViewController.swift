@@ -160,7 +160,6 @@ class AddCollaboratorViewController: UIViewController {
 extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        print("tableview")
         let headerView = UIView()
         headerView.backgroundColor = .white
         let headerLabel = UILabel()

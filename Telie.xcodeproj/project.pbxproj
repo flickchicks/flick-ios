@@ -80,6 +80,9 @@
 		D425B99224EC194D00FB13A5 /* MediaSummaryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99124EC194D00FB13A5 /* MediaSummaryTableViewCell.swift */; };
 		D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */; };
 		D425B99624ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */; };
+		D42669712624F42C005ECCED /* SettingsOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42669702624F42C005ECCED /* SettingsOption.swift */; };
+		D42669762624F57E005ECCED /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42669752624F57E005ECCED /* SettingsTableViewCell.swift */; };
+		D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D426697A26251B58005ECCED /* MoveMediaViewController.swift */; };
 		D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
@@ -253,6 +256,9 @@
 		D425B99124EC194D00FB13A5 /* MediaSummaryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSummaryTableViewCell.swift; sourceTree = "<group>"; };
 		D425B99324ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRatingsTableViewCell.swift; sourceTree = "<group>"; };
 		D425B99524ECDAC100FB13A5 /* MediaThoughtsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaThoughtsTableViewCell.swift; sourceTree = "<group>"; };
+		D42669702624F42C005ECCED /* SettingsOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOption.swift; sourceTree = "<group>"; };
+		D42669752624F57E005ECCED /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		D426697A26251B58005ECCED /* MoveMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveMediaViewController.swift; sourceTree = "<group>"; };
 		D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFooterTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -462,6 +468,7 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D426696C2624E940005ECCED /* Settings */,
 				D458B3D5261431A0006A23A1 /* List */,
 				D458B3C726142082006A23A1 /* Media */,
 				D440925825FCDEDD00A4690A /* Discover */,
@@ -503,6 +510,16 @@
 			path = TelieUITests;
 			sourceTree = "<group>";
 		};
+		D426696C2624E940005ECCED /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
+				D42669702624F42C005ECCED /* SettingsOption.swift */,
+				D42669752624F57E005ECCED /* SettingsTableViewCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		D440925825FCDEDD00A4690A /* Discover */ = {
 			isa = PBXGroup;
 			children = (
@@ -527,6 +544,7 @@
 				D458B3C8261420B7006A23A1 /* SaveMediaViewController.swift */,
 				D458B3D0261426B9006A23A1 /* SaveToListTableViewCell.swift */,
 				D458B3DB26143760006A23A1 /* SuggestToFriendViewController.swift */,
+				D426697A26251B58005ECCED /* MoveMediaViewController.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -559,7 +577,6 @@
 				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
-				D448F70924EF52760027CA84 /* SettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
 				D44B1C3724FBF9D000EC2FAE /* EditProfileViewController.swift */,
 				D44BC12625A047F300D10DAB /* UsersViewController.swift */,
@@ -974,10 +991,13 @@
 				80F00F7824BA50920051B8FF /* ConfirmationModalView.swift in Sources */,
 				D458B3DC26143760006A23A1 /* SuggestToFriendViewController.swift in Sources */,
 				D492728424DE5B8B00FA5F2A /* Notification.swift in Sources */,
+				D42669712624F42C005ECCED /* SettingsOption.swift in Sources */,
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
+				D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */,
 				803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */,
+				D42669762624F57E005ECCED /* SettingsTableViewCell.swift in Sources */,
 				D444974F24B566C700D72FED /* MediaViewController.swift in Sources */,
 				309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */,
 				80F00F6524AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift in Sources */,
@@ -1239,7 +1259,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.2;
+				CURRENT_PROJECT_VERSION = 1.3.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1263,7 +1283,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.2;
+				CURRENT_PROJECT_VERSION = 1.3.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1433,7 +1453,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.2;
+				CURRENT_PROJECT_VERSION = 1.3.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1555,7 +1575,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.2;
+				CURRENT_PROJECT_VERSION = 1.3.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1683,7 +1703,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.2;
+				CURRENT_PROJECT_VERSION = 1.3.4;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -11,13 +11,16 @@ import UIKit
 class SaveToListTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
+    private let containerView = UIView()
+    private let listInfoStackView = UIStackView()
+    private let iconImageView = UIImageView()
     private var mediaCollectionView: UICollectionView!
+//    private let selectView = UIView()
     private let titleLabel = UILabel()
 
     // MARK: - Private Data Vars
-    private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
     private var list: SimpleMediaList!
-    private let lockImageView = UIImageView()
+    private var index: Int?
     private var media: [SimpleMedia] = []
     private let mediaCellReuseIdentifier = "MediaCellReuseIdentifier"
 
@@ -29,16 +32,33 @@ class SaveToListTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         isUserInteractionEnabled = true
-
-        selectionStyle = .gray
+        selectionStyle = .none
         backgroundColor = .clear
         contentView.backgroundColor = .clear
+
+        containerView.layer.cornerRadius = 8
+        containerView.backgroundColor = .lightGray2
+        contentView.addSubview(containerView)
+
+        listInfoStackView.axis = .horizontal
+        listInfoStackView.alignment = .center
+        listInfoStackView.spacing = 8
+        contentView.addSubview(listInfoStackView)
+
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 16, height: 14))
+        }
+        listInfoStackView.addArrangedSubview(iconImageView)
 
         titleLabel.linesCornerRadius = 6
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 14)
+        listInfoStackView.addArrangedSubview(titleLabel)
 
-        contentView.addSubview(titleLabel)
+//        selectView.layer.borderWidth = 2
+//        selectView.layer.cornerRadius = 3
+//        contentView.addSubview(selectView)
 
         let mediaLayout = UICollectionViewFlowLayout()
         mediaLayout.minimumInteritemSpacing = 12
@@ -52,75 +72,63 @@ class SaveToListTableViewCell: UITableViewCell {
         mediaCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
         mediaCollectionView.backgroundColor = .clear
         mediaCollectionView.showsHorizontalScrollIndicator = false
+        mediaCollectionView.isScrollEnabled = false
         mediaCollectionView.allowsSelection = false
         mediaCollectionView.addGestureRecognizer(tapGestureRecognizer)
         contentView.addSubview(mediaCollectionView)
 
-        lockImageView.image = UIImage(named: "lock")
-        lockImageView.isHidden = true
-        contentView.addSubview(lockImageView)
-        collaboratorsPreviewView.isHidden = true
-        contentView.addSubview(collaboratorsPreviewView)
-
         setupConstraints()
-    }
-
-    func setupCollaborators(collaborators: [UserProfile]) {
-        collaboratorsPreviewView.users = collaborators
-
-        let collaboratorsPreviewWidth = collaboratorsPreviewView.getUsersPreviewWidth()
-
-        collaboratorsPreviewView.snp.updateConstraints { update in
-            update.width.equalTo(collaboratorsPreviewWidth)
-        }
     }
 
     private func setupConstraints() {
         let padding = 12
 
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(padding)
-            make.leading.equalToSuperview().offset(34)
-            make.height.equalTo(17)
-        }
-
         mediaCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(padding)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(padding)
+            make.bottom.equalTo(containerView).inset(padding)
             make.height.equalTo(120)
         }
 
-        lockImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(13)
-            make.width.equalTo(10)
-            make.centerY.equalTo(titleLabel)
+        listInfoStackView.snp.makeConstraints { make in
+            make.top.equalTo(containerView).offset(padding)
+            make.leading.equalToSuperview().offset(34)
+            make.trailing.equalTo(containerView).inset(padding)
+            make.height.equalTo(20)
         }
 
-        collaboratorsPreviewView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(10)
-            make.height.equalTo(20)
-            // Temporarily set as 0, update on cell configure
-            make.width.equalTo(0)
-            make.bottom.equalTo(titleLabel)
+        containerView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview().inset(6)
+            make.leading.trailing.equalToSuperview().inset(padding)
         }
+
     }
 
-    func configure(for list: SimpleMediaList, delegate: SaveMediaDelegate) {
+    func configure(
+        for list: SimpleMediaList,
+        isSelected: Bool = false,
+        index: Int = 0, // filler value for now
+        delegate: SaveMediaDelegate
+    ) {
+        self.index = index
         self.list = list
-        self.media = list.shows
+        self.media = Array(list.shows.prefix(4))
         self.delegate = delegate
-        // If there are no shows added, show empty state but no scroll
-        mediaCollectionView.isScrollEnabled = self.media.count != 0
         titleLabel.text = list.name
-        let listCollaborators = [list.owner] + list.collaborators
-        lockImageView.isHidden = !list.isPrivate
-        // collaboratorsPreviewView does not show if list is private
-        collaboratorsPreviewView.isHidden = list.isPrivate
-        if listCollaborators.count > 1 {
-            setupCollaborators(collaborators: listCollaborators)
+        if list.collaborators.count > 0 {
+            iconImageView.isHidden = false
+            iconImageView.image = UIImage(named: "peopleIcon")
+        } else if list.isPrivate {
+            iconImageView.isHidden = false
+            iconImageView.image = UIImage(named: "lock")
+        } else {
+            iconImageView.isHidden = true
         }
+        containerView.isHidden = !isSelected
+//        selectView.layer.borderColor =
+//            isSelected ?
+//            UIColor.gradientPurple.cgColor :
+//            UIColor.lightGray.cgColor
         mediaCollectionView.reloadData()
     }
 
@@ -128,14 +136,9 @@ class SaveToListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        collaboratorsPreviewView.users = []
-    }
-
     @objc func saveMedia() {
-        guard let list = list else { return }
-        delegate?.saveMedia(selectedList: list)
+        guard let index = index else { return }
+        delegate?.selectMedia(selectedIndex: index)
     }
 
 }

@@ -16,6 +16,12 @@ struct Response<T: Codable>: Codable {
 
 }
 
+struct SuccessResponse: Codable {
+
+    var success: Bool
+
+}
+
 struct Authorization: Codable {
     
     var authToken: String

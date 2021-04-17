@@ -546,6 +546,25 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Save to multiple lists [updated as of 4/12/21]
+    static func addToLists(mediaId: Int, listIds: [Int], completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "list_ids": listIds
+        ]
+        AF.request("\(hostEndpoint)/api/show/\(String(mediaId))/lsts/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let successData = try? jsonDecoder.decode(SuccessResponse.self, from: data) {
+                    completion(successData.success)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     // MARK: - Search
 
     /// [GET] Get media search result by query [updated as of 1/16/21]
