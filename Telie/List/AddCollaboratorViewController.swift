@@ -17,9 +17,8 @@ enum CollaboratorEditMode {
 class AddCollaboratorViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private var collaboratorsTableView: UITableView!
+    private var collaboratorsTableView = UITableView(frame: .zero, style: .grouped)
     private let collaboratorsTitleLabel = UILabel()
-    private var inviteCollaboratorsTableView: UITableView!
     private let inviteSearchBar = SearchBar()
     private let inviteTitleLabel = UILabel()
     private let spinner = NVActivityIndicatorView(
@@ -68,7 +67,7 @@ class AddCollaboratorViewController: UIViewController {
         subtitleLabel.font = .systemFont(ofSize: 12)
         view.addSubview(subtitleLabel)
 
-        collaboratorsTableView = UITableView(frame: .zero, style: .plain)
+        collaboratorsTableView.backgroundColor = .white
         collaboratorsTableView.dataSource = self
         collaboratorsTableView.delegate = self
         collaboratorsTableView.allowsMultipleSelection = true
@@ -153,14 +152,13 @@ class AddCollaboratorViewController: UIViewController {
     func updateCollaborators(updatedList: MediaList) {
         collaborators = [updatedList.owner] + updatedList.collaborators
         collaboratorsTableView.reloadData()
-        inviteCollaboratorsTableView.reloadData()
     }
 }
 
 extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 20))
         headerView.backgroundColor = .white
         let headerLabel = UILabel()
         headerLabel.textColor = .darkBlueGray2
@@ -168,7 +166,7 @@ extension AddCollaboratorViewController: UITableViewDelegate, UITableViewDataSou
         headerLabel.text = editMode == .add ? "Friends" : "Collaborators"
         headerView.addSubview(headerLabel)
         headerLabel.snp.makeConstraints { make in
-            make.leading.bottom.equalToSuperview()
+            make.leading.centerY.equalToSuperview()
         }
         return headerView
     }
@@ -219,8 +217,9 @@ extension AddCollaboratorViewController: UISearchBarDelegate {
                 if searchText == "" {
                     listFriends = allFriends
                 } else {
+                    let lowercasedSearchText = searchText.lowercased()
                     listFriends = allFriends.filter {
-                        "\($0.name)".contains(searchText) || $0.username.contains(searchText)
+                        "\($0.name.lowercased())".contains(lowercasedSearchText) || $0.username.contains(lowercasedSearchText)
                     }
                 }
             }

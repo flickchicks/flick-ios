@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             didFinishLaunchingWithOptions: launchOptions
         )
         
-        
         #if LOCAL
         print("LOCAL")
         
