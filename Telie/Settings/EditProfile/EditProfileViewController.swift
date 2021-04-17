@@ -10,29 +10,6 @@ import UIKit
 import Kingfisher
 import NotificationBannerSwift
 
-class ProfileInputTextField: UITextField {
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        font = .systemFont(ofSize: 14)
-        textColor = .black
-        borderStyle = .none
-        layer.backgroundColor = UIColor.offWhite.cgColor
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.mediumGray.cgColor
-        leftView = UIView(frame: CGRect(x: 0, y: 0, width: 4, height: frame.height))
-        leftViewMode = .always
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowOpacity = 1.0
-        layer.shadowRadius = 0.0
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-}
-
 protocol EditProfileDelegate: class {
     func updateUser(user: UserProfile)
 }
@@ -52,7 +29,6 @@ class EditProfileViewController: UIViewController {
     private let nameFieldLabel = UILabel()
     private let nameTextField = ProfileInputTextField()
     private let profileImageView = UIImageView()
-    private let profileSelectionModalView = ProfileSelectionModalView()
     private let saveButton = UIButton()
     private let selectImageButton = UIButton()
     private let spinner = UIActivityIndicatorView(style: .medium)
@@ -81,9 +57,6 @@ class EditProfileViewController: UIViewController {
 
         title = "Edit Profile"
         view.backgroundColor = .offWhite
-
-        profileSelectionModalView.modalDelegate = self
-        profileSelectionModalView.profileSelectionDelegate = self
 
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
@@ -311,8 +284,16 @@ class EditProfileViewController: UIViewController {
     }
 
     @objc func selectImage() {
-        // TODO: Revisit if having multiple scenes becomes an issue (for ex. with iPad)
-        showModalPopup(view: profileSelectionModalView)
+        let galleryPhotoAction = UIAlertAction(title: "Choose from gallery", style: .default) { _ in self.selectFromGallery() }
+        let takePhotoAction = UIAlertAction(title: "Take new photo", style: .default) { _ in self.takeNewPhoto() }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let alert = UIAlertController(title: "Upload profile photo", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(galleryPhotoAction)
+        alert.addAction(takePhotoAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
     }
 
     @objc func saveProfileInformation() {
@@ -402,16 +383,22 @@ extension EditProfileViewController: UITextViewDelegate {
 extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            setProfilePic(with: image)
+        } else if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            setProfilePic(with: image)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+
+    func setProfilePic(with image: UIImage) {
         let resizedImage = image.resize(toSize: profileImageSize)
         profileImageView.image = resizedImage
-        profileSelectionModalView.removeFromSuperview()
         didChangeProfilePic = true
-        dismiss(animated: true, completion: nil)
     }
 }
 
-extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
+extension EditProfileViewController: ModalDelegate {
 
     func dismissModal(modalView: UIView) {
         modalView.removeFromSuperview()
@@ -423,7 +410,6 @@ extension EditProfileViewController: ModalDelegate, ProfileSelectionDelegate {
     }
 
     func takeNewPhoto() {
-        profileSelectionModalView.removeFromSuperview()
         imagePickerController.sourceType = .camera
         present(imagePickerController, animated: true, completion: nil)
     }
