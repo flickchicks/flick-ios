@@ -6,9 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
-import SkeletonView
 import NotificationBannerSwift
+import SkeletonView
+import UIKit
 
 enum FriendsLayoutMode { case expanded, condensed }
 
@@ -28,11 +28,6 @@ class ProfileViewController: UIViewController {
     // MARK: - Private View Vars
     private let listsTableView = UITableView(frame: .zero, style: .plain)
     private var bottomPaddingView = UIView()
-
-    // MARK: - Private Data Vars
-    private let headerReuseIdentifier = "HeaderReuseIdentifier"
-    private let listCellReuseIdentifier = "ListCellReuseIdentifier"
-    private let profileCellReuseIdentifier = "ProfileCellReuseIdentifier"
 
     private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private var friends: [UserProfile] = []
@@ -62,7 +57,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
-        
+
         // pad the bottom of view with white color so that table bouncing on bottom doesn't look weird
         bottomPaddingView.layer.zPosition = 0
         bottomPaddingView.backgroundColor = .white
@@ -75,9 +70,9 @@ class ProfileViewController: UIViewController {
         listsTableView.dataSource = self
         listsTableView.delegate = self
         listsTableView.backgroundColor = .clear
-        listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
-        listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
-        listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
+        listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.reuseIdentifier)
+        listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: ProfileSummaryTableViewCell.reuseIdentifier)
+        listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.reuseIdentifier)
         // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
 //        listsTableView.estimatedRowHeight = 185
         listsTableView.rowHeight = UITableView.automaticDimension
@@ -194,16 +189,6 @@ class ProfileViewController: UIViewController {
                 self.updateUserInfo(user: user)
             }
         }
-
-        // Get friends of another user
-        NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
-            guard let self = self, !friends.isEmpty else { return }
-            self.friends = friends
-            DispatchQueue.main.async {
-                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
-                self.refreshControl.endRefreshing()
-            }
-        }
     }
 
     private func updateUserInfo(user: UserProfile) {
@@ -259,9 +244,9 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         let section = sections[indexPath.section]
         switch section.type {
         case .profileSummary:
-            return profileCellReuseIdentifier
+            return ProfileSummaryTableViewCell.reuseIdentifier
         case .lists:
-            return listCellReuseIdentifier
+            return ListTableViewCell.reuseIdentifier
         }
     }
     
@@ -293,14 +278,14 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         let section = sections[indexPath.section]
         switch section.type {
         case .profileSummary:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileSummaryTableViewCell.reuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
             cell.configure(isHome: isHome,
                            user: user,
                            friends: friends,
                            delegate: self)
             return cell
         case .lists:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.reuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
             cell.configure(for: isLikedSelected ? likedLists[indexPath.item] : mediaLists[indexPath.item])
             cell.delegate = self
             return cell
@@ -315,7 +300,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         let section = sections[section]
         switch section.type {
         case .lists:
-            return headerReuseIdentifier
+            return ProfileHeaderView.reuseIdentifier
         default:
             return nil
         }
@@ -327,7 +312,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return UIView()
         case .lists:
-            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerReuseIdentifier) as? ProfileHeaderView else { return UIView() }
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileHeaderView.reuseIdentifier) as? ProfileHeaderView else { return UIView() }
             headerView.configure(user: user,
                                  isCurrentUser: isCurrentUser)
             headerView.delegate = self

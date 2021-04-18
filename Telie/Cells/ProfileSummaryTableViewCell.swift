@@ -1,5 +1,6 @@
 import UIKit
 import Kingfisher
+import SkeletonView
 
 class ProfileSummaryTableViewCell: UITableViewCell {
 
@@ -17,6 +18,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private var condensedCellSpacing = -8
     private let maxFriendsPreview = 6
     private let profileImageSize = CGSize(width: 70, height: 70)
+    static var reuseIdentifier = "ProfileSummaryTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,11 +26,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         backgroundColor = .offWhite
         selectionStyle = .none
 
-        if let userProfilePicUrl = UserDefaults.standard.string(forKey: Constants.UserDefaults.userProfilePicUrl) {
-            profileImageView.kf.setImage(with: URL(string: userProfilePicUrl))
-        } else {
-            profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
-        }
         profileImageView.backgroundColor = .deepPurple
         profileImageView.layer.cornerRadius = profileImageSize.width / 2
         profileImageView.layer.masksToBounds = true
@@ -36,7 +33,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         profileImageView.contentMode = .scaleAspectFill
         contentView.addSubview(profileImageView)
 
-        nameLabel.text = UserDefaults.standard.string(forKey: Constants.UserDefaults.userName)
         nameLabel.linesCornerRadius = 10
         nameLabel.font = .boldSystemFont(ofSize: 20)
         nameLabel.textColor = .darkBlue
@@ -48,27 +44,13 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         usernameLabel.linesCornerRadius = 6
         userInfoView.addSubview(usernameLabel)
 
-        var cachedFriends: [UserProfile] {
-            if let savedFriends = UserDefaults.standard.value(forKey: Constants.UserDefaults.userFriends) as? Data {
-               let decoder = JSONDecoder()
-               if let friendsDecoded = try? decoder.decode(Array.self, from: savedFriends) as [UserProfile] {
-                  return friendsDecoded
-               }
-            }
-            return []
-        }
-
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleFriendsPreviewTap))
-        friendsPreviewView = UsersPreviewView(
-            users: cachedFriends.count > 0 ? cachedFriends : [],
-            usersLayoutMode: .friends
-        )
+        friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
         friendsPreviewView.addGestureRecognizer(tapGestureRecognizer)
         userInfoView.addSubview(friendsPreviewView)
 
         contentView.addSubview(userInfoView)
 
-        bioLabel.text = UserDefaults.standard.string(forKey: Constants.UserDefaults.userBio)
         bioLabel.font = .systemFont(ofSize: 12)
         bioLabel.textColor = .darkBlueGray2
         bioLabel.numberOfLines = 0
@@ -82,7 +64,6 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         contentView.addSubview(settingsButton)
 
         setupConstraints()
-        updateUserInfoViewConstraints()
     }
 
     @objc func notificationButtonPressed() {
@@ -160,6 +141,51 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     }
 
     func configure(isHome: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
+
+        if isHome {
+            print("IS HOME")
+            isSkeletonable = false
+            nameLabel.text = UserDefaults.standard.string(forKey: Constants.UserDefaults.userName)
+            if let userProfilePicUrl = UserDefaults.standard.string(forKey: Constants.UserDefaults.userProfilePicUrl) {
+                profileImageView.kf.setImage(with: URL(string: userProfilePicUrl))
+            } else {
+                profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
+            }
+
+            var cachedFriends: [UserProfile] {
+                if let savedFriends = UserDefaults.standard.value(forKey: Constants.UserDefaults.userFriends) as? Data {
+                   let decoder = JSONDecoder()
+                   if let friendsDecoded = try? decoder.decode(Array.self, from: savedFriends) as [UserProfile] {
+                      return friendsDecoded
+                   }
+                }
+                return []
+            }
+
+            friendsPreviewView.users = cachedFriends.count > 0 ? cachedFriends : []
+            updateUserInfoViewConstraints()
+            bioLabel.text = UserDefaults.standard.string(forKey: Constants.UserDefaults.userBio)
+
+
+        } else {
+            isSkeletonable = true
+            usernameLabel.text = " " // Add spaces for skeleton view
+            usernameLabel.skeletonCornerRadius = 6
+            usernameLabel.isSkeletonable = true
+
+            nameLabel.text = "                   " // Add spaces for skeleton view
+            nameLabel.skeletonCornerRadius = 10
+            nameLabel.isSkeletonable = true
+
+            profileImageView.isSkeletonable = true
+            profileImageView.skeletonCornerRadius = 35
+
+            friendsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .friends)
+
+            userInfoView.isSkeletonable = true
+            userInfoView.skeletonCornerRadius = 10
+        }
+
         guard let user = user else { return }
         self.delegate = delegate
         nameLabel.text = user.name

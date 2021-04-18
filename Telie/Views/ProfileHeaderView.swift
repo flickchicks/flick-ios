@@ -21,6 +21,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     private let likedListsButton = UIButton()
     private let listsButton = UIButton()
     private let roundTopView = RoundTopView(hasShadow: true)
+    static let reuseIdentifier = "ProfileHeaderView"
 
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
