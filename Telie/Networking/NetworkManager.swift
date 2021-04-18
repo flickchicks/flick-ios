@@ -50,7 +50,7 @@ class NetworkManager {
         let parameters: [String: Any] = [
             "username": "",
             "name": name,
-            "email": email,
+            "email": email as Any,
             "profile_pic": profilePic,
             "social_id": socialId,
             "social_id_token": socialIdToken,
@@ -84,8 +84,6 @@ class NetworkManager {
             switch response.result {
             case .success(let data):
                 debugPrint(data)
-                print(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken))
-                print("\(hostEndpoint)/api/me/")
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {
@@ -104,13 +102,13 @@ class NetworkManager {
         let parameters: [String: Any] = [
             "username": user.username,
             "name": user.name,
-            "bio": user.bio,
-            "profile_pic": user.profilePic,
-            "phone_number": user.phoneNumber,
-            "social_id_token": user.socialIdToken,
-            "social_id_token_type": user.socialIdTokenType
+            "bio": user.bio as Any,
+            "profile_pic": user.profilePic as Any,
+            "phone_number": user.phoneNumber as Any,
+            "social_id_token": user.socialIdToken as Any,
+            "social_id_token_type": user.socialIdTokenType as Any
         ]
-
+        print("Update profile")
         AF.request("\(hostEndpoint)/api/me/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success(let data):
@@ -147,7 +145,11 @@ class NetworkManager {
 
     /// [GET] Get a user with id [updated as of 12/28/20]
     static func getUser(userId: Int, completion: @escaping (UserProfile) -> Void) {
-        AF.request("\(hostEndpoint)/api/user/\(userId)/", method: .get, headers: headers).validate().responseData { response in
+        AF.request(
+            "\(hostEndpoint)/api/user/\(userId)/",
+            method: .get,
+            headers: headers
+        ).validate().responseData { response in
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()

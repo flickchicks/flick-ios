@@ -27,27 +27,27 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Private View Vars
     private let listsTableView = UITableView(frame: .zero, style: .plain)
-    private var bottomPaddingView = UIView()
 
-    private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
+    // MARK: - Private Data Vars
     private var friends: [UserProfile] = []
-    private var isCurrentUser: Bool = false
+    private var isCurrentUser: Bool
+    private var isHome: Bool
     private var isLikedSelected: Bool = false
-    private var isHome: Bool = false
     private var likedLists: [SimpleMediaList] = []
     private var mediaLists: [SimpleMediaList] = []
-    private var sections = [Section]()
     private let refreshControl = UIRefreshControl()
+    private var sections = [Section]()
     private var user: UserProfile?
     private var userId: Int?
 
-    // isHome is whether HomeViewController is displaying
+    // isHome indicates whether HomeViewController is displaying
     // userId is nil only if at HomeViewController
     init(isHome: Bool, userId: Int?) {
-        super.init(nibName: nil, bundle: nil)
+        let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
         self.isHome = isHome
-        self.isCurrentUser = isHome || userId == currentUserId
         self.userId = userId
+        self.isCurrentUser = isHome || userId == currentUserId
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -58,11 +58,14 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
 
-        // pad the bottom of view with white color so that table bouncing on bottom doesn't look weird
-        bottomPaddingView.layer.zPosition = 0
-        bottomPaddingView.backgroundColor = .white
-        view.addSubview(bottomPaddingView)
+        setupBottomPaddingView()
+        setupProfileTable()
+        setupSections()
 
+        listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
+    }
+
+    private func setupProfileTable() {
         refreshControl.addTarget(self, action: #selector(refreshProfile), for: .valueChanged)
         refreshControl.tintColor = .gradientPurple
         refreshControl.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
@@ -70,21 +73,16 @@ class ProfileViewController: UIViewController {
         listsTableView.dataSource = self
         listsTableView.delegate = self
         listsTableView.backgroundColor = .clear
-        listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.reuseIdentifier)
-        listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: ProfileSummaryTableViewCell.reuseIdentifier)
-        listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.reuseIdentifier)
-        // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
-//        listsTableView.estimatedRowHeight = 185
         listsTableView.rowHeight = UITableView.automaticDimension
         listsTableView.bounces = true
         listsTableView.separatorStyle = .none
-        listsTableView.estimatedSectionHeaderHeight = 0
-        listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
         listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         listsTableView.isSkeletonable = true
+        listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.reuseIdentifier)
+        listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: ProfileSummaryTableViewCell.reuseIdentifier)
+        listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.reuseIdentifier)
 
-        // Add Refresh Control to Table View
         if #available(iOS 10.0, *) {
             listsTableView.refreshControl = refreshControl
         } else {
@@ -93,23 +91,23 @@ class ProfileViewController: UIViewController {
 
         view.addSubview(listsTableView)
 
-        setupConstraints()
-        setupSections()
-
-        listsTableView.showAnimatedSkeleton(usingColor: .lightPurple, animation: .none, transition: .crossDissolve(0.25))
-    }
-
-    private func setupConstraints() {
         listsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+
+    private func setupBottomPaddingView() {
+        // pad the bottom of view with white
+        let bottomPaddingView = UIView()
+        bottomPaddingView.layer.zPosition = 0
+        bottomPaddingView.backgroundColor = .white
+        view.addSubview(bottomPaddingView)
 
         bottomPaddingView.snp.makeConstraints { make in
             make.height.equalTo(view.frame.height - 310)
-            make.leading.trailing.bottom.equalTo(listsTableView)
+            make.leading.trailing.bottom.equalToSuperview()
         }
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -224,21 +222,49 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+}
+
+extension ProfileViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // Only allow bouncing for top of scroll view
-        if scrollView.contentOffset.y > 10 {
-            listsTableView.bounces = false
-        } else {
-            listsTableView.bounces = true
-        }
-        if scrollView.contentOffset.y < -170 {
+        // Set max scroll amount on the table
+        let scrollViewOffset = scrollView.contentOffset
+        if scrollViewOffset.y < -170 {
             scrollView.contentOffset = CGPoint(x: 0, y: -170)
         }
     }
+
 }
 
-extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSource {
+extension ProfileViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let section = sections[section]
+        switch section.type {
+        case .profileSummary:
+            return UIView()
+        case .lists:
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileHeaderView.reuseIdentifier) as? ProfileHeaderView else { return UIView() }
+            headerView.configure(user: user,
+                                 isCurrentUser: isCurrentUser)
+            headerView.delegate = self
+            return headerView
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let section = sections[section]
+        switch section.type {
+        case .profileSummary:
+            return 0
+        case .lists:
+            return 95
+        }
+    }
+
+}
+
+extension ProfileViewController: SkeletonTableViewDataSource {
 
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         let section = sections[indexPath.section]
@@ -259,7 +285,21 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
             return 3
         }
     }
-    
+
+    func numSections(in collectionSkeletonView: UITableView) -> Int {
+        return sections.count
+    }
+
+    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
+        let section = sections[section]
+        switch section.type {
+        case .lists:
+            return ProfileHeaderView.reuseIdentifier
+        default:
+            return nil
+        }
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -289,44 +329,6 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
             cell.configure(for: isLikedSelected ? likedLists[indexPath.item] : mediaLists[indexPath.item])
             cell.delegate = self
             return cell
-        }
-    }
-    
-    func numSections(in collectionSkeletonView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    func collectionSkeletonView(_ skeletonView: UITableView, identifierForHeaderInSection section: Int) -> ReusableHeaderFooterIdentifier? {
-        let section = sections[section]
-        switch section.type {
-        case .lists:
-            return ProfileHeaderView.reuseIdentifier
-        default:
-            return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let section = sections[section]
-        switch section.type {
-        case .profileSummary:
-            return UIView()
-        case .lists:
-            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileHeaderView.reuseIdentifier) as? ProfileHeaderView else { return UIView() }
-            headerView.configure(user: user,
-                                 isCurrentUser: isCurrentUser)
-            headerView.delegate = self
-            return headerView
-        }
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let section = sections[section]
-        switch section.type {
-        case .profileSummary:
-            return 0
-        case .lists:
-            return 95
         }
     }
 

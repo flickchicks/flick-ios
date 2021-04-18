@@ -41,8 +41,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
                     return
                 }
-
+                print(profile.id, "my id")
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
+                print("saved id", UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId))
                 UserDefaults.standard.set(profile.name, forKey: Constants.UserDefaults.userName)
                 UserDefaults.standard.set(profile.username, forKey: Constants.UserDefaults.userUsername)
                 UserDefaults.standard.set(profile.profilePicUrl, forKey: Constants.UserDefaults.userProfilePicUrl)

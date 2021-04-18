@@ -468,6 +468,7 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D4266A18262CBA2A005ECCED /* Profile */,
 				D426696C2624E940005ECCED /* Settings */,
 				D458B3D5261431A0006A23A1 /* List */,
 				D458B3C726142082006A23A1 /* Media */,
@@ -530,6 +531,14 @@
 			path = EditProfile;
 			sourceTree = "<group>";
 		};
+		D4266A18262CBA2A005ECCED /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		D440925825FCDEDD00A4690A /* Discover */ = {
 			isa = PBXGroup;
 			children = (
@@ -584,7 +593,6 @@
 				80F00F6124AAFE8C0051B8FF /* AddMediaViewController.swift */,
 				D41FE8B52477C7A40048900F /* LoginViewController.swift */,
 				3095FF012479CC3900F08C60 /* ListViewController.swift */,
-				D4786693247A09F5009E42FE /* ProfileViewController.swift */,
 				80F00F7924C296460051B8FF /* EditListViewController.swift */,
 				80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */,
 				D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */,
