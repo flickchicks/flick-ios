@@ -25,6 +25,11 @@ struct Constants {
         static let authorizationToken = "authorizationToken"
         static let didPromptPermission = "didPromptPermission"
         static let userId = "userId"
+        static let userName = "userId"
+        static let userUsername = "userUsername"
+        static let userProfilePicUrl = "userProfilePicUrl"
+        static let userFriends = "userFriends"
+        static let userBio = "userBio"
     }
 
     struct User {

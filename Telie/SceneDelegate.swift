@@ -41,7 +41,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
                     return
                 }
+
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
+                UserDefaults.standard.set(profile.name, forKey: Constants.UserDefaults.userName)
+                UserDefaults.standard.set(profile.username, forKey: Constants.UserDefaults.userUsername)
+                UserDefaults.standard.set(profile.profilePicUrl, forKey: Constants.UserDefaults.userProfilePicUrl)
+                UserDefaults.standard.set(profile.bio, forKey: Constants.UserDefaults.userBio)
+
+                if let encoded = try? JSONEncoder().encode(profile.friends){
+                    UserDefaults.standard.set(encoded, forKey: Constants.UserDefaults.userFriends)
+                }
 
                 // Register user for notifications
                 UNUserNotificationCenter.current().getNotificationSettings { settings in

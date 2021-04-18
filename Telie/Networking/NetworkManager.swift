@@ -83,6 +83,9 @@ class NetworkManager {
         AF.request(myProfileURLRequest).validate().responseData { response in
             switch response.result {
             case .success(let data):
+                debugPrint(data)
+                print(UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken))
+                print("\(hostEndpoint)/api/me/")
                 let jsonDecoder = JSONDecoder()
                 jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                 if let userData = try? jsonDecoder.decode(Response<UserProfile>.self, from: data) {

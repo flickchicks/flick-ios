@@ -62,7 +62,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
-        view.isSkeletonable = true
         
         // pad the bottom of view with white color so that table bouncing on bottom doesn't look weird
         bottomPaddingView.layer.zPosition = 0
@@ -181,19 +180,8 @@ class ProfileViewController: UIViewController {
         // Get profile of current user
         NetworkManager.getUserProfile { [weak self] userProfile in
             guard let self = self, let userProfile = userProfile else { return }
-            UserDefaults.standard.set(userProfile.id, forKey: Constants.UserDefaults.userId)
             DispatchQueue.main.async {
                 self.updateUserInfo(user: userProfile)
-            }
-        }
-
-        // Get friends of current user
-        NetworkManager.getFriends { [weak self] friends in
-            guard let self = self, !friends.isEmpty else { return }
-            self.friends = friends
-            DispatchQueue.main.async {
-                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
-                self.refreshControl.endRefreshing()
             }
         }
     }
@@ -224,6 +212,8 @@ class ProfileViewController: UIViewController {
            let collabLists = user.collabLsts {
             self.mediaLists = ownerLists + collabLists
         }
+
+        self.friends = user.friends ?? []
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
 
