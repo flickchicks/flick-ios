@@ -186,16 +186,6 @@ class ProfileViewController: UIViewController {
                 self.updateUserInfo(user: userProfile)
             }
         }
-
-        // Get friends of current user
-        NetworkManager.getFriends { [weak self] friends in
-            guard let self = self, !friends.isEmpty else { return }
-            self.friends = friends
-            DispatchQueue.main.async {
-                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
-                self.refreshControl.endRefreshing()
-            }
-        }
     }
 
     private func getUser(userId: Int) {
@@ -206,16 +196,6 @@ class ProfileViewController: UIViewController {
                 self.updateUserInfo(user: user)
             }
         }
-
-        // Get friends of another user
-        NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
-            guard let self = self, !friends.isEmpty else { return }
-            self.friends = friends
-            DispatchQueue.main.async {
-                self.listsTableView.reloadSections(IndexSet([0]), with: .none)
-                self.refreshControl.endRefreshing()
-            }
-        }
     }
 
     private func updateUserInfo(user: UserProfile) {
@@ -224,6 +204,8 @@ class ProfileViewController: UIViewController {
            let collabLists = user.collabLsts {
             self.mediaLists = ownerLists + collabLists
         }
+        print(user.friends)
+        self.friends = user.friends ?? []
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()
 

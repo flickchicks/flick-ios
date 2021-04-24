@@ -20,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         IQKeyboardManager.shared.enable = true
+//        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(MediaCommentsViewController.self)
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         // TODO: Double check with design and test on actual device
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 200

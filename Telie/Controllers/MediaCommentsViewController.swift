@@ -14,6 +14,7 @@ class MediaCommentsViewController: UIViewController {
     private var commentsTableView: UITableView!
     private let commentAreaView = CommentAreaView(type: .comment)
     private let sendCommentButton = UIButton()
+    private let loadingIndicatorView = LoadingIndicatorView()
 
     // MARK: - Private Data Vars
     private var comments: [Comment]!
@@ -21,9 +22,9 @@ class MediaCommentsViewController: UIViewController {
     private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
 
     init(comments: [Comment], mediaId: Int) {
-        super.init(nibName: nil, bundle: nil)
         self.comments = comments
         self.mediaId = mediaId
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -37,7 +38,6 @@ class MediaCommentsViewController: UIViewController {
         view.backgroundColor = .movieWhite
 
         commentAreaView.delegate = self
-        commentAreaView.sizeToFit()
         view.addSubview(commentAreaView)
 
         commentsTableView = UITableView(frame: .zero)
@@ -100,6 +100,14 @@ class MediaCommentsViewController: UIViewController {
         }
     }
 
+    func showLoadingIndicatorView() {
+        view.addSubview(loadingIndicatorView)
+        loadingIndicatorView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(CGSize(width: 100, height: 100))
+        }
+    }
+
 }
 
 extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -132,12 +140,17 @@ extension MediaCommentsViewController: CommentDelegate {
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
+        self.commentAreaView.commentTextView.text = ""
+        self.commentAreaView.commentTextView.endEditing(true)
+        showLoadingIndicatorView()
         NetworkManager.postComment(mediaId: mediaId, comment: commentText, isSpoiler: isSpoiler) { [weak self] media in
             guard let self = self else { return }
-            self.comments = media.comments
-            self.commentAreaView.commentTextView.text = ""
-            self.commentAreaView.commentTextView.endEditing(true)
-            self.commentsTableView.reloadData()
+            DispatchQueue.main.async {
+                self.comments = media.comments
+                self.loadingIndicatorView.removeFromSuperview()
+                self.commentsTableView.reloadData()
+
+            }
         }
     }
 
