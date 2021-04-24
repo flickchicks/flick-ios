@@ -315,6 +315,7 @@ extension ProfileViewController: SkeletonTableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("cellforrowat")
         let section = sections[indexPath.section]
         switch section.type {
         case .profileSummary:
@@ -334,7 +335,7 @@ extension ProfileViewController: SkeletonTableViewDataSource {
 
 }
 
-extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDelegate {
+extension ProfileViewController: ProfileDelegate {
 
     func pushSettingsView() {
         guard let user = user else { return }
@@ -402,15 +403,6 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         }
     }
 
-    func createList(list: MediaList) {
-        let listViewController = ListViewController(listId: list.id)
-        navigationController?.pushViewController(listViewController, animated: true)
-    }
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
-
     func showLists() {
         isLikedSelected = false
         listsTableView.reloadData()
@@ -421,6 +413,15 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         listsTableView.reloadData()
         getLikedLists()
     }
+}
+
+extension ProfileViewController: CreateListDelegate {
+
+    func createList(list: MediaList) {
+        let listViewController = ListViewController(listId: list.id)
+        navigationController?.pushViewController(listViewController, animated: true)
+    }
+
 }
 
 extension ProfileViewController: ListTableViewCellDelegate {
