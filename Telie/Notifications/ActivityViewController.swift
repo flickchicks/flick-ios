@@ -247,6 +247,7 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
         else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.reuseIdentifier, for: indexPath) as? NotificationTableViewCell else { return UITableViewCell() }
             cell.configure(with: activities[indexPath.row])
+            cell.notificationDelegate = self
             return cell
         }
     }
@@ -262,4 +263,12 @@ extension ActivityViewController: ActivityDelegate {
         banner.show()
         getActivity()
     }
+}
+
+extension ActivityViewController: NotificationDelegate {
+
+    func pushProfileViewController(id: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: id), animated: true)
+    }
+
 }

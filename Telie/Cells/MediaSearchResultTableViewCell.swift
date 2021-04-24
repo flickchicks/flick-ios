@@ -15,7 +15,7 @@ class MediaSearchResultTableViewCell: UITableViewCell {
     private let containerView = UIView()
     private let nameLabel = UILabel()
     private let posterImageView = UIImageView()
-    private let selectView = SelectIndicatorView(width: 20)
+    private let selectView = SelectIndicatorView(width: 20, type: .rectangular)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

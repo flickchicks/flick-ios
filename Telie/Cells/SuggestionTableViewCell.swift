@@ -11,6 +11,7 @@ import Kingfisher
 
 protocol SuggestionsDelegate: class {
     func likeSuggestion(suggestion: Suggestion)
+    func pushProfileViewController(id: Int)
 }
 
 class SuggestionTableViewCell: UITableViewCell {
@@ -57,6 +58,7 @@ class SuggestionTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         contentView.addSubview(dateLabel)
 
+        profileImageView.isUserInteractionEnabled = true
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
@@ -64,6 +66,9 @@ class SuggestionTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         profileImageView.layer.masksToBounds = true
+        profileImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(pushProfileViewController))
+        )
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
@@ -195,6 +200,11 @@ class SuggestionTableViewCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func pushProfileViewController() {
+        guard let suggestion = suggestion else { return }
+        delegate?.pushProfileViewController(id:  suggestion.fromUser.id)
     }
 
     @objc func likeSuggestion() {

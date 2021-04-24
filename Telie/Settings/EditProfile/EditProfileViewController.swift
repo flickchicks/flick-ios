@@ -9,6 +9,7 @@
 import UIKit
 import Kingfisher
 import NotificationBannerSwift
+import NVActivityIndicatorView
 
 protocol EditProfileDelegate: class {
     func updateUser(user: UserProfile)
@@ -31,7 +32,11 @@ class EditProfileViewController: UIViewController {
     private let profileImageView = UIImageView()
     private let saveButton = UIButton()
     private let selectImageButton = UIButton()
-    private let spinner = UIActivityIndicatorView(style: .medium)
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let userNameFieldLabel = UILabel()
     private let userNameTextField = ProfileInputTextField()
 

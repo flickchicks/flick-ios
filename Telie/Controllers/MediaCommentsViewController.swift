@@ -12,7 +12,7 @@ class MediaCommentsViewController: UIViewController {
     // MARK: - Private View Vars
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
-    private let commentAreaView = CommentAreaView()
+    private let commentAreaView = CommentAreaView(type: .comment)
     private let sendCommentButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -51,7 +51,7 @@ class MediaCommentsViewController: UIViewController {
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
         commentsTableView.sizeToFit()
-        commentsTableView.keyboardDismissMode = .interactive
+        commentsTableView.keyboardDismissMode = .onDrag
         commentsTableView.showsVerticalScrollIndicator = false
         view.addSubview(commentsTableView)
 

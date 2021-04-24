@@ -83,6 +83,7 @@
 		D42669762624F57E005ECCED /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42669752624F57E005ECCED /* SettingsTableViewCell.swift */; };
 		D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D426697A26251B58005ECCED /* MoveMediaViewController.swift */; };
 		D426699F262AA391005ECCED /* ProfileInputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D426699E262AA391005ECCED /* ProfileInputTextField.swift */; };
+		D4266A2126349406005ECCED /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4266A2026349406005ECCED /* LoadingIndicatorView.swift */; };
 		D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */; };
 		D444974F24B566C700D72FED /* MediaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D444974E24B566C700D72FED /* MediaViewController.swift */; };
 		D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D448F70924EF52760027CA84 /* SettingsViewController.swift */; };
@@ -260,6 +261,7 @@
 		D42669752624F57E005ECCED /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		D426697A26251B58005ECCED /* MoveMediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveMediaViewController.swift; sourceTree = "<group>"; };
 		D426699E262AA391005ECCED /* ProfileInputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInputTextField.swift; sourceTree = "<group>"; };
+		D4266A2026349406005ECCED /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
 		D440927725FD075300A4690A /* DiscoverFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFooterTableViewCell.swift; sourceTree = "<group>"; };
 		D444974E24B566C700D72FED /* MediaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewController.swift; sourceTree = "<group>"; };
 		D448F70924EF52760027CA84 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D4266A1F263493E8005ECCED /* Shared */,
 				D426696C2624E940005ECCED /* Settings */,
 				D458B3D5261431A0006A23A1 /* List */,
 				D458B3C726142082006A23A1 /* Media */,
@@ -528,6 +531,14 @@
 				D426699E262AA391005ECCED /* ProfileInputTextField.swift */,
 			);
 			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		D4266A1F263493E8005ECCED /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D4266A2026349406005ECCED /* LoadingIndicatorView.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		D440925825FCDEDD00A4690A /* Discover */ = {
@@ -1043,6 +1054,7 @@
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
 				D46A364D25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift in Sources */,
+				D4266A2126349406005ECCED /* LoadingIndicatorView.swift in Sources */,
 				D40ED7E12595C6B1004C2F2C /* DiscoverTableViewHeaderFooterView.swift in Sources */,
 				D45DC63324B9371500838DBF /* MediaSummaryInfoCollectionViewCell.swift in Sources */,
 				80E3A1A124A595410084203A /* ProfileSummaryTableViewCell.swift in Sources */,

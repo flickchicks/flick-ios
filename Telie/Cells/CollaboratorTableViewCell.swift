@@ -14,7 +14,7 @@ class CollaboratorTableViewCell: UITableViewCell {
     // MARK: - Private View Vars
     private let nameLabel = UILabel()
     private let ownerLabel = UILabel()
-    private let selectIndicatorView = SelectIndicatorView(width: 20)
+    private let selectIndicatorView = SelectIndicatorView(width: 20, type: .rectangular)
     private let userImageView = UIImageView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -146,5 +146,9 @@ extension SuggestionsViewController: SuggestionsDelegate {
             }
         }
     }
+
+    func pushProfileViewController(id: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: id), animated: true)
+    }
 }
 

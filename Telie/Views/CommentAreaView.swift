@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum CommentAreaViewType {
+    case preview, comment
+}
+
 class CommentAreaView: UIView {
 
     // MARK: - Private View Vars
@@ -16,8 +20,10 @@ class CommentAreaView: UIView {
     private let sendCommentButton = UIButton()
     weak var delegate: CommentDelegate?
 //    weak var modalDelegate: ModalDelegate?
+    private var type: CommentAreaViewType
 
-    override init(frame: CGRect) {
+    init(type: CommentAreaViewType) {
+        self.type = type
         super.init(frame: .zero)
 
         backgroundColor = .movieWhite
@@ -99,6 +105,10 @@ extension CommentAreaView: UITextViewDelegate {
         if textView.textColor == .mediumGray {
             textView.text = nil
             textView.textColor = .black
+            if type == .preview {
+                endEditing(true)
+                delegate?.seeAllComments()
+            }
         }
     }
     
