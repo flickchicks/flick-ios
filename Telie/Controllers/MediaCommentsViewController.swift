@@ -13,8 +13,8 @@ class MediaCommentsViewController: UIViewController {
     private let commentSeparatorView = UIView()
     private var commentsTableView: UITableView!
     private let commentAreaView = CommentAreaView(type: .comment)
-    private let sendCommentButton = UIButton()
     private let loadingIndicatorView = LoadingIndicatorView()
+    private let sendCommentButton = UIButton()
 
     // MARK: - Private Data Vars
     private var comments: [Comment]!

@@ -204,7 +204,7 @@ class ProfileViewController: UIViewController {
            let collabLists = user.collabLsts {
             self.mediaLists = ownerLists + collabLists
         }
-        print(user.friends)
+        print(user)
         self.friends = user.friends ?? []
         self.listsTableView.reloadData()
         self.listsTableView.hideSkeleton()

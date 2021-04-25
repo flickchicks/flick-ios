@@ -217,5 +217,3 @@ extension MediaCardViewController: ModalDelegate {
     }
 
 }
-
-
