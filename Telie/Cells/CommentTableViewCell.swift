@@ -32,6 +32,7 @@ class CommentTableViewCell: UITableViewCell {
     private var comment: Comment!
     private var commentIndex: Int!
     weak var delegate: CommentDelegate?
+    static let reuseIdentifier = "CommentTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -58,11 +58,14 @@ class MediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .lightPurple
+
         expandedCardHeight = 0.9 * view.frame.height
         collapsedCardHeight = 0.4 * view.frame.height
         mediaImageHeight = 0.6 * view.frame.height
 
-        mediaImageView.contentMode = .scaleAspectFill
+        mediaImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
+        mediaImageView.contentMode = .scaleAspectFit
         view.addSubview(mediaImageView)
 
         mediaImageView.snp.makeConstraints { make in

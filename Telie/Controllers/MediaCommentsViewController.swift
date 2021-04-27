@@ -10,8 +10,7 @@ import UIKit
 class MediaCommentsViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let commentSeparatorView = UIView()
-    private var commentsTableView: UITableView!
+    private let commentsTableView = UITableView(frame: .zero)
     private let commentAreaView = CommentAreaView(type: .comment)
     private let loadingIndicatorView = LoadingIndicatorView()
     private let sendCommentButton = UIButton()
@@ -19,7 +18,6 @@ class MediaCommentsViewController: UIViewController {
     // MARK: - Private Data Vars
     private var comments: [Comment]!
     private var mediaId: Int!
-    private let commentsCellReuseIdentifier = "CommentsTableCellReuseIdentifier"
 
     init(comments: [Comment], mediaId: Int) {
         self.comments = comments
@@ -40,13 +38,12 @@ class MediaCommentsViewController: UIViewController {
         commentAreaView.delegate = self
         view.addSubview(commentAreaView)
 
-        commentsTableView = UITableView(frame: .zero)
         commentsTableView.backgroundColor = .clear
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
         commentsTableView.isScrollEnabled = true
         commentsTableView.alwaysBounceVertical = true
-        commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: commentsCellReuseIdentifier)
+        commentsTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: CommentTableViewCell.reuseIdentifier)
         commentsTableView.separatorStyle = .none
         commentsTableView.rowHeight = UITableView.automaticDimension
         commentsTableView.estimatedRowHeight = 140
@@ -61,6 +58,9 @@ class MediaCommentsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     private func setupNavigationBar() {
@@ -85,6 +85,27 @@ class MediaCommentsViewController: UIViewController {
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc func keyboardWillShow(sender: NSNotification) {
+        if let keyboardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            commentAreaView.snp.updateConstraints { update in
+                update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(keyboardHeight)
+            }
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: { (completed) in
+                let indexPath = IndexPath(item: self.comments.count - 1, section: 0)
+                self.commentsTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            })
+        }
+    }
+
+    @objc func keyboardWillHide(sender: NSNotification) {
+        commentAreaView.snp.updateConstraints { update in
+            update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
 
     private func setupConstraints() {
@@ -117,7 +138,7 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: commentsCellReuseIdentifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentTableViewCell.reuseIdentifier, for: indexPath) as? CommentTableViewCell else { return UITableViewCell() }
         let comment = comments[indexPath.row]
         cell.configure(for: comment, index: indexPath.row, hideSpoiler: true, delegate: self)
         return cell
@@ -126,6 +147,10 @@ extension MediaCommentsViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 extension MediaCommentsViewController: CommentDelegate {
+    func showProfile(userId: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
+    }
+
     func likeComment(index: Int) {
         let commentId = comments[index].id
         NetworkManager.likeComment(commentId: commentId) { [weak self] comment in
@@ -133,10 +158,6 @@ extension MediaCommentsViewController: CommentDelegate {
             self.comments[index] = comment
             self.commentsTableView.reloadData()
         }
-    }
-    
-    func showProfile(userId: Int) {
-        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
     }
 
     func addComment(commentText: String, isSpoiler: Bool) {
