@@ -6,18 +6,31 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import NVActivityIndicatorView
 import UIKit
+
+enum CommentAreaViewType {
+    case preview, comment
+}
 
 class CommentAreaView: UIView {
 
-    // MARK: - Private View Vars
+    // MARK: - View Vars
     private let commentSeparatorView = UIView()
     let commentTextView = UITextView()
     private let sendCommentButton = UIButton()
-    weak var delegate: CommentDelegate?
-//    weak var modalDelegate: ModalDelegate?
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 20, height: 20),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
 
-    override init(frame: CGRect) {
+    // MARK: - Data Vars
+    weak var delegate: CommentDelegate?
+    private var type: CommentAreaViewType
+
+    init(type: CommentAreaViewType) {
+        self.type = type
         super.init(frame: .zero)
 
         backgroundColor = .movieWhite
@@ -32,7 +45,6 @@ class CommentAreaView: UIView {
         commentTextView.isScrollEnabled = false
         commentTextView.delegate = self
         commentTextView.textColor = .mediumGray
-        commentTextView.returnKeyType = .done
         commentTextView.sizeToFit()
         commentTextView.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         addSubview(commentTextView)
@@ -40,6 +52,9 @@ class CommentAreaView: UIView {
         sendCommentButton.setImage(UIImage(named: "send"), for: .normal)
         sendCommentButton.addTarget(self, action: #selector(addComment), for: .touchUpInside)
         addSubview(sendCommentButton)
+
+        spinner.isHidden = true
+        addSubview(spinner)
 
         setupConstraints()
 
@@ -106,6 +121,16 @@ extension CommentAreaView: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = "Share your thoughts"
             textView.textColor = .mediumGray
+        }
+    }
+
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        switch type {
+        case .comment:
+            return true
+        case .preview:
+            delegate?.seeAllComments()
+            return false
         }
     }
     

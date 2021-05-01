@@ -16,7 +16,7 @@ class MediaCardViewController: UIViewController {
     let mediaInformationTableView = UITableView(frame: .zero, style: .plain)
 
     // MARK: - Private View Vars
-    private let commentAreaView = CommentAreaView()
+    private let commentAreaView = CommentAreaView(type: .preview)
     private let handleIndicatorView = UIView()
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 30, height: 30),
@@ -55,6 +55,7 @@ class MediaCardViewController: UIViewController {
         mediaInformationTableView.estimatedRowHeight = 140
         mediaInformationTableView.setNeedsLayout()
         mediaInformationTableView.layoutIfNeeded()
+        mediaInformationTableView.keyboardDismissMode = .onDrag
         mediaInformationTableView.register(MediaSummaryTableViewCell.self, forCellReuseIdentifier: mediaSummaryReuseIdentifier)
         mediaInformationTableView.register(MediaRatingsTableViewCell.self, forCellReuseIdentifier: mediaRatingsReuseIdentifier)
         mediaInformationTableView.register(MediaThoughtsTableViewCell.self, forCellReuseIdentifier: mediaThoughtsReuseIdentifier)
@@ -198,6 +199,7 @@ extension MediaCardViewController: CommentDelegate {
         let mediaCommentsViewController = MediaCommentsViewController(comments: comments, mediaId: media.id)
         navigationController?.pushViewController(mediaCommentsViewController, animated: true)
     }
+    
 }
 
 extension MediaCardViewController: RatingDelegate {

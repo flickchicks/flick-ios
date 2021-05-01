@@ -79,15 +79,15 @@ class SuggestionsViewController: UIViewController {
     }
     
     @objc func refreshSuggestionData() {
-        getSuggetions()
+        getSuggestions()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getSuggetions()
+        getSuggestions()
     }
     
-    private func getSuggetions() {
+    private func getSuggestions() {
         NetworkManager.getSuggestions { [weak self] suggestions in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -142,9 +142,13 @@ extension SuggestionsViewController: SuggestionsDelegate {
         NetworkManager.likeSuggestion(suggestionId: suggestion.id) { [weak self] success in
             guard let self = self else { return }
             if success {
-                self.getSuggetions()
+                self.getSuggestions()
             }
         }
+    }
+
+    func pushProfileViewController(id: Int) {
+        navigationController?.pushViewController(ProfileViewController(isHome: false, userId: id), animated: true)
     }
 }
 

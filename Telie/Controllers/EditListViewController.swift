@@ -29,6 +29,7 @@ class EditListViewController: UIViewController {
     private let roundTopView = RoundTopView(hasShadow: false)
     private let selectAllButton = UIButton()
     private let selectAllLabel = UILabel()
+    private let loadingIndicatorView = LoadingIndicatorView()
 
     // MARK: - Private View Data
     private let actionButtonSize = CGSize(width: 36, height: 36)
@@ -299,44 +300,59 @@ extension EditListViewController: ModalDelegate {
 
 extension EditListViewController: EditListDelegate {
 
+    func showLoadingIndicatorView() {
+        view.addSubview(loadingIndicatorView)
+        loadingIndicatorView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(CGSize(width: 100, height: 100))
+        }
+    }
+
     func moveMedia(selectedList: SimpleMediaList) {
         let mediaIds = selectedMedia.map { $0.id }
-
-        NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
+        showLoadingIndicatorView()
+        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self]  _ in
             guard let self = self else { return }
-            self.list = list
-            self.media = list.shows
-            self.setActionsActive(list.shows.count != 0)
-            self.mediaCollectionView.reloadData()
-        }
-
-        NetworkManager.addToMediaList(listId: selectedList.id, mediaIds: mediaIds) { [weak self] list in
-            guard let self = self else { return }
-            let banner = StatusBarNotificationBanner(
-                title: "Moved to \(selectedList.name)",
-                style: .info,
-                colors: CustomBannerColors()
-            )
-            banner.show()
-            self.selectedMedia = []
+            DispatchQueue.main.async {
+                NetworkManager.removeFromMediaList(listId: self.list.id, mediaIds: mediaIds) { list in
+                    let banner = StatusBarNotificationBanner(
+                        title: "Moved to \(selectedList.name)",
+                        style: .info,
+                        colors: CustomBannerColors()
+                    )
+                    DispatchQueue.main.async {
+                        self.selectedMedia = []
+                        self.list = list
+                        self.media = list.shows
+                        self.setActionsActive(list.shows.count != 0)
+                        self.mediaCollectionView.reloadData()
+                        self.loadingIndicatorView.removeFromSuperview()
+                        banner.show()
+                    }
+                }
+            }
         }
     }
 
     func removeMediaFromList() {
         let mediaIds = selectedMedia.map { $0.id }
+        showLoadingIndicatorView()
         NetworkManager.removeFromMediaList(listId: list.id, mediaIds: mediaIds) { [weak self] list in
             guard let self = self else { return }
-            let banner = StatusBarNotificationBanner(
-                title: "Removed from list",
-                style: .info,
-                colors: CustomBannerColors()
-            )
-            banner.show()
-            self.list = list
-            self.media = list.shows
-            self.selectedMedia = []
-            self.setActionsActive(list.shows.count != 0)
-            self.mediaCollectionView.reloadData()
+            DispatchQueue.main.async {
+                let banner = StatusBarNotificationBanner(
+                    title: "Removed from list",
+                    style: .info,
+                    colors: CustomBannerColors()
+                )
+                self.list = list
+                self.media = list.shows
+                self.selectedMedia = []
+                self.setActionsActive(list.shows.count != 0)
+                self.mediaCollectionView.reloadData()
+                self.loadingIndicatorView.removeFromSuperview()
+                banner.show()
+            }
         }
     }
 

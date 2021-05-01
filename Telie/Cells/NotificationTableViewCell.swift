@@ -10,13 +10,19 @@ import UIKit
 import SkeletonView
 import Kingfisher
 
+protocol NotificationDelegate: class {
+    func pushProfileViewController(id: Int)
+}
+
 class NotificationTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
     private let dateLabel = UILabel()
+    weak var notificationDelegate: NotificationDelegate?
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
+    private var user: UserProfile?
 
     // MARK: - Data Vars
     private let padding = 12
@@ -50,7 +56,11 @@ class NotificationTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
+        profileImageView.isUserInteractionEnabled = true
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
+        profileImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(pushProfileViewController))
+        )
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
@@ -92,12 +102,18 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     private func setupProfileImageView(user: UserProfile) {
+        self.user = user
         if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         } else {
             profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
 
         }
+    }
+
+    @objc func pushProfileViewController() {
+        guard let user = user else { return }
+        notificationDelegate?.pushProfileViewController(id: user.id)
     }
 
     /// setupAcceptedIncomingRequestCell sets notificationLabel for accepted incoming friend requests

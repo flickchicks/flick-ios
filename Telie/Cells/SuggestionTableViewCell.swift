@@ -6,11 +6,13 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import NVActivityIndicatorView
+import UIKit
 
 protocol SuggestionsDelegate: class {
     func likeSuggestion(suggestion: Suggestion)
+    func pushProfileViewController(id: Int)
 }
 
 class SuggestionTableViewCell: UITableViewCell {
@@ -30,6 +32,11 @@ class SuggestionTableViewCell: UITableViewCell {
     private let profileImageView = UIImageView()
     private let releaseDateLabel = UILabel()
     private let spacerView = UIView()
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let synopsisLabel = UILabel()
     private let tagsLabel = UILabel()
 
@@ -57,6 +64,7 @@ class SuggestionTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         contentView.addSubview(dateLabel)
 
+        profileImageView.isUserInteractionEnabled = true
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
@@ -64,6 +72,9 @@ class SuggestionTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 20
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         profileImageView.layer.masksToBounds = true
+        profileImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(pushProfileViewController))
+        )
         containerView.addSubview(profileImageView)
 
         notificationLabel.font = .systemFont(ofSize: 14)
@@ -84,6 +95,8 @@ class SuggestionTableViewCell: UITableViewCell {
         likeButton.addTarget(self, action: #selector(likeSuggestion), for: .touchUpInside)
         likeButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 6, bottom: 8, right: 6)
         contentView.addSubview(likeButton)
+
+        contentView.addSubview(spinner)
 
         mediaTitleLabel.font = .boldSystemFont(ofSize: 14)
         mediaTitleLabel.textColor = .black
@@ -168,6 +181,9 @@ class SuggestionTableViewCell: UITableViewCell {
 //           make.leading.equalTo(releaseDateLabel.snp.trailing).offset(6)
 //           make.width.height.equalTo(3)
 //        }
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(likeButton)
+        }
 
         movieIconImageView.snp.makeConstraints { make in
             make.leading.equalTo(mediaTitleLabel)
@@ -197,17 +213,22 @@ class SuggestionTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func likeSuggestion() {
-        suggestion?.hasLiked?.toggle()
+    @objc func pushProfileViewController() {
         guard let suggestion = suggestion else { return }
-        if let hasLiked = suggestion.hasLiked {
-            let heartImage = hasLiked ? "filledHeart" : "heart"
-            likeButton.setImage(UIImage(named: heartImage), for: .normal)
-        }
+        delegate?.pushProfileViewController(id:  suggestion.fromUser.id)
+    }
+
+    @objc func likeSuggestion() {
+        guard let suggestion = suggestion else { return }
+        spinner.isHidden = false
+        spinner.startAnimating()
+        likeButton.isHidden = true
         delegate?.likeSuggestion(suggestion: suggestion)
     }
 
     func configure(with suggestion: Suggestion) {
+        spinner.isHidden = true
+        likeButton.isHidden = false
         self.suggestion = suggestion
         notificationLabel.attributedText =
             NSMutableAttributedString()
@@ -243,6 +264,8 @@ class SuggestionTableViewCell: UITableViewCell {
         super.prepareForReuse()
         profileImageView.image = nil
         mediaImageView.image = nil
+        spinner.isHidden = true
+        likeButton.isHidden = false
     }
 
 }

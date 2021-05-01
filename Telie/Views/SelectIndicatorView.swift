@@ -8,15 +8,19 @@
 
 import UIKit
 
+enum SelectIndicatorViewType {
+    case circular, rectangular
+}
+
 class SelectIndicatorView: UIView {
 
     private let checkImageView = UIImageView()
 
-    init(width: CGFloat) {
+    init(width: CGFloat, type: SelectIndicatorViewType) {
         super.init(frame: .zero)
 
         backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        layer.cornerRadius = width / 2
+        layer.cornerRadius = type == .circular ? width/2 : 3
         layer.borderWidth = 2
         layer.borderColor = UIColor.lightGray.cgColor
 

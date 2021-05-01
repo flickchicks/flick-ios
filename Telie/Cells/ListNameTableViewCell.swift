@@ -12,7 +12,7 @@ class ListNameTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let iconImageView = UIImageView()
-    private let selectIndicatorView = SelectIndicatorView(width: 20)
+    private let selectIndicatorView = SelectIndicatorView(width: 20, type: .circular)
     private let titleLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -13,7 +13,7 @@ class MediaSelectableCollectionViewCell: UICollectionViewCell {
     // MARK: - Private View Vars
     private let overlayView = UIView()
     private let posterImageView = UIImageView()
-    private let selectView = SelectIndicatorView(width: 20)
+    private let selectView = SelectIndicatorView(width: 20, type: .circular)
 
     override var isSelected: Bool {
         didSet {

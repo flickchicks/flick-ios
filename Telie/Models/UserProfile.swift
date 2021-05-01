@@ -24,6 +24,7 @@ struct UserProfile: Codable {
     var collabLsts: [SimpleMediaList]?
     var numMutualFriends: Int?
     var friendStatus: FriendStatus?
+    var friends: [UserProfile]?
 }
 
 enum FriendStatus: String, Codable {
