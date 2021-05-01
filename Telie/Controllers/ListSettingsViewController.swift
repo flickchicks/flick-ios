@@ -106,10 +106,19 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showDeleteConfirmationModal() {
-        let deleteConfirmationModalView = ConfirmationModalView(message: "Are you sure you want to delete this list?", type: .deleteList)
-        deleteConfirmationModalView.modalDelegate = self
-        deleteConfirmationModalView.listSettingsDelegate = self
-        showModalPopup(view: deleteConfirmationModalView)
+        let deleteAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            self.deleteList()
+        }
+        let cancelAction = UIAlertAction(title: "No", style: .cancel)
+
+        let deleteAlert = UIAlertController(title: "Delete",
+             message: "Are you sure you want to delete this list?",
+             preferredStyle: .alert)
+        deleteAlert.addAction(cancelAction)
+        deleteAlert.addAction(deleteAction)
+
+        self.present(deleteAlert, animated: true)
     }
 
     private func showRenameListModal() {
@@ -149,14 +158,6 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
         default:
             break
         }
-    }
-
-}
-
-extension ListSettingsViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
     }
 
 }

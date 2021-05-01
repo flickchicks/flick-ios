@@ -157,11 +157,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
 }
 
-extension GroupsViewController: ModalDelegate, CreateGroupDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
+extension GroupsViewController: CreateGroupDelegate {
 
     func createGroup(group: Group) {
         navigationController?.pushViewController(GroupViewController(group: group, shouldAddMembers: true), animated: true)

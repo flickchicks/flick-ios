@@ -296,14 +296,6 @@ extension EditListViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-extension EditListViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
-
-}
-
 extension EditListViewController: EditListDelegate {
 
     func showLoadingIndicatorView() {

@@ -180,21 +180,8 @@ extension MediaCommentsViewController: CommentDelegate {
         }
     }
 
-    func showSpoilerModal(commentText: String) {
-        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
-        commentSpoilerModalView.modalDelegate = self
-        commentSpoilerModalView.commentDelegate = self
-        showModalPopup(view: commentSpoilerModalView)
-    }
-
     func seeAllComments() {
         // Not used in this view controller
         return
-    }
-}
-
-extension MediaCommentsViewController: ModalDelegate {
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
     }
 }

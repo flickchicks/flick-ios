@@ -157,10 +157,23 @@ class MediaViewController: UIViewController {
     }
 
     @objc func shareButtonTapped() {
-        let shareMediaView = ShareMediaModalView()
-        shareMediaView.modalDelegate = self
-        shareMediaView.shareMediaDelegate = self
-        showModalPopup(view: shareMediaView)
+        let suggestAction = UIAlertAction(title: "Suggest to Friend", style: .default) { [weak self] action in
+            guard let self = self else { return }
+            self.showSuggestToFriendView()
+        }
+        let instagramAction = UIAlertAction(title: "Instagram Story", style: .default) { [weak self] action in
+            guard let self = self else { return }
+            self.shareToInstagramFeed()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        let shareAlert = UIAlertController(title: "Share Media", message: nil, preferredStyle: .actionSheet)
+
+        shareAlert.addAction(suggestAction)
+        shareAlert.addAction(instagramAction)
+        shareAlert.addAction(cancelAction)
+
+        self.present(shareAlert, animated: true)
     }
 
     @objc func handleAreaCardPan(recognizer: UIPanGestureRecognizer) {
@@ -259,14 +272,6 @@ extension MediaViewController: UIGestureRecognizerDelegate {
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
-    }
-
-}
-
-extension MediaViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
     }
 
 }

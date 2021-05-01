@@ -13,7 +13,7 @@ protocol CommentDelegate: class {
     func likeComment(index: Int)
     func showProfile(userId: Int)
     func addComment(commentText: String, isSpoiler: Bool)
-    func showSpoilerModal(commentText: String)
+//    func showSpoilerModal(commentText: String)
     func seeAllComments()
 }
 

@@ -357,16 +357,26 @@ class EditProfileViewController: UIViewController {
         }
     }
 
-    func startNavBarSpinner() {
+    private func startNavBarSpinner() {
         let barButton = UIBarButtonItem(customView: spinner)
         navigationItem.rightBarButtonItem = barButton
         spinner.startAnimating()
     }
 
-    func stopNavBarSpinner() {
+    private func stopNavBarSpinner() {
         spinner.stopAnimating()
         let saveBarButtonItem = UIBarButtonItem(customView: saveButton)
         navigationItem.rightBarButtonItem = saveBarButtonItem
+    }
+
+    private func selectFromGallery() {
+        imagePickerController.sourceType = .photoLibrary
+        present(imagePickerController, animated: true, completion: nil)
+    }
+
+    private func takeNewPhoto() {
+        imagePickerController.sourceType = .camera
+        present(imagePickerController, animated: true, completion: nil)
     }
 
 }
@@ -401,24 +411,6 @@ extension EditProfileViewController:  UIImagePickerControllerDelegate, UINavigat
         profileImageView.image = resizedImage
         didChangeProfilePic = true
     }
-}
-
-extension EditProfileViewController: ModalDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
-
-    func selectFromGallery() {
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true, completion: nil)
-    }
-
-    func takeNewPhoto() {
-        imagePickerController.sourceType = .camera
-        present(imagePickerController, animated: true, completion: nil)
-    }
-
 }
 
 extension EditProfileViewController: UITextFieldDelegate {
