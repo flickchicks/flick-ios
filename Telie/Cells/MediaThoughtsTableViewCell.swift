@@ -215,22 +215,25 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         if numComments == 0 {
+            commentTextView.attributedText = NSAttributedString(
+                string: "No thoughts yet. Leave a comment!",
+                attributes: [.font : UIFont.italicSystemFont(ofSize: 12)])
+            commentTextView.textColor = .darkGray
             setCommentViewFullWidth()
             return
         }
+        commentTextView.textColor = .black
+        commentTextView.font = .systemFont(ofSize: 12)
         let comment = comments[comments.count-1]
-//        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         // TODO: Fix comment cell resize logic here
         if comment.message.count > 46 || comment.message.count == 0 {
             setCommentViewFullWidth()
         }
         viewSpoilerButton.isHidden = true
-//        viewSpoilerButton.isHidden = !comment.isSpoiler
         commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
         commentDateLabel.text = Date().getDateLabelText(createdAt: comment.createdAt)
-        // TODO: Add logic to discover if comment has been liked by user
         let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         commentLikeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
