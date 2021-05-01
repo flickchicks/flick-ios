@@ -6,8 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import NVActivityIndicatorView
+import UIKit
 
 class MediaThoughtsTableViewCell: UITableViewCell {
 
@@ -16,12 +17,18 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let commentDateLabel = UILabel()
     private let commentTextView = UITextView()
     private let commentLikeButton = UIButton()
+    private let commentLikeContainerView = UIView()
     private let commentNumLikeLabel = UILabel()
     private let commentOwnerLabel = UILabel()
     private let commentProfileImageView = UIImageView()
 //    private let noCommentLabel = UILabel()
     private let seeAllCommentsButton = UIButton()
     private let separatorView = UIView()
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
     private let viewSpoilerButton = UIButton()
 
@@ -83,13 +90,20 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentDateLabel.textColor = .mediumGray
         commentCellView.addSubview(commentDateLabel)
 
+        commentCellView.addSubview(commentLikeContainerView)
+
+        let likeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeComment))
+        commentLikeContainerView.addGestureRecognizer(likeTapGestureRecognizer)
+
+        commentLikeContainerView.addSubview(spinner)
+
         commentLikeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
-        commentCellView.addSubview(commentLikeButton)
+        commentLikeContainerView.addSubview(commentLikeButton)
         
         commentNumLikeLabel.textAlignment = .center
         commentNumLikeLabel.font = .systemFont(ofSize: 8)
         commentNumLikeLabel.textColor = .mediumGray
-        commentCellView.addSubview(commentNumLikeLabel)
+        commentLikeContainerView.addSubview(commentNumLikeLabel)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -162,10 +176,16 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
+        commentLikeContainerView.snp.makeConstraints { make in
+            make.width.equalTo(40)
+            make.centerY.height.equalTo(commentTextView)
+            make.trailing.equalToSuperview().offset(10)
+        }
+
         commentLikeButton.snp.makeConstraints { make in
             make.size.equalTo(heartImageSize)
-            make.trailing.equalToSuperview()
-            make.centerY.equalTo(commentTextView)
+            make.trailing.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
         }
         
         commentNumLikeLabel.snp.makeConstraints { make in
@@ -178,6 +198,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.trailing.equalTo(commentTextView).inset(12)
             make.centerY.equalTo(commentTextView)
             make.size.equalTo(viewSpoilerButtonSize)
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(commentLikeButton)
         }
     }
 
@@ -220,6 +244,8 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     @objc func likeComment() {
         if comments.count > 0 {
+            spinner.startAnimating()
+            commentLikeButton.isHidden = true
             delegate?.likeComment(index: comments.count-1)
         }
     }
@@ -245,8 +271,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        spinner.stopAnimating()
         commentProfileImageView.image = nil
         commentLikeButton.imageView?.image = nil
+        commentLikeButton.isHidden = false
         commentTextView.snp.remakeConstraints { remake in
             remake.top.equalTo(commentProfileImageView)
             remake.leading.equalTo(commentOwnerLabel)

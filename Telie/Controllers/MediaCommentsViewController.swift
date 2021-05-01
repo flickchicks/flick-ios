@@ -121,7 +121,7 @@ class MediaCommentsViewController: UIViewController {
 
         commentsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(commentAreaView.snp.top)
         }
     }

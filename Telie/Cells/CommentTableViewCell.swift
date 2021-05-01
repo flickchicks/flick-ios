@@ -6,8 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import NVActivityIndicatorView
+import UIKit
 
 protocol CommentDelegate: class {
     func likeComment(index: Int)
@@ -23,9 +24,15 @@ class CommentTableViewCell: UITableViewCell {
     private let commentTextView = UITextView()
     private let dateLabel = UILabel()
     private let likeButton = UIButton()
+    private let likeContainerView = UIView()
     private let nameLabel = UILabel()
     private let numLikeLabel = UILabel()
     private let profileImageView = UIImageView()
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let viewSpoilerButton = UIButton()
 
     // MARK: - Private Data Vars
@@ -53,7 +60,6 @@ class CommentTableViewCell: UITableViewCell {
 
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeComment))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
-        
         commentTextView.isEditable = false
         commentTextView.isScrollEnabled = false
         commentTextView.textContainerInset = UIEdgeInsets(top: 12, left: 6, bottom: 12, right: 6)
@@ -73,14 +79,19 @@ class CommentTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         contentView.addSubview(dateLabel)
 
+        contentView.addSubview(likeContainerView)
+
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
-        likeButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 0)
-        contentView.addSubview(likeButton)
+        likeContainerView.addSubview(likeButton)
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeComment))
+        likeContainerView.addGestureRecognizer(tapGestureRecognizer)
+        likeContainerView.addSubview(spinner)
         
         numLikeLabel.textAlignment = .center
         numLikeLabel.font = .systemFont(ofSize: 8)
         numLikeLabel.textColor = .mediumGray
-        contentView.addSubview(numLikeLabel)
+        likeContainerView.addSubview(numLikeLabel)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -92,6 +103,8 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     @objc func likeComment() {
+        spinner.startAnimating()
+        likeButton.isHidden = true
         delegate?.likeComment(index: commentIndex)
     }
     
@@ -112,7 +125,7 @@ class CommentTableViewCell: UITableViewCell {
 
         profileImageView.snp.makeConstraints { make in
             make.size.equalTo(profileImageSize)
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(20)
             make.top.equalTo(nameLabel.snp.bottom).offset(2)
         }
 
@@ -136,10 +149,21 @@ class CommentTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
-        likeButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 30, height: 30))
-            make.trailing.equalToSuperview()
+        likeContainerView.snp.makeConstraints { make in
+            make.width.equalTo(40)
+            make.height.equalTo(commentTextView)
+            make.trailing.equalToSuperview().inset(10)
             make.centerY.equalTo(commentTextView)
+        }
+
+        likeButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 16, height: 14))
+            make.trailing.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
+        }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(likeButton)
         }
         
         numLikeLabel.snp.makeConstraints { make in
@@ -159,7 +183,6 @@ class CommentTableViewCell: UITableViewCell {
         self.comment = comment
         self.commentIndex = index
         self.delegate = delegate
-//        commentTextView.text = comment.isSpoiler && hideSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         nameLabel.text = comment.owner.name
         // TODO: Find better way to dynamically resize comment cell
@@ -175,18 +198,20 @@ class CommentTableViewCell: UITableViewCell {
         dateLabel.text = dateLabelText
         let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        likeButton.isHidden = false
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
             profileImageView.kf.setImage(with: imageUrl)
         }
         viewSpoilerButton.isHidden = true
         numLikeLabel.text = comment.numLikes > 0 ? "\(comment.numLikes)" : ""
-//        viewSpoilerButton.isHidden = !comment.isSpoiler || !hideSpoiler
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        spinner.stopAnimating()
         profileImageView.image = nil
         likeButton.imageView?.image = nil
+        likeButton.isHidden = false
         commentTextView.snp.remakeConstraints { remake in
             remake.top.equalTo(profileImageView)
             remake.leading.equalTo(nameLabel)
