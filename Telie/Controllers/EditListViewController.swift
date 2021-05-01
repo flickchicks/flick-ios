@@ -239,9 +239,6 @@ class EditListViewController: UIViewController {
         deleteConfirmationModalView.modalDelegate = self
         deleteConfirmationModalView.editListDelegate = self
         showModalPopup(view: deleteConfirmationModalView)
-
-        
-
     }
 
     @objc private func moveTapped() {

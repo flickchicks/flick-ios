@@ -136,7 +136,6 @@ class SettingsViewController: UIViewController {
         confirmationModalView.modalDelegate = self
         confirmationModalView.deleteAccountDelegate = self
         showModalPopup(view: confirmationModalView)
-
     }
 
 }
