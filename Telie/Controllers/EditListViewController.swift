@@ -232,13 +232,19 @@ class EditListViewController: UIViewController {
     }
 
     @objc private func removeTapped() {
-        let confirmMessage = selectedMedia.count == 1 ?
-        "Are you sure you want to remove this item from this list?" :
-        "Are you sure you want to remove these \(selectedMedia.count) items from this list?"
-        let deleteConfirmationModalView = ConfirmationModalView(message: confirmMessage, type: .removeMedia)
-        deleteConfirmationModalView.modalDelegate = self
-        deleteConfirmationModalView.editListDelegate = self
-        showModalPopup(view: deleteConfirmationModalView)
+        let deleteAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            self.removeMediaFromList()
+        }
+        let cancelAction = UIAlertAction(title: "No", style: .cancel)
+
+        let deleteAlert = UIAlertController(title: "Delete Items",
+             message: "Are you sure you want to delete these items from the list?",
+             preferredStyle: .alert)
+        deleteAlert.addAction(cancelAction)
+        deleteAlert.addAction(deleteAction)
+
+        self.present(deleteAlert, animated: true)
     }
 
     @objc private func moveTapped() {
