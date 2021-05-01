@@ -28,10 +28,9 @@ class SelectIndicatorView: UIView {
         checkImageView.isHidden = true
         addSubview(checkImageView)
         
-        let checkImageSize = CGSize(width: 10, height: 8)
         checkImageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.size.equalTo(checkImageSize)
+            make.size.equalTo(CGSize(width: 12, height: 12))
         }
     }
 
