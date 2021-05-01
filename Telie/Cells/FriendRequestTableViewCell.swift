@@ -6,7 +6,6 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-
 import Kingfisher
 import NVActivityIndicatorView
 import SkeletonView
@@ -196,10 +195,7 @@ class FriendRequestTableViewCell: UITableViewCell {
     }
 
     func configure(with notification: NotificationEnum) {
-        acceptButton.setTitle("Accept", for: .normal)
-        ignoreButton.setTitle("Ignore", for: .normal)
-        acceptSpinner.stopAnimating()
-        ignoreSpinner.stopAnimating()
+        resetButtons()
         switch notification {
         case .IncomingFriendRequest(let fromUser, let createdAt):
             self.fromUser = fromUser
@@ -211,13 +207,17 @@ class FriendRequestTableViewCell: UITableViewCell {
         }
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        profileImageView.image = nil
+    private func resetButtons() {
         acceptButton.setTitle("Accept", for: .normal)
         ignoreButton.setTitle("Ignore", for: .normal)
         acceptSpinner.stopAnimating()
         ignoreSpinner.stopAnimating()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.image = nil
+        resetButtons()
     }
 
 }
