@@ -105,6 +105,11 @@ class AddCollaboratorViewController: UIViewController {
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     @objc func keyboardWillHide(sender: NSNotification) {
         collaboratorsTableView.snp.updateConstraints { update in
             update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)

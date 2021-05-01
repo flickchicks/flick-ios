@@ -14,11 +14,13 @@ class UsersViewController: UIViewController {
     private let usersTableView = UITableView(frame: .zero)
 
     // MARK: - Private Data Vars
-    private var users: [UserProfile] = []
+    private var users: [UserProfile]
+    private var userId: Int?
     private var isCollaborators: Bool
 
-    init(isCollaborators: Bool, users: [UserProfile]) {
-        self.users = users
+    init(isCollaborators: Bool, users: [UserProfile], userId: Int?) {
+        self.users = isCollaborators ? users : []
+        self.userId = userId
         self.isCollaborators = isCollaborators
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,6 +39,7 @@ class UsersViewController: UIViewController {
         usersTableView.dataSource = self
         usersTableView.backgroundColor = .clear
         usersTableView.separatorStyle = .none
+        usersTableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         usersTableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.reuseIdentifier)
         view.addSubview(usersTableView)
 
@@ -46,6 +49,9 @@ class UsersViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+        if !isCollaborators {
+            getFriends()
+        }
     }
 
     private func setupNavigationBar() {
@@ -82,6 +88,27 @@ class UsersViewController: UIViewController {
 
     @objc func backButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+
+    func getFriends() {
+        guard let userId = userId else { return }
+        if userId == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
+            NetworkManager.getFriends { [weak self] friends in
+                guard let self = self, !friends.isEmpty else { return }
+                self.users = friends
+                DispatchQueue.main.async {
+                    self.usersTableView.reloadData()
+                }
+            }
+        } else {
+            NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
+                guard let self = self else { return }
+                self.users = friends
+                DispatchQueue.main.async {
+                    self.usersTableView.reloadData()
+                }
+            }
+        }
     }
 
 }

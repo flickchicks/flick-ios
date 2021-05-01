@@ -15,18 +15,19 @@ enum CommentAreaViewType {
 
 class CommentAreaView: UIView {
 
-    // MARK: - Private View Vars
+    // MARK: - View Vars
     private let commentSeparatorView = UIView()
     let commentTextView = UITextView()
     private let sendCommentButton = UIButton()
-    weak var delegate: CommentDelegate?
-//    weak var modalDelegate: ModalDelegate?
-    private var type: CommentAreaViewType
     private let spinner = NVActivityIndicatorView(
         frame: CGRect(x: 0, y: 0, width: 20, height: 20),
         type: .lineSpinFadeLoader,
         color: .gradientPurple
     )
+
+    // MARK: - Data Vars
+    weak var delegate: CommentDelegate?
+    private var type: CommentAreaViewType
 
     init(type: CommentAreaViewType) {
         self.type = type

@@ -58,10 +58,13 @@ class MediaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .lightPurple
+
         expandedCardHeight = 0.9 * view.frame.height
         collapsedCardHeight = 0.4 * view.frame.height
         mediaImageHeight = 0.6 * view.frame.height
 
+        mediaImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
         mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 

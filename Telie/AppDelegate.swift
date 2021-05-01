@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import Siren
 import UIKit
 import FBSDKCoreKit
 import UserNotifications
@@ -31,6 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("PROD")
         
         #endif
+
+        // Check version and show notification if outdated version
+        Siren.shared.wail()
 
         // Setup push notifications
         UNUserNotificationCenter.current().delegate = self

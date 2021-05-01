@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import Siren
 import UIKit
 import FBSDKLoginKit
 import IQKeyboardManagerSwift
@@ -20,16 +21,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         IQKeyboardManager.shared.enable = true
-//        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(MediaCommentsViewController.self)
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        // TODO: Double check with design and test on actual device
-        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 0
+        IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
+        IQKeyboardManager.shared.enableAutoToolbar = false
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(MediaCommentsViewController.self)
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         window.rootViewController = LaunchViewController()
         window.makeKeyAndVisible()
+        Siren.shared.wail()
+
+
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
             window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())

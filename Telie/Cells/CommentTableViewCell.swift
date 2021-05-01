@@ -32,6 +32,7 @@ class CommentTableViewCell: UITableViewCell {
     private var comment: Comment!
     private var commentIndex: Int!
     weak var delegate: CommentDelegate?
+    static let reuseIdentifier = "CommentTableViewCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -73,6 +74,7 @@ class CommentTableViewCell: UITableViewCell {
         contentView.addSubview(dateLabel)
 
         likeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
+        likeButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 0)
         contentView.addSubview(likeButton)
         
         numLikeLabel.textAlignment = .center
@@ -102,7 +104,6 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        let heartImageSize = CGSize(width: 16, height: 14)
         let horizontalPadding: CGFloat = 20
         let labelHeight: CGFloat = 12
         let profileImageSize = CGSize(width: 40, height: 40)
@@ -136,7 +137,7 @@ class CommentTableViewCell: UITableViewCell {
         }
 
         likeButton.snp.makeConstraints { make in
-            make.size.equalTo(heartImageSize)
+            make.size.equalTo(CGSize(width: 30, height: 30))
             make.trailing.equalToSuperview()
             make.centerY.equalTo(commentTextView)
         }

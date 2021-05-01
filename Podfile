@@ -22,6 +22,7 @@ target 'Telie' do
     	pod 'IQKeyboardManagerSwift'
     	pod 'SnapKit'
 	pod 'SPPermissions/Notification'
+	pod 'Siren'
 
 	# Data Loading
 	pod 'NotificationBannerSwift', '~> 3.0.0'
