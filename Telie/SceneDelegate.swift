@@ -34,7 +34,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         Siren.shared.wail()
 
-
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
             window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())

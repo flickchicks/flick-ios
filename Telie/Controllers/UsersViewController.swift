@@ -17,11 +17,13 @@ class UsersViewController: UIViewController {
     private var users: [UserProfile]
     private var userId: Int?
     private var isCollaborators: Bool
+    private var isCurrentUser: Bool
 
-    init(isCollaborators: Bool, users: [UserProfile], userId: Int?) {
+    init(isCollaborators: Bool, users: [UserProfile], userId: Int?, isCurrentUser: Bool) {
         self.users = isCollaborators ? users : []
         self.userId = userId
         self.isCollaborators = isCollaborators
+        self.isCurrentUser = isCurrentUser
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -91,8 +93,7 @@ class UsersViewController: UIViewController {
     }
 
     func getFriends() {
-        guard let userId = userId else { return }
-        if userId == UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId) {
+        if isCurrentUser {
             NetworkManager.getFriends { [weak self] friends in
                 guard let self = self, !friends.isEmpty else { return }
                 self.users = friends
@@ -101,6 +102,7 @@ class UsersViewController: UIViewController {
                 }
             }
         } else {
+            guard let userId = userId else { return }
             NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
                 guard let self = self else { return }
                 self.users = friends

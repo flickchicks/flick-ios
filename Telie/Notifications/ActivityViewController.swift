@@ -103,45 +103,88 @@ class ActivityViewController: UIViewController {
             }
         }
     }
+
+    private func refreshFriendRequests(banner: StatusBarNotificationBanner) {
+        NetworkManager.getFriendRequests { [weak self] friendRequests in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.friendRequests = friendRequests.map {
+                    return .IncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.created)
+                }
+                print(friendRequests)
+                let hasActivity = self.friendRequests.count > 0 || self.activities.count > 0
+                self.emptyStateView.isHidden = hasActivity
+                self.activityTableView.isHidden = !hasActivity
+                self.activityTableView.reloadData()
+                self.updateNotificationViewedTime()
+                banner.show()
+
+            }
+        }
+    }
     
     private func getActivity() {
         NetworkManager.getNotifications { [weak self] notifs in
             guard let self = self else { return }
-
-            // Only display supported notifications
-            let notifTypes = ["list_invite", "incoming_friend_request_accepted", "outgoing_friend_request_accepted", "list_edit", "group_invite", "suggestion_like"]
-            let notifications = notifs.filter { notifTypes.contains($0.notifType) }
-
+            let notifications = self.filterNotifications(notifications: notifs)
             DispatchQueue.main.async {
-                /* Note: Every element in returned notifications needs to be mapped to a corresponding object in our notifications array so depending on mistakes on the backend or frontend, there might be some inconsistencies in mapping the objects. I also make assumptions on the presence of values for optionals depending on the notification type, which may cause issues. For the most part this shouldn't be an issue. We can also revisit this later if need be.
-                */
-                self.activities = notifications.map {
-                    if $0.notifType == "list_invite" {
-                        return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!, createdAt: $0.createdAt)
-                    } else if $0.notifType == "incoming_friend_request_accepted" {
-                        return .AcceptedIncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
-                    } else if $0.notifType == "outgoing_friend_request_accepted" {
-                        return .AcceptedOutgoingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
-                    } else if $0.notifType == "list_edit" {
-                        if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
-                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded, createdAt: $0.createdAt)
-                        } else if let numShowsRemoved = $0.numShowsRemoved, let list = $0.lst  {
-                            return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved, createdAt: $0.createdAt)
-                        } else if let newOwner = $0.newOwner, let list = $0.lst {
-                            return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner, createdAt: $0.createdAt)
-                        } else if let list = $0.lst, $0.collaboratorsAdded.count > 0 {
-                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: list, type: .added, collaborators: $0.collaboratorsAdded, createdAt: $0.createdAt)
-                        }
-                        else {
-                            return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved, createdAt: $0.createdAt)
-                        }
-                    } else if $0.notifType == "group_invite" {
-                        return .GroupInvite(fromUser: $0.fromUser, group: $0.group, createdAt: $0.createdAt)
-                    } else {
-                        return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: $0.suggestion?.show.title ?? "", createdAt: $0.createdAt)
-                    }
-                }
+                self.mapNotifications(notifications: notifications)
                 self.getFriendRequests()
+            }
+        }
+    }
+
+    private func refreshActivity(banner: StatusBarNotificationBanner) {
+        NetworkManager.getNotifications { [weak self] notifs in
+            guard let self = self else { return }
+            let notifications = self.filterNotifications(notifications: notifs)
+            DispatchQueue.main.async {
+                self.mapNotifications(notifications: notifications)
+                self.refreshFriendRequests(banner: banner)
+            }
+        }
+    }
+
+    private func filterNotifications(notifications: [Notification]) -> [Notification] {
+        // Only display supported notifications
+        let notifTypes = [
+            "list_invite",
+            "incoming_friend_request_accepted",
+            "outgoing_friend_request_accepted",
+            "list_edit",
+            "group_invite",
+            "suggestion_like"
+        ]
+        return notifications.filter { notifTypes.contains($0.notifType) }
+    }
+
+    private func mapNotifications(notifications: [Notification]) {
+        /* Note: Every element in returned notifications needs to be mapped to a corresponding object in our notifications array so depending on mistakes on the backend or frontend, there might be some inconsistencies in mapping the objects. I also make assumptions on the presence of values for optionals depending on the notification type, which may cause issues. For the most part this shouldn't be an issue. We can also revisit this later if need be.
+        */
+        self.activities = notifications.map {
+            if $0.notifType == "list_invite" {
+                return .CollaborationInvite(fromUser: $0.fromUser, list: $0.lst!, createdAt: $0.createdAt)
+            } else if $0.notifType == "incoming_friend_request_accepted" {
+                return .AcceptedIncomingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
+            } else if $0.notifType == "outgoing_friend_request_accepted" {
+                return .AcceptedOutgoingFriendRequest(fromUser: $0.fromUser, createdAt: $0.createdAt)
+            } else if $0.notifType == "list_edit" {
+                if let numShowsAdded = $0.numShowsAdded, let list = $0.lst {
+                    return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .added, numChanged: numShowsAdded, createdAt: $0.createdAt)
+                } else if let numShowsRemoved = $0.numShowsRemoved, let list = $0.lst  {
+                    return .ListShowsEdit(fromUser: $0.fromUser, list: list, type: .removed, numChanged: numShowsRemoved, createdAt: $0.createdAt)
+                } else if let newOwner = $0.newOwner, let list = $0.lst {
+                    return .ListOwnershipEdit(fromUser: $0.fromUser, list: list, newOwner: newOwner, createdAt: $0.createdAt)
+                } else if let list = $0.lst, $0.collaboratorsAdded.count > 0 {
+                    return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: list, type: .added, collaborators: $0.collaboratorsAdded, createdAt: $0.createdAt)
+                }
+                else {
+                    return .ListCollaboratorsEdit(fromUser: $0.fromUser, list: $0.lst!, type: .removed, collaborators: $0.collaboratorsRemoved, createdAt: $0.createdAt)
+                }
+            } else if $0.notifType == "group_invite" {
+                return .GroupInvite(fromUser: $0.fromUser, group: $0.group, createdAt: $0.createdAt)
+            } else {
+                return .ActivityLike(fromUser: $0.fromUser, likedContent: .suggestion, media: $0.suggestion?.show.title ?? "", createdAt: $0.createdAt)
             }
         }
     }
@@ -153,13 +196,7 @@ class ActivityViewController: UIViewController {
 
     private func updateNotificationViewedTime() {
         let currentTime = Date().iso8601withFractionalSeconds
-        NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { success in
-//            if success {
-//                print("Updated notification viewed time")
-//            } else {
-//                print("Failed to update notification viewed time")
-//            }
-        }
+        NetworkManager.updateNotificationViewedTime(currentTime: currentTime) { _ in }
     }
 
 }
@@ -260,8 +297,7 @@ extension ActivityViewController: ActivityDelegate {
             style: .info,
             colors: CustomBannerColors()
         )
-        banner.show()
-        getActivity()
+        refreshActivity(banner: banner)
     }
 }
 
