@@ -6,6 +6,7 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
+import Siren
 import UIKit
 import FBSDKLoginKit
 import IQKeyboardManagerSwift
@@ -31,6 +32,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.rootViewController = LaunchViewController()
         window.makeKeyAndVisible()
+        Siren.shared.wail()
+
+
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
             window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
