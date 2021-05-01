@@ -63,6 +63,11 @@ class MediaCommentsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func setupNavigationBar() {
         let backButtonSize = CGSize(width: 22, height: 18)
 

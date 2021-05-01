@@ -65,7 +65,7 @@ class MediaViewController: UIViewController {
         mediaImageHeight = 0.6 * view.frame.height
 
         mediaImageView.layer.backgroundColor = UIColor.lightPurple.cgColor
-        mediaImageView.contentMode = .scaleAspectFit
+        mediaImageView.contentMode = .scaleAspectFill
         view.addSubview(mediaImageView)
 
         mediaImageView.snp.makeConstraints { make in
