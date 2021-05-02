@@ -49,4 +49,5 @@ struct Media: Codable {
     var platforms: [String]?
     var keywords: [String]?
     var cast: String?
+    var trailers: [String]
 }

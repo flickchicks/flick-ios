@@ -16,6 +16,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     private let listImageView = UIImageView()
     private let listLabel = UILabel()
     private var mediaId: Int!
+    private let trailerButton = UIButton()
     private let userImageView = UIImageView()
 
     static let reuseIdentifier = "RecommendedShowsCollectionViewCell"
@@ -41,6 +42,9 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.borderColor = UIColor.movieWhite.cgColor
         userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
+
+        trailerButton.layer.backgroundColor = UIColor.lightGray.cgColor
+        contentView.addSubview(trailerButton)
 
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
@@ -73,6 +77,11 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             make.centerY.equalTo(userImageView)
             make.height.equalTo(17)
             make.trailing.equalToSuperview()
+        }
+
+        trailerButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 50, height: 50))
+            make.trailing.bottom.equalTo(imageView).inset(30)
         }
 
         listImageView.snp.makeConstraints { make in

@@ -9,6 +9,7 @@
 import Kingfisher
 import NotificationBannerSwift
 import UIKit
+import WebKit
 
 protocol SaveMediaDelegate: class {
     func saveMedia(selectedList: SimpleMediaList)
@@ -25,6 +26,7 @@ class MediaViewController: UIViewController {
     private let mediaImageView = UIImageView()
     private let saveMediaButton = UIButton()
     private let shareButton = UIButton()
+    private let trailerButton = UIButton()
 
     // MARK: - Private Data Vars
     private var animationProgressWhenInterrupted: CGFloat = 0
@@ -111,21 +113,37 @@ class MediaViewController: UIViewController {
         addChild(mediaCardViewController)
         view.addSubview(mediaCardViewController.view)
 
-        saveMediaButton.frame = CGRect(x: self.view.frame.width - 60 - buttonSize.width/2,
-                                       y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
-                                       width: buttonSize.width, height: buttonSize.height)
+        saveMediaButton.frame = CGRect(
+            x: self.view.frame.width - 60 - buttonSize.width/2,
+            y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
+            width: buttonSize.width,
+            height: buttonSize.height
+        )
         saveMediaButton.setImage(UIImage(named: "saveButton"), for: .normal)
         saveMediaButton.layer.cornerRadius = buttonSize.width / 2
         saveMediaButton.addTarget(self, action: #selector(saveMediaTapped), for: .touchUpInside)
         view.addSubview(saveMediaButton)
 
-        shareButton.frame = CGRect(x: self.view.frame.width - 60 - 3*buttonSize.width/2,
-                                       y: self.view.frame.height - collapsedCardHeight - buttonSize.width/2,
-                                       width: buttonSize.width, height: buttonSize.height)
+        shareButton.frame = CGRect(
+            x: view.frame.width - 60 - 3*buttonSize.width/2,
+            y: view.frame.height - collapsedCardHeight - buttonSize.width/2,
+            width: buttonSize.width,
+            height: buttonSize.height
+        )
         shareButton.setImage(UIImage(named: "shareButton"), for: .normal)
         shareButton.layer.cornerRadius = buttonSize.width / 2
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         view.addSubview(shareButton)
+
+        trailerButton.frame = CGRect(
+            x: 30,
+            y: view.frame.height - collapsedCardHeight - buttonSize.width/2,
+            width: buttonSize.width,
+            height: buttonSize.height)
+        trailerButton.setImage(UIImage(named: "videoButton"), for: .normal)
+        trailerButton.layer.cornerRadius = buttonSize.width / 2
+        trailerButton.addTarget(self, action: #selector(playTrailers), for: .touchUpInside)
+        view.addSubview(trailerButton)
 
         mediaCardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - collapsedCardHeight, width: self.view.bounds.width, height: expandedCardHeight)
         mediaCardViewController.view.clipsToBounds = true
@@ -225,11 +243,13 @@ class MediaViewController: UIViewController {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.expandedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                     self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+                    self.trailerButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
                 else {
                     self.mediaCardViewController.view.frame.origin.y = self.view.frame.height - self.collapsedCardHeight
                     self.saveMediaButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                     self.shareButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
+                    self.trailerButton.frame.origin.y = self.mediaCardViewController.view.frame.origin.y - self.buttonSize.width/2
                 }
             }
 
@@ -277,6 +297,11 @@ extension MediaViewController: UIGestureRecognizerDelegate {
 }
 
 extension MediaViewController: ShareMediaDelegate {
+
+    @objc func playTrailers() {
+        guard let media = media, media.trailers.count > 0 else { return }
+        navigationController?.pushViewController(MediaPlayerViewController(urlString: media.trailers[0]), animated: true)
+    }
 
     func showSuggestToFriendView() {
         if let media = media {
