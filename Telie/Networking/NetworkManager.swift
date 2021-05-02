@@ -447,10 +447,27 @@ class NetworkManager {
     /// [POST] Reject a friend request [updated as of 1/1/21]
     static func rejectFriendRequest(friendId: Int, completion: @escaping (Bool) -> Void) {
         let parameters: [String: Any] = [
-            "ids": [friendId],
+            "ids": [friendId]
         ]
 
         AF.request("\(hostEndpoint)/api/friends/reject/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }
+
+    /// [POST] Unfriend [updated as of 4/23/21]
+    static func unfriendUser(friendId: Int, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "ids": [friendId]
+        ]
+
+        AF.request("\(hostEndpoint)/api/friends/remove/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
             switch response.result {
             case .success:
                 completion(true)

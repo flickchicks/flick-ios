@@ -2,12 +2,13 @@ import UIKit
 
 protocol ProfileDelegate: class {
     func createFriendRequest()
-    func showCreateListModal()
+    func pushFriendsView()
     func pushNotificationsView()
     func pushSettingsView()
-    func pushFriendsView()
+    func showCreateListModal()
     func showLists()
     func showLikedLists()
+    func showUnfriendOption(completion: @escaping () -> Void)
 //    func pushFindFriendsView()
 }
 
@@ -25,6 +26,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: - Private Data Vars
     private let buttonSize = CGSize(width: 44, height: 44)
     weak var delegate: ProfileDelegate?
+    private var user: UserProfile?
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -89,6 +91,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     func configure(user: UserProfile?, isCurrentUser: Bool) {
+        self.user = user
         if isCurrentUser {
             contentView.addSubview(createListButton)
             createListButton.snp.makeConstraints { make in
@@ -99,13 +102,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         } else {
             switch user?.friendStatus {
             case .friends:
-                friendButton.isUserInteractionEnabled = false
-                friendButton.setImage(UIImage(named: "friendsIcon"), for: .normal)
+                friendButton.setImage(UIImage(named: "friendsButton"), for: .normal)
             case .outgoingRequest:
-                friendButton.isUserInteractionEnabled = false
                 friendButton.setImage(UIImage(named: "addFriendButtonDisabled"), for: .normal)
             default:
-                friendButton.isUserInteractionEnabled = true
                 friendButton.setImage(UIImage(named: "addFriendButton"), for: .normal)
             }
             contentView.addSubview(friendButton)
@@ -135,7 +135,18 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     @objc func friendButtonTapped() {
-        delegate?.createFriendRequest()
+        if let friendStatus = user?.friendStatus {
+            switch friendStatus {
+            case .friends:
+                delegate?.showUnfriendOption(completion: {
+                    self.friendButton.setImage(UIImage(named: "addFriendButton"), for: .normal)
+                })
+            case .incomingRequest, .notFriends:
+                delegate?.createFriendRequest()
+            default:
+                break
+            }
+        }
     }
 
     @objc private func listsButtonTapped() {
