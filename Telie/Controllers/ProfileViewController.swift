@@ -441,7 +441,6 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
     private func unfriend() {
         guard let user = user else { return }
         NetworkManager.unfriendUser(friendId: user.id) { success in
-            print("success \(success)")
             guard success else { return }
             let banner = StatusBarNotificationBanner(
                 title: "Unfriended",
