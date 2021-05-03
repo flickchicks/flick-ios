@@ -128,30 +128,20 @@ class SettingsViewController: UIViewController {
         }
     }
 
-    func deleteAccount() {
-        let confirmationModalView = ConfirmationModalView(
-            message: "Are you sure you want to delete your account?",
-            type: .deleteAccount
-        )
-        confirmationModalView.modalDelegate = self
-        confirmationModalView.deleteAccountDelegate = self
-        showModalPopup(view: confirmationModalView)
-    }
+    func presentDeleteAccountAlert() {
+        let deleteAction = UIAlertAction(title: "Delete Account", style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            self.deleteUserAccount()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
 
-}
+        let deleteAlert = UIAlertController(title: "Are you sure you want to delete your account?",
+             message: "All of your data will be deleted. This cannot be undone.",
+             preferredStyle: .actionSheet)
+        deleteAlert.addAction(cancelAction)
+        deleteAlert.addAction(deleteAction)
 
-extension SettingsViewController: EditProfileDelegate {
-
-    func updateUser(user: UserProfile) {
-        self.user = user
-    }
-
-}
-
-extension SettingsViewController: ModalDelegate, DeleteAccountDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
+        self.present(deleteAlert, animated: true)
     }
 
     func deleteUserAccount() {
@@ -161,6 +151,14 @@ extension SettingsViewController: ModalDelegate, DeleteAccountDelegate {
                 self.logout()
             }
         }
+    }
+
+}
+
+extension SettingsViewController: EditProfileDelegate {
+
+    func updateUser(user: UserProfile) {
+        self.user = user
     }
 
 }
@@ -197,7 +195,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case .logout:
             logout()
         case .deleteAccount:
-            deleteAccount()
+            presentDeleteAccountAlert()
         }
     }
 }

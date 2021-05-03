@@ -6,8 +6,9 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
 import Kingfisher
+import NVActivityIndicatorView
+import UIKit
 
 class MediaThoughtsTableViewCell: UITableViewCell {
 
@@ -16,12 +17,18 @@ class MediaThoughtsTableViewCell: UITableViewCell {
     private let commentDateLabel = UILabel()
     private let commentTextView = UITextView()
     private let commentLikeButton = UIButton()
+    private let commentLikeContainerView = UIView()
     private let commentNumLikeLabel = UILabel()
     private let commentOwnerLabel = UILabel()
     private let commentProfileImageView = UIImageView()
 //    private let noCommentLabel = UILabel()
     private let seeAllCommentsButton = UIButton()
     private let separatorView = UIView()
+    private let spinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let titleLabel = UILabel()
     private let viewSpoilerButton = UIButton()
 
@@ -83,13 +90,20 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         commentDateLabel.textColor = .mediumGray
         commentCellView.addSubview(commentDateLabel)
 
+        commentCellView.addSubview(commentLikeContainerView)
+
+        let likeTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(likeComment))
+        commentLikeContainerView.addGestureRecognizer(likeTapGestureRecognizer)
+
+        commentLikeContainerView.addSubview(spinner)
+
         commentLikeButton.addTarget(self, action: #selector(likeComment), for: .touchUpInside)
-        commentCellView.addSubview(commentLikeButton)
+        commentLikeContainerView.addSubview(commentLikeButton)
         
         commentNumLikeLabel.textAlignment = .center
         commentNumLikeLabel.font = .systemFont(ofSize: 8)
         commentNumLikeLabel.textColor = .mediumGray
-        commentCellView.addSubview(commentNumLikeLabel)
+        commentLikeContainerView.addSubview(commentNumLikeLabel)
 
         viewSpoilerButton.setTitle("View", for: .normal)
         viewSpoilerButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
@@ -162,10 +176,16 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(verticalPadding)
         }
 
+        commentLikeContainerView.snp.makeConstraints { make in
+            make.width.equalTo(40)
+            make.centerY.height.equalTo(commentTextView)
+            make.trailing.equalToSuperview().offset(10)
+        }
+
         commentLikeButton.snp.makeConstraints { make in
             make.size.equalTo(heartImageSize)
-            make.trailing.equalToSuperview()
-            make.centerY.equalTo(commentTextView)
+            make.trailing.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
         }
         
         commentNumLikeLabel.snp.makeConstraints { make in
@@ -179,6 +199,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
             make.centerY.equalTo(commentTextView)
             make.size.equalTo(viewSpoilerButtonSize)
         }
+
+        spinner.snp.makeConstraints { make in
+            make.center.equalTo(commentLikeButton)
+        }
     }
 
     @objc func seeAllComments() {
@@ -191,22 +215,25 @@ class MediaThoughtsTableViewCell: UITableViewCell {
         let numComments = comments.count
         seeAllCommentsButton.setTitle("See All \(numComments)", for: .normal)
         if numComments == 0 {
+            commentTextView.attributedText = NSAttributedString(
+                string: "No thoughts yet. Leave a comment!",
+                attributes: [.font : UIFont.italicSystemFont(ofSize: 12)])
+            commentTextView.textColor = .darkGray
             setCommentViewFullWidth()
             return
         }
+        commentTextView.textColor = .black
+        commentTextView.font = .systemFont(ofSize: 12)
         let comment = comments[comments.count-1]
-//        commentTextView.text = comment.isSpoiler ? "This contains a spoiler" : comment.message
         commentTextView.text = comment.message
         // TODO: Fix comment cell resize logic here
         if comment.message.count > 46 || comment.message.count == 0 {
             setCommentViewFullWidth()
         }
         viewSpoilerButton.isHidden = true
-//        viewSpoilerButton.isHidden = !comment.isSpoiler
         commentOwnerLabel.text = comment.owner.name
         // TODO: Add logic to calculate difference between createdDate and currentDate
         commentDateLabel.text = Date().getDateLabelText(createdAt: comment.createdAt)
-        // TODO: Add logic to discover if comment has been liked by user
         let heartImage = comment.hasLiked ?? false ? "filledHeart" : "heart"
         commentLikeButton.setImage(UIImage(named: heartImage), for: .normal)
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? "") {
@@ -220,6 +247,8 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     @objc func likeComment() {
         if comments.count > 0 {
+            spinner.startAnimating()
+            commentLikeButton.isHidden = true
             delegate?.likeComment(index: comments.count-1)
         }
     }
@@ -245,8 +274,10 @@ class MediaThoughtsTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        spinner.stopAnimating()
         commentProfileImageView.image = nil
         commentLikeButton.imageView?.image = nil
+        commentLikeButton.isHidden = false
         commentTextView.snp.remakeConstraints { remake in
             remake.top.equalTo(commentProfileImageView)
             remake.leading.equalTo(commentOwnerLabel)

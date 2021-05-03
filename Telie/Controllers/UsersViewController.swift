@@ -14,6 +14,8 @@ class UsersViewController: UIViewController {
     private let usersTableView = UITableView(frame: .zero)
 
     // MARK: - Private Data Vars
+    private let searchBar = SearchBar()
+    private var allUsers: [UserProfile]
     private var users: [UserProfile]
     private var userId: Int?
     private var isCollaborators: Bool
@@ -21,6 +23,7 @@ class UsersViewController: UIViewController {
 
     init(isCollaborators: Bool, users: [UserProfile], userId: Int?, isCurrentUser: Bool) {
         self.users = isCollaborators ? users : []
+        self.allUsers = isCollaborators ? users : []
         self.userId = userId
         self.isCollaborators = isCollaborators
         self.isCurrentUser = isCurrentUser
@@ -37,11 +40,15 @@ class UsersViewController: UIViewController {
         title = isCollaborators ? "Collaborators" : "Friends"
         view.backgroundColor = .offWhite
 
+        searchBar.placeholder = "Search"
+        searchBar.delegate = self
+        view.addSubview(searchBar)
+
         usersTableView.delegate = self
         usersTableView.dataSource = self
         usersTableView.backgroundColor = .clear
         usersTableView.separatorStyle = .none
-        usersTableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        usersTableView.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 12, right: 0)
         usersTableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.reuseIdentifier)
         view.addSubview(usersTableView)
 
@@ -53,6 +60,7 @@ class UsersViewController: UIViewController {
         setupNavigationBar()
         if !isCollaborators {
             getFriends()
+            searchBar.isHidden = true
         }
     }
 
@@ -82,9 +90,15 @@ class UsersViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(14)
+            make.height.equalTo(40)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(18)
+        }
+
         usersTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(searchBar.snp.bottom).offset(8)
         }
     }
 
@@ -97,7 +111,9 @@ class UsersViewController: UIViewController {
             NetworkManager.getFriends { [weak self] friends in
                 guard let self = self, !friends.isEmpty else { return }
                 self.users = friends
+                self.allUsers = friends
                 DispatchQueue.main.async {
+                    self.searchBar.isHidden = false
                     self.usersTableView.reloadData()
                 }
             }
@@ -106,7 +122,9 @@ class UsersViewController: UIViewController {
             NetworkManager.getFriendsOfUser(userId: userId) { [weak self] friends in
                 guard let self = self else { return }
                 self.users = friends
+                self.allUsers = friends
                 DispatchQueue.main.async {
+                    self.searchBar.isHidden = false
                     self.usersTableView.reloadData()
                 }
             }
@@ -138,4 +156,23 @@ extension UsersViewController: UITableViewDataSource {
         cell.configure(user: user)
         return cell
     }
+}
+
+extension UsersViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == "" {
+            users = allUsers
+        } else {
+            users = users.filter { user in
+                return user.name.contains(searchText) || user.username.contains(searchText)
+            }
+        }
+        usersTableView.reloadData()
+    }
+
 }
