@@ -81,7 +81,11 @@ class DiscoverSearchResultViewController: UIViewController {
             clearContent()
             return
         }
-        spinner.startAnimating()
+
+        if media.count == 0 {
+            spinner.startAnimating()
+        }
+
         switch searchType {
         case .movies:
             NetworkManager.searchMovies(query: query) { [weak self] movies in

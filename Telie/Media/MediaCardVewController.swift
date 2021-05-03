@@ -163,12 +163,6 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MediaCardViewController: CommentDelegate {
-    func showSpoilerModal(commentText: String) {
-        let commentSpoilerModalView = CommentSpoilerModalView(comment: commentText)
-        commentSpoilerModalView.modalDelegate = self
-        commentSpoilerModalView.commentDelegate = self
-        showModalPopup(view: commentSpoilerModalView)
-    }
     
     func showProfile(userId: Int) {
         navigationController?.pushViewController(ProfileViewController(isHome: false, userId: userId), animated: true)
@@ -209,11 +203,4 @@ extension MediaCardViewController: RatingDelegate {
             self.setupMedia(media: media)
         }
     }
-}
-
-extension MediaCardViewController: ModalDelegate {
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
-
 }

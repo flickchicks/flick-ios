@@ -57,6 +57,8 @@ class DiscoverViewController: UIViewController {
         titleLabel.text = "Telie"
         titleLabel.textColor = .black
         titleLabel.font = .boldSystemFont(ofSize: 24)
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(scrollToTopOfDiscover)))
         view.addSubview(titleLabel)
 
         buyMeCofeeButton.setImage(UIImage(named: "buyMeCoffeeIcon"), for: .normal)
@@ -98,6 +100,16 @@ class DiscoverViewController: UIViewController {
         spinner.startAnimating()
 
         setupConstraints()
+    }
+
+    @objc func scrollToTopOfDiscover() {
+        guard discoverSections.count > 0 else { return }
+        UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+        }, completion: { (completed) in
+            let indexPath = IndexPath(item: 0, section: 0)
+            self.discoverFeedTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        })
     }
 
     func setupConstraints() {

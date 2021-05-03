@@ -6,9 +6,10 @@
 //  Copyright © 2020 flick. All rights reserved.
 //
 
-import UIKit
-import SkeletonView
 import Kingfisher
+import NVActivityIndicatorView
+import SkeletonView
+import UIKit
 
 protocol ActivityDelegate: class {
     func refreshActivity(message: String)
@@ -18,9 +19,19 @@ class FriendRequestTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let acceptButton = UIButton()
+    private let acceptSpinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let containerView = UIView()
     private let dateLabel = UILabel()
     private let ignoreButton = UIButton()
+    private let ignoreSpinner = NVActivityIndicatorView(
+        frame: CGRect(x: 0, y: 0, width: 15, height: 15),
+        type: .lineSpinFadeLoader,
+        color: .gradientPurple
+    )
     private let notificationLabel = UILabel()
     private let profileImageView = UIImageView()
 
@@ -53,7 +64,6 @@ class FriendRequestTableViewCell: UITableViewCell {
         dateLabel.textColor = .mediumGray
         containerView.addSubview(dateLabel)
 
-        profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.masksToBounds = true
@@ -77,7 +87,8 @@ class FriendRequestTableViewCell: UITableViewCell {
         acceptButton.addTarget(self, action: #selector(acceptButtonClicked), for: .touchUpInside)
         contentView.addSubview(acceptButton)
 
-        ignoreButton.setTitle("Ignore", for: .normal)
+        contentView.addSubview(acceptSpinner)
+
         ignoreButton.titleLabel?.font = .systemFont(ofSize: 14)
         ignoreButton.layer.backgroundColor = UIColor.lightGray2.cgColor
         ignoreButton.addTarget(self, action: #selector(ignoreButtonClicked), for: .touchUpInside)
@@ -85,6 +96,8 @@ class FriendRequestTableViewCell: UITableViewCell {
         ignoreButton.setTitleColor(.darkBlueGray2, for: .normal)
         ignoreButton.layer.cornerRadius = 17
         contentView.addSubview(ignoreButton)
+
+        contentView.addSubview(ignoreSpinner)
 
         setupConstraints()
     }
@@ -104,10 +117,18 @@ class FriendRequestTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().inset(padding)
         }
 
+        acceptSpinner.snp.makeConstraints { make in
+            make.center.equalTo(acceptButton)
+        }
+
         ignoreButton.snp.makeConstraints { make in
             make.size.equalTo(buttonSize)
             make.leading.equalTo(acceptButton.snp.trailing).offset(48)
             make.top.bottom.equalTo(acceptButton)
+        }
+
+        ignoreSpinner.snp.makeConstraints { make in
+            make.center.equalTo(ignoreButton)
         }
         
         dateLabel.snp.makeConstraints { make in
@@ -133,6 +154,8 @@ class FriendRequestTableViewCell: UITableViewCell {
     
     @objc func acceptButtonClicked() {
         guard let fromUser = fromUser else { return }
+        acceptButton.setTitle("", for: .normal)
+        acceptSpinner.startAnimating()
         NetworkManager.acceptFriendRequest(friendId: fromUser.id) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -145,6 +168,8 @@ class FriendRequestTableViewCell: UITableViewCell {
     
     @objc func ignoreButtonClicked() {
         guard let fromUser = fromUser else { return }
+        ignoreButton.setTitle("", for: .normal)
+        ignoreSpinner.startAnimating()
         NetworkManager.rejectFriendRequest(friendId: fromUser.id) { [weak self] success in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -164,26 +189,35 @@ class FriendRequestTableViewCell: UITableViewCell {
         let friendRequestString = NSMutableAttributedString(string: " sent you a friend request")
         friendLabelString.append(friendRequestString)
         notificationLabel.attributedText = friendLabelString
-        if let imageUrl = URL(string: fromUser.profilePicUrl ?? "") {
+        if let imageUrl = URL(string: fromUser.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
     }
 
     func configure(with notification: NotificationEnum) {
-            switch notification {
-            case .IncomingFriendRequest(let fromUser, let createdAt):
-                self.fromUser = fromUser
-                setupFriendRequestCell(fromUser: fromUser)
-                let dateLabelText = Date().getDateLabelText(createdAt: createdAt)
-                dateLabel.text = dateLabelText
-            default:
-                break
-            }
+        resetButtons()
+        switch notification {
+        case .IncomingFriendRequest(let fromUser, let createdAt):
+            self.fromUser = fromUser
+            setupFriendRequestCell(fromUser: fromUser)
+            let dateLabelText = Date().getDateLabelText(createdAt: createdAt)
+            dateLabel.text = dateLabelText
+        default:
+            break
         }
+    }
+
+    private func resetButtons() {
+        acceptButton.setTitle("Accept", for: .normal)
+        ignoreButton.setTitle("Ignore", for: .normal)
+        acceptSpinner.stopAnimating()
+        ignoreSpinner.stopAnimating()
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         profileImageView.image = nil
+        resetButtons()
     }
 
 }

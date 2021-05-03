@@ -190,14 +190,19 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showClearIdeasModal() {
-        let clearIdeasModalView = ConfirmationModalView(
-            message: "Clear all current ideas and votes?",
-            subMessage: "To pick a new show, the group have to start fresh",
-            type: .clearIdeas
-        )
-        clearIdeasModalView.modalDelegate = self
-        clearIdeasModalView.clearIdeasDelegate = self
-        showModalPopup(view: clearIdeasModalView)
+        let clearAction = UIAlertAction(title: "Yes", style: .destructive) { [weak self] action in
+            guard let self = self else { return }
+            self.clearIdeas()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        let clearIdeasAlert = UIAlertController(title: "Clear all current ideas and votes?",
+             message: "To pick a new show, the group have to start fresh.",
+             preferredStyle: .alert)
+        clearIdeasAlert.addAction(cancelAction)
+        clearIdeasAlert.addAction(clearAction)
+
+        self.present(clearIdeasAlert, animated: true)
     }
 
     private func showRenameGroupModal() {
@@ -344,11 +349,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
 
 }
 
-extension GroupSettingsViewController: ModalDelegate, RenameGroupDelegate, AddMembersDelegate, ClearIdeasDelegate {
-
-    func dismissModal(modalView: UIView) {
-        modalView.removeFromSuperview()
-    }
+extension GroupSettingsViewController: RenameGroupDelegate, AddMembersDelegate, ClearIdeasDelegate {
 
     func renameGroup(group: Group) {
         self.group = group

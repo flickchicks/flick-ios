@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "logomark1x.png",
+      "filename" : "logomark3x-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "logomark2x.png",
+      "filename" : "logomark3x-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
