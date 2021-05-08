@@ -408,6 +408,32 @@ extension ProfileViewController: ProfileDelegate, ModalDelegate, CreateListDeleg
         }
     }
 
+    func showUnfriendOption(completion: @escaping () -> Void) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let unfriendAction = UIAlertAction(title: "Unfriend", style: .default) { _ in
+            self.unfriend()
+            completion()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+
+        alert.addAction(unfriendAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    private func unfriend() {
+        guard let user = user else { return }
+        NetworkManager.unfriendUser(friendId: user.id) { success in
+            guard success else { return }
+            let banner = StatusBarNotificationBanner(
+                title: "Unfriended",
+                style: .info,
+                colors: CustomBannerColors()
+            )
+            banner.show()
+        }
+    }
+
     func createList(list: MediaList) {
         let listViewController = ListViewController(listId: list.id)
         navigationController?.pushViewController(listViewController, animated: true)
