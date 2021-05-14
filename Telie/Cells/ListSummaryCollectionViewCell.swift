@@ -68,6 +68,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
     private let collaborateLabel = UILabel()
     private let collaborateView = UIView()
     private let collaboratorsPreviewView = UsersPreviewView(users: [], usersLayoutMode: .collaborators)
+    private let descriptionLabel = UILabel()
     private let lockView = UIImageView()
     private let privacyLabel = UILabel()
     private let privacyView = UIView()
@@ -108,6 +109,12 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(privacyView)
         privacyView.addSubview(privacyLabel)
         privacyView.addSubview(lockView)
+
+        descriptionLabel.textColor = .darkBlue
+        descriptionLabel.font = .systemFont(ofSize: 12)
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textAlignment = .center
+        contentView.addSubview(descriptionLabel)
 
         showLessButton.setTitle("Show less", for: .normal)
         showLessButton.setTitleColor(.mediumGray, for: .normal)
@@ -159,16 +166,23 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(listInfoHeight)
         }
 
-        showLessButton.snp.makeConstraints { make in
+        descriptionLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(tagCollectionView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(30)
+            make.top.equalTo(privacyView.snp.bottom).offset(15)
+//            make.bottom.equalToSuperview().inset(10)
         }
 
-        tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(privacyView.snp.bottom).offset(15)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(10)
-        }
+//        showLessButton.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.top.equalTo(tagCollectionView.snp.bottom).offset(10)
+//        }
+
+//        tagCollectionView.snp.makeConstraints { make in
+//            make.top.equalTo(privacyView.snp.bottom).offset(15)
+//            make.leading.trailing.equalToSuperview()
+//            make.bottom.equalToSuperview().inset(10)
+//        }
 
         collaborateLabel.snp.makeConstraints { make in
             make.centerY.trailing.equalToSuperview()
@@ -216,6 +230,7 @@ class ListSummaryCollectionViewCell: UICollectionViewCell {
 
         privacyLabel.text = list.isPrivate ? Constants.Privacy.privateList : Constants.Privacy.publicList
         lockView.image = UIImage(named: list.isPrivate ? "lock" : "unlock")
+        descriptionLabel.text = list.description ?? ""
     }
 
     private func getAllTagSizes() {

@@ -70,6 +70,7 @@ class ListViewController: UIViewController {
         mediaCollectionViewLayout.minimumLineSpacing = cellPadding
         mediaCollectionViewLayout.scrollDirection = .vertical
         mediaCollectionViewLayout.sectionHeadersPinToVisibleBounds = true
+//        mediaCollectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 
         mediaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mediaCollectionViewLayout)
         mediaCollectionView.backgroundColor = .white
@@ -312,7 +313,9 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         let section = sections[indexPath.section]
         switch section.type {
         case .listSummary:
-            return CGSize(width: collectionView.frame.width, height: listSummaryHeight)
+            let description = list?.description ?? ""
+            let descriptionHeight = description == "" ? 0 : description.height(forConstrainedWidth: collectionView.frame.width - 60, font: .systemFont(ofSize: 12)) + 15
+            return CGSize(width: collectionView.frame.width, height: listSummaryHeight + descriptionHeight)
         case .mediaList:
             let numCellsInRow: CGFloat = 3
             let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
