@@ -121,7 +121,7 @@ class GroupSettingsViewController: UIViewController {
         settingsTableView.separatorStyle = .none
         settingsTableView.dataSource = self
         settingsTableView.delegate = self
-        settingsTableView.register(GroupSettingTableViewCell.self, forCellReuseIdentifier: GroupSettingTableViewCell.reuseIdentifier)
+        settingsTableView.register(GeneralSettingsTableViewCell.self, forCellReuseIdentifier: GeneralSettingsTableViewCell.reuseIdentifier)
         settingsTableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.reuseIdentifier)
         settingsTableView.contentInset = UIEdgeInsets(top: 14, left: 0, bottom: 14, right: 0)
         view.addSubview(settingsTableView)
@@ -273,7 +273,7 @@ extension GroupSettingsViewController: UITableViewDataSource, UITableViewDelegat
         let section = sections[indexPath.section]
         if indexPath.row < section.settingItems.count {
             // Setup cell for settings action item
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: GroupSettingTableViewCell.reuseIdentifier, for: indexPath) as? GroupSettingTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: GeneralSettingsTableViewCell.reuseIdentifier, for: indexPath) as? GeneralSettingsTableViewCell else { return UITableViewCell() }
             let item = section.settingItems[indexPath.row]
             cell.configure(descriptionText: item.descriptionText, icon: item.icon, textColor: item.textColor, title: item.getTitle(group: group))
             return cell
