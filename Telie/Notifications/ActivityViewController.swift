@@ -225,14 +225,34 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
             switch activities[indexPath.row] {
             case .AcceptedIncomingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
+                AnalyticsManager.logSelectContent(
+                    contentType: SelectContentType.Notification.friendRequest,
+                    itemId: -1
+                )
             case .AcceptedOutgoingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
+                AnalyticsManager.logSelectContent(
+                    contentType: SelectContentType.Notification.friendRequest,
+                    itemId: -1
+                )
             case .CollaborationInvite(_, let list, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+                AnalyticsManager.logSelectContent(
+                    contentType: SelectContentType.Notification.collaborationInvite,
+                    itemId: -1
+                )
             case .ListShowsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+                AnalyticsManager.logSelectContent(
+                    contentType: SelectContentType.Notification.listActivity,
+                    itemId: -1
+                )
             case .ListCollaboratorsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
+                AnalyticsManager.logSelectContent(
+                    contentType: SelectContentType.Notification.listActivity,
+                    itemId: -1
+                )
             case .ListOwnershipEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .GroupInvite(_, let group, _):

@@ -18,6 +18,14 @@ struct SelectContentType {
         static let commentActivity = "discover_comment_activity"
     }
 
+    struct Notification {
+        static let friendRequest = "notification_friend_request"
+        static let likeComment = "notification_like_comment"
+        static let listActivity = "notification_list_activity"
+        static let suggestion = "notification_suggestion"
+        static let collaborationInvite = "notification_collaboration_invite"
+    }
+
 }
 
 class AnalyticsManager {
