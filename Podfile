@@ -24,6 +24,9 @@ target 'Telie' do
 	pod 'SPPermissions/Notification'
 	pod 'Siren'
 
+        # Analytics
+	pod 'Firebase/Analytics'
+
 	# Data Loading
 	pod 'NotificationBannerSwift', '~> 3.0.0'
 	pod 'SkeletonView'

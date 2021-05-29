@@ -9,3 +9,5 @@ Podfile.lock
 *.xcworkspace/xcuserdata/
 
 Telie/Supporting/Keys.plist
+
+Telie/Supporting/GoogleService-Info.plist

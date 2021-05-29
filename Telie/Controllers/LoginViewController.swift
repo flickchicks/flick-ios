@@ -161,6 +161,7 @@ class LoginViewController: UIViewController {
             socialIdToken: socialIdToken,
             socialIdTokenType: socialIdTokenType) { authorizationToken in
             DispatchQueue.main.async {
+                AnalyticsManager.logLoginEvent(name: name)
                 UserDefaults.standard.set(authorizationToken, forKey: Constants.UserDefaults.authorizationToken)
                 // This is to get the SceneDelegate object from your view controller
                 // then call the change root view controller function to change to main tab bar

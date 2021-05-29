@@ -9,6 +9,7 @@
 import Siren
 import UIKit
 import FBSDKCoreKit
+import Firebase
 import UserNotifications
 
 @UIApplicationMain
@@ -38,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Setup push notifications
         UNUserNotificationCenter.current().delegate = self
+
+        // Set up Firebase
+        FirebaseApp.configure()
 
         return true
     }

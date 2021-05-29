@@ -60,7 +60,6 @@ class UsersViewController: UIViewController {
         setupNavigationBar()
         if !isCollaborators {
             getFriends()
-            searchBar.isHidden = true
         }
     }
 
@@ -113,7 +112,6 @@ class UsersViewController: UIViewController {
                 self.users = friends
                 self.allUsers = friends
                 DispatchQueue.main.async {
-                    self.searchBar.isHidden = false
                     self.usersTableView.reloadData()
                 }
             }
@@ -124,7 +122,6 @@ class UsersViewController: UIViewController {
                 self.users = friends
                 self.allUsers = friends
                 DispatchQueue.main.async {
-                    self.searchBar.isHidden = false
                     self.usersTableView.reloadData()
                 }
             }
