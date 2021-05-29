@@ -9,25 +9,45 @@
 import Foundation
 import Firebase
 
+struct SelectContentType {
+
+    struct Discover {
+        static let friendSuggestion = "discover_friend_suggestion"
+        static let listSuggestion = "discover_list_suggestion"
+        static let showSuggestion = "discover_show_suggestion"
+        static let commentActivity = "discover_comment_activity"
+    }
+
+}
+
 class AnalyticsManager {
 
     static let shared: AnalyticsManager = AnalyticsManager()
 
-    static func logEventLogin(name: String) {
+    static func logEventLogin(method: String) {
         Analytics.logEvent(
-            "AnalyticsEventLogin",
+            AnalyticsEventLogin,
             parameters: [
-                "name": name
+                "method": method
             ]
         )
     }
 
-    static func logEventAppOpen() {
-        Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
+    static func logShareEvent(method: String) {
+        Analytics.logEvent(
+            AnalyticsEventShare,
+            parameters: [
+                "method": method
+            ])
     }
 
-    static func logFirebaseShareEvent() {
-        Analytics.logEvent(AnalyticsEventShare, parameters: nil)
+    static func logSelectContent(contentType: String, itemId: Int) {
+        Analytics.logEvent(
+            AnalyticsEventSelectContent,
+            parameters: [
+                "content_type": contentType,
+                "item_id": itemId
+            ])
     }
 
 }
