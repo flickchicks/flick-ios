@@ -133,6 +133,10 @@ extension SuggestionsViewController: UITableViewDelegate, UITableViewDataSource 
         let suggestion = suggestions[indexPath.row]
         let mediaViewController = MediaViewController(mediaId: suggestion.show.id, mediaImageUrl: suggestion.show.posterPic)
         navigationController?.pushViewController(mediaViewController, animated: true)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Notification.suggestion,
+            itemId: suggestion.id
+        )
     }
 
 }

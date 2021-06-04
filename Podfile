@@ -18,6 +18,9 @@ target 'Telie' do
     	pod 'Alamofire', '~> 5.2.1'
 	pod 'Wormholy', :configurations => ['Dev Debug']
 
+	# Analytics
+	pod 'Firebase/Analytics'
+
 	# User Interface
     	pod 'IQKeyboardManagerSwift'
     	pod 'SnapKit'

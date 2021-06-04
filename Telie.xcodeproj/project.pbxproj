@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01B433B3AE8EFC4CDC516223 /* Pods_Telie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19853B0A9429EB360E1AB1EF /* Pods_Telie.framework */; };
+		2341AE7FDE3BA2F94D6ED3AB /* Pods_Telie_TelieUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */; };
 		3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF012479CC3900F08C60 /* ListViewController.swift */; };
 		3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */; };
 		3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3095FF07247B93D700F08C60 /* RoundTopView.swift */; };
 		309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */; };
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
-		391B374FC0C24AE8CBDF9B9A /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E092371FC25DD9B799BF918 /* Pods_TelieTests.framework */; };
+		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
 		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
@@ -60,8 +62,6 @@
 		80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */; };
 		80F00F7824BA50920051B8FF /* ConfirmationModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */; };
 		80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F00F7924C296460051B8FF /* EditListViewController.swift */; };
-		B7510573334EFCD9B46A387B /* Pods_Telie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99C50F97E295BB5DEFC0E2F6 /* Pods_Telie.framework */; };
-		D11E67F9E832FEA7589728C8 /* Pods_Telie_TelieUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4083B3A9D2123041AAA165CF /* Pods_Telie_TelieUITests.framework */; };
 		D40A06B624EE2F8100631E75 /* CommentSpoilerModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */; };
 		D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */; };
 		D40ED7CF25946CE9004C2F2C /* DiscoverContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */; };
@@ -137,6 +137,8 @@
 		D492728824DED27600FA5F2A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728724DED27600FA5F2A /* String.swift */; };
 		D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */; };
 		D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */; };
+		D4A5AE732661D10D006C3C5A /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A5AE722661D10D006C3C5A /* AnalyticsManager.swift */; };
+		D4A5AEA22661DA02006C3C5A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D4A5AEA12661DA02006C3C5A /* GoogleService-Info.plist */; };
 		D4E4E67825B13675000D8341 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4E67725B13675000D8341 /* LaunchViewController.swift */; };
 		D4E4E6DE25B60D53000D8341 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */; };
 		D4E858A224B0182400062D9C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E858A124B0182400062D9C /* UserProfile.swift */; };
@@ -167,21 +169,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0F3495A520C426EAB28DE5C0 /* Pods-Telie.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.dev debug.xcconfig"; sourceTree = "<group>"; };
-		2C55914C3B228B41DA6804FE /* Pods-Telie-TelieUITests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.prod debug.xcconfig"; sourceTree = "<group>"; };
+		19853B0A9429EB360E1AB1EF /* Pods_Telie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C14F6018AA0ED9477F7FC3A /* Pods-Telie-TelieUITests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev release.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev release.xcconfig"; sourceTree = "<group>"; };
+		1E33FC56AC5A2D3070886015 /* Pods-TelieTests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.prod debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.prod debug.xcconfig"; sourceTree = "<group>"; };
+		2A0FD287D9F5D876EC41A7B3 /* Pods-Telie-TelieUITests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.prod release.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.prod release.xcconfig"; sourceTree = "<group>"; };
 		3095FF012479CC3900F08C60 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		3095FF04247B31E100F08C60 /* MediaInListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaInListCollectionViewCell.swift; sourceTree = "<group>"; };
 		3095FF07247B93D700F08C60 /* RoundTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundTopView.swift; sourceTree = "<group>"; };
 		309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSummaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		309F287024956FB400A670B0 /* MediaListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListHeaderView.swift; sourceTree = "<group>"; };
-		38A8B4F2CCA6859025AE9AEA /* Pods-TelieTests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.prod release.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.prod release.xcconfig"; sourceTree = "<group>"; };
-		3AE7963EA41C596383991AF1 /* Pods-TelieTests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.dev release.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.dev release.xcconfig"; sourceTree = "<group>"; };
-		3E092371FC25DD9B799BF918 /* Pods_TelieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4083B3A9D2123041AAA165CF /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		441125471ED3B84F583E171E /* Pods-TelieTests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.dev debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.dev debug.xcconfig"; sourceTree = "<group>"; };
-		583191E746DB3A3E03F2D96D /* Pods-Telie-TelieUITests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev release.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev release.xcconfig"; sourceTree = "<group>"; };
-		666938B009EE201377BB151F /* Pods-Telie-TelieUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
+		332E7F5FE95B3AB8DA203DC1 /* Pods-Telie.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.dev debug.xcconfig"; sourceTree = "<group>"; };
+		46B91DF72F6DCF9F039E4179 /* Pods-Telie.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod debug.xcconfig"; sourceTree = "<group>"; };
+		489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AAB646AB440881C1C64874E /* Pods-Telie-TelieUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		8015158525BCE128002313B9 /* GroupVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVoteViewController.swift; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
@@ -228,9 +230,10 @@
 		80F00F7524B96DD50051B8FF /* ListSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsViewController.swift; sourceTree = "<group>"; };
 		80F00F7724BA50920051B8FF /* ConfirmationModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationModalView.swift; sourceTree = "<group>"; };
 		80F00F7924C296460051B8FF /* EditListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewController.swift; sourceTree = "<group>"; };
-		99C50F97E295BB5DEFC0E2F6 /* Pods_Telie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ADFA666002152FB0FF193447 /* Pods-TelieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.debug.xcconfig"; sourceTree = "<group>"; };
-		BD870C5BA796AF0890FF71B8 /* Pods-Telie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.debug.xcconfig"; sourceTree = "<group>"; };
+		89C51100C237720C48683C9F /* Pods-Telie.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.dev release.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.dev release.xcconfig"; sourceTree = "<group>"; };
+		8A0BD628A100ADD76082D659 /* Pods-Telie.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod release.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod release.xcconfig"; sourceTree = "<group>"; };
+		999C28D6AB9DD74084074C5A /* Pods-TelieTests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.dev debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.dev debug.xcconfig"; sourceTree = "<group>"; };
+		B322DEA45F55210E74E3E797 /* Pods-Telie-TelieUITests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.prod debug.xcconfig"; sourceTree = "<group>"; };
 		D40A06B524EE2F8100631E75 /* CommentSpoilerModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentSpoilerModalView.swift; sourceTree = "<group>"; };
 		D40A06B724EE41A100631E75 /* MediaCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCommentsViewController.swift; sourceTree = "<group>"; };
 		D40ED7CE25946CE9004C2F2C /* DiscoverContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverContent.swift; sourceTree = "<group>"; };
@@ -312,6 +315,8 @@
 		D492728724DED27600FA5F2A /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D492728924DF107800FA5F2A /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
 		D492728B24E1341A00FA5F2A /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
+		D4A5AE722661D10D006C3C5A /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
+		D4A5AEA12661DA02006C3C5A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D4E4E67725B13675000D8341 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		D4E858A124B0182400062D9C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -322,12 +327,11 @@
 		D4F64D3A24830CF000A5A2E5 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		D4F64D3C2483E59800A5A2E5 /* UsersPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPreviewView.swift; sourceTree = "<group>"; };
 		D4FB449124B11CB7003CA71A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		E60D8694282F3938020CDAFB /* Pods-Telie-TelieUITests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.prod release.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.prod release.xcconfig"; sourceTree = "<group>"; };
-		F152410D20C51F1A6661C34F /* Pods-Telie.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod debug.xcconfig"; sourceTree = "<group>"; };
-		F3F3D8641ECF77ACFDE68D08 /* Pods-Telie.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.dev release.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.dev release.xcconfig"; sourceTree = "<group>"; };
-		F628529C99E1D4A1CE31B381 /* Pods-Telie-TelieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F7AE12AEB1C53AC5BE409A26 /* Pods-TelieTests.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.prod debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.prod debug.xcconfig"; sourceTree = "<group>"; };
-		FF82DD71A549B9D687EE4B95 /* Pods-Telie.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod release.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod release.xcconfig"; sourceTree = "<group>"; };
+		D7A6CB1C113C10A1D7175E7F /* Pods-Telie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.debug.xcconfig"; sourceTree = "<group>"; };
+		DFDC4904905CC1552FADF801 /* Pods-Telie-TelieUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		EEF68CF686D119FB9E31C897 /* Pods-TelieTests.dev release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.dev release.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.dev release.xcconfig"; sourceTree = "<group>"; };
+		F9212614C1EE9508FCD26BCF /* Pods-TelieTests.prod release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.prod release.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.prod release.xcconfig"; sourceTree = "<group>"; };
+		FB96507ADD09479D59D9B02F /* Pods-TelieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelieTests.debug.xcconfig"; path = "Target Support Files/Pods-TelieTests/Pods-TelieTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,7 +339,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7510573334EFCD9B46A387B /* Pods_Telie.framework in Frameworks */,
+				01B433B3AE8EFC4CDC516223 /* Pods_Telie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,7 +347,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				391B374FC0C24AE8CBDF9B9A /* Pods_TelieTests.framework in Frameworks */,
+				6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +355,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D11E67F9E832FEA7589728C8 /* Pods_Telie_TelieUITests.framework in Frameworks */,
+				2341AE7FDE3BA2F94D6ED3AB /* Pods_Telie_TelieUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,21 +365,21 @@
 		232A1AB0CD61604FAAD1667E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0F3495A520C426EAB28DE5C0 /* Pods-Telie.dev debug.xcconfig */,
-				BD870C5BA796AF0890FF71B8 /* Pods-Telie.debug.xcconfig */,
-				F152410D20C51F1A6661C34F /* Pods-Telie.prod debug.xcconfig */,
-				F3F3D8641ECF77ACFDE68D08 /* Pods-Telie.dev release.xcconfig */,
-				FF82DD71A549B9D687EE4B95 /* Pods-Telie.prod release.xcconfig */,
-				666938B009EE201377BB151F /* Pods-Telie-TelieUITests.dev debug.xcconfig */,
-				F628529C99E1D4A1CE31B381 /* Pods-Telie-TelieUITests.debug.xcconfig */,
-				2C55914C3B228B41DA6804FE /* Pods-Telie-TelieUITests.prod debug.xcconfig */,
-				583191E746DB3A3E03F2D96D /* Pods-Telie-TelieUITests.dev release.xcconfig */,
-				E60D8694282F3938020CDAFB /* Pods-Telie-TelieUITests.prod release.xcconfig */,
-				441125471ED3B84F583E171E /* Pods-TelieTests.dev debug.xcconfig */,
-				ADFA666002152FB0FF193447 /* Pods-TelieTests.debug.xcconfig */,
-				F7AE12AEB1C53AC5BE409A26 /* Pods-TelieTests.prod debug.xcconfig */,
-				3AE7963EA41C596383991AF1 /* Pods-TelieTests.dev release.xcconfig */,
-				38A8B4F2CCA6859025AE9AEA /* Pods-TelieTests.prod release.xcconfig */,
+				332E7F5FE95B3AB8DA203DC1 /* Pods-Telie.dev debug.xcconfig */,
+				D7A6CB1C113C10A1D7175E7F /* Pods-Telie.debug.xcconfig */,
+				46B91DF72F6DCF9F039E4179 /* Pods-Telie.prod debug.xcconfig */,
+				89C51100C237720C48683C9F /* Pods-Telie.dev release.xcconfig */,
+				8A0BD628A100ADD76082D659 /* Pods-Telie.prod release.xcconfig */,
+				7AAB646AB440881C1C64874E /* Pods-Telie-TelieUITests.dev debug.xcconfig */,
+				DFDC4904905CC1552FADF801 /* Pods-Telie-TelieUITests.debug.xcconfig */,
+				B322DEA45F55210E74E3E797 /* Pods-Telie-TelieUITests.prod debug.xcconfig */,
+				1C14F6018AA0ED9477F7FC3A /* Pods-Telie-TelieUITests.dev release.xcconfig */,
+				2A0FD287D9F5D876EC41A7B3 /* Pods-Telie-TelieUITests.prod release.xcconfig */,
+				999C28D6AB9DD74084074C5A /* Pods-TelieTests.dev debug.xcconfig */,
+				FB96507ADD09479D59D9B02F /* Pods-TelieTests.debug.xcconfig */,
+				1E33FC56AC5A2D3070886015 /* Pods-TelieTests.prod debug.xcconfig */,
+				EEF68CF686D119FB9E31C897 /* Pods-TelieTests.dev release.xcconfig */,
+				F9212614C1EE9508FCD26BCF /* Pods-TelieTests.prod release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -400,6 +404,16 @@
 				D474109D25CEE64B0062E2B4 /* EmptyStateView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		3D3E0488B86FD851312633C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19853B0A9429EB360E1AB1EF /* Pods_Telie.framework */,
+				600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */,
+				489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		8015159025BE41D9002313B9 /* Group */ = {
@@ -443,7 +457,7 @@
 				D41FE8D22477C7A80048900F /* TelieUITests */,
 				D41FE8AF2477C7A40048900F /* Products */,
 				232A1AB0CD61604FAAD1667E /* Pods */,
-				FACAFB709197698A608905DA /* Frameworks */,
+				3D3E0488B86FD851312633C3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -460,6 +474,7 @@
 		D41FE8B02477C7A40048900F /* Telie */ = {
 			isa = PBXGroup;
 			children = (
+				D4A5AE712661D0FE006C3C5A /* Analytics */,
 				D4266A1F263493E8005ECCED /* Shared */,
 				D426696C2624E940005ECCED /* Settings */,
 				D458B3D5261431A0006A23A1 /* List */,
@@ -693,6 +708,14 @@
 			path = ModalViews;
 			sourceTree = "<group>";
 		};
+		D4A5AE712661D0FE006C3C5A /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				D4A5AE722661D10D006C3C5A /* AnalyticsManager.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		D4CE248C25BCC04D007C45C5 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,22 +730,13 @@
 		D4FB449024B11C9A003CA71A /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				D4A5AEA12661DA02006C3C5A /* GoogleService-Info.plist */,
 				D4FB449124B11CB7003CA71A /* Constants.swift */,
 				80C4444F25F433BA009572B4 /* Keys.plist */,
 				D45A3E1825A9A7E90094161A /* Keys.swift */,
 				D458B40626191A79006A23A1 /* CustomBannerColors.swift */,
 			);
 			path = Supporting;
-			sourceTree = "<group>";
-		};
-		FACAFB709197698A608905DA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				99C50F97E295BB5DEFC0E2F6 /* Pods_Telie.framework */,
-				4083B3A9D2123041AAA165CF /* Pods_Telie_TelieUITests.framework */,
-				3E092371FC25DD9B799BF918 /* Pods_TelieTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -732,11 +746,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D41FE8D82477C7A80048900F /* Build configuration list for PBXNativeTarget "Telie" */;
 			buildPhases = (
-				F1E860603063469C9E233089 /* [CP] Check Pods Manifest.lock */,
+				3317ECA01DBDF3F56D712C6B /* [CP] Check Pods Manifest.lock */,
 				D41FE8AA2477C7A40048900F /* Sources */,
 				D41FE8AB2477C7A40048900F /* Frameworks */,
 				D41FE8AC2477C7A40048900F /* Resources */,
-				E920D074007A088BA141173C /* [CP] Embed Pods Frameworks */,
+				C9812A0E45B9DEE0E1C21284 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -751,7 +765,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D41FE8DB2477C7A80048900F /* Build configuration list for PBXNativeTarget "TelieTests" */;
 			buildPhases = (
-				9F67FF64C6563182B69A5468 /* [CP] Check Pods Manifest.lock */,
+				D03C2095F5A0C21D9907C5A7 /* [CP] Check Pods Manifest.lock */,
 				D41FE8C02477C7A80048900F /* Sources */,
 				D41FE8C12477C7A80048900F /* Frameworks */,
 				D41FE8C22477C7A80048900F /* Resources */,
@@ -770,11 +784,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D41FE8DE2477C7A80048900F /* Build configuration list for PBXNativeTarget "TelieUITests" */;
 			buildPhases = (
-				4ECD4C442B6EF99201534BCC /* [CP] Check Pods Manifest.lock */,
+				AB19DA1F1BD1B4100917C865 /* [CP] Check Pods Manifest.lock */,
 				D41FE8CB2477C7A80048900F /* Sources */,
 				D41FE8CC2477C7A80048900F /* Frameworks */,
 				D41FE8CD2477C7A80048900F /* Resources */,
-				AB8435FFB144BB483776040D /* [CP] Embed Pods Frameworks */,
+				691B955E4A27F2468D712FA9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -837,6 +851,7 @@
 				80C4445025F433BA009572B4 /* Keys.plist in Resources */,
 				D41FE8BE2477C7A80048900F /* LaunchScreen.storyboard in Resources */,
 				D41FE8BB2477C7A80048900F /* Assets.xcassets in Resources */,
+				D4A5AEA22661DA02006C3C5A /* GoogleService-Info.plist in Resources */,
 				D41FE8B92477C7A40048900F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -858,7 +873,46 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4ECD4C442B6EF99201534BCC /* [CP] Check Pods Manifest.lock */ = {
+		3317ECA01DBDF3F56D712C6B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Telie-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		691B955E4A27F2468D712FA9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB19DA1F1BD1B4100917C865 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -880,46 +934,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9F67FF64C6563182B69A5468 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TelieTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AB8435FFB144BB483776040D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E920D074007A088BA141173C /* [CP] Embed Pods Frameworks */ = {
+		C9812A0E45B9DEE0E1C21284 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -936,7 +951,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telie/Pods-Telie-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F1E860603063469C9E233089 /* [CP] Check Pods Manifest.lock */ = {
+		D03C2095F5A0C21D9907C5A7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -951,7 +966,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Telie-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TelieTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1061,6 +1076,7 @@
 				80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */,
 				D492728A24DF107800FA5F2A /* SuggestionTableViewCell.swift in Sources */,
 				803E5F5825A67966004CF4B7 /* EditUserTableViewCell.swift in Sources */,
+				D4A5AE732661D10D006C3C5A /* AnalyticsManager.swift in Sources */,
 				D45A3E1925A9A7E90094161A /* Keys.swift in Sources */,
 				3095FF05247B31E100F08C60 /* MediaInListCollectionViewCell.swift in Sources */,
 				80F00F6224AAFE8C0051B8FF /* AddMediaViewController.swift in Sources */,
@@ -1270,13 +1286,13 @@
 		};
 		D41FE8D92477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F3495A520C426EAB28DE5C0 /* Pods-Telie.dev debug.xcconfig */;
+			baseConfigurationReference = 332E7F5FE95B3AB8DA203DC1 /* Pods-Telie.dev debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.8;
+				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1294,13 +1310,13 @@
 		};
 		D41FE8DA2477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3F3D8641ECF77ACFDE68D08 /* Pods-Telie.dev release.xcconfig */;
+			baseConfigurationReference = 89C51100C237720C48683C9F /* Pods-Telie.dev release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.8;
+				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1318,7 +1334,7 @@
 		};
 		D41FE8DC2477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 441125471ED3B84F583E171E /* Pods-TelieTests.dev debug.xcconfig */;
+			baseConfigurationReference = 999C28D6AB9DD74084074C5A /* Pods-TelieTests.dev debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1340,7 +1356,7 @@
 		};
 		D41FE8DD2477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AE7963EA41C596383991AF1 /* Pods-TelieTests.dev release.xcconfig */;
+			baseConfigurationReference = EEF68CF686D119FB9E31C897 /* Pods-TelieTests.dev release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1362,7 +1378,7 @@
 		};
 		D41FE8DF2477C7A80048900F /* Dev Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 666938B009EE201377BB151F /* Pods-Telie-TelieUITests.dev debug.xcconfig */;
+			baseConfigurationReference = 7AAB646AB440881C1C64874E /* Pods-Telie-TelieUITests.dev debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1382,7 +1398,7 @@
 		};
 		D41FE8E02477C7A80048900F /* Dev Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 583191E746DB3A3E03F2D96D /* Pods-Telie-TelieUITests.dev release.xcconfig */;
+			baseConfigurationReference = 1C14F6018AA0ED9477F7FC3A /* Pods-Telie-TelieUITests.dev release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1464,13 +1480,13 @@
 		};
 		D45A3DAF25A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F152410D20C51F1A6661C34F /* Pods-Telie.prod debug.xcconfig */;
+			baseConfigurationReference = 46B91DF72F6DCF9F039E4179 /* Pods-Telie.prod debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.8;
+				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1488,7 +1504,7 @@
 		};
 		D45A3DB025A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7AE12AEB1C53AC5BE409A26 /* Pods-TelieTests.prod debug.xcconfig */;
+			baseConfigurationReference = 1E33FC56AC5A2D3070886015 /* Pods-TelieTests.prod debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1510,7 +1526,7 @@
 		};
 		D45A3DB125A99BC20094161A /* Prod Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2C55914C3B228B41DA6804FE /* Pods-Telie-TelieUITests.prod debug.xcconfig */;
+			baseConfigurationReference = B322DEA45F55210E74E3E797 /* Pods-Telie-TelieUITests.prod debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1586,13 +1602,13 @@
 		};
 		D45A3DB325A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF82DD71A549B9D687EE4B95 /* Pods-Telie.prod release.xcconfig */;
+			baseConfigurationReference = 8A0BD628A100ADD76082D659 /* Pods-Telie.prod release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.8;
+				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1610,7 +1626,7 @@
 		};
 		D45A3DB425A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38A8B4F2CCA6859025AE9AEA /* Pods-TelieTests.prod release.xcconfig */;
+			baseConfigurationReference = F9212614C1EE9508FCD26BCF /* Pods-TelieTests.prod release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1632,7 +1648,7 @@
 		};
 		D45A3DB525A99BDE0094161A /* Prod Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E60D8694282F3938020CDAFB /* Pods-Telie-TelieUITests.prod release.xcconfig */;
+			baseConfigurationReference = 2A0FD287D9F5D876EC41A7B3 /* Pods-Telie-TelieUITests.prod release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1714,13 +1730,13 @@
 		};
 		D45A3DBA25A99C450094161A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD870C5BA796AF0890FF71B8 /* Pods-Telie.debug.xcconfig */;
+			baseConfigurationReference = D7A6CB1C113C10A1D7175E7F /* Pods-Telie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.3.8;
+				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1738,7 +1754,7 @@
 		};
 		D45A3DBB25A99C450094161A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ADFA666002152FB0FF193447 /* Pods-TelieTests.debug.xcconfig */;
+			baseConfigurationReference = FB96507ADD09479D59D9B02F /* Pods-TelieTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1760,7 +1776,7 @@
 		};
 		D45A3DBC25A99C450094161A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F628529C99E1D4A1CE31B381 /* Pods-Telie-TelieUITests.debug.xcconfig */;
+			baseConfigurationReference = DFDC4904905CC1552FADF801 /* Pods-Telie-TelieUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;

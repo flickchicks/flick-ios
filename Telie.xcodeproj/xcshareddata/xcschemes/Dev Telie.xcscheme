@@ -50,9 +50,15 @@
             ReferencedContainer = "container:Telie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-FIRAnalyticsDebugEnabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Dev Release"
+      buildConfiguration = "Dev Debug"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -72,7 +78,7 @@
       buildConfiguration = "Dev Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Dev Release"
+      buildConfiguration = "Dev Debug"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

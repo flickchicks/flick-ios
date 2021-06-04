@@ -101,5 +101,9 @@ extension MutualFriendsTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let friend = mutualFriends[indexPath.item]
         discoverDelegate?.navigateFriend(id: friend.id)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.friendSuggestion,
+            itemId: friend.id
+        )
     }
 }

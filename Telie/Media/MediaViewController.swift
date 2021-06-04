@@ -304,6 +304,7 @@ extension MediaViewController: ShareMediaDelegate {
             ]
             UIPasteboard.general.setItems([pasteboardItems], options: pasteboardOptions)
             UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+            AnalyticsManager.logShareEvent(method: "instagram_story")
         } else {
             // Instagram app is not installed or can't be opened, pop up an alert
             print("no instagram")

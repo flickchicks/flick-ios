@@ -88,6 +88,10 @@ extension RecommendedShowsTableViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let show = shows[indexPath.item]
         discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.showSuggestion,
+            itemId: show.id
+        )
     }
 }
 

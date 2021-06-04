@@ -23,6 +23,7 @@ class BuzzTableViewCell: UITableViewCell {
 
     private var show: SimpleMedia?
     private var user: UserProfile?
+    private var commentId: Int?
 
     weak var discoverDelegate: DiscoverDelegate?
     static let reuseIdentifier = "BuzzTableViewCell"
@@ -104,6 +105,7 @@ class BuzzTableViewCell: UITableViewCell {
     func configure(with comment: Comment) {
         show = comment.show
         user = comment.owner
+        commentId = comment.id
 
         if let imageUrl = URL(string: comment.owner.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
@@ -192,11 +194,21 @@ class BuzzTableViewCell: UITableViewCell {
     @objc func handleProfileTap() {
         guard let user = user else { return }
         discoverDelegate?.navigateFriend(id: user.id)
+        guard let commentId = commentId else { return }
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.commentActivity,
+            itemId: commentId
+        )
     }
 
     @objc func handleCommentTap() {
         guard let show = show else { return }
         discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
+        guard let commentId = commentId else { return }
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.commentActivity,
+            itemId: commentId
+        )
     }
 
     override func prepareForReuse() {
