@@ -225,34 +225,19 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
             switch activities[indexPath.row] {
             case .AcceptedIncomingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
-                AnalyticsManager.logSelectContent(
-                    contentType: SelectContentType.Notification.friendRequest,
-                    itemId: -1
-                )
+                AnalyticsManager.logSelectContent(contentType: SelectContentType.Notification.friendRequest)
             case .AcceptedOutgoingFriendRequest(let fromUser, _):
                 navigationController?.pushViewController(ProfileViewController(isHome: false, userId: fromUser.id), animated: true)
-                AnalyticsManager.logSelectContent(
-                    contentType: SelectContentType.Notification.friendRequest,
-                    itemId: -1
-                )
+                AnalyticsManager.logSelectContent(contentType: SelectContentType.Notification.friendRequest)
             case .CollaborationInvite(_, let list, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-                AnalyticsManager.logSelectContent(
-                    contentType: SelectContentType.Notification.collaborationInvite,
-                    itemId: -1
-                )
+                AnalyticsManager.logSelectContent(contentType: SelectContentType.Notification.collaborationInvite)
             case .ListShowsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-                AnalyticsManager.logSelectContent(
-                    contentType: SelectContentType.Notification.listActivity,
-                    itemId: -1
-                )
+                AnalyticsManager.logSelectContent(contentType: SelectContentType.Notification.listActivity )
             case .ListCollaboratorsEdit(_, let list, _, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
-                AnalyticsManager.logSelectContent(
-                    contentType: SelectContentType.Notification.listActivity,
-                    itemId: -1
-                )
+                AnalyticsManager.logSelectContent(contentType: SelectContentType.Notification.listActivity)
             case .ListOwnershipEdit(_, let list, _, _):
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .GroupInvite(_, let group, _):

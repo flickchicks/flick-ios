@@ -49,7 +49,7 @@ class AnalyticsManager {
             ])
     }
 
-    static func logSelectContent(contentType: String, itemId: Int) {
+    static func logSelectContent(contentType: String, itemId: Int = -1) {
         Analytics.logEvent(
             AnalyticsEventSelectContent,
             parameters: [
