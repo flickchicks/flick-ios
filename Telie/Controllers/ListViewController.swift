@@ -314,7 +314,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
         switch section.type {
         case .listSummary:
             let description = list?.description ?? ""
-            let descriptionHeight = description == "" ? 0 : description.height(forConstrainedWidth: collectionView.frame.width - 60, font: .systemFont(ofSize: 12)) + 15
+            let descriptionHeight = description == "" ? 0 : description.height(forConstrainedWidth: collectionView.frame.width - 60, font: .systemFont(ofSize: 12)) + 5
             return CGSize(width: collectionView.frame.width, height: listSummaryHeight + descriptionHeight)
         case .mediaList:
             let numCellsInRow: CGFloat = 3

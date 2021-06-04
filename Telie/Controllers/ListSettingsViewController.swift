@@ -210,6 +210,10 @@ class ListSettingsViewController: UIViewController {
         self.present(deleteAlert, animated: true)
     }
 
+    private func showEditDescription() {
+        present(EditDescriptionViewController(list: list), animated: true)
+    }
+
     private func showRenameListModal() {
         let newGroupViewController = NewListViewController(type: .renameList)
         newGroupViewController.listSettingsDelegate = self
@@ -294,15 +298,14 @@ extension ListSettingsViewController: UITableViewDataSource, UITableViewDelegate
             showAddCollaboratorsModal()
         case .editContent:
             editListContent()
-//        case .editDescription:
+        case .editDescription:
+            showEditDescription()
         case .deleteList:
             showDeleteConfirmationModal()
         case .privacy:
             updatePrivacy(to: !list.isPrivate)
         case .rename:
             showRenameListModal()
-        default:
-            break
         }
     }
 

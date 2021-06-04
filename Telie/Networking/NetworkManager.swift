@@ -241,7 +241,8 @@ class NetworkManager {
         let parameters: [String: Any] = [
             "name": list.name,
             "owner": list.owner.id,
-            "is_private": list.isPrivate
+            "is_private": list.isPrivate,
+            "description": list.description
         ]
 
         AF.request("\(hostEndpoint)/api/lsts/\(listId)/", method: .post, parameters: parameters, encoding: JSONEncoding.default , headers: headers).validate().responseData { response in
