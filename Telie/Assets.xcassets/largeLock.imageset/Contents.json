@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "move1x.png",
+      "filename" : "largeLock1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "move2x.png",
+      "filename" : "largeLock2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "move3x.png",
+      "filename" : "largeLock3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -33,9 +33,10 @@
 		806E76F425BF914B00B82ECE /* GroupResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E76F325BF914B00B82ECE /* GroupResultViewController.swift */; };
 		806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */; };
 		806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */; };
-		806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */; };
+		806E771D25C234D200B82ECE /* GeneralSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E771C25C234D200B82ECE /* GeneralSettingsTableViewCell.swift */; };
 		806E772225C2517D00B82ECE /* AddMembersToGroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */; };
 		806E777625C4FEBE00B82ECE /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806E777525C4FEBE00B82ECE /* Group.swift */; };
+		807CDC892656E4A000986B2E /* EditDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */; };
 		8080A66225CE2F4300A8FD9E /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */; };
 		8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
@@ -201,9 +202,10 @@
 		806E76F325BF914B00B82ECE /* GroupResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupResultViewController.swift; sourceTree = "<group>"; };
 		806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingResultTableViewCell.swift; sourceTree = "<group>"; };
 		806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsViewController.swift; sourceTree = "<group>"; };
-		806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingTableViewCell.swift; sourceTree = "<group>"; };
+		806E771C25C234D200B82ECE /* GeneralSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersToGroupsViewController.swift; sourceTree = "<group>"; };
 		806E777525C4FEBE00B82ECE /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDescriptionViewController.swift; sourceTree = "<group>"; };
 		8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
@@ -425,7 +427,6 @@
 				806E76F325BF914B00B82ECE /* GroupResultViewController.swift */,
 				806E770C25BFA72E00B82ECE /* VotingResultTableViewCell.swift */,
 				806E771725C2265A00B82ECE /* GroupSettingsViewController.swift */,
-				806E771C25C234D200B82ECE /* GroupSettingTableViewCell.swift */,
 				8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */,
 				806E772125C2517C00B82ECE /* AddMembersToGroupsViewController.swift */,
 				8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */,
@@ -610,6 +611,7 @@
 				8033C0FD25B4E4D700F6BAEE /* InteractivePopRecognizer.swift */,
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
+				807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -627,6 +629,7 @@
 		D478668B24797C56009E42FE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				806E771C25C234D200B82ECE /* GeneralSettingsTableViewCell.swift */,
 				D40ED7D925950E8F004C2F2C /* TableViewCells */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
 				D478668C24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift */,
@@ -1007,7 +1010,7 @@
 				806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
 				D458B40726191A7A006A23A1 /* CustomBannerColors.swift in Sources */,
-				806E771D25C234D200B82ECE /* GroupSettingTableViewCell.swift in Sources */,
+				806E771D25C234D200B82ECE /* GeneralSettingsTableViewCell.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
 				D492728224DE528A00FA5F2A /* TabOptionCollectionViewCell.swift in Sources */,
@@ -1047,6 +1050,7 @@
 				D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */,
 				D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */,
 				80F00F6624AAFE9D0051B8FF /* MediaSearchResultTableViewCell.swift in Sources */,
+				807CDC892656E4A000986B2E /* EditDescriptionViewController.swift in Sources */,
 				80B3F9BC24EB67CE002891C4 /* Tag.swift in Sources */,
 				803E5F0B259D41B5004CF4B7 /* Suggestion.swift in Sources */,
 				3095FF022479CC3900F08C60 /* ListViewController.swift in Sources */,

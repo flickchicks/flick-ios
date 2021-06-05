@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupSettingTableViewCell: UITableViewCell {
+class GeneralSettingsTableViewCell: UITableViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
