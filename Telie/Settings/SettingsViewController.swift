@@ -18,7 +18,6 @@ class SettingsViewController: UIViewController {
     // MARK: - Private Data Vars
     private let settingsOptions: [SettingsOption] = [
         .editProfile,
-        .buyCoffee,
         .sendFeedback,
         .about,
         .logout,
@@ -122,12 +121,6 @@ class SettingsViewController: UIViewController {
         }
     }
 
-    func buyMeACoffee() {
-        if let url = URL(string: "https://www.buymeacoffee.com/telie") {
-            UIApplication.shared.open(url)
-        }
-    }
-
     func presentDeleteAccountAlert() {
         let deleteAction = UIAlertAction(title: "Delete Account", style: .destructive) { [weak self] action in
             guard let self = self else { return }
@@ -186,8 +179,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         switch settingOption {
         case .editProfile:
             showEditProfile()
-        case .buyCoffee:
-            buyMeACoffee()
         case .sendFeedback:
             sendFeedback()
         case .about:

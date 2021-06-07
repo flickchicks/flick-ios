@@ -10,7 +10,6 @@ import UIKit
 
 enum SettingsOption: String {
     case editProfile = "Edit Profile"
-    case buyCoffee = "Buy Us a Coffee"
     case sendFeedback = "Send Feedback"
     case about = "About"
     case logout = "Log Out"
@@ -21,8 +20,6 @@ enum SettingsOption: String {
             switch self {
             case .editProfile:
                 return "settingsPencilIcon"
-            case .buyCoffee:
-                return "buyMeCoffee"
             case .sendFeedback:
                 return "messageIcon"
             case .about:
