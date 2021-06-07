@@ -101,8 +101,10 @@ class MediaCommentsViewController: UIViewController {
             UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
             }, completion: { (completed) in
-                let indexPath = IndexPath(item: self.comments.count - 1, section: 0)
-                self.commentsTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                if self.comments.count >= 1 {
+                    let indexPath = IndexPath(item: self.comments.count - 1, section: 0)
+                    self.commentsTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
             })
         }
     }

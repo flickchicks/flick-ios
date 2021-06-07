@@ -39,12 +39,12 @@ enum EnterNameModalType {
     }
 }
 
-class NewListViewController: UIViewController {
+class NameViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var doneButton = UIButton()
     private let nameTextField = UITextField()
-    private let newListButton = UIButton()
+    private let saveButton = UIButton()
     private let titleLabel = UILabel()
     var list: MediaList?
     var group: Group?
@@ -66,6 +66,19 @@ class NewListViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    init(type: EnterNameModalType, group: Group) {
+        self.type = type
+        self.group = group
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    init(type: EnterNameModalType, list: MediaList) {
+        self.type = type
+        self.list = list
+        super.init(nibName: nil, bundle: nil)
+    }
+
+
     override func viewDidLoad() {
         view.backgroundColor = .white
 
@@ -74,6 +87,14 @@ class NewListViewController: UIViewController {
         titleLabel.font = .boldSystemFont(ofSize: 18)
         view.addSubview(titleLabel)
 
+        switch type {
+        case .renameGroup:
+            nameTextField.text = group?.name ?? ""
+        case .renameList:
+            nameTextField.text = list?.name ?? ""
+        default:
+            break
+        }
         nameTextField.textColor = .black
         nameTextField.placeholder = "Name"
         nameTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -89,11 +110,11 @@ class NewListViewController: UIViewController {
         nameTextField.delegate = self
         view.addSubview(nameTextField)
 
-        newListButton.setTitle("Save", for: .normal)
-        newListButton.setTitleColor(.gradientPurple, for: .normal)
-        newListButton.titleLabel?.font = .systemFont(ofSize: 14)
-        newListButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
-        view.addSubview(newListButton)
+        saveButton.setTitle("Save", for: .normal)
+        saveButton.setTitleColor(.gradientPurple, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 14)
+        saveButton.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        view.addSubview(saveButton)
 
         view.addSubview(spinner)
 
@@ -122,14 +143,14 @@ class NewListViewController: UIViewController {
             make.height.equalTo(25)
         }
 
-        newListButton.snp.makeConstraints { make in
+        saveButton.snp.makeConstraints { make in
             make.centerY.equalTo(titleLabel)
             make.trailing.equalToSuperview().inset(4)
             make.size.equalTo(CGSize(width: 66, height: 34))
         }
 
         spinner.snp.makeConstraints { make in
-            make.center.equalTo(newListButton)
+            make.center.equalTo(saveButton)
         }
     }
 
@@ -142,7 +163,7 @@ class NewListViewController: UIViewController {
             nameText.trimmingCharacters(in: .whitespaces) != ""
             else { return }
         spinner.startAnimating()
-        newListButton.isHidden = true
+        saveButton.isHidden = true
         switch type {
         case .createGroup:
             NetworkManager.createGroup(name: nameText) { [weak self] group in
@@ -187,11 +208,15 @@ class NewListViewController: UIViewController {
 
 }
 
-extension NewListViewController: UITextFieldDelegate {
+extension NameViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.selectAll(nil)
     }
 
 }

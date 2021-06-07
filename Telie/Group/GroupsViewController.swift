@@ -91,9 +91,9 @@ class GroupsViewController: UIViewController {
     }
 
     @objc private func createGroupPressed() {
-        let newGroupViewController = NewListViewController(type: .createGroup)
-        newGroupViewController.createGroupDelegate = self
-        present(newGroupViewController, animated: true)
+        let nameViewController = NameViewController(type: .createGroup)
+        nameViewController.createGroupDelegate = self
+        present(nameViewController, animated: true)
     }
 
     @objc private func refreshGroups() {
