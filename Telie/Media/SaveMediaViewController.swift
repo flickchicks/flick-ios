@@ -231,9 +231,9 @@ extension SaveMediaViewController: SaveMediaDelegate {
     }
 
     func presentCreateNewList() {
-        let newListViewController = NewListViewController(type: .createList)
-        newListViewController.createListDelegate = self
-        present(newListViewController, animated: true)
+        let nameViewController = NameViewController(type: .createList)
+        nameViewController.createListDelegate = self
+        present(nameViewController, animated: true)
     }
 
 }

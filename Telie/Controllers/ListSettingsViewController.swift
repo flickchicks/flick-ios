@@ -215,10 +215,9 @@ class ListSettingsViewController: UIViewController {
     }
 
     private func showRenameListModal() {
-        let newGroupViewController = NewListViewController(type: .renameList)
-        newGroupViewController.listSettingsDelegate = self
-        newGroupViewController.list = list
-        present(newGroupViewController, animated: true)
+        let nameViewController = NameViewController(type: .renameList, list: list)
+        nameViewController.listSettingsDelegate = self
+        present(nameViewController, animated: true)
     }
 
     func editListContent() {

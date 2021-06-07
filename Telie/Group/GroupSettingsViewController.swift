@@ -206,10 +206,9 @@ class GroupSettingsViewController: UIViewController {
     }
 
     private func showRenameGroupModal() {
-        let newGroupViewController = NewListViewController(type: .renameGroup)
-        newGroupViewController.renameGroupDelegate = self
-        newGroupViewController.group = group
-        present(newGroupViewController, animated: true)
+        let nameViewController = NameViewController(type: .renameGroup, group: group)
+        nameViewController.renameGroupDelegate = self
+        present(nameViewController, animated: true)
     }
 
     private func reloadDetailsSection() {
