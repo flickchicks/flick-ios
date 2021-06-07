@@ -37,7 +37,6 @@ enum DiscoverSection {
 class DiscoverViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let buyMeCofeeButton = UIButton()
     private var discoverContent: DiscoverContent? = nil
     private let discoverFeedTableView = UITableView(frame: .zero, style: .grouped)
     private var discoverSections: [DiscoverSection] = []
@@ -60,10 +59,6 @@ class DiscoverViewController: UIViewController {
         titleLabel.isUserInteractionEnabled = true
         titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(scrollToTopOfDiscover)))
         view.addSubview(titleLabel)
-
-        buyMeCofeeButton.setImage(UIImage(named: "buyMeCoffeeIcon"), for: .normal)
-        buyMeCofeeButton.addTarget(self, action: #selector(buyMeCoffeeButtonPressed), for: .touchUpInside)
-        view.addSubview(buyMeCofeeButton)
 
         searchButton.setImage(UIImage(named: "searchButtonIcon"), for: .normal)
         searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
@@ -126,12 +121,6 @@ class DiscoverViewController: UIViewController {
             make.trailing.equalToSuperview().inset(20)
         }
 
-        buyMeCofeeButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 36, height: 36))
-            make.centerY.equalTo(titleLabel)
-            make.trailing.equalTo(searchButton.snp.leading).offset(-7)
-        }
-
         discoverFeedTableView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.leading.trailing.bottom.equalToSuperview()
@@ -150,13 +139,7 @@ class DiscoverViewController: UIViewController {
     @objc func searchButtonPressed() {
         navigationController?.pushViewController(DiscoverSearchViewController(), animated: true)
     }
-
-    @objc func buyMeCoffeeButtonPressed() {
-        if let url = URL(string: "https://www.buymeacoffee.com/telie") {
-            UIApplication.shared.open(url)
-        }
-    }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
