@@ -215,4 +215,8 @@ extension NameViewController: UITextFieldDelegate {
         return true
     }
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.selectAll(nil)
+    }
+
 }
