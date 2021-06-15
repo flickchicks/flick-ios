@@ -11,6 +11,7 @@ import UIKit
 enum SearchTab: String {
     case lists = "Lists"
     case movies = "Movies"
+    case media = "Media"
     case people = "People"
     case shows = "Shows"
     case tags = "Tags"

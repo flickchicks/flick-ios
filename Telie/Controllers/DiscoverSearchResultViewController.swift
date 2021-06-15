@@ -137,6 +137,16 @@ class DiscoverSearchResultViewController: UIViewController {
                     self.resultsTableView.reloadData()
                 }
             }
+        case .media:
+            NetworkManager.searchMedia(query: query) { [weak self] (_, media) in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.emptyStateView.isHidden = !media.isEmpty
+                    self.media = media
+                    self.spinner.stopAnimating()
+                    self.resultsTableView.reloadData()
+                }
+            }
         default:
             break
         }
@@ -163,7 +173,7 @@ extension DiscoverSearchResultViewController: SkeletonTableViewDelegate, Skeleto
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch searchType {
-        case .movies, .shows:
+        case .movies, .shows, .media:
             return media.count
         case .people:
             return users.count
@@ -180,10 +190,8 @@ extension DiscoverSearchResultViewController: SkeletonTableViewDelegate, Skeleto
         guard let cell = tableView.dequeueReusableCell(withIdentifier: searchResultCellReuseIdentifier, for: indexPath) as? DiscoverSearchResultTableViewCell,
             let searchType = searchType else { return UITableViewCell() }
         switch searchType {
-        case .movies:
-            cell.configureMovie(movie: media[indexPath.item])
-        case .shows:
-            cell.configureShow(show: media[indexPath.item])
+        case .movies, .shows, .media:
+            cell.configureMedia(media: media[indexPath.item])
         case .people:
             let user = users[indexPath.item]
             cell.configureUser(isCurrentUser: currentUserId == user.id,
@@ -200,7 +208,7 @@ extension DiscoverSearchResultViewController: SkeletonTableViewDelegate, Skeleto
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch searchType {
-        case .movies, .shows:
+        case .movies, .shows, .media:
             delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic)
         case .people:
             delegate?.pushProfileViewController(userId: users[indexPath.row].id)
