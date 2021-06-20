@@ -11,10 +11,10 @@ import Kingfisher
 
 class BuzzTableViewCell: UITableViewCell {
 
-    private let profileImageView = UIImageView()
     private let buzzLabel = UILabel()
     private let commentTextView = UITextView()
     private let dateLabel = UILabel()
+    private let profileImageView = UIImageView()
     private let summaryView = UIView()
     private let mediaDetailLabel = UILabel()
     private let mediaImageView = UIImageView()
@@ -50,6 +50,11 @@ class BuzzTableViewCell: UITableViewCell {
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(profileImageView)
 
+        let buzzTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleProfileTap)
+        )
+        buzzLabel.addGestureRecognizer(buzzTapGestureRecognizer)
+        buzzLabel.isUserInteractionEnabled = true
         contentView.addSubview(buzzLabel)
 
         dateLabel.textColor = .mediumGray

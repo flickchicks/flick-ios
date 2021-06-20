@@ -82,16 +82,8 @@ extension RecommendedShowsTableViewCell: UICollectionViewDataSource {
         }
         let show = shows[indexPath.row]
         cell.configure(with: show)
+        cell.discoverDelegate = discoverDelegate
         return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let show = shows[indexPath.item]
-        discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
-        AnalyticsManager.logSelectContent(
-            contentType: SelectContentType.Discover.showSuggestion,
-            itemId: show.id
-        )
     }
 }
 
