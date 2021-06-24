@@ -85,25 +85,6 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         subtitleLabel.text = "by \(list.owner.name)"
     }
 
-    func configureMovie(movie: Media) {
-        titleLabel.text = movie.title
-        if let dateReleased = movie.dateReleased {
-            subtitleLabel.text = String(dateReleased.prefix(4))
-        }
-        subtitleStackView.isHidden = false
-        resultImageView.layer.cornerRadius = 4
-        resultImageView.isHidden = false
-        updateConstraintsForPoster()
-        iconImageView.isHidden = false
-        iconImageView.image = UIImage(named: "film")
-        listPreviewView.isHidden = true
-        if let imageUrl = URL(string: movie.posterPic ?? "") {
-            resultImageView.kf.setImage(with: imageUrl)
-        } else {
-            resultImageView.image = UIImage(named: "defaultMovie")
-        }
-    }
-
     func configureUser(isCurrentUser: Bool, user: UserProfile) {
         titleLabel.text = user.name
         updateConstraintsForCircleImage()
@@ -120,22 +101,26 @@ class DiscoverSearchResultTableViewCell: UITableViewCell {
         }
     }
 
-    func configureShow(show: Media) {
-        titleLabel.text = show.title
-        subtitleStackView.isHidden = false
-        if let dateReleased = show.dateReleased {
+    func configureMedia(media: Media) {
+        titleLabel.text = media.title
+        if let dateReleased = media.dateReleased {
             subtitleLabel.text = String(dateReleased.prefix(4))
         }
+        subtitleStackView.isHidden = false
+        updateConstraintsForPoster()
+        listPreviewView.isHidden = true
         resultImageView.layer.cornerRadius = 4
         resultImageView.isHidden = false
-        updateConstraintsForPoster()
-        iconImageView.isHidden = false
-        iconImageView.image = UIImage(named: "tv")
-        listPreviewView.isHidden = true
-        if let imageUrl = URL(string: show.posterPic ?? "") {
+        if let imageUrl = URL(string: media.posterPic ?? "") {
             resultImageView.kf.setImage(with: imageUrl)
         } else {
             resultImageView.image = UIImage(named: "defaultMovie")
+        }
+        iconImageView.isHidden = false
+        if media.isTv {
+            iconImageView.image = UIImage(named: "tv")
+        } else {
+            iconImageView.image = UIImage(named: "film")
         }
     }
 

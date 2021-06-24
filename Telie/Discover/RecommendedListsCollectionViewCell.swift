@@ -15,12 +15,15 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
     private let detailLabel = UILabel()
     private let listImageView = UIImageView()
     private let listLabel = UILabel()
+    private let mediaContainerView = UIView()
     private let mediaOneImageView = UIImageView()
     private let mediaTwoImageView = UIImageView()
     private let mediaThreeImageView = UIImageView()
     private var mediaId: Int!
     private let userImageView = UIImageView()
 
+    private var list: MediaList?
+    weak var discoverDelegate: DiscoverDelegate?
     static let reuseIdentifier = "RecommendedListsCollectionViewCell"
 
     override init(frame: CGRect) {
@@ -44,7 +47,6 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaTwoImageView.contentMode = .scaleAspectFill
         mediaTwoImageView.layer.borderWidth = 1.5
         mediaTwoImageView.layer.borderColor = UIColor.movieWhite.cgColor
-
         contentView.addSubview(mediaTwoImageView)
 
         mediaThreeImageView.layer.cornerRadius = 12
@@ -54,10 +56,20 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaThreeImageView.contentMode = .scaleAspectFill
         mediaThreeImageView.layer.borderWidth = 1.5
         mediaThreeImageView.layer.borderColor = UIColor.movieWhite.cgColor
-
         contentView.addSubview(mediaThreeImageView)
 
+        let listTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleListTap)
+        )
+        mediaContainerView.addGestureRecognizer(listTapGestureRecognizer)
+        contentView.addSubview(mediaContainerView)
+
+        let userTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleUserTap)
+        )
+        userImageView.addGestureRecognizer(userTapGestureRecognizer)
         userImageView.contentMode = .scaleAspectFill
+        userImageView.isUserInteractionEnabled = true
         userImageView.layer.masksToBounds = true
         userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = 10
@@ -66,8 +78,13 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
+        let detailTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleUserTap)
+        )
+        detailLabel.addGestureRecognizer(detailTapGestureRecognizer)
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
+        detailLabel.isUserInteractionEnabled = true
         contentView.addSubview(detailLabel)
 
         listImageView.image = UIImage(named: "listIcon")
@@ -95,6 +112,11 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         mediaThreeImageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 312, height: 468))
             make.top.trailing.equalTo(mediaTwoImageView).inset(10)
+        }
+
+        mediaContainerView.snp.makeConstraints { make in
+            make.top.trailing.equalTo(mediaOneImageView)
+            make.bottom.leading.equalTo(mediaTwoImageView)
         }
 
         userImageView.snp.makeConstraints { make in
@@ -126,6 +148,8 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with list: MediaList) {
+        self.list = list
+
         if list.shows.count >= 3,
            let imageUrl1 = URL(string: list.shows[2].posterPic ?? "defaultMovie") {
             mediaOneImageView.kf.setImage(with: imageUrl1)
@@ -152,6 +176,24 @@ class RecommendedListsCollectionViewCell: UICollectionViewCell {
         } else {
             listLabel.text = "\(list.name)"
         }
+    }
+
+    @objc func handleUserTap() {
+        guard let list = list else { return }
+        discoverDelegate?.navigateFriend(id: list.owner.id)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.listSuggestion,
+            itemId: list.id
+        )
+    }
+
+    @objc func handleListTap() {
+        guard let list = list else { return }
+        discoverDelegate?.navigateList(id: list.id)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.listSuggestion,
+            itemId: list.id
+        )
     }
 
     required init?(coder: NSCoder) {

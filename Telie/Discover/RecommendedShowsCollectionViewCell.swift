@@ -15,9 +15,10 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     private let imageView = UIImageView()
     private let listImageView = UIImageView()
     private let listLabel = UILabel()
-    private var mediaId: Int!
     private let userImageView = UIImageView()
 
+    weak var discoverDelegate: DiscoverDelegate?
+    private var media: SimpleMedia?
     static let reuseIdentifier = "RecommendedShowsCollectionViewCell"
 
     override init(frame: CGRect) {
@@ -25,15 +26,25 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .clear
 
+        let mediaTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleMediaTap)
+        )
+        imageView.addGestureRecognizer(mediaTapGestureRecognizer)
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "defaultMovie")
+        imageView.isUserInteractionEnabled = true
         contentView.addSubview(imageView)
 
+        let userTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleUserTap)
+        )
+        userImageView.addGestureRecognizer(userTapGestureRecognizer)
         userImageView.isHidden = true
         userImageView.contentMode = .scaleAspectFill
+        userImageView.isUserInteractionEnabled = true
         userImageView.layer.masksToBounds = true
         userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = 10
@@ -42,8 +53,13 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
         userImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(userImageView)
 
+        let detailTapGestureRecognizer = UITapGestureRecognizer(
+            target: self, action: #selector(handleUserTap)
+        )
+        detailLabel.addGestureRecognizer(detailTapGestureRecognizer)
         detailLabel.font = .boldSystemFont(ofSize: 14)
         detailLabel.textColor = .darkBlueGray2
+        detailLabel.isUserInteractionEnabled = true
         contentView.addSubview(detailLabel)
 
         listImageView.image = UIImage(named: "listIcon")
@@ -90,7 +106,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with media: SimpleMedia) {
-        mediaId = media.id
+        self.media = media
         if let posterPic = media.posterPic,
            let imageUrl = URL(string: posterPic) {
             imageView.kf.setImage(with: imageUrl)
@@ -100,7 +116,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             userImageView.isHidden = false
             let savedByUser = savedToLsts[0].savedBy
             if let profilePicUrl = savedToLsts[0].savedBy.profilePicUrl,
-               let imageUrl = URL(string: profilePicUrl) {
+            let imageUrl = URL(string: profilePicUrl) {
                 userImageView.kf.setImage(with: imageUrl)
             }
             detailLabel.text = "Saved by \(savedByUser.name)"
@@ -109,6 +125,27 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
             userImageView.isHidden = true
             listImageView.isHidden = true
         }
+    }
+
+    @objc func handleMediaTap() {
+        guard let media = media else { return }
+        discoverDelegate?.navigateShow(id: media.id, mediaImageUrl: media.posterPic)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.showSuggestion,
+            itemId: media.id
+        )
+    }
+
+    @objc func handleUserTap() {
+        guard let media = media,
+              let savedToLsts = media.savedToLsts,
+              savedToLsts.count > 0 else { return }
+        let user = savedToLsts[0].savedBy
+        discoverDelegate?.navigateFriend(id: user.id)
+        AnalyticsManager.logSelectContent(
+            contentType: SelectContentType.Discover.showSuggestion,
+            itemId: media.id
+        )
     }
 
     required init?(coder: NSCoder) {

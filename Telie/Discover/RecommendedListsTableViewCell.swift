@@ -83,15 +83,8 @@ extension RecommendedListsTableViewCell: UICollectionViewDataSource {
         }
         let list = lsts[indexPath.row]
         cell.configure(with: list)
+        cell.discoverDelegate = discoverDelegate
         return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.discoverDelegate?.navigateList(id: lsts[indexPath.item].id)
-        AnalyticsManager.logSelectContent(
-            contentType: SelectContentType.Discover.listSuggestion,
-            itemId: lsts[indexPath.item].id
-        )
     }
 }
 
