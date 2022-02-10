@@ -152,7 +152,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = groups[indexPath.row]
-        navigationController?.pushViewController(GroupViewController(group: group), animated: true)
+        navigationController?.pushViewController(GroupSettingsViewController(group: group), animated: true)
     }
 
 }
@@ -160,7 +160,7 @@ extension GroupsViewController: UITableViewDataSource, UITableViewDelegate {
 extension GroupsViewController: CreateGroupDelegate {
 
     func createGroup(group: Group) {
-        navigationController?.pushViewController(GroupViewController(group: group, shouldAddMembers: true), animated: true)
+        navigationController?.pushViewController(GroupSettingsViewController(group: group), animated: true)
     }
 
 }
