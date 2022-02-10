@@ -170,10 +170,10 @@ class DiscoverViewController: UIViewController {
                     self.discoverSections.append(.friendLsts)
                 }
 
-                let numFriendComments = discoverContent.friendComments.count
-                if numFriendComments > 0 {
-                    self.discoverSections.append(contentsOf: repeatElement(.buzz, count: numFriendComments))
-                }
+//                let numFriendComments = discoverContent.friendComments.count
+//                if numFriendComments > 0 {
+//                    self.discoverSections.append(contentsOf: repeatElement(.buzz, count: numFriendComments))
+//                }
 
                 self.discoverSections.append(.trendingLsts)
                 self.discoverSections.append(.trendingShows)

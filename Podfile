@@ -30,7 +30,7 @@ target 'Telie' do
 	# Data Loading
 	pod 'NotificationBannerSwift', '~> 3.0.0'
 	pod 'SkeletonView'
-	pod 'Kingfisher', '~> 5.15.0'
+	pod 'Kingfisher', '~> 7.0'
 	pod 'NVActivityIndicatorView'
 	pod 'Hero'
 

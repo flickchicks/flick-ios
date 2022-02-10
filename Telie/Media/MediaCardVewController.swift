@@ -64,9 +64,9 @@ class MediaCardViewController: UIViewController {
         view.addSubview(spinner)
         spinner.startAnimating()
 
-        commentAreaView.delegate = self
-        commentAreaView.sizeToFit()
-        view.addSubview(commentAreaView)
+//        commentAreaView.delegate = self
+//        commentAreaView.sizeToFit()
+//        view.addSubview(commentAreaView)
 
         setupConstraints()
 
@@ -96,14 +96,13 @@ class MediaCardViewController: UIViewController {
         mediaInformationTableView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(handleArea.snp.bottom).offset(20)
-            make.bottom.equalTo(commentAreaView.snp.top)
-        }
-
-        commentAreaView.snp.makeConstraints { make in
-//            make.bottom.leading.trailing.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+
+//        commentAreaView.snp.makeConstraints { make in
+//            make.leading.trailing.equalToSuperview()
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+//        }
 
         spinner.snp.makeConstraints { make in
             make.top.equalTo(handleArea.snp.bottom).offset(30)
@@ -128,7 +127,7 @@ class MediaCardViewController: UIViewController {
 extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -136,13 +135,13 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+//        if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaSummaryReuseIdentifier, for: indexPath) as? MediaSummaryTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: media)
             return cell
-        }
+//        }
 //        else if indexPath.section == 1 {
 //            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaRatingsReuseIdentifier, for: indexPath) as? MediaRatingsTableViewCell else {
 //                return UITableViewCell()
@@ -150,15 +149,15 @@ extension MediaCardViewController: UITableViewDelegate, UITableViewDataSource {
 //            cell.configure(with: media)
 //            cell.delegate = self
 //            return cell
+////        }
+//        else {
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaThoughtsReuseIdentifier, for: indexPath) as? MediaThoughtsTableViewCell else {
+//                return UITableViewCell()
+//            }
+//            cell.configure(with: media)
+//            cell.delegate = self
+//            return cell
 //        }
-        else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: mediaThoughtsReuseIdentifier, for: indexPath) as? MediaThoughtsTableViewCell else {
-                return UITableViewCell()
-            }
-            cell.configure(with: media)
-            cell.delegate = self
-            return cell
-        }
     }
 }
 
