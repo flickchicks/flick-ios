@@ -101,6 +101,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let tabBarController = TabBarController()
         tabBarController.selectedIndex = 2
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(            CustomNavigationController(rootViewController: tabBarController), animated: false)
+        tabBarController.navigationController?.pushViewController(AllNotificationsViewController(), animated: true)
         completionHandler()
     }
 
