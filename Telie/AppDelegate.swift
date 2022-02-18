@@ -99,9 +99,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else { return }
         // Open notifications tab
         let tabBarController = TabBarController()
-        tabBarController.selectedIndex = 2
+        tabBarController.selectedIndex = 1
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(            CustomNavigationController(rootViewController: tabBarController), animated: false)
-        tabBarController.navigationController?.pushViewController(AllNotificationsViewController(), animated: true)
+//        tabBarController.navigationController?.pushViewController(AllNotificationsViewController(), animated: true)
         completionHandler()
     }
 

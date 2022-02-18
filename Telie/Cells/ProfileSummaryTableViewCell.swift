@@ -163,13 +163,18 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(isHome: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
+    func configure(isHome: Bool,
+                   hasNotif: Bool,
+                   user: UserProfile?,
+                   friends: [UserProfile],
+                   delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
+        notificationButton.setImage(UIImage(named: hasNotif ? "activeNotificationIcon" : "notificationIcon"), for: .normal)
         if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
