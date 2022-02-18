@@ -87,7 +87,7 @@ class ProfileViewController: UIViewController {
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
-        listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         listsTableView.isSkeletonable = true
 
         // Add Refresh Control to Table View
@@ -112,7 +112,7 @@ class ProfileViewController: UIViewController {
         }
 
         bottomPaddingView.snp.makeConstraints { make in
-            make.height.equalTo(view.frame.height - 310)
+            make.height.equalTo(40)
             make.leading.trailing.bottom.equalTo(listsTableView)
         }
 
