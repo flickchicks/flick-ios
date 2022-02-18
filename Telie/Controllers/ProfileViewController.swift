@@ -36,6 +36,7 @@ class ProfileViewController: UIViewController {
 
     private let currentUserId = UserDefaults.standard.integer(forKey: Constants.UserDefaults.userId)
     private var friends: [UserProfile] = []
+    private var hasNotif: Bool = false
     private var isCurrentUser: Bool = false
     private var isLikedSelected: Bool = false
     private var isHome: Bool = false
@@ -87,7 +88,7 @@ class ProfileViewController: UIViewController {
         listsTableView.estimatedSectionHeaderHeight = 0
         listsTableView.sectionHeaderHeight = UITableView.automaticDimension
         listsTableView.showsVerticalScrollIndicator = false
-        listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        listsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         listsTableView.isSkeletonable = true
 
         // Add Refresh Control to Table View
@@ -112,7 +113,7 @@ class ProfileViewController: UIViewController {
         }
 
         bottomPaddingView.snp.makeConstraints { make in
-            make.height.equalTo(view.frame.height - 310)
+            make.height.equalTo(40)
             make.leading.trailing.bottom.equalTo(listsTableView)
         }
 
@@ -210,13 +211,17 @@ class ProfileViewController: UIViewController {
         self.listsTableView.hideSkeleton()
 
         // Change notification tab icon image if there's any notifications
-        if isCurrentUser,
-           let tabItems = tabBarController?.tabBar.items {
-            let notificationItem = tabItems[2]
-            if let numNotifs = user.numNotifs {
-                let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
-                notificationItem.image = UIImage(named: imageName)
-            }
+//        if isCurrentUser,
+//           let tabItems = tabBarController?.tabBar.items {
+//            let notificationItem = tabItems[2]
+//            if let numNotifs = user.numNotifs {
+//                let imageName = numNotifs > 0 ? "activeNotificationIcon" : "notificationIcon"
+//                notificationItem.image = UIImage(named: imageName)
+//            }
+//        }
+        if isCurrentUser {
+            hasNotif = (user.numNotifs ?? 0) > 0
+            listsTableView.reloadSections(IndexSet(integer: 0), with: .none)
         }
         refreshControl.endRefreshing()
     }
@@ -287,6 +292,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: profileCellReuseIdentifier, for: indexPath) as? ProfileSummaryTableViewCell else { return UITableViewCell() }
             cell.configure(isHome: isHome,
+                           hasNotif: hasNotif,
                            user: user,
                            friends: friends,
                            delegate: self)

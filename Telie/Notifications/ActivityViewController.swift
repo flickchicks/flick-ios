@@ -242,7 +242,7 @@ extension ActivityViewController: UITableViewDelegate, UITableViewDataSource {
                 navigationController?.pushViewController(ListViewController(listId: list.id), animated: true)
             case .GroupInvite(_, let group, _):
                 guard let group = group else { return }
-                navigationController?.pushViewController(GroupViewController(group: group), animated: true)
+                navigationController?.pushViewController(GroupSettingsViewController(group: group), animated: true)
             default:
                 break
             }

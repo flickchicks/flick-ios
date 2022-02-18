@@ -9,6 +9,7 @@ class ProfileSummaryTableViewCell: UITableViewCell {
     private var friendsPreviewView: UsersPreviewView!
     private let nameLabel = UILabel()
     private let profileImageView = UIImageView()
+    private let notificationButton = UIButton()
     private let settingsButton = UIButton()
     private let userInfoView = UIView()
     private let usernameLabel = UILabel()
@@ -73,6 +74,11 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         settingsButton.tintColor = .mediumGray
         settingsButton.isHidden = true
         contentView.addSubview(settingsButton)
+
+        notificationButton.setImage(UIImage(named: "notificationIcon"), for: .normal)
+        notificationButton.addTarget(self, action: #selector(notificationButtonPressed), for: .touchUpInside)
+        notificationButton.isHidden = true
+        contentView.addSubview(notificationButton)
 
         setupConstraints()
     }
@@ -140,6 +146,12 @@ class ProfileSummaryTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(5)
             make.trailing.equalToSuperview().inset(10)
         }
+
+        notificationButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 44, height: 44))
+            make.centerY.equalTo(settingsButton.snp.centerY)
+            make.trailing.equalTo(settingsButton.snp.leading)
+        }
     }
 
     private func updateUserInfoViewConstraints() {
@@ -151,18 +163,24 @@ class ProfileSummaryTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(isHome: Bool, user: UserProfile?, friends: [UserProfile], delegate: ProfileDelegate) {
+    func configure(isHome: Bool,
+                   hasNotif: Bool,
+                   user: UserProfile?,
+                   friends: [UserProfile],
+                   delegate: ProfileDelegate) {
         guard let user = user else { return }
         self.delegate = delegate
         nameLabel.text = user.name
         usernameLabel.text = "@\(user.username)"
         usernameLabel.sizeToFit()
         bioLabel.text = user.bio
+        notificationButton.setImage(UIImage(named: hasNotif ? "activeNotificationIcon" : "notificationIcon"), for: .normal)
         if let imageUrl = URL(string: user.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
         // Show settings buttons only if current user is at Home
         settingsButton.isHidden = !isHome
+        notificationButton.isHidden = !isHome
 
         // Update friends preview
         if !friends.isEmpty {

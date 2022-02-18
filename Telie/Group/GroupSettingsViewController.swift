@@ -151,7 +151,7 @@ class GroupSettingsViewController: UIViewController {
         let resultsSection = Section(type: .results, header: "Results", hasFooter: true, settingItems: [.viewResults])
         let detailsSection = Section(type: .details, header: "Details", hasFooter: false, settingItems: [.rename, .addMembers])
         let deleteSection = Section(type: .delete, header: nil, hasFooter: false, settingItems: [.deleteGroup])
-        sections = [ideasSection, resultsSection, detailsSection, deleteSection]
+        sections = [detailsSection, deleteSection]
     }
 
     private func setupNavigationBar() {
