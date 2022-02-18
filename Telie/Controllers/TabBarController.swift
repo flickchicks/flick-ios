@@ -27,6 +27,16 @@ class TabBarController: UITabBarController {
         tabBar.layer.shadowRadius = 4
         tabBar.layer.shadowOffset = CGSize(width: 0, height: -1)
 
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .white
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkBlueGray2]
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.gradientPurple]
+            tabBar.standardAppearance = appearance
+            tabBar.scrollEdgeAppearance = tabBar.standardAppearance
+        }
+
         let discoverVC = DiscoverViewController()
         let searchIconImage = UIImage(named: "searchIcon")
         let selectedSearchIconImage = UIImage(named: "selectedSearchIcon")
