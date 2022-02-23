@@ -17,6 +17,7 @@
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
 		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
+		8023941827C18ECD003CC643 /* CreateReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023941727C18ECD003CC643 /* CreateReactionViewController.swift */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
 		8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0F825B4060F00F6BAEE /* TabBarController.swift */; };
@@ -186,6 +187,7 @@
 		600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AAB646AB440881C1C64874E /* Pods-Telie-TelieUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		8015158525BCE128002313B9 /* GroupVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVoteViewController.swift; sourceTree = "<group>"; };
+		8023941727C18ECD003CC643 /* CreateReactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReactionViewController.swift; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
 		8033C0F825B4060F00F6BAEE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 				D4E4E6DD25B60D53000D8341 /* AboutViewController.swift */,
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
 				807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */,
+				8023941727C18ECD003CC643 /* CreateReactionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1046,6 +1049,7 @@
 				D46B3F75249EF70C008D5484 /* SortOptionTableViewCell.swift in Sources */,
 				80F00F6824AD8D080051B8FF /* SelectIndicatorView.swift in Sources */,
 				D458B3D7261431B0006A23A1 /* AddCollaboratorViewController.swift in Sources */,
+				8023941827C18ECD003CC643 /* CreateReactionViewController.swift in Sources */,
 				D425B99424ECD27C00FB13A5 /* MediaRatingsTableViewCell.swift in Sources */,
 				D492727A24DE4B2300FA5F2A /* AllNotificationsViewController.swift in Sources */,
 				D40A06B824EE41A100631E75 /* MediaCommentsViewController.swift in Sources */,
@@ -1492,7 +1496,6 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
@@ -1745,7 +1748,6 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
 				CURRENT_PROJECT_VERSION = 1.3.12;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
