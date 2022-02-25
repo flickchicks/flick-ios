@@ -22,9 +22,9 @@ class NetworkManager {
     }
 
     #if LOCAL
-    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "https://\(Keys.serverURL)"
     #else
-    private static let hostEndpoint = "http://\(Keys.serverURL)"
+    private static let hostEndpoint = "https://\(Keys.serverURL)"
     #endif
     
     private static let searchBaseUrl = "\(hostEndpoint)/api/search/"
@@ -74,7 +74,6 @@ class NetworkManager {
 
     /// [GET] Get a user with token [updated as of 8/11/20]
     static func getUserProfile(completion: @escaping (UserProfile?) -> Void) {
-        
         var myProfileURLRequest = URLRequest(url: URL(string: "\(hostEndpoint)/api/me/")!)
         myProfileURLRequest.httpMethod = "GET"
         myProfileURLRequest.cachePolicy = .reloadIgnoringCacheData

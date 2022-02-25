@@ -17,6 +17,7 @@
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
 		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
 		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
+		8023941A27C98498003CC643 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023941927C98498003CC643 /* EmptyTableViewCell.swift */; };
 		802FBB7325015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */; };
 		8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C09725B2357F00F6BAEE /* Date+Shared.swift */; };
 		8033C0F925B4061100F6BAEE /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8033C0F825B4060F00F6BAEE /* TabBarController.swift */; };
@@ -186,6 +187,7 @@
 		600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AAB646AB440881C1C64874E /* Pods-Telie-TelieUITests.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie-TelieUITests.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie-TelieUITests/Pods-Telie-TelieUITests.dev debug.xcconfig"; sourceTree = "<group>"; };
 		8015158525BCE128002313B9 /* GroupVoteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupVoteViewController.swift; sourceTree = "<group>"; };
+		8023941927C98498003CC643 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
 		802FBB7225015A9D0095B049 /* DiscoverSearchVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		8033C09725B2357F00F6BAEE /* Date+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Shared.swift"; sourceTree = "<group>"; };
 		8033C0F825B4060F00F6BAEE /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -659,6 +661,7 @@
 				803E5F8125A6BFD3004CF4B7 /* UserPreviewCollectionViewCell.swift */,
 				803E5F5725A67965004CF4B7 /* EditUserTableViewCell.swift */,
 				803E602F25AACED3004CF4B7 /* ProviderCollectionViewCell.swift */,
+				8023941927C98498003CC643 /* EmptyTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1062,6 +1065,7 @@
 				309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */,
 				D46A365225F4B74100EADA9F /* RecommendedShowsCollectionViewCell.swift in Sources */,
 				D46B3F73249EF279008D5484 /* SortSelection.swift in Sources */,
+				8023941A27C98498003CC643 /* EmptyTableViewCell.swift in Sources */,
 				D458B3C9261420B7006A23A1 /* SaveMediaViewController.swift in Sources */,
 				803E5EF3259C05F5004CF4B7 /* ShareMediaModalView.swift in Sources */,
 				803E603025AACED5004CF4B7 /* ProviderCollectionViewCell.swift in Sources */,
@@ -1296,7 +1300,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1321,7 +1325,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1492,8 +1496,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				CURRENT_PROJECT_VERSION = 1.3.12;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1616,7 +1619,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1745,8 +1748,7 @@
 				CODE_SIGN_ENTITLEMENTS = Telie/Telie.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
-				CURRENT_PROJECT_VERSION = 1.3.12;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = CQZP4WR2CF;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
