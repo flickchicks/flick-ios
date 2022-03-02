@@ -1326,7 +1326,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = CQZP4WR2CF;
+				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1497,7 +1497,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = CQZP4WR2CF;
+				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1620,7 +1620,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = CQZP4WR2CF;
+				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1749,7 +1749,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = CQZP4WR2CF;
+				DEVELOPMENT_TEAM = 6R23DMQ38D;
 				INFOPLIST_FILE = Telie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
