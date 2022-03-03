@@ -8,7 +8,7 @@
 
 import Siren
 import UIKit
-import FBSDKLoginKit
+import FBSDKCoreKit
 import IQKeyboardManagerSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -66,6 +66,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 window.rootViewController = CustomNavigationController(rootViewController: tabBarController)
             }
         }
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else {
+            return
+        }
+
+        ApplicationDelegate.shared.application(
+            UIApplication.shared,
+            open: url,
+            sourceApplication: nil,
+            annotation: [UIApplication.OpenURLOptionsKey.annotation]
+        )
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

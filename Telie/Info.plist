@@ -35,8 +35,10 @@
 	<string>656571384898623</string>
 	<key>FacebookAutoLogAppEventsEnabled</key>
 	<string>TRUE</string>
+    <key>FacebookClientToken</key>
+    <string>2412fdcd67c01b1fe455be756865f13f</string>
 	<key>FacebookDisplayName</key>
-	<string>Flick</string>
+	<string>Telie</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
