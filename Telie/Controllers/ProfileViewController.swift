@@ -79,6 +79,7 @@ class ProfileViewController: UIViewController {
         listsTableView.backgroundColor = .clear
         listsTableView.register(ListTableViewCell.self, forCellReuseIdentifier: listCellReuseIdentifier)
         listsTableView.register(ProfileSummaryTableViewCell.self, forCellReuseIdentifier: profileCellReuseIdentifier)
+        listsTableView.register(EmptyTableViewCell.self, forCellReuseIdentifier: EmptyTableViewCell.reuseIdentifier)
         listsTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: headerReuseIdentifier)
         // TODO: Removing height seems to have fix the profile loading skeleton dimensions but causes constraint errors
 //        listsTableView.estimatedRowHeight = 185
@@ -113,7 +114,7 @@ class ProfileViewController: UIViewController {
         }
 
         bottomPaddingView.snp.makeConstraints { make in
-            make.height.equalTo(40)
+            make.height.equalTo(60)
             make.leading.trailing.bottom.equalTo(listsTableView)
         }
 
@@ -282,7 +283,7 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
         case .profileSummary:
             return 1
         case .lists:
-            return isLikedSelected ? likedLists.count : mediaLists.count
+            return isLikedSelected ? max(likedLists.count, 4) : max(mediaLists.count, 4)
         }
     }
 
@@ -298,10 +299,16 @@ extension ProfileViewController: UITableViewDelegate, SkeletonTableViewDataSourc
                            delegate: self)
             return cell
         case .lists:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
-            cell.configure(for: isLikedSelected ? likedLists[indexPath.item] : mediaLists[indexPath.item])
-            cell.delegate = self
-            return cell
+            let currentList = isLikedSelected ? likedLists : mediaLists
+            if currentList.count < 4 && indexPath.row >= currentList.count {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: EmptyTableViewCell.reuseIdentifier, for: indexPath) as? EmptyTableViewCell else { return UITableViewCell() }
+                return cell
+            } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellReuseIdentifier, for: indexPath) as? ListTableViewCell else { return UITableViewCell() }
+                cell.configure(for: currentList[indexPath.item])
+                cell.delegate = self
+                return cell
+            }
         }
     }
     

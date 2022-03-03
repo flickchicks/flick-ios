@@ -11,8 +11,11 @@ target 'Telie' do
   # Pods for Telie
 
 	# Facebook Authentication
- 	pod 'FBSDKLoginKit'
-	pod 'FBSDKCoreKit'
+ 	pod 'FacebookSDK'
+ 	pod 'FacebookSDK/LoginKit'
+ 	pod 'FacebookSDK/ShareKit'
+ 	pod 'FacebookSDK/PlacesKit'
+ 	pod 'FBSDKMessengerShareKit'
 
 	# Networking
     	pod 'Alamofire', '~> 5.2.1'
