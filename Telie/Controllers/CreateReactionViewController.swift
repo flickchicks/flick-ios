@@ -29,7 +29,7 @@ class CreateReactionViewController: UIViewController {
     private let spoilerButton = UIButton()
 
     // MARK: - Private Data Var
-    private var visibility = Visibility.public
+    private var visibility = Visibility.friends
     private var isSpoiler = true
 
     override func viewDidLoad() {
@@ -115,7 +115,7 @@ class CreateReactionViewController: UIViewController {
         sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         view.addSubview(sendButton)
 
-        visibilityButton.setTitle("Visible to Anyone  ", for: .normal)
+        visibilityButton.setTitle("Visible to Friends  ", for: .normal)
         visibilityButton.setTitleColor(.mediumGray, for: .normal)
         visibilityButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
         visibilityButton.setImage(UIImage(named: "downChevron"), for: .normal)
@@ -126,16 +126,16 @@ class CreateReactionViewController: UIViewController {
         visibilityButton.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
         view.addSubview(visibilityButton)
 
-        spoilerButton.setTitle("Contains Spoiler  ", for: .normal)
-        spoilerButton.setTitleColor(.mediumGray, for: .normal)
-        spoilerButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-        spoilerButton.setImage(UIImage(named: "downChevron"), for: .normal)
-        spoilerButton.semanticContentAttribute = .forceRightToLeft
-        spoilerButton.layer.borderWidth = 1
-        spoilerButton.layer.borderColor = UIColor.mediumGray.cgColor
-        spoilerButton.layer.cornerRadius = 12
-        spoilerButton.addTarget(self, action: #selector(spoilerButtonTapped), for: .touchUpInside)
-        view.addSubview(spoilerButton)
+//        spoilerButton.setTitle("Contains Spoiler  ", for: .normal)
+//        spoilerButton.setTitleColor(.mediumGray, for: .normal)
+//        spoilerButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
+//        spoilerButton.setImage(UIImage(named: "downChevron"), for: .normal)
+//        spoilerButton.semanticContentAttribute = .forceRightToLeft
+//        spoilerButton.layer.borderWidth = 1
+//        spoilerButton.layer.borderColor = UIColor.mediumGray.cgColor
+//        spoilerButton.layer.cornerRadius = 12
+//        spoilerButton.addTarget(self, action: #selector(spoilerButtonTapped), for: .touchUpInside)
+//        view.addSubview(spoilerButton)
 
         setupConstraints()
     }
@@ -235,16 +235,16 @@ class CreateReactionViewController: UIViewController {
             make.size.equalTo(CGSize(width: 140, height: 24))
         }
 
-        spoilerButton.snp.makeConstraints { make in
-            make.bottom.equalTo(dividerView4.snp.top).offset(-8)
-            make.leading.equalTo(visibilityButton.snp.trailing).offset(leadingTrailingPadding)
-            make.size.equalTo(CGSize(width: 130, height: 24))
-        }
+//        spoilerButton.snp.makeConstraints { make in
+//            make.bottom.equalTo(dividerView4.snp.top).offset(-8)
+//            make.leading.equalTo(visibilityButton.snp.trailing).offset(leadingTrailingPadding)
+//            make.size.equalTo(CGSize(width: 130, height: 24))
+//        }
 
         sendButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(leadingTrailingPadding)
+            make.leading.trailing.equalToSuperview().inset(leadingTrailingPadding)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.size.equalTo(CGSize(width: 200, height: 40))
+            make.height.equalTo(40)
         }
 
         dividerView4.snp.makeConstraints { make in
@@ -296,8 +296,8 @@ class CreateReactionViewController: UIViewController {
 
         let visibilityAlert = UIAlertController(title: "Visibility", message: nil, preferredStyle: .actionSheet)
 
-        visibilityAlert.addAction(anyoneAction)
         visibilityAlert.addAction(friendsAction)
+        visibilityAlert.addAction(anyoneAction)
 
         self.present(visibilityAlert, animated: true)
     }
