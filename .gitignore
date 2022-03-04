@@ -10,3 +10,4 @@ Podfile.lock
 
 Telie/Supporting/Keys.plist
 Telie/Supporting/GoogleService-Info.plist
+Telie/Info.plist
