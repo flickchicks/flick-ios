@@ -11,22 +11,22 @@ import UIKit
 class CreateReactionViewController: UIViewController {
 
     // MARK: - Private View Vars
-    private let titleLabel = UILabel()
-    private let titleTextLabel = UILabel()
-    private let episodeLabel = UILabel()
-    private let episodeTextLabel = UILabel()
-    private let changeButton = UIButton()
     private let browseButton = UIButton()
-    private let upButton = UIButton()
-    private let downButton = UIButton()
+    private let changeButton = UIButton()
     private let dividerView1 = UIView()
     private let dividerView2 = UIView()
     private let dividerView3 = UIView()
     private let dividerView4 = UIView()
+    private let downButton = UIButton()
+    private let episodeLabel = UILabel()
+    private let episodeTextLabel = UILabel()
     private let reactionTextView = UITextView()
     private let sendButton = UIButton()
-    private let visibilityButton = UIButton()
     private let spoilerButton = UIButton()
+    private let titleLabel = UILabel()
+    private let titleTextLabel = UILabel()
+    private let upButton = UIButton()
+    private let visibilityButton = UIButton()
 
     // MARK: - Private Data Var
     private var visibility = Visibility.friends
