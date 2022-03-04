@@ -37,16 +37,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Check authorizationToken is in userDefaults
         guard let _ = UserDefaults.standard.string(forKey: Constants.UserDefaults.authorizationToken) else {
-//            window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
-            window.rootViewController = CustomNavigationController(rootViewController: CreateReactionViewController())
+            window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
             return
         }
         // We have correct authorization token
         NetworkManager.getUserProfile { profile in
             DispatchQueue.main.async {
                 guard let profile = profile else {
-//                    window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
-                    window.rootViewController = CustomNavigationController(rootViewController: CreateReactionViewController())
+                    window.rootViewController = CustomNavigationController(rootViewController: LoginViewController())
                     return
                 }
                 UserDefaults.standard.set(profile.id, forKey: Constants.UserDefaults.userId)
