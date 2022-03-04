@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(MediaCommentsViewController.self)
+        IQKeyboardManager.shared.disabledDistanceHandlingClasses.append(CreateReactionViewController.self)
 
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)

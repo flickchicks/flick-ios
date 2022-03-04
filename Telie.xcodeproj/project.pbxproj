@@ -41,6 +41,7 @@
 		807CDC892656E4A000986B2E /* EditDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */; };
 		8080A66225CE2F4300A8FD9E /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */; };
 		8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */; };
+		8084954F27D1A5E1007415EB /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8084954E27D1A5E0007415EB /* Visibility.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
@@ -212,6 +213,7 @@
 		807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDescriptionViewController.swift; sourceTree = "<group>"; };
 		8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
+		8084954E27D1A5E0007415EB /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -686,6 +688,7 @@
 		D478669D247C57C3009E42FE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8084954E27D1A5E0007415EB /* Visibility.swift */,
 				D478669E247C57D2009E42FE /* Media.swift */,
 				D47866A0247C57F8009E42FE /* MediaList.swift */,
 				D47866A2247C5805009E42FE /* User.swift */,
@@ -1016,6 +1019,7 @@
 				806E771825C2265A00B82ECE /* GroupSettingsViewController.swift in Sources */,
 				D492727C24DE502900FA5F2A /* SuggestionsViewController.swift in Sources */,
 				D458B40726191A7A006A23A1 /* CustomBannerColors.swift in Sources */,
+				8084954F27D1A5E1007415EB /* Visibility.swift in Sources */,
 				806E771D25C234D200B82ECE /* GeneralSettingsTableViewCell.swift in Sources */,
 				D45DC63524B954F600838DBF /* SelfSizeCollectionView.swift in Sources */,
 				D4F0FB5324CC72EC00DEF826 /* Comment.swift in Sources */,
