@@ -9,30 +9,16 @@
 import UIKit
 
 class SelectEpisodeViewController: UIViewController {
-    
-
-    let seasonReuseIdentifier = "SeasonCollectionViewCell"
-    let seasonCellHeight: CGFloat = 50
 
     var seasonNumbers: [Int] = [0, 1, 2, 3, 4, 5, 6, 7]
+    var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
 
 
     // MARK: - Private View Vars
     private var seasonsCollectionView: UICollectionView!
-    private let browseButton = UIButton()
-    private let seasonButton = UIButton()
-    private let season2Button = UIButton()
-    private let dividerView1 = UIView()
-    private let dividerView2 = UIView()
+    private var episodesTableView: UITableView!
     private let episodeLabel = UILabel()
-    private let episodeButton = UIButton()
-    private let episode2Button = UIButton()
-    private let episode2TextLabel = UILabel()
     private let titleLabel = UILabel()
-    private let titleTextLabel = UILabel()
-
-    // MARK: - Private Data Var
-//    private var visibility = Visibility.friends
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,53 +38,33 @@ class SelectEpisodeViewController: UIViewController {
         seasonsCollectionView.register(SeasonCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
         seasonsCollectionView.delegate = self
         seasonsCollectionView.dataSource = self
-        seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
+        seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         seasonsCollectionView.backgroundColor = .clear
         seasonsCollectionView.showsHorizontalScrollIndicator = false
         seasonsCollectionView.isScrollEnabled = true
         seasonsCollectionView.allowsSelection = false
         view.addSubview(seasonsCollectionView)
+        
+        episodesTableView = UITableView(frame: .zero, style: .plain)
+        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        episodesTableView.dataSource = self
+        episodesTableView.delegate = self
+        episodesTableView.backgroundColor = .clear
+        episodesTableView.allowsMultipleSelection = false
+        episodesTableView.isScrollEnabled = true
+        episodesTableView.alwaysBounceVertical = true
+        episodesTableView.bounces = true
+        episodesTableView.showsVerticalScrollIndicator = false
+        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        episodesTableView.register(EpisodeTableViewCell.self, forCellReuseIdentifier: EpisodeTableViewCell.reuseIdentifier)
+        episodesTableView.separatorStyle = .none
+        view.addSubview(episodesTableView)
        
-      
-
         episodeLabel.text = "Episode"
         episodeLabel.textColor = .black
         episodeLabel.font = .systemFont(ofSize: 14, weight: .bold)
         view.addSubview(episodeLabel)
-        
-        episodeButton.setTitle("1. The Boy in the Iceberg", for: .normal)
-        episodeButton.setTitleColor(.darkBlue, for: .normal)
-        episodeButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        episodeButton.backgroundColor = .none
-        episodeButton.layer.cornerRadius = 8
-        episodeButton.contentHorizontalAlignment = .left
-        episodeButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-        view.addSubview(episodeButton)
-        
-        episode2Button.setTitle("2. The Avatar Returns", for: .normal)
-        episode2Button.setTitleColor(.darkBlue, for: .normal)
-        episode2Button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        episode2Button.backgroundColor = .lightGray2
-        episode2Button.layer.cornerRadius = 8
-        episode2Button.contentHorizontalAlignment = .left
-        episode2Button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-        view.addSubview(episode2Button)
-
-        browseButton.setTitle("Browse", for: .normal)
-        browseButton.setTitleColor(.darkBlueGray2, for: .normal)
-        browseButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-        browseButton.backgroundColor = .lightGray2
-        browseButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
-        browseButton.layer.borderWidth = 1
-        browseButton.layer.cornerRadius = 13
-        view.addSubview(browseButton)
-
-        dividerView1.backgroundColor = .none
-        view.addSubview(dividerView1)
-
-        dividerView2.backgroundColor = .none
-        view.addSubview(dividerView2)
-
+  
         setupConstraints()
     }
 
@@ -137,6 +103,7 @@ class SelectEpisodeViewController: UIViewController {
         }
     
     @objc private func backButtonPressed() {
+            print("back button pressed")
             navigationController?.popViewController(animated: true)
         }
 
@@ -144,150 +111,31 @@ class SelectEpisodeViewController: UIViewController {
     private func setupConstraints() {
         let leadingTrailingPadding: CGFloat = 20
         let verticalPadding: CGFloat = 11
-        
-        let padding = 12
 
         seasonsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(padding)
+            make.top.equalTo(titleLabel.snp.bottom).offset(verticalPadding)
             make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(containerView).inset(padding)
-            make.height.equalTo(120)
+            make.height.equalTo(50)
         }
-
+        
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
 
-
-        dividerView1.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(seasonsCollectionView.snp.bottom).offset(verticalPadding)
-            make.height.equalTo(1)
-        }
-
         episodeLabel.snp.makeConstraints { make in
-            make.top.equalTo(dividerView1.snp.bottom).offset(verticalPadding)
+            make.top.equalTo(seasonsCollectionView.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
         
-        episodeButton.snp.makeConstraints { make in
-            make.top.equalTo(episodeLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-            make.height.equalTo(37)
-            make.width.equalTo(350)
-        }
-
-
-        episode2Button.snp.makeConstraints { make in
-            make.top.equalTo(episodeButton.snp.bottom).offset(15)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-            make.height.equalTo(37)
-            make.width.equalTo(350)
-        }
-
-
-        dividerView2.snp.makeConstraints { make in
+        episodesTableView.snp.makeConstraints { make in
+            make.top.equalTo(episodeLabel.snp.bottom).offset(verticalPadding)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(episodeButton.snp.bottom).offset(verticalPadding)
-            make.height.equalTo(1)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-
-
-
 
     }
-
-//    @objc func keyboardWillShow(sender: NSNotification) {
-//        if let keyboardSize = (sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            var bottomPadding: CGFloat = -10
-//            if #available(iOS 13.0, *) {
-//                let window = UIApplication.shared.windows.first
-//                if let padding = window?.safeAreaInsets.bottom {
-//                    bottomPadding += padding
-//                }
-//            }
-//            sendButton.snp.updateConstraints { update in
-//                update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(keyboardSize.height - bottomPadding)
-//            }
-//
-//        }
-//    }
-
-//    @objc func sendButtonTapped() {
-//        print("send tapped")
-//    }
-
-//    @objc func visibilityButtonTapped() {
-//        let friendsAction = UIAlertAction(title: "Just My Friends", style: .default) { [weak self] action in
-//            guard let self = self else { return }
-//            self.visibility = Visibility.friends
-//            self.visibilityButton.setTitle("Visible to Friends  ", for: .normal)
-//        }
-//        let anyoneAction = UIAlertAction(title: "Anyone", style: .default) { [weak self] action in
-//            guard let self = self else { return }
-//            self.visibility = Visibility.public
-//            self.visibilityButton.setTitle("Visible to Anyone  ", for: .normal)
-//        }
-//
-//        let visibilityAlert = UIAlertController(title: "Visibility", message: nil, preferredStyle: .actionSheet)
-//
-//        visibilityAlert.addAction(friendsAction)
-//        visibilityAlert.addAction(anyoneAction)
-//
-//        self.present(visibilityAlert, animated: true)
-//    }
-
-//    @objc func spoilerButtonTapped() {
-//        let hasSpoilerAction = UIAlertAction(title: "Contains Spoilers", style: .default) { [weak self] action in
-//            guard let self = self else { return }
-//            self.isSpoiler = true
-//            self.spoilerButton.setTitle("Contains Spoiler  ", for: .normal)
-//        }
-//        let noSpoilerAction = UIAlertAction(title: "No Spoilers", style: .default) { [weak self] action in
-//            guard let self = self else { return }
-//            self.isSpoiler = false
-//            self.spoilerButton.setTitle("No Spoiler  ", for: .normal)
-//        }
-//
-//        let spoilerAlert = UIAlertController(title: "Spoiler Content", message: nil, preferredStyle: .actionSheet)
-//
-//        spoilerAlert.addAction(hasSpoilerAction)
-//        spoilerAlert.addAction(noSpoilerAction)
-//
-//        self.present(spoilerAlert, animated: true)
-//    }
-
 }
-
-
-//extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return seasonNumbers.count
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-//        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
-//        return cell
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-//        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
-//        return cell
-//    }
-//
-
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let seasonNumbers = seasonNumbers else { return }
-//        let seasonNumber = seasonNumbers[indexPath.row]
-//        navigationController?.pushViewController(MediaViewController(mediaId: media.id, mediaImageUrl: media.posterPic), animated: true)
-//        print("selected \(seasonNumbers[indexPath.row])")
-//    }
-
-// }
-
 
 extension SelectEpisodeViewController: UICollectionViewDataSource {
 
@@ -295,17 +143,9 @@ extension SelectEpisodeViewController: UICollectionViewDataSource {
         return seasonNumbers.count
     }
     
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath)
-//                as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-//        cell.configure(seasonNumber: seasonNumbers[indexPath.item])
-//        return cell
-//    }
-
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath)
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonReuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(seasonNumber: seasonNumbers[indexPath.row])
         return cell
     }
@@ -313,7 +153,28 @@ extension SelectEpisodeViewController: UICollectionViewDataSource {
 
 extension SelectEpisodeViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 120)
+        return CGSize(width: 80, height: 40)
     }
 }
 
+extension SelectEpisodeViewController: UITableViewDelegate, UITableViewDataSource {
+   
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return episodeNames.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
+        cell.configure(episodeName: episodeNames[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episodeName = episodeNames[indexPath.row]
+        print("clicked! \(episodeName)")
+    }
+}
