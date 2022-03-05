@@ -26,6 +26,20 @@ import UIKit
 //season2Button.layer.cornerRadius = 13
 //view.addSubview(season2Button)
 
+//        seasonButton.snp.makeConstraints { make in
+//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+//            make.height.equalTo(26)
+//            make.width.equalTo(78)
+//        }
+//
+//        season2Button.snp.makeConstraints { make in
+//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+//            make.leading.equalTo(seasonButton.snp.trailing).offset(10)
+//            make.height.equalTo(26)
+//            make.width.equalTo(78)
+//        }
+
 class SeasonCollectionViewCell: UICollectionViewCell {
     
     private let seasonLabel = UILabel()
@@ -37,24 +51,25 @@ class SeasonCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         backgroundColor = .clear
-
-      
-
-        seasonLabel.textColor = .darkBlue
+        seasonLabel.textColor = .darkPurple
         seasonLabel.textAlignment = .center
-        seasonLabel.font = .systemFont(ofSize: 12)
+        seasonLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        seasonLabel.backgroundColor = .lightPurple
+        seasonLabel.layer.borderColor = UIColor.darkPurple.cgColor
+        seasonLabel.layer.borderWidth = 1
+        seasonLabel.layer.cornerRadius = 13
+        seasonLabel.layer.masksToBounds = true
         contentView.addSubview(seasonLabel)
 
         setupConstraints()
     }
 
     private func setupConstraints() {
-      
         seasonLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(4)
+            make.height.equalTo(26)
+            make.width.equalTo(78)
+//            make.edges.equalToSuperview().inset(4)
         }
-
-      
     }
 
     func configure(seasonNumber: Int) {

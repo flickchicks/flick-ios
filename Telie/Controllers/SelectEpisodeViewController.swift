@@ -14,7 +14,7 @@ class SelectEpisodeViewController: UIViewController {
     let seasonReuseIdentifier = "SeasonCollectionViewCell"
     let seasonCellHeight: CGFloat = 50
 
-    var seasonNumbers: [Int] = [0, 1, 2]
+    var seasonNumbers: [Int] = [0, 1, 2, 3, 4, 5, 6, 7]
 
 
     // MARK: - Private View Vars
@@ -55,7 +55,7 @@ class SelectEpisodeViewController: UIViewController {
         seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
         seasonsCollectionView.backgroundColor = .clear
         seasonsCollectionView.showsHorizontalScrollIndicator = false
-        seasonsCollectionView.isScrollEnabled = false
+        seasonsCollectionView.isScrollEnabled = true
         seasonsCollectionView.allowsSelection = false
         view.addSubview(seasonsCollectionView)
        
@@ -159,21 +159,6 @@ class SelectEpisodeViewController: UIViewController {
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
 
-
-        
-//        seasonButton.snp.makeConstraints { make in
-//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-//            make.height.equalTo(26)
-//            make.width.equalTo(78)
-//        }
-//
-//        season2Button.snp.makeConstraints { make in
-//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-//            make.leading.equalTo(seasonButton.snp.trailing).offset(10)
-//            make.height.equalTo(26)
-//            make.width.equalTo(78)
-//        }
 
         dividerView1.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
