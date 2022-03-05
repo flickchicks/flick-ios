@@ -8,6 +8,24 @@
 
 import UIKit
 
+//seasonButton.setTitle("Season 1", for: .normal)
+//seasonButton.setTitleColor(.darkPurple, for: .normal)
+//seasonButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+//seasonButton.backgroundColor = .lightPurple
+//seasonButton.layer.borderColor = UIColor.darkPurple.cgColor
+//seasonButton.layer.borderWidth = 1
+//seasonButton.layer.cornerRadius = 13
+//view.addSubview(seasonButton)
+//
+//season2Button.setTitle("Season 2", for: .normal)
+//season2Button.setTitleColor(.darkPurple, for: .normal)
+//season2Button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+//season2Button.backgroundColor = .none
+//season2Button.layer.borderColor = UIColor.darkPurple.cgColor
+//season2Button.layer.borderWidth = 1
+//season2Button.layer.cornerRadius = 13
+//view.addSubview(season2Button)
+
 class SeasonCollectionViewCell: UICollectionViewCell {
     
     private let seasonLabel = UILabel()

@@ -11,7 +11,7 @@ import UIKit
 class SelectEpisodeViewController: UIViewController {
     
 
-    let seasonReuseIdentifier = "seasonCellReuse"
+    let seasonReuseIdentifier = "SeasonCollectionViewCell"
     let seasonCellHeight: CGFloat = 50
 
     var seasonNumbers: [Int] = [0, 1, 2]
@@ -49,7 +49,7 @@ class SelectEpisodeViewController: UIViewController {
         seasonsLayout.scrollDirection = .horizontal
 
         seasonsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: seasonsLayout)
-        seasonsCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
+        seasonsCollectionView.register(SeasonCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
         seasonsCollectionView.delegate = self
         seasonsCollectionView.dataSource = self
         seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
@@ -59,23 +59,7 @@ class SelectEpisodeViewController: UIViewController {
         seasonsCollectionView.allowsSelection = false
         view.addSubview(seasonsCollectionView)
        
-        seasonButton.setTitle("Season 1", for: .normal)
-        seasonButton.setTitleColor(.darkPurple, for: .normal)
-        seasonButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        seasonButton.backgroundColor = .lightPurple
-        seasonButton.layer.borderColor = UIColor.darkPurple.cgColor
-        seasonButton.layer.borderWidth = 1
-        seasonButton.layer.cornerRadius = 13
-        view.addSubview(seasonButton)
-        
-        season2Button.setTitle("Season 2", for: .normal)
-        season2Button.setTitleColor(.darkPurple, for: .normal)
-        season2Button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        season2Button.backgroundColor = .none
-        season2Button.layer.borderColor = UIColor.darkPurple.cgColor
-        season2Button.layer.borderWidth = 1
-        season2Button.layer.cornerRadius = 13
-        view.addSubview(season2Button)
+      
 
         episodeLabel.text = "Episode"
         episodeLabel.textColor = .black
@@ -160,6 +144,15 @@ class SelectEpisodeViewController: UIViewController {
     private func setupConstraints() {
         let leadingTrailingPadding: CGFloat = 20
         let verticalPadding: CGFloat = 11
+        
+        let padding = 12
+
+        seasonsCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(padding)
+            make.leading.trailing.equalToSuperview()
+//            make.bottom.equalTo(containerView).inset(padding)
+            make.height.equalTo(120)
+        }
 
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
@@ -168,23 +161,23 @@ class SelectEpisodeViewController: UIViewController {
 
 
         
-        seasonButton.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-            make.height.equalTo(26)
-            make.width.equalTo(78)
-        }
-        
-        season2Button.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-            make.leading.equalTo(seasonButton.snp.trailing).offset(10)
-            make.height.equalTo(26)
-            make.width.equalTo(78)
-        }
+//        seasonButton.snp.makeConstraints { make in
+//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+//            make.height.equalTo(26)
+//            make.width.equalTo(78)
+//        }
+//
+//        season2Button.snp.makeConstraints { make in
+//            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+//            make.leading.equalTo(seasonButton.snp.trailing).offset(10)
+//            make.height.equalTo(26)
+//            make.width.equalTo(78)
+//        }
 
         dividerView1.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(seasonButton.snp.bottom).offset(verticalPadding)
+            make.top.equalTo(seasonsCollectionView.snp.bottom).offset(verticalPadding)
             make.height.equalTo(1)
         }
 
@@ -283,17 +276,23 @@ class SelectEpisodeViewController: UIViewController {
 }
 
 
-extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return seasonNumbers.count
-    }
+//extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollectionViewDelegate {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return seasonNumbers.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+//        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
+//        return cell
+//    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
-        return cell
-    }
-    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+//        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
+//        return cell
+//    }
+//
 
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        guard let seasonNumbers = seasonNumbers else { return }
@@ -302,7 +301,34 @@ extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollection
 //        print("selected \(seasonNumbers[indexPath.row])")
 //    }
 
+// }
+
+
+extension SelectEpisodeViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return seasonNumbers.count
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath)
+//                as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+//        cell.configure(seasonNumber: seasonNumbers[indexPath.item])
+//        return cell
+//    }
+
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: seasonReuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
+        return cell
+    }
 }
 
-
+extension SelectEpisodeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 120)
+    }
+}
 
