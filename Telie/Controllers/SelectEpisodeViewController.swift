@@ -20,16 +20,18 @@ class SelectEpisodeViewController: UIViewController {
 //    private let dividerView4 = UIView()
 //    private let downButton = UIButton()
     private let episodeLabel = UILabel()
-    private let episodeTextLabel = UILabel()
+//    private let episodeTextLabel = UILabel()
+    private let episodeButton = UIButton()
+    private let episode2Button = UIButton()
     private let episode2TextLabel = UILabel()
     private let titleLabel = UILabel()
     private let titleTextLabel = UILabel()
 //    private let upButton = UIButton()
-    private let visibilityButton = UIButton()
+//    private let visibilityButton = UIButton()
 
     // MARK: - Private Data Var
-    private var visibility = Visibility.friends
-    private var isSpoiler = true
+//    private var visibility = Visibility.friends
+//    private var isSpoiler = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,15 +71,33 @@ class SelectEpisodeViewController: UIViewController {
         episodeLabel.font = .systemFont(ofSize: 14, weight: .bold)
         view.addSubview(episodeLabel)
 
-        episodeTextLabel.text = "1. The Boy in the Iceberg"
-        episodeTextLabel.textColor = .darkBlue
-        episodeTextLabel.font = .systemFont(ofSize: 18)
-        view.addSubview(episodeTextLabel)
+//        episodeTextLabel.text = "1. The Boy in the Iceberg"
+//        episodeTextLabel.textColor = .darkBlue
+//        episodeTextLabel.font = .systemFont(ofSize: 18)
+//        view.addSubview(episodeTextLabel)
+        
+        episodeButton.setTitle("1. The Boy in the Iceberg", for: .normal)
+        episodeButton.setTitleColor(.darkBlue, for: .normal)
+        episodeButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        episodeButton.backgroundColor = .none
+        episodeButton.layer.cornerRadius = 8
+        episodeButton.contentHorizontalAlignment = .left
+        episodeButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        view.addSubview(episodeButton)
 
-        episode2TextLabel.text = "2. The Avatar Returns"
-        episode2TextLabel.textColor = .darkBlue
-        episode2TextLabel.font = .systemFont(ofSize: 18)
-        view.addSubview(episode2TextLabel)
+//        episode2TextLabel.text = "2. The Avatar Returns"
+//        episode2TextLabel.textColor = .darkBlue
+//        episode2TextLabel.font = .systemFont(ofSize: 18)
+//        view.addSubview(episode2TextLabel)
+        
+        episode2Button.setTitle("2. The Avatar Returns", for: .normal)
+        episode2Button.setTitleColor(.darkBlue, for: .normal)
+        episode2Button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        episode2Button.backgroundColor = .lightGray2
+        episode2Button.layer.cornerRadius = 8
+        episode2Button.contentHorizontalAlignment = .left
+        episode2Button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        view.addSubview(episode2Button)
 
         browseButton.setTitle("Browse", for: .normal)
         browseButton.setTitleColor(.darkBlueGray2, for: .normal)
@@ -114,16 +134,16 @@ class SelectEpisodeViewController: UIViewController {
 //        dividerView4.backgroundColor = .lightGray2
 //        view.addSubview(dividerView4)
 
-        visibilityButton.setTitle("Visible to Friends  ", for: .normal)
-        visibilityButton.setTitleColor(.mediumGray, for: .normal)
-        visibilityButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-        visibilityButton.setImage(UIImage(named: "downChevron"), for: .normal)
-        visibilityButton.semanticContentAttribute = .forceRightToLeft
-        visibilityButton.layer.borderWidth = 1
-        visibilityButton.layer.borderColor = UIColor.mediumGray.cgColor
-        visibilityButton.layer.cornerRadius = 12
-        visibilityButton.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
-        view.addSubview(visibilityButton)
+//        visibilityButton.setTitle("Visible to Friends  ", for: .normal)
+//        visibilityButton.setTitleColor(.mediumGray, for: .normal)
+//        visibilityButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
+//        visibilityButton.setImage(UIImage(named: "downChevron"), for: .normal)
+//        visibilityButton.semanticContentAttribute = .forceRightToLeft
+//        visibilityButton.layer.borderWidth = 1
+//        visibilityButton.layer.borderColor = UIColor.mediumGray.cgColor
+//        visibilityButton.layer.cornerRadius = 12
+//        visibilityButton.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
+//        view.addSubview(visibilityButton)
 
         setupConstraints()
     }
@@ -219,16 +239,24 @@ class SelectEpisodeViewController: UIViewController {
             make.top.equalTo(dividerView1.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
         }
-
-        episodeTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(episodeLabel.snp.bottom).offset(15)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-//            make.trailing.equalTo(downButton.snp.leading).offset(leadingTrailingPadding)
-        }
         
-        episode2TextLabel.snp.makeConstraints { make in
-            make.top.equalTo(episodeTextLabel.snp.bottom).offset(20)
+        episodeButton.snp.makeConstraints { make in
+            make.top.equalTo(episodeLabel.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
+            make.height.equalTo(37)
+            make.width.equalTo(350)
+        }
+
+//        episodeTextLabel.snp.makeConstraints { make in
+//            make.top.equalTo(episodeLabel.snp.bottom).offset(18)
+//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+//        }
+//
+        episode2Button.snp.makeConstraints { make in
+            make.top.equalTo(episodeButton.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(leadingTrailingPadding)
+            make.height.equalTo(37)
+            make.width.equalTo(350)
         }
 
 //        browseButton.snp.makeConstraints { make in
@@ -254,7 +282,7 @@ class SelectEpisodeViewController: UIViewController {
 
         dividerView2.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(episodeTextLabel.snp.bottom).offset(verticalPadding)
+            make.top.equalTo(episodeButton.snp.bottom).offset(verticalPadding)
             make.height.equalTo(1)
         }
 //
@@ -295,25 +323,25 @@ class SelectEpisodeViewController: UIViewController {
 //        print("send tapped")
 //    }
 
-    @objc func visibilityButtonTapped() {
-        let friendsAction = UIAlertAction(title: "Just My Friends", style: .default) { [weak self] action in
-            guard let self = self else { return }
-            self.visibility = Visibility.friends
-            self.visibilityButton.setTitle("Visible to Friends  ", for: .normal)
-        }
-        let anyoneAction = UIAlertAction(title: "Anyone", style: .default) { [weak self] action in
-            guard let self = self else { return }
-            self.visibility = Visibility.public
-            self.visibilityButton.setTitle("Visible to Anyone  ", for: .normal)
-        }
-
-        let visibilityAlert = UIAlertController(title: "Visibility", message: nil, preferredStyle: .actionSheet)
-
-        visibilityAlert.addAction(friendsAction)
-        visibilityAlert.addAction(anyoneAction)
-
-        self.present(visibilityAlert, animated: true)
-    }
+//    @objc func visibilityButtonTapped() {
+//        let friendsAction = UIAlertAction(title: "Just My Friends", style: .default) { [weak self] action in
+//            guard let self = self else { return }
+//            self.visibility = Visibility.friends
+//            self.visibilityButton.setTitle("Visible to Friends  ", for: .normal)
+//        }
+//        let anyoneAction = UIAlertAction(title: "Anyone", style: .default) { [weak self] action in
+//            guard let self = self else { return }
+//            self.visibility = Visibility.public
+//            self.visibilityButton.setTitle("Visible to Anyone  ", for: .normal)
+//        }
+//
+//        let visibilityAlert = UIAlertController(title: "Visibility", message: nil, preferredStyle: .actionSheet)
+//
+//        visibilityAlert.addAction(friendsAction)
+//        visibilityAlert.addAction(anyoneAction)
+//
+//        self.present(visibilityAlert, animated: true)
+//    }
 
 //    @objc func spoilerButtonTapped() {
 //        let hasSpoilerAction = UIAlertAction(title: "Contains Spoilers", style: .default) { [weak self] action in
