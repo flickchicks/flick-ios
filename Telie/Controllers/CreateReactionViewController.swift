@@ -29,8 +29,9 @@ class CreateReactionViewController: UIViewController {
     private let visibilityButton = UIButton()
 
     // MARK: - Private Data Var
-    private var visibility = Visibility.friends
     private var isSpoiler = true
+    private var selectedMedia: Media?
+    private var visibility = Visibility.friends
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,7 @@ class CreateReactionViewController: UIViewController {
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         view.addSubview(titleLabel)
 
-        titleTextLabel.text = "Avatar: The Last Airbender"
+        titleTextLabel.text = " "
         titleTextLabel.textColor = .darkBlue
         titleTextLabel.font = .systemFont(ofSize: 16)
         view.addSubview(titleTextLabel)
@@ -54,6 +55,7 @@ class CreateReactionViewController: UIViewController {
         changeButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
         changeButton.layer.borderWidth = 1
         changeButton.layer.cornerRadius = 13
+        changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
         view.addSubview(changeButton)
 
         episodeLabel.text = "Episode"
@@ -158,12 +160,12 @@ class CreateReactionViewController: UIViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
-            make.trailing.equalTo(changeButton.snp.leading).offset(leadingTrailingPadding)
         }
 
         titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
+            make.trailing.equalTo(changeButton.snp.leading).offset(-10)
         }
 
         changeButton.snp.makeConstraints { make in
@@ -187,7 +189,7 @@ class CreateReactionViewController: UIViewController {
         episodeTextLabel.snp.makeConstraints { make in
             make.top.equalTo(episodeLabel.snp.bottom).offset(6)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
-            make.trailing.equalTo(downButton.snp.leading).offset(leadingTrailingPadding)
+            make.trailing.equalTo(downButton.snp.leading).offset(-10)
         }
 
         browseButton.snp.makeConstraints { make in
@@ -320,6 +322,21 @@ class CreateReactionViewController: UIViewController {
         spoilerAlert.addAction(noSpoilerAction)
 
         self.present(spoilerAlert, animated: true)
+    }
+
+    @objc func changeButtonTapped() {
+        let vc = SearchForReactionViewController()
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+}
+
+extension CreateReactionViewController: MediaForReactionDelegate {
+
+    func selectMediaForReaction(media: Media) {
+        selectedMedia = media
+        titleTextLabel.text = media.title
     }
 
 }

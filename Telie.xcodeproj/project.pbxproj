@@ -42,7 +42,7 @@
 		8080A66225CE2F4300A8FD9E /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */; };
 		8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */; };
 		8084954F27D1A5E1007415EB /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8084954E27D1A5E0007415EB /* Visibility.swift */; };
-		8084955327D1BA0F007415EB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8084955227D1BA0F007415EB /* Info.plist */; };
+		8084955D27D3A99B007415EB /* SearchForReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
 		80B3F9B624DF0D8D002891C4 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B524DF0D8D002891C4 /* UIViewController.swift */; };
 		80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */; };
@@ -215,7 +215,8 @@
 		8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
 		8084954E27D1A5E0007415EB /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
-		8084955227D1BA0F007415EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8084955A27D2B714007415EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForReactionViewController.swift; sourceTree = "<group>"; };
 		80AB6AE225B1293500998FF0 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		80B3F9B524DF0D8D002891C4 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		80B3F9B924E24078002891C4 /* ListNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -503,7 +504,7 @@
 				D41FE8B72477C7A40048900F /* Main.storyboard */,
 				D41FE8BA2477C7A80048900F /* Assets.xcassets */,
 				D41FE8BC2477C7A80048900F /* LaunchScreen.storyboard */,
-				8084955227D1BA0F007415EB /* Info.plist */,
+				8084955A27D2B714007415EB /* Info.plist */,
 			);
 			path = Telie;
 			sourceTree = "<group>";
@@ -620,6 +621,7 @@
 				80E7F93A25B666EA00B545C8 /* CustomNavigationController.swift */,
 				807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */,
 				8023941727C18ECD003CC643 /* CreateReactionViewController.swift */,
+				8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -863,7 +865,6 @@
 			files = (
 				80C4445025F433BA009572B4 /* Keys.plist in Resources */,
 				D41FE8BE2477C7A80048900F /* LaunchScreen.storyboard in Resources */,
-				8084955327D1BA0F007415EB /* Info.plist in Resources */,
 				D41FE8BB2477C7A80048900F /* Assets.xcassets in Resources */,
 				D4A5AEA22661DA02006C3C5A /* GoogleService-Info.plist in Resources */,
 				D41FE8B92477C7A40048900F /* Main.storyboard in Resources */,
@@ -1123,6 +1124,7 @@
 				D4F0FB5124CC724400DEF826 /* CommentTableViewCell.swift in Sources */,
 				D4E858A224B0182400062D9C /* UserProfile.swift in Sources */,
 				D478669024798ADA009E42FE /* UIColor+Shared.swift in Sources */,
+				8084955D27D3A99B007415EB /* SearchForReactionViewController.swift in Sources */,
 				80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */,
 				80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */,
 				D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */,
