@@ -9,29 +9,30 @@
 import UIKit
 
 class SelectEpisodeViewController: UIViewController {
+    
+
+    let seasonReuseIdentifier = "seasonCellReuse"
+    let seasonCellHeight: CGFloat = 50
+
+    var seasonNumbers: [Int] = [0, 1, 2]
+
 
     // MARK: - Private View Vars
+    private let seasonsTableView = UICollectionView()
     private let browseButton = UIButton()
     private let seasonButton = UIButton()
     private let season2Button = UIButton()
     private let dividerView1 = UIView()
     private let dividerView2 = UIView()
-//    private let dividerView3 = UIView()
-//    private let dividerView4 = UIView()
-//    private let downButton = UIButton()
     private let episodeLabel = UILabel()
-//    private let episodeTextLabel = UILabel()
     private let episodeButton = UIButton()
     private let episode2Button = UIButton()
     private let episode2TextLabel = UILabel()
     private let titleLabel = UILabel()
     private let titleTextLabel = UILabel()
-//    private let upButton = UIButton()
-//    private let visibilityButton = UIButton()
 
     // MARK: - Private Data Var
 //    private var visibility = Visibility.friends
-//    private var isSpoiler = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +43,6 @@ class SelectEpisodeViewController: UIViewController {
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
         view.addSubview(titleLabel)
-
-//        titleTextLabel.text = "Avatar: The Last Airbender"
-//        titleTextLabel.textColor = .darkBlue
-//        titleTextLabel.font = .systemFont(ofSize: 16)
-//        view.addSubview(titleTextLabel)
 
         seasonButton.setTitle("Season 1", for: .normal)
         seasonButton.setTitleColor(.darkPurple, for: .normal)
@@ -70,11 +66,6 @@ class SelectEpisodeViewController: UIViewController {
         episodeLabel.textColor = .black
         episodeLabel.font = .systemFont(ofSize: 14, weight: .bold)
         view.addSubview(episodeLabel)
-
-//        episodeTextLabel.text = "1. The Boy in the Iceberg"
-//        episodeTextLabel.textColor = .darkBlue
-//        episodeTextLabel.font = .systemFont(ofSize: 18)
-//        view.addSubview(episodeTextLabel)
         
         episodeButton.setTitle("1. The Boy in the Iceberg", for: .normal)
         episodeButton.setTitleColor(.darkBlue, for: .normal)
@@ -84,11 +75,6 @@ class SelectEpisodeViewController: UIViewController {
         episodeButton.contentHorizontalAlignment = .left
         episodeButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         view.addSubview(episodeButton)
-
-//        episode2TextLabel.text = "2. The Avatar Returns"
-//        episode2TextLabel.textColor = .darkBlue
-//        episode2TextLabel.font = .systemFont(ofSize: 18)
-//        view.addSubview(episode2TextLabel)
         
         episode2Button.setTitle("2. The Avatar Returns", for: .normal)
         episode2Button.setTitleColor(.darkBlue, for: .normal)
@@ -108,42 +94,11 @@ class SelectEpisodeViewController: UIViewController {
         browseButton.layer.cornerRadius = 13
         view.addSubview(browseButton)
 
-//        upButton.setImage(UIImage(named: "arrowUp"), for: .normal)
-//        upButton.backgroundColor = .lightGray2
-//        upButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
-//        upButton.layer.borderWidth = 1
-//        upButton.layer.cornerRadius = 13
-//        view.addSubview(upButton)
-
-//        downButton.setImage(UIImage(named: "arrowDown"), for: .normal)
-//        downButton.backgroundColor = .lightGray2
-//        downButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
-//        downButton.layer.borderWidth = 1
-//        downButton.layer.cornerRadius = 13
-//        view.addSubview(downButton)
-
         dividerView1.backgroundColor = .none
         view.addSubview(dividerView1)
 
         dividerView2.backgroundColor = .none
         view.addSubview(dividerView2)
-
-//        dividerView3.backgroundColor = .lightGray2
-//        view.addSubview(dividerView3)
-//
-//        dividerView4.backgroundColor = .lightGray2
-//        view.addSubview(dividerView4)
-
-//        visibilityButton.setTitle("Visible to Friends  ", for: .normal)
-//        visibilityButton.setTitleColor(.mediumGray, for: .normal)
-//        visibilityButton.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
-//        visibilityButton.setImage(UIImage(named: "downChevron"), for: .normal)
-//        visibilityButton.semanticContentAttribute = .forceRightToLeft
-//        visibilityButton.layer.borderWidth = 1
-//        visibilityButton.layer.borderColor = UIColor.mediumGray.cgColor
-//        visibilityButton.layer.cornerRadius = 12
-//        visibilityButton.addTarget(self, action: #selector(visibilityButtonTapped), for: .touchUpInside)
-//        view.addSubview(visibilityButton)
 
         setupConstraints()
     }
@@ -186,11 +141,6 @@ class SelectEpisodeViewController: UIViewController {
             navigationController?.popViewController(animated: true)
         }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
 
     private func setupConstraints() {
         let leadingTrailingPadding: CGFloat = 20
@@ -199,13 +149,9 @@ class SelectEpisodeViewController: UIViewController {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
-//            make.trailing.equalTo(seasonButton.snp.leading).offset(leadingTrailingPadding)
         }
 
-//        titleTextLabel.snp.makeConstraints { make in
-//            make.top.equalTo(titleLabel.snp.bottom).offset(6)
-//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-//        }
+
         
         seasonButton.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
@@ -217,17 +163,9 @@ class SelectEpisodeViewController: UIViewController {
         season2Button.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.equalTo(seasonButton.snp.trailing).offset(10)
-//            make.leading.equalToSuperview().offset(leadingTrailingPadding + 100)
             make.height.equalTo(26)
             make.width.equalTo(78)
         }
-
-//        seasonButton.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(leadingTrailingPadding)
-//            make.top.equalTo(view.safeAreaLayoutGuide).offset(24)
-//            make.height.equalTo(26)
-//            make.width.equalTo(68)
-//        }
 
         dividerView1.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -247,11 +185,7 @@ class SelectEpisodeViewController: UIViewController {
             make.width.equalTo(350)
         }
 
-//        episodeTextLabel.snp.makeConstraints { make in
-//            make.top.equalTo(episodeLabel.snp.bottom).offset(18)
-//            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-//        }
-//
+
         episode2Button.snp.makeConstraints { make in
             make.top.equalTo(episodeButton.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(leadingTrailingPadding)
@@ -259,45 +193,13 @@ class SelectEpisodeViewController: UIViewController {
             make.width.equalTo(350)
         }
 
-//        browseButton.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().inset(leadingTrailingPadding)
-//            make.top.equalTo(dividerView1).offset(24)
-//            make.height.equalTo(26)
-//            make.width.equalTo(68)
-//        }
-
-//        upButton.snp.makeConstraints { make in
-//            make.trailing.equalTo(browseButton.snp.leading).offset(-10)
-//            make.top.equalTo(dividerView1).offset(24)
-//            make.height.equalTo(26)
-//            make.width.equalTo(32)
-//        }
-//
-//        downButton.snp.makeConstraints { make in
-//            make.trailing.equalTo(upButton.snp.leading).offset(-10)
-//            make.top.equalTo(dividerView1).offset(24)
-//            make.height.equalTo(26)
-//            make.width.equalTo(32)
-//        }
 
         dividerView2.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(episodeButton.snp.bottom).offset(verticalPadding)
             make.height.equalTo(1)
         }
-//
-//
-//        dividerView3.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(visibilityButton.snp.top).offset(-8)
-//            make.height.equalTo(1)
-//        }
 
-//        visibilityButton.snp.makeConstraints { make in
-//            make.bottom.equalTo(dividerView4.snp.top).offset(-8)
-//            make.leading.equalToSuperview().inset(leadingTrailingPadding)
-//            make.size.equalTo(CGSize(width: 140, height: 24))
-//        }
 
 
 
@@ -364,3 +266,28 @@ class SelectEpisodeViewController: UIViewController {
 //    }
 
 }
+
+
+extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return seasonNumbers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(season: seasonNumbers[indexPath.row])
+        return cell
+    }
+    
+
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        guard let seasonNumbers = seasonNumbers else { return }
+//        let seasonNumber = seasonNumbers[indexPath.row]
+//        navigationController?.pushViewController(MediaViewController(mediaId: media.id, mediaImageUrl: media.posterPic), animated: true)
+//        print("selected \(seasonNumbers[indexPath.row])")
+//    }
+
+}
+
+
+
