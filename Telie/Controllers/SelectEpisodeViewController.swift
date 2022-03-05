@@ -18,7 +18,7 @@ class SelectEpisodeViewController: UIViewController {
 
 
     // MARK: - Private View Vars
-    private let seasonsTableView = UICollectionView()
+    private var seasonsCollectionView: UICollectionView!
     private let browseButton = UIButton()
     private let seasonButton = UIButton()
     private let season2Button = UIButton()
@@ -43,7 +43,22 @@ class SelectEpisodeViewController: UIViewController {
         titleLabel.textColor = .black
         titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
         view.addSubview(titleLabel)
+        
+        let seasonsLayout = UICollectionViewFlowLayout()
+        seasonsLayout.minimumInteritemSpacing = 12
+        seasonsLayout.scrollDirection = .horizontal
 
+        seasonsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: seasonsLayout)
+        seasonsCollectionView.register(MediaInListCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
+        seasonsCollectionView.delegate = self
+        seasonsCollectionView.dataSource = self
+        seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 34, bottom: 0, right: 16)
+        seasonsCollectionView.backgroundColor = .clear
+        seasonsCollectionView.showsHorizontalScrollIndicator = false
+        seasonsCollectionView.isScrollEnabled = false
+        seasonsCollectionView.allowsSelection = false
+        view.addSubview(seasonsCollectionView)
+       
         seasonButton.setTitle("Season 1", for: .normal)
         seasonButton.setTitleColor(.darkPurple, for: .normal)
         seasonButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
@@ -275,7 +290,7 @@ extension SelectEpisodeViewController:  UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(season: seasonNumbers[indexPath.row])
+        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
         return cell
     }
     
