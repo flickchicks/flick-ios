@@ -15,6 +15,9 @@
 		309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286C24956E8300A670B0 /* ListSummaryCollectionViewCell.swift */; };
 		309F286F24956EC100A670B0 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */; };
 		309F287124956FB400A670B0 /* MediaListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309F287024956FB400A670B0 /* MediaListHeaderView.swift */; };
+		3794092827D310C600F88CC3 /* SelectEpisodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794092727D310C600F88CC3 /* SelectEpisodeViewController.swift */; };
+		3794093227D3C45A00F88CC3 /* SeasonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794093127D3C45A00F88CC3 /* SeasonCollectionViewCell.swift */; };
+		3794093427D4148800F88CC3 /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */; };
 		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
 		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
 		8023941827C18ECD003CC643 /* CreateReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8023941727C18ECD003CC643 /* CreateReactionViewController.swift */; };
@@ -185,6 +188,9 @@
 		309F286E24956EC100A670B0 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		309F287024956FB400A670B0 /* MediaListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListHeaderView.swift; sourceTree = "<group>"; };
 		332E7F5FE95B3AB8DA203DC1 /* Pods-Telie.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.dev debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.dev debug.xcconfig"; sourceTree = "<group>"; };
+		3794092727D310C600F88CC3 /* SelectEpisodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectEpisodeViewController.swift; sourceTree = "<group>"; };
+		3794093127D3C45A00F88CC3 /* SeasonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeasonCollectionViewCell.swift; sourceTree = "<group>"; };
+		3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		46B91DF72F6DCF9F039E4179 /* Pods-Telie.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod debug.xcconfig"; sourceTree = "<group>"; };
 		489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -603,6 +609,7 @@
 		D47866812478B8CE009E42FE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3794092727D310C600F88CC3 /* SelectEpisodeViewController.swift */,
 				80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */,
 				80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */,
 				80F00F6124AAFE8C0051B8FF /* AddMediaViewController.swift */,
@@ -637,6 +644,8 @@
 		D478668B24797C56009E42FE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */,
+				3794093127D3C45A00F88CC3 /* SeasonCollectionViewCell.swift */,
 				806E771C25C234D200B82ECE /* GeneralSettingsTableViewCell.swift */,
 				D40ED7D925950E8F004C2F2C /* TableViewCells */,
 				80F00F6324AAFE9D0051B8FF /* MediaSelectableCollectionViewCell.swift */,
@@ -1083,9 +1092,12 @@
 				309F286D24956E8300A670B0 /* ListSummaryCollectionViewCell.swift in Sources */,
 				D492728624DE6C8000FA5F2A /* NotificationTableViewCell.swift in Sources */,
 				D45DC63124B9363C00838DBF /* MediaTagCollectionViewCell.swift in Sources */,
+				3794093427D4148800F88CC3 /* EpisodeTableViewCell.swift in Sources */,
+				3794093227D3C45A00F88CC3 /* SeasonCollectionViewCell.swift in Sources */,
 				806E76EF25BF913600B82ECE /* GroupTabPageViewController.swift in Sources */,
 				D4786694247A09F5009E42FE /* ProfileViewController.swift in Sources */,
 				80B3F9BA24E24078002891C4 /* ListNameTableViewCell.swift in Sources */,
+				3794092827D310C600F88CC3 /* SelectEpisodeViewController.swift in Sources */,
 				D46A364D25F4B71D00EADA9F /* RecommendedShowsTableViewCell.swift in Sources */,
 				D4266A2126349406005ECCED /* LoadingIndicatorView.swift in Sources */,
 				D40ED7E12595C6B1004C2F2C /* DiscoverTableViewHeaderFooterView.swift in Sources */,
