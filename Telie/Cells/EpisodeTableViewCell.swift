@@ -16,7 +16,6 @@ class EpisodeTableViewCell: UITableViewCell {
     // MARK: - Data Vars
     static let reuseIdentifier = "EpisodeTableViewCell"
 
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -25,7 +24,7 @@ class EpisodeTableViewCell: UITableViewCell {
         episodeLabel.textColor = .darkBlue
         episodeLabel.textAlignment = .left
         episodeLabel.font = .systemFont(ofSize: 16, weight: .medium)
-        episodeLabel.backgroundColor = .clear // .lightGray2
+        episodeLabel.backgroundColor = .clear
         episodeLabel.layer.cornerRadius = 8
         episodeLabel.layer.masksToBounds = true
         contentView.addSubview(episodeLabel)

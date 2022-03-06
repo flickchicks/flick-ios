@@ -10,15 +10,17 @@ import UIKit
 
 class SeasonCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Private View Vars
     private let seasonLabel = UILabel()
   
-
+    // MARK: - Data Vars
     static let reuseIdentifier = "SeasonCollectionViewCell"
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         backgroundColor = .clear
+        isSelected = false
         seasonLabel.textColor = .darkPurple
         seasonLabel.textAlignment = .center
         seasonLabel.font = .systemFont(ofSize: 14, weight: .medium)
@@ -28,7 +30,6 @@ class SeasonCollectionViewCell: UICollectionViewCell {
         seasonLabel.layer.cornerRadius = 13
         seasonLabel.layer.masksToBounds = true
         contentView.addSubview(seasonLabel)
-        isSelected = false
 
         setupConstraints()
     }

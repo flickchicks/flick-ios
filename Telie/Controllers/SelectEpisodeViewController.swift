@@ -10,9 +10,8 @@ import UIKit
 
 class SelectEpisodeViewController: UIViewController {
 
-    var seasonNumbers: [Int] = [0, 1, 2, 3, 4, 5, 6, 7]
+    var seasonNumbers: [Int] = [1, 2, 3, 4, 5, 6, 7]
     var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
-
 
     // MARK: - Private View Vars
     private var seasonsCollectionView: UICollectionView!
@@ -42,7 +41,7 @@ class SelectEpisodeViewController: UIViewController {
         seasonsCollectionView.backgroundColor = .clear
         seasonsCollectionView.showsHorizontalScrollIndicator = false
         seasonsCollectionView.isScrollEnabled = true
-        seasonsCollectionView.allowsSelection = false
+        seasonsCollectionView.allowsSelection = true
         view.addSubview(seasonsCollectionView)
         
         episodesTableView = UITableView(frame: .zero, style: .plain)
@@ -144,7 +143,6 @@ extension SelectEpisodeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(seasonNumber: seasonNumbers[indexPath.row])
         return cell
