@@ -11,15 +11,43 @@ import UIKit
 class ReactionsViewController: UIViewController {
     var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
 
+    var commentNames: [String] = ["Renee", "Renee", "Renee"]
+    var commentProfilePics: [String] = ["", "", ""]
+    var commentContent: [String] = [
+        "let me tell you that shit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
+        "oops",
+        "i need medication",
+    ]
+
     // MARK: - Private View Vars
     private let moreInfoView = UIStackView()
     private var episodesTableView: UITableView!
+    
+    // MARK: - Table View Sections
+    private struct Section {
+        let type: SectionType
+//        let header: String?
+//        let hasFooter: Bool
+//        var settingItems: [GroupSettingsType]
+    }
+
+    private enum SectionType {
+        case reaction
+        case comments
+    }
+    
+    // MARK: - Data Vars
+    private var sections: [Section] = []
+
+
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Squid Game"
         view.backgroundColor = .offWhite
+        
+        setupSections()
         
         episodesTableView = UITableView(frame: .zero, style: .plain)
         episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -44,10 +72,17 @@ class ReactionsViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
            setupNavigationBar()
        }
+    
+    private func setupSections() {
+        let reactionSection = Section(type: .reaction)
+        let commentsSection = Section(type: .comments)
+        sections = [reactionSection, commentsSection]
+    }
     
     private func setupNavigationBar() {
             let backButtonSize = CGSize(width: 22, height: 18)
@@ -104,7 +139,7 @@ class ReactionsViewController: UIViewController {
 
 
     private func setupConstraints() {
-        let leadingTrailingPadding: CGFloat = 20
+//        let leadingTrailingPadding: CGFloat = 20
         let verticalPadding: CGFloat = 11
 
         episodesTableView.snp.makeConstraints { make in
@@ -118,8 +153,18 @@ class ReactionsViewController: UIViewController {
 
 extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return episodeNames.count
+        let section = sections[section]
+        switch section.type {
+        case .reaction:
+            return 1
+        case .comments:
+            return commentContent.count
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -127,9 +172,19 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
-        cell.configure(episodeName: episodeNames[indexPath.row])
-        return cell
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .reaction:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
+            cell.configure(episodeName: episodeNames[indexPath.row])
+            return cell
+            
+        case .comments:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
+            cell.configure(episodeName: episodeNames[indexPath.row])
+            return cell
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
