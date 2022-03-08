@@ -12,8 +12,8 @@ class ReactionsViewController: UIViewController {
     var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
     
     var reactionName: String = "Cindy"
-    var reactionProfilePic: String = ""
-    var reactionContent: String = "total was not expecting when they killed the old man TT i'm going to have an actual heart attack"
+    var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
+    var reactionContent: String = "total was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
 
     
     var commentNames: [String] = ["Renee", "Renee", "Renee"]
@@ -182,7 +182,7 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
         switch section.type {
         case .reaction:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: reactionName)
+            cell.configure(reactionName: reactionName, reactionProfilePic: reactionProfilePic, reactionContent: reactionContent)
             return cell
             
         case .comments:
