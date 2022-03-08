@@ -14,6 +14,7 @@ class ReactionsReactionTableViewCell: UITableViewCell {
     private let profileImageView = UIImageView()
     private let reactionNameLabel = UILabel()
     private let reactionContentLabel = PaddingLabel()
+    private let timeSinceLabel = UILabel()
 
     // MARK: - Data Vars
     static let reuseIdentifier = "ReactionsReactionTableViewCell"
@@ -42,6 +43,12 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         reactionNameLabel.layer.cornerRadius = 8
         reactionNameLabel.layer.masksToBounds = true
         contentView.addSubview(reactionNameLabel)
+        
+        timeSinceLabel.textColor = .mediumGray
+        timeSinceLabel.textAlignment = .right
+        timeSinceLabel.font = .systemFont(ofSize: 12, weight: .light)
+        timeSinceLabel.backgroundColor = .clear
+        contentView.addSubview(timeSinceLabel)
         
         reactionContentLabel.textColor = .black
         reactionContentLabel.textAlignment = .left
@@ -77,13 +84,14 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         reactionNameLabel.backgroundColor = selected ?  .lightGray2 : .clear
     }
 
-    func configure(reactionName: String, reactionProfilePic: String, reactionContent: String) {
+    func configure(reactionName: String, reactionProfilePic: String, reactionContent: String, timeSince: String) {
         reactionNameLabel.text = "    \(reactionName)"
         reactionContentLabel.text = reactionContent
         
        let imageUrl = URL(string: reactionProfilePic)
         profileImageView.kf.setImage(with: imageUrl)
-       }
+        timeSinceLabel.text = timeSince
+    }
     
 
 
@@ -97,10 +105,17 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         }
         
         reactionNameLabel.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().inset(20)
             make.leading.equalTo(profileImageView).inset(30)
             make.trailing.equalToSuperview().inset(20)
+            make.centerY.equalTo(profileImageView)
             make.height.equalTo(35)
+        }
+        
+        timeSinceLabel.snp.makeConstraints { make in
+//            make.leading.equalTo(profileImageView).inset(30)
+            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(12)
+            make.centerY.equalTo(reactionNameLabel)
         }
         
         reactionContentLabel.snp.makeConstraints { make in

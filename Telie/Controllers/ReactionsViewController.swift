@@ -14,7 +14,7 @@ class ReactionsViewController: UIViewController {
     var reactionName: String = "Cindy"
     var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
     var reactionContent: String = "total was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
-
+    var timeSince = "1d"
     
     var commentNames: [String] = ["Renee", "Renee", "Renee"]
     var commentProfilePics: [String] = ["", "", ""]
@@ -146,7 +146,7 @@ class ReactionsViewController: UIViewController {
 
     private func setupConstraints() {
 //        let leadingTrailingPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 11
+        let verticalPadding: CGFloat = 24
 
         episodesTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
@@ -182,7 +182,7 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
         switch section.type {
         case .reaction:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: reactionName, reactionProfilePic: reactionProfilePic, reactionContent: reactionContent)
+            cell.configure(reactionName: reactionName, reactionProfilePic: reactionProfilePic, reactionContent: reactionContent, timeSince: timeSince)
             return cell
             
         case .comments:
