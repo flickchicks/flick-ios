@@ -9,40 +9,17 @@
 import UIKit
 
 class ReactionsViewController: UIViewController {
-
-    var seasonNumbers: [Int] = [1, 2, 3, 4, 5, 6, 7]
     var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
 
     // MARK: - Private View Vars
-    private var seasonsCollectionView: UICollectionView!
+    private let moreInfoView = UIStackView()
     private var episodesTableView: UITableView!
-    private let episodeLabel = UILabel()
-    private let titleLabel = UILabel()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Select Episode"
+        title = "Squid Game"
         view.backgroundColor = .offWhite
-
-        titleLabel.text = "Season"
-        titleLabel.textColor = .black
-        titleLabel.font = .systemFont(ofSize: 14, weight: .bold)
-        view.addSubview(titleLabel)
-        
-        let seasonsLayout = UICollectionViewFlowLayout()
-        seasonsLayout.minimumInteritemSpacing = 12
-        seasonsLayout.scrollDirection = .horizontal
-
-        seasonsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: seasonsLayout)
-        seasonsCollectionView.register(SeasonCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
-        seasonsCollectionView.delegate = self
-        seasonsCollectionView.dataSource = self
-        seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        seasonsCollectionView.backgroundColor = .clear
-        seasonsCollectionView.showsHorizontalScrollIndicator = false
-        seasonsCollectionView.isScrollEnabled = true
-        seasonsCollectionView.allowsSelection = true
-        view.addSubview(seasonsCollectionView)
         
         episodesTableView = UITableView(frame: .zero, style: .plain)
         episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -58,11 +35,7 @@ class ReactionsViewController: UIViewController {
         episodesTableView.register(EpisodeTableViewCell.self, forCellReuseIdentifier: EpisodeTableViewCell.reuseIdentifier)
         episodesTableView.separatorStyle = .none
         view.addSubview(episodesTableView)
-       
-        episodeLabel.text = "Episode"
-        episodeLabel.textColor = .black
-        episodeLabel.font = .systemFont(ofSize: 14, weight: .bold)
-        view.addSubview(episodeLabel)
+    
   
         setupConstraints()
     }
@@ -78,6 +51,7 @@ class ReactionsViewController: UIViewController {
     
     private func setupNavigationBar() {
             let backButtonSize = CGSize(width: 22, height: 18)
+            let iconButtonSize = CGSize(width: 30, height: 30)
 
             navigationController?.setNavigationBarHidden(false, animated: true)
             navigationController?.navigationBar.barTintColor = .movieWhite
@@ -99,59 +73,46 @@ class ReactionsViewController: UIViewController {
             backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
             let backBarButtonItem = UIBarButtonItem(customView: backButton)
             navigationItem.leftBarButtonItem = backBarButtonItem
+        
+        let infoButton = UIButton()
+        infoButton.setImage(UIImage(named: "infoIcon"), for: .normal)
+        infoButton.tintColor = .black
+        infoButton.snp.makeConstraints { make in
+            make.size.equalTo(iconButtonSize)
+        }
+
+        infoButton.addTarget(self, action: #selector(iconButtonPressed), for: .touchUpInside)
+        let infoButtonItem = UIBarButtonItem(customView: infoButton)
+        navigationItem.rightBarButtonItem = infoButtonItem
+        
+   
+        
+       
+        
         }
     
     @objc private func backButtonPressed() {
             print("back button pressed")
             navigationController?.popViewController(animated: true)
         }
+    
+    @objc private func iconButtonPressed() {
+            print("icon button pressed")
+            navigationController?.popViewController(animated: true)
+        }
+
 
 
     private func setupConstraints() {
         let leadingTrailingPadding: CGFloat = 20
         let verticalPadding: CGFloat = 11
 
-        seasonsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(verticalPadding)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(50)
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-        }
-
-        episodeLabel.snp.makeConstraints { make in
-            make.top.equalTo(seasonsCollectionView.snp.bottom).offset(verticalPadding)
-            make.leading.equalToSuperview().offset(leadingTrailingPadding)
-        }
-        
         episodesTableView.snp.makeConstraints { make in
-            make.top.equalTo(episodeLabel.snp.bottom).offset(verticalPadding)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
 
-    }
-}
-
-extension ReactionsViewController: UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return seasonNumbers.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
-        return cell
-    }
-}
-
-extension ReactionsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 80, height: 40)
     }
 }
 
