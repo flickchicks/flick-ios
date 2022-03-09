@@ -103,7 +103,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         profileImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.size.equalTo(CGSize(width: 40, height: 40))
-//            make.top.centerX.equalToSuperview()
         }
         
         reactionNameLabel.snp.makeConstraints { make in
@@ -114,7 +113,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         }
         
         timeSinceLabel.snp.makeConstraints { make in
-//            make.leading.equalTo(profileImageView).inset(30)
             make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(12)
             make.centerY.equalTo(reactionNameLabel)
@@ -124,7 +122,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
             make.top.equalTo(reactionNameLabel.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
-//            make.height.equalTo(110)
         }
 
     }
