@@ -56,12 +56,14 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         reactionContentLabel.backgroundColor = .white
         reactionContentLabel.layer.cornerRadius = 8
         reactionContentLabel.layer.masksToBounds = true
+        reactionContentLabel.layer.borderWidth = 1
+        reactionContentLabel.layer.borderColor = UIColor.lightGray2.cgColor
         
    
         reactionContentLabel.paddingLeft = 15
         reactionContentLabel.paddingRight = 15
         reactionContentLabel.paddingTop = 10
-        reactionContentLabel.paddingBottom = 10
+        reactionContentLabel.paddingBottom = 12
         reactionContentLabel.numberOfLines = 0
 
         contentView.addSubview(reactionContentLabel)
@@ -122,7 +124,7 @@ class ReactionsReactionTableViewCell: UITableViewCell {
             make.top.equalTo(reactionNameLabel.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(100)
+//            make.height.equalTo(110)
         }
 
     }

@@ -9,15 +9,13 @@
 import UIKit
 
 class ReactionsViewController: UIViewController {
-    var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
-    
     var reactionName: String = "Cindy"
     var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
-    var reactionContent: String = "total was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
+    var reactionContent: String = "totally was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
     var timeSince = "1d"
     
     var commentNames: [String] = ["Renee", "Renee", "Renee"]
-    var commentProfilePics: [String] = ["", "", ""]
+    var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
     var commentContent: [String] = [
         "let me tell you that shit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
         "oops",
@@ -65,8 +63,8 @@ class ReactionsViewController: UIViewController {
         episodesTableView.bounces = true
         episodesTableView.showsVerticalScrollIndicator = false
         episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
-        episodesTableView.register(EpisodeTableViewCell.self, forCellReuseIdentifier: EpisodeTableViewCell.reuseIdentifier)
         episodesTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
+        episodesTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
         episodesTableView.separatorStyle = .none
         view.addSubview(episodesTableView)
     
@@ -146,7 +144,7 @@ class ReactionsViewController: UIViewController {
 
     private func setupConstraints() {
 //        let leadingTrailingPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 24
+        let verticalPadding: CGFloat = 0
 
         episodesTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
@@ -158,6 +156,46 @@ class ReactionsViewController: UIViewController {
 }
 
 extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let section = sections[section]
+        let headerView = UIView()
+        switch section.type {
+        
+        case .reaction:
+            headerView.backgroundColor = .clear
+            return headerView
+        case .comments:
+            
+            headerView.backgroundColor = .clear
+            
+            
+            let headerLabel = UILabel()
+            headerLabel.textColor = .lightGray
+            headerLabel.font = .systemFont(ofSize: 12, weight: .medium)
+            headerLabel.text = "\(commentContent.count) thoughts"
+            
+           
+            headerView.addSubview(headerLabel)
+            headerLabel.snp.makeConstraints { make in
+                make.leading.bottom.equalToSuperview().inset(20)
+            }
+            
+            let dividerView = UIView()
+            dividerView.backgroundColor = .lightGray2
+            headerView.addSubview(dividerView)
+            dividerView.snp.makeConstraints { make in
+//                make.leading.equalToSuperview()
+                make.leading.equalTo(headerLabel).inset(70)
+//                make.top.equalTo(titleTextLabel.snp.bottom).offset(verticalPadding)
+                make.height.equalTo(1)
+                make.width.equalToSuperview().inset(55)
+            }
+            return headerView
+        
+        }
+        
+    }
    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -174,8 +212,16 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        let section = sections[indexPath.section]
+        switch section.type {
+        case .reaction:
+            return 180
+        case .comments:
+            return 105
+        }
     }
+    
+    
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
@@ -186,15 +232,15 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
             
         case .comments:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
-            cell.configure(episodeName: episodeNames[indexPath.row])
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsCommentTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsCommentTableViewCell else { return UITableViewCell() }
+            cell.configure(reactionName: commentNames[indexPath.row], reactionProfilePic: commentProfilePics[indexPath.row], reactionContent: commentContent[indexPath.row], timeSince: timeSince)
             return cell
         }
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let episodeName = episodeNames[indexPath.row]
-        print("clicked! \(episodeName)")
+//        let episodeName = episodeNames[indexPath.row]
+//        print("clicked! \(episodeName)")
     }
 }
