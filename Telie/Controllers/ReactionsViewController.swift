@@ -9,19 +9,7 @@
 import UIKit
 
 class ReactionsViewController: UIViewController {
-    var reactionName: String = "Cindy"
-    var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
-    var reactionContent: String = "totally was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
-    var timeSince = "1d"
     
-    var commentNames: [String] = ["Renee", "Renee", "Renee"]
-    var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
-    var commentContent: [String] = [
-        "let me tell you that shit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
-        "oops",
-        "i need medication",
-    ]
-
     // MARK: - Private View Vars
     private let moreInfoView = UIStackView()
     private var episodesTableView: UITableView!
@@ -29,9 +17,6 @@ class ReactionsViewController: UIViewController {
     // MARK: - Table View Sections
     private struct Section {
         let type: SectionType
-//        let header: String?
-//        let hasFooter: Bool
-//        var settingItems: [GroupSettingsType]
     }
 
     private enum SectionType {
@@ -41,9 +26,21 @@ class ReactionsViewController: UIViewController {
     
     // MARK: - Data Vars
     private var sections: [Section] = []
-
-
-
+    private var reactionName: String = "Cindy"
+    private var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
+    private var reactionContent: String = "totally was not expecting when they killed the old man TT \n\ni'm going to have an actual heart attack"
+    private var timeSince = "1d"
+    
+    private var commentNames: [String] = ["Renee", "Renee", "Renee", "Renee", "Renee", "Renee"]
+    private var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192","https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
+    private var commentContent: [String] = [
+        "let me tell you that shit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
+        "oops",
+        "i need medication",
+        "let me tell you that shit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
+        "oops",
+        "i need medication",
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,11 +120,6 @@ class ReactionsViewController: UIViewController {
         infoButton.addTarget(self, action: #selector(iconButtonPressed), for: .touchUpInside)
         let infoButtonItem = UIBarButtonItem(customView: infoButton)
         navigationItem.rightBarButtonItem = infoButtonItem
-        
-   
-        
-       
-        
         }
     
     @objc private func backButtonPressed() {
@@ -143,11 +135,8 @@ class ReactionsViewController: UIViewController {
 
 
     private func setupConstraints() {
-//        let leadingTrailingPadding: CGFloat = 20
-        let verticalPadding: CGFloat = 0
-
         episodesTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
+            make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -185,14 +174,11 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
             dividerView.backgroundColor = .lightGray2
             headerView.addSubview(dividerView)
             dividerView.snp.makeConstraints { make in
-//                make.leading.equalToSuperview()
                 make.leading.equalTo(headerLabel).inset(70)
-//                make.top.equalTo(titleTextLabel.snp.bottom).offset(verticalPadding)
                 make.height.equalTo(1)
                 make.width.equalToSuperview().inset(55)
             }
             return headerView
-        
         }
         
     }
@@ -239,8 +225,4 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let episodeName = episodeNames[indexPath.row]
-//        print("clicked! \(episodeName)")
-    }
 }
