@@ -101,6 +101,7 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         let verticalPadding: CGFloat = 11
         
         profileImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.equalToSuperview().inset(20)
             make.size.equalTo(CGSize(width: 40, height: 40))
         }
@@ -122,6 +123,8 @@ class ReactionsReactionTableViewCell: UITableViewCell {
             make.top.equalTo(reactionNameLabel.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(25)
+
         }
 
     }

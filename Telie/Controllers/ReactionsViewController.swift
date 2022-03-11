@@ -11,7 +11,6 @@ import UIKit
 class ReactionsViewController: UIViewController {
     
     // MARK: - Private View Vars
-    private let moreInfoView = UIStackView()
     private var episodesTableView: UITableView!
     
     // MARK: - Table View Sections
@@ -86,52 +85,50 @@ class ReactionsViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-            let backButtonSize = CGSize(width: 22, height: 18)
-            let iconButtonSize = CGSize(width: 30, height: 30)
+        let backButtonSize = CGSize(width: 22, height: 18)
+        let iconButtonSize = CGSize(width: 30, height: 30)
 
-            navigationController?.setNavigationBarHidden(false, animated: true)
-            navigationController?.navigationBar.barTintColor = .movieWhite
-            navigationController?.navigationBar.shadowImage = UIImage()
-            navigationController?.navigationBar.layer.masksToBounds = false
-            navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-            navigationController?.navigationBar.layer.shadowOpacity = 0.07
-            navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
-            navigationController?.navigationBar.layer.shadowRadius = 8
-            navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.barTintColor = .movieWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
-            let backButton = UIButton()
-            backButton.setImage(UIImage(named: "backArrow"), for: .normal)
-            backButton.tintColor = .black
-            backButton.snp.makeConstraints { make in
-                make.size.equalTo(backButtonSize)
-            }
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
 
-            backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-            let backBarButtonItem = UIBarButtonItem(customView: backButton)
-            navigationItem.leftBarButtonItem = backBarButtonItem
-        
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    
         let infoButton = UIButton()
         infoButton.setImage(UIImage(named: "infoIcon"), for: .normal)
         infoButton.tintColor = .black
         infoButton.snp.makeConstraints { make in
             make.size.equalTo(iconButtonSize)
         }
-
         infoButton.addTarget(self, action: #selector(iconButtonPressed), for: .touchUpInside)
         let infoButtonItem = UIBarButtonItem(customView: infoButton)
         navigationItem.rightBarButtonItem = infoButtonItem
-        }
+    }
     
     @objc private func backButtonPressed() {
-            print("back button pressed")
-            navigationController?.popViewController(animated: true)
-        }
+        print("back button pressed")
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc private func iconButtonPressed() {
-            print("icon button pressed")
-            navigationController?.popViewController(animated: true)
-        }
-
+        print("icon button pressed")
+        navigationController?.popViewController(animated: true)
+    }
 
 
     private func setupConstraints() {
@@ -197,15 +194,15 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let section = sections[indexPath.section]
-        switch section.type {
-        case .reaction:
-            return 180
-        case .comments:
-            return 105
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        let section = sections[indexPath.section]
+//        switch section.type {
+//        case .reaction:
+//            return 180
+//        case .comments:
+//            return 105
+//        }
+//    }
     
     
 
