@@ -110,7 +110,7 @@ class ReactionsViewController: UIViewController {
         navigationItem.leftBarButtonItem = backBarButtonItem
     
         let infoButton = UIButton()
-        infoButton.setImage(UIImage(named: "infoIcon"), for: .normal)
+        infoButton.setImage(UIImage(named: "settingsInfoIcon"), for: .normal)
         infoButton.tintColor = .black
         infoButton.snp.makeConstraints { make in
             make.size.equalTo(iconButtonSize)
