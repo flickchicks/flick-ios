@@ -123,7 +123,7 @@ class ReactionsReactionTableViewCell: UITableViewCell {
             make.top.equalTo(reactionNameLabel.snp.bottom).offset(verticalPadding)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(25)
+            make.bottom.equalToSuperview().inset(30)
 
         }
 
