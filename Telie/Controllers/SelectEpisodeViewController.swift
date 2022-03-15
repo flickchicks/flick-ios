@@ -8,16 +8,36 @@
 
 import UIKit
 
-class SelectEpisodeViewController: UIViewController {
+protocol EpisodeForReactionDelegate: AnyObject {
+    func selectEpisodeForReaction(seasonIndex: Int, episode: EpisodeDetail, episodeIndex: Int)
+}
 
-    var seasonNumbers: [Int] = [1, 2, 3, 4, 5, 6, 7]
-    var episodeNames: [String] = ["1. The Boy in the Iceberg", "2. The Avatar Returns", "3. The Southern Air Temple", "4. The Warriors of Kyoshi", "5. The King of Omashu", "6. Imprisoned", "7. Winter Solstice: Part 1: The Spirit World", "8. Winter Solstice: Part 2: Avatar Roku", "9. The Waterbending Scroll"]
+class SelectEpisodeViewController: UIViewController {
 
     // MARK: - Private View Vars
     private var seasonsCollectionView: UICollectionView!
     private var episodesTableView: UITableView!
     private let episodeLabel = UILabel()
     private let titleLabel = UILabel()
+
+    // MARK: - Private Data Vars
+    weak var delegate: EpisodeForReactionDelegate?
+    private var episodeDetails = [EpisodeDetail]()
+    private var seasonDetails = [SeasonDetail]()
+    private var selectedSeasonIndex: Int!
+
+    init(seasonDetails: [SeasonDetail]) {
+        super.init(nibName: nil, bundle: nil)
+        self.seasonDetails = seasonDetails
+        if !seasonDetails.isEmpty {
+            self.episodeDetails = seasonDetails[0].episodeDetails ?? []
+            self.selectedSeasonIndex = 0
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +63,9 @@ class SelectEpisodeViewController: UIViewController {
         seasonsCollectionView.isScrollEnabled = true
         seasonsCollectionView.allowsSelection = true
         view.addSubview(seasonsCollectionView)
-        
+
+        seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
+
         episodesTableView = UITableView(frame: .zero, style: .plain)
         episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         episodesTableView.dataSource = self
@@ -139,13 +161,21 @@ class SelectEpisodeViewController: UIViewController {
 extension SelectEpisodeViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return seasonNumbers.count
+        return seasonDetails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(seasonNumber: seasonNumbers[indexPath.row])
+        cell.configure(seasonNumber: seasonDetails[indexPath.item].seasonNum)
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedSeasonIndex = indexPath.item
+        if let episodeDetails = seasonDetails[indexPath.item].episodeDetails {
+            self.episodeDetails = episodeDetails
+            episodesTableView.reloadData()
+        }
     }
 }
 
@@ -158,7 +188,7 @@ extension SelectEpisodeViewController: UICollectionViewDelegateFlowLayout {
 extension SelectEpisodeViewController: UITableViewDelegate, UITableViewDataSource {
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return episodeNames.count
+        return episodeDetails.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -167,12 +197,18 @@ extension SelectEpisodeViewController: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeTableViewCell else { return UITableViewCell() }
-        cell.configure(episodeName: episodeNames[indexPath.row])
+        let episode = episodeDetails[indexPath.row]
+        var episodeTitle = ""
+        if let name = episode.name {
+            episodeTitle = ". \(name)"
+        }
+        cell.configure(episodeName: "\(episode.episodeNum)\(episodeTitle)")
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let episodeName = episodeNames[indexPath.row]
-        print("clicked! \(episodeName)")
+        let selectedEpisode = episodeDetails[indexPath.row]
+        delegate?.selectEpisodeForReaction(seasonIndex: selectedSeasonIndex, episode: selectedEpisode, episodeIndex: indexPath.row)
+        navigationController?.popViewController(animated: true)
     }
 }
