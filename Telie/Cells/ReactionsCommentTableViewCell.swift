@@ -1,5 +1,5 @@
 //
-//  EpisodeTableViewCell.swift
+//  ReactionsCommentTableViewCell.swift
 //  Telie
 //
 //  Created by Alanna Zhou on 3/5/22.
