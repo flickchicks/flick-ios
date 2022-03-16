@@ -1094,6 +1094,5 @@ class NetworkManager {
         }
     }
 
-
 }
 
