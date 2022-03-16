@@ -20,8 +20,6 @@
 		3794093427D4148800F88CC3 /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */; };
 		37BC15A427D7DE3D00353CEE /* ReactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A327D7DE3D00353CEE /* ReactionsViewController.swift */; };
 		37BC15A627D7EA2400353CEE /* ReactionsReactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A527D7EA2400353CEE /* ReactionsReactionTableViewCell.swift */; };
-		37BC15A827D7ED1C00353CEE /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A727D7ED1C00353CEE /* PaddingLabel.swift */; };
-		37BC15AA27D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A927D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift */; };
 		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
 		800E14DF27E03D2D009AAD70 /* MediaAllReactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800E14DE27E03D2C009AAD70 /* MediaAllReactionsViewController.swift */; };
 		8015158625BCE128002313B9 /* GroupVoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8015158525BCE128002313B9 /* GroupVoteViewController.swift */; };
@@ -60,6 +58,8 @@
 		80B3F9BE24F2F395002891C4 /* DiscoverSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */; };
 		80B3F9C024F317D7002891C4 /* SearchTabCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */; };
 		80B3F9C224F4A3AE002891C4 /* DiscoverSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */; };
+		80B9CAD327E23680009D9397 /* ReactionsCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B9CAD227E23680009D9397 /* ReactionsCommentTableViewCell.swift */; };
+		80B9CAD527E23687009D9397 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B9CAD427E23687009D9397 /* PaddingLabel.swift */; };
 		80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */; };
 		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80C4445025F433BA009572B4 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80C4444F25F433BA009572B4 /* Keys.plist */; };
@@ -200,8 +200,6 @@
 		3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeTableViewCell.swift; sourceTree = "<group>"; };
 		37BC15A327D7DE3D00353CEE /* ReactionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsViewController.swift; sourceTree = "<group>"; };
 		37BC15A527D7EA2400353CEE /* ReactionsReactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionsReactionTableViewCell.swift; sourceTree = "<group>"; };
-		37BC15A727D7ED1C00353CEE /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PaddingLabel.swift; path = Pods/PaddingLabel.swift; sourceTree = SOURCE_ROOT; };
-		37BC15A927D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReactionsCommentTableViewCell.swift; path = Pods/ReactionsCommentTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		46B91DF72F6DCF9F039E4179 /* Pods-Telie.prod debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telie.prod debug.xcconfig"; path = "Target Support Files/Pods-Telie/Pods-Telie.prod debug.xcconfig"; sourceTree = "<group>"; };
 		489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelieTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		600326C51951699C5645E3C0 /* Pods_Telie_TelieUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telie_TelieUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,6 +242,8 @@
 		80B3F9BD24F2F395002891C4 /* DiscoverSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchViewController.swift; sourceTree = "<group>"; };
 		80B3F9BF24F317D7002891C4 /* SearchTabCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTabCollectionViewCell.swift; sourceTree = "<group>"; };
 		80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultViewController.swift; sourceTree = "<group>"; };
+		80B9CAD227E23680009D9397 /* ReactionsCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsCommentTableViewCell.swift; sourceTree = "<group>"; };
+		80B9CAD427E23687009D9397 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80C4444F25F433BA009572B4 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
@@ -662,8 +662,8 @@
 		D478668B24797C56009E42FE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				37BC15A927D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift */,
-				37BC15A727D7ED1C00353CEE /* PaddingLabel.swift */,
+				80B9CAD227E23680009D9397 /* ReactionsCommentTableViewCell.swift */,
+				80B9CAD427E23687009D9397 /* PaddingLabel.swift */,
 				37BC15A527D7EA2400353CEE /* ReactionsReactionTableViewCell.swift */,
 				3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */,
 				3794093127D3C45A00F88CC3 /* SeasonCollectionViewCell.swift */,
@@ -1035,7 +1035,6 @@
 				D478668D24797CA2009E42FE /* HomeTabOptionCollectionViewCell.swift in Sources */,
 				D440927825FD075300A4690A /* DiscoverFooterTableViewCell.swift in Sources */,
 				D478669F247C57D2009E42FE /* Media.swift in Sources */,
-				37BC15A827D7ED1C00353CEE /* PaddingLabel.swift in Sources */,
 				D46A366B25F4B80200EADA9F /* BuzzTableViewCell.swift in Sources */,
 				80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */,
 				D4F64D3524824BF200A5A2E5 /* Body.swift in Sources */,
@@ -1078,6 +1077,7 @@
 				80F00F7224B96CDB0051B8FF /* ListSettingsTableViewCell.swift in Sources */,
 				D4F64D3D2483E59800A5A2E5 /* UsersPreviewView.swift in Sources */,
 				8051BF8B27E122B900017AF3 /* EpisodeReactionsTableViewCell.swift in Sources */,
+				80B9CAD327E23680009D9397 /* ReactionsCommentTableViewCell.swift in Sources */,
 				D448F70A24EF52760027CA84 /* SettingsViewController.swift in Sources */,
 				D426697B26251B58005ECCED /* MoveMediaViewController.swift in Sources */,
 				803E5EA32596D92B004CF4B7 /* RoundedButton.swift in Sources */,
@@ -1152,7 +1152,6 @@
 				D44B1C3A24FC662600EC2FAE /* UIImage.swift in Sources */,
 				D478669C247C0625009E42FE /* Response.swift in Sources */,
 				D46B3F7D249F843C008D5484 /* Collaborator.swift in Sources */,
-				37BC15AA27D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift in Sources */,
 				D44BC12725A047F300D10DAB /* UsersViewController.swift in Sources */,
 				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
@@ -1167,6 +1166,7 @@
 				8084955D27D3A99B007415EB /* SearchForReactionViewController.swift in Sources */,
 				80F00F7A24C296460051B8FF /* EditListViewController.swift in Sources */,
 				80F00F7624B96DD50051B8FF /* ListSettingsViewController.swift in Sources */,
+				80B9CAD527E23687009D9397 /* PaddingLabel.swift in Sources */,
 				D4621FD724EE04400026381F /* LeftAlignedFlowLayout.swift in Sources */,
 				8033C09825B2357F00F6BAEE /* Date+Shared.swift in Sources */,
 				D47866A1247C57F8009E42FE /* MediaList.swift in Sources */,
