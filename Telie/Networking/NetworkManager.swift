@@ -1113,7 +1113,7 @@ class NetworkManager {
                 completion(false)
             }
         }
-    }Telie/Networking/NetworkManager.swift
+    }
 
 }
 
