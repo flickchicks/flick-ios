@@ -10,6 +10,12 @@ import UIKit
 
 class CreateReactionViewController: UIViewController {
 
+    private struct SeasonEpisode {
+        var episodeId: Int
+        var episodeNum: Int
+        var seasonNum: Int
+    }
+
     // MARK: - Private View Vars
     private let browseButton = UIButton()
     private let changeButton = UIButton()
@@ -30,6 +36,9 @@ class CreateReactionViewController: UIViewController {
 
     // MARK: - Private Data Var
     private var isSpoiler = true
+    private var seasonsEpisodes = [SeasonEpisode]()
+    private var selectedEpisodeId: Int?
+    private var selectedEpisodeIndex: Int?
     private var selectedMedia: Media?
     private var visibility = Visibility.friends
 
@@ -63,7 +72,7 @@ class CreateReactionViewController: UIViewController {
         episodeLabel.font = .systemFont(ofSize: 12, weight: .medium)
         view.addSubview(episodeLabel)
 
-        episodeTextLabel.text = "Season 1 Episode 7"
+        episodeTextLabel.text = " "
         episodeTextLabel.textColor = .darkBlue
         episodeTextLabel.font = .systemFont(ofSize: 16)
         view.addSubview(episodeTextLabel)
@@ -75,6 +84,7 @@ class CreateReactionViewController: UIViewController {
         browseButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
         browseButton.layer.borderWidth = 1
         browseButton.layer.cornerRadius = 13
+        browseButton.addTarget(self, action: #selector(browseButtonTapped), for: .touchUpInside)
         view.addSubview(browseButton)
 
         upButton.setImage(UIImage(named: "arrowUp"), for: .normal)
@@ -82,6 +92,8 @@ class CreateReactionViewController: UIViewController {
         upButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
         upButton.layer.borderWidth = 1
         upButton.layer.cornerRadius = 13
+        upButton.addTarget(self, action: #selector(upButtonTapped), for: .touchUpInside)
+        upButton.isUserInteractionEnabled = false
         view.addSubview(upButton)
 
         downButton.setImage(UIImage(named: "arrowDown"), for: .normal)
@@ -89,6 +101,8 @@ class CreateReactionViewController: UIViewController {
         downButton.layer.borderColor = UIColor.darkBlueGray2.cgColor
         downButton.layer.borderWidth = 1
         downButton.layer.cornerRadius = 13
+        downButton.addTarget(self, action: #selector(downButtonTapped), for: .touchUpInside)
+        downButton.isUserInteractionEnabled = false
         view.addSubview(downButton)
 
         dividerView1.backgroundColor = .lightGray2
@@ -281,7 +295,12 @@ class CreateReactionViewController: UIViewController {
     }
 
     @objc func sendButtonTapped() {
-        print("send tapped")
+        if let selectedEpisodeId = selectedEpisodeId, let text = reactionTextView.text, !text.isEmpty {
+            NetworkManager.createReaction(episodeId: selectedEpisodeId, text: text, visibility: visibility) { [weak self] _ in
+                guard let self = self else { return }
+                self.reactionTextView.text = ""
+            }
+        }
     }
 
     @objc func visibilityButtonTapped() {
@@ -330,13 +349,69 @@ class CreateReactionViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 
+    @objc func browseButtonTapped() {
+        if let details = selectedMedia?.seasonDetails {
+            let vc = SelectEpisodeViewController(seasonDetails: details)
+            vc.delegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
+    @objc func upButtonTapped() {
+        if let episodeIndex = selectedEpisodeIndex,
+           episodeIndex < seasonsEpisodes.count - 1 {
+            selectedEpisodeIndex = episodeIndex + 1
+            let seasonEpisode = seasonsEpisodes[episodeIndex+1]
+            selectedEpisodeId = seasonEpisode.episodeId
+            episodeTextLabel.text = "Season \(seasonEpisode.seasonNum) Episode \(seasonEpisode.episodeNum)"
+        }
+
+    }
+
+    @objc func downButtonTapped() {
+        if let episodeIndex = selectedEpisodeIndex,
+           episodeIndex > 0 {
+            selectedEpisodeIndex = episodeIndex - 1
+            let seasonEpisode = seasonsEpisodes[episodeIndex-1]
+            selectedEpisodeId = seasonEpisode.episodeId
+            episodeTextLabel.text = "Season \(seasonEpisode.seasonNum) Episode \(seasonEpisode.episodeNum)"
+        }
+    }
+
 }
 
-extension CreateReactionViewController: MediaForReactionDelegate {
+extension CreateReactionViewController: MediaForReactionDelegate, EpisodeForReactionDelegate {
 
     func selectMediaForReaction(media: Media) {
         selectedMedia = media
         titleTextLabel.text = media.title
+        NetworkManager.getMedia(mediaId: media.id) { [weak self] media in
+            guard let self = self else { return }
+            self.selectedMedia = media
+            if let seasonDetails = self.selectedMedia?.seasonDetails {
+                seasonDetails.forEach { seasonDetail in
+                    if let episodeDetails = seasonDetail.episodeDetails {
+                        episodeDetails.forEach { episodeDetail in
+                            self.seasonsEpisodes.append(SeasonEpisode(episodeId: episodeDetail.id, episodeNum: episodeDetail.episodeNum, seasonNum: seasonDetail.seasonNum))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func selectEpisodeForReaction(seasonIndex: Int, episode: EpisodeDetail, episodeIndex: Int) {
+        selectedEpisodeId = episode.id
+        for (i, seasonEpisode) in seasonsEpisodes.enumerated() {
+            if seasonEpisode.episodeId == episode.id {
+                selectedEpisodeIndex = i
+            }
+        }
+        if let seasonDetail = selectedMedia?.seasonDetails?[seasonIndex] {
+            episodeTextLabel.text = "Season \(seasonDetail.seasonNum) Episode \(episode.episodeNum)"
+        }
+        upButton.isUserInteractionEnabled = true
+        downButton.isUserInteractionEnabled = true
     }
 
 }

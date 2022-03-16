@@ -1094,5 +1094,26 @@ class NetworkManager {
         }
     }
 
+    // MARK: - Reactions
+
+    /// [POST] Create reaction [updated as of 3/10/22]
+    static func createReaction(episodeId: Int, text: String, visibility: Visibility, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "episode_id": episodeId,
+            "text": text,
+            "visibility": visibility.rawValue
+        ]
+
+        AF.request("\(hostEndpoint)/api/reactions/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
+            }
+        }
+    }Telie/Networking/NetworkManager.swift
+
 }
 

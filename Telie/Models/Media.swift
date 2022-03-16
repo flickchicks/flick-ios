@@ -49,4 +49,18 @@ struct Media: Codable {
     var platforms: [String]?
     var keywords: [String]?
     var cast: String?
+    var seasonDetails: [SeasonDetail]?
+}
+
+struct SeasonDetail: Codable {
+    var id: Int
+    var seasonNum: Int
+    var episodeCount: Int
+    var episodeDetails: [EpisodeDetail]?
+}
+
+struct EpisodeDetail: Codable {
+    var id: Int
+    var episodeNum: Int
+    var name: String?
 }
