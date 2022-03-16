@@ -12,18 +12,10 @@ class MediaAllReactionsViewController: UIViewController {
 
     private let episodesTableView = UITableView()
 
+    private var reactionsForMedia: ReactionsForMedia?
     private var media: Media?
     private var mediaId: Int
     private var mediaName: String
-
-//    init(media: Media) {
-//        self.media = media
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
 
     init(mediaId: Int, mediaName: String) {
         self.mediaId = mediaId
@@ -119,19 +111,28 @@ class MediaAllReactionsViewController: UIViewController {
             self.media = media
             print(media)
         }
-    }
 
+        NetworkManager.getAllReactions(mediaId: mediaId) { [weak self] reactionsForMedia in
+            guard let self = self else { return }
+            self.reactionsForMedia = reactionsForMedia
+            print(reactionsForMedia)
+            DispatchQueue.main.async {
+                self.episodesTableView.reloadData()
+            }
+        }
+    }
 }
 
 extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return reactionsForMedia?.seasonDetails[0].episodeDetails.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell else { return UITableViewCell() }
-//        cell.configure(media: results[indexPath.item])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell,
+              let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
+        cell.configure(episodeNum: reactionsForMedia.seasonDetails[0].episodeDetails[indexPath.row].episodeNum)
         return cell
     }
 

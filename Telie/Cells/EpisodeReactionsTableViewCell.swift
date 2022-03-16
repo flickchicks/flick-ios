@@ -41,6 +41,10 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         setupConstraints()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private func setupConstraints() {
         episodeNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
@@ -53,8 +57,8 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         }
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func configure(episodeNum: Int) {
+        episodeNameLabel.text = "Episode \(episodeNum)"
     }
 
 }

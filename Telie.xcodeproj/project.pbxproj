@@ -60,6 +60,7 @@
 		80B3F9C224F4A3AE002891C4 /* DiscoverSearchResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */; };
 		80B9CAD327E23680009D9397 /* ReactionsCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B9CAD227E23680009D9397 /* ReactionsCommentTableViewCell.swift */; };
 		80B9CAD527E23687009D9397 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B9CAD427E23687009D9397 /* PaddingLabel.swift */; };
+		80B9CAD727E258E7009D9397 /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B9CAD627E258E7009D9397 /* Reactions.swift */; };
 		80BC0C5224F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */; };
 		80BC0C5724F8A94000BBB178 /* ListPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */; };
 		80C4445025F433BA009572B4 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 80C4444F25F433BA009572B4 /* Keys.plist */; };
@@ -244,6 +245,7 @@
 		80B3F9C124F4A3AD002891C4 /* DiscoverSearchResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultViewController.swift; sourceTree = "<group>"; };
 		80B9CAD227E23680009D9397 /* ReactionsCommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsCommentTableViewCell.swift; sourceTree = "<group>"; };
 		80B9CAD427E23687009D9397 /* PaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		80B9CAD627E258E7009D9397 /* Reactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 		80BC0C5124F75CBF00BBB178 /* DiscoverSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		80BC0C5624F8A94000BBB178 /* ListPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPreviewView.swift; sourceTree = "<group>"; };
 		80C4444F25F433BA009572B4 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
@@ -737,6 +739,7 @@
 				D45A3D7A25A8485B0094161A /* FriendRequest.swift */,
 				803E5FF325AABEE0004CF4B7 /* Provider.swift */,
 				806E777525C4FEBE00B82ECE /* Group.swift */,
+				80B9CAD627E258E7009D9397 /* Reactions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				D44BC12725A047F300D10DAB /* UsersViewController.swift in Sources */,
 				806E770D25BFA72E00B82ECE /* VotingResultTableViewCell.swift in Sources */,
 				D46B3F6F249E7727008D5484 /* SortListModalView.swift in Sources */,
+				80B9CAD727E258E7009D9397 /* Reactions.swift in Sources */,
 				D492728C24E1341A00FA5F2A /* NSMutableAttributedString.swift in Sources */,
 				37BC15A627D7EA2400353CEE /* ReactionsReactionTableViewCell.swift in Sources */,
 				D458B3D1261426B9006A23A1 /* SaveToListTableViewCell.swift in Sources */,

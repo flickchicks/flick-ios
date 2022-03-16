@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum Visibility: String {
+enum Visibility: String, Codable {
     case friends, `public`
 }

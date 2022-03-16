@@ -1115,5 +1115,23 @@ class NetworkManager {
         }
     }
 
+    /// [POST] Get shorted reactions for a show [updated as of 3/10/22]
+    static func getAllReactions(mediaId: Int, completion: @escaping (ReactionsForMedia) -> Void) {
+        AF.request("\(hostEndpoint)/api/show/\(mediaId)/reactions/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let data):
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                if let resultData = try? jsonDecoder.decode(Response<ReactionsForMedia>.self, from: data) {
+                    let result = resultData.data
+                    completion(result)
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+
 }
 

@@ -63,4 +63,12 @@ struct EpisodeDetail: Codable {
     var id: Int
     var episodeNum: Int
     var name: String?
+    var reactions: [Reaction]?
+}
+
+struct Reaction: Codable {
+    var id: Int
+    var text: String
+    var visibility: Visibility
+    var author: UserProfile
 }
