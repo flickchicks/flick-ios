@@ -11,7 +11,8 @@ import UIKit
 class ReactionsViewController: UIViewController {
     
     // MARK: - Private View Vars
-    private var episodesTableView: UITableView!
+    private var reactionsTableView: UITableView!
+    private var reactionsCollectionView: UICollectionView!
     
     // MARK: - Table View Sections
     private struct Section {
@@ -48,21 +49,21 @@ class ReactionsViewController: UIViewController {
         
         setupSections()
         
-        episodesTableView = UITableView(frame: .zero, style: .plain)
-        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        episodesTableView.dataSource = self
-        episodesTableView.delegate = self
-        episodesTableView.backgroundColor = .clear
-        episodesTableView.allowsMultipleSelection = false
-        episodesTableView.isScrollEnabled = true
-        episodesTableView.alwaysBounceVertical = true
-        episodesTableView.bounces = true
-        episodesTableView.showsVerticalScrollIndicator = false
-        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
-        episodesTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
-        episodesTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
-        episodesTableView.separatorStyle = .none
-        view.addSubview(episodesTableView)
+        reactionsTableView = UITableView(frame: .zero, style: .plain)
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        reactionsTableView.dataSource = self
+        reactionsTableView.delegate = self
+        reactionsTableView.backgroundColor = .clear
+        reactionsTableView.allowsMultipleSelection = false
+        reactionsTableView.isScrollEnabled = true
+        reactionsTableView.alwaysBounceVertical = true
+        reactionsTableView.bounces = true
+        reactionsTableView.showsVerticalScrollIndicator = false
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        reactionsTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
+        reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
+        reactionsTableView.separatorStyle = .none
+        view.addSubview(reactionsTableView)
     
   
         setupConstraints()
@@ -132,7 +133,7 @@ class ReactionsViewController: UIViewController {
 
 
     private func setupConstraints() {
-        episodesTableView.snp.makeConstraints { make in
+        reactionsTableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
