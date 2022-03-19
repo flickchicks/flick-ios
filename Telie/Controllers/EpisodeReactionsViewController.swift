@@ -22,6 +22,8 @@ class EpisodeReactionsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Squid Game"
+        view.backgroundColor = .offWhite
         
         
         let pageCollectionViewLayout = UICollectionViewFlowLayout()
@@ -49,10 +51,69 @@ class EpisodeReactionsViewController: UIViewController {
         setupViewControllers()
        }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+           setupNavigationBar()
+       }
+    
+    private func setupNavigationBar() {
+        let backButtonSize = CGSize(width: 22, height: 18)
+        let iconButtonSize = CGSize(width: 30, height: 30)
+
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.barTintColor = .movieWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
+        backButton.tintColor = .black
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(backButtonSize)
+        }
+
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+    
+        let infoButton = UIButton()
+        infoButton.setImage(UIImage(named: "settingsInfoIcon"), for: .normal)
+        infoButton.tintColor = .black
+        infoButton.snp.makeConstraints { make in
+            make.size.equalTo(iconButtonSize)
+        }
+        infoButton.addTarget(self, action: #selector(iconButtonPressed), for: .touchUpInside)
+        let infoButtonItem = UIBarButtonItem(customView: infoButton)
+        navigationItem.rightBarButtonItem = infoButtonItem
+    }
+    
+    @objc private func backButtonPressed() {
+        print("back button pressed")
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func iconButtonPressed() {
+        print("icon button pressed")
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func setupConstraints() {
     
         reactionPageCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+          
+//            make.top.equalToSuperview()
+//            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
