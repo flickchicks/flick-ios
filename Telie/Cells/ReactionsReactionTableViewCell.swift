@@ -35,7 +35,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         profileImageView.layer.backgroundColor = UIColor.lightGray.cgColor
         contentView.addSubview(profileImageView)
         
-        
         reactionNameLabel.textColor = .black
         reactionNameLabel.textAlignment = .left
         reactionNameLabel.font = .systemFont(ofSize: 16, weight: .medium)
@@ -59,7 +58,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         reactionContentLabel.layer.borderWidth = 1
         reactionContentLabel.layer.borderColor = UIColor.lightGray2.cgColor
         
-   
         reactionContentLabel.paddingLeft = 15
         reactionContentLabel.paddingRight = 15
         reactionContentLabel.paddingTop = 10
@@ -67,7 +65,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         reactionContentLabel.numberOfLines = 0
 
         contentView.addSubview(reactionContentLabel)
-
 
         setupConstraints()
     }
@@ -80,11 +77,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         super.prepareForReuse()
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
-    
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        reactionNameLabel.backgroundColor = selected ?  .lightGray2 : .clear
-//    }
 
     func configure(reactionName: String, reactionProfilePic: String, reactionContent: String, timeSince: String) {
         reactionNameLabel.text = "    \(reactionName)"
@@ -95,8 +87,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         timeSinceLabel.text = timeSince
     }
     
-
-
     private func setupConstraints() {
         let verticalPadding: CGFloat = 11
         
@@ -124,13 +114,6 @@ class ReactionsReactionTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(30)
-
         }
-
     }
-
-  
-
-
-
 }
