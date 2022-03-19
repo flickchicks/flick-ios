@@ -56,14 +56,14 @@ class EpisodeReactionViewController: UIViewController {
         reactionsTableView.delegate = self
         reactionsTableView.backgroundColor = .clear
         reactionsTableView.allowsMultipleSelection = false
-        reactionsTableView.isScrollEnabled = true
+//        reactionsTableView.isScrollEnabled = true
         reactionsTableView.alwaysBounceVertical = true
         reactionsTableView.bounces = true
         reactionsTableView.showsVerticalScrollIndicator = false
         reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         reactionsTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
         reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
-        reactionsTableView.isDirectionalLockEnabled = true 
+        reactionsTableView.isDirectionalLockEnabled = true
         reactionsTableView.separatorStyle = .none
         view.addSubview(reactionsTableView)
     

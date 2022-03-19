@@ -10,19 +10,19 @@ import UIKit
 
 class EpisodeReactionsViewController: UIViewController {
   
-    
-    
     // MARK: - Private View Vars
-//    private var reactionsCollectionView: UICollectionView!
     private var reactionPageCollectionView: UICollectionView!
     
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private var reactionsViewControllers = [EpisodeReactionViewController]()
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
+    
+    private let reactions: [Int] = [0, 1, 2]
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         let pageCollectionViewLayout = UICollectionViewFlowLayout()
         pageCollectionViewLayout.scrollDirection = .horizontal
@@ -35,7 +35,7 @@ class EpisodeReactionsViewController: UIViewController {
         reactionPageCollectionView.showsHorizontalScrollIndicator = false
         reactionPageCollectionView.isScrollEnabled = false
         view.addSubview(reactionPageCollectionView)
-        
+                
         let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(leftSwipeDetected))
         leftSwipeGestureRecognizer.direction = .left
 
@@ -46,14 +46,22 @@ class EpisodeReactionsViewController: UIViewController {
         view.addGestureRecognizer(rightSwipeGestureRecognizer)
         
         setupConstraints()
+        setupViewControllers()
        }
     
     private func setupConstraints() {
     
         reactionPageCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(15)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(15)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+    }
+    
+    func setupViewControllers() {
+        reactions.forEach { reaction in
+            let episodeReactionVC = EpisodeReactionViewController()
+            reactionsViewControllers.append(episodeReactionVC)
         }
     }
     
@@ -69,7 +77,7 @@ class EpisodeReactionsViewController: UIViewController {
     
     @objc func leftSwipeDetected() {
         print("left swipe detected")
-        let newPosition = currentPosition < 3 - 1 ? currentPosition + 1 : currentPosition
+        let newPosition = currentPosition < reactions.count - 1 ? currentPosition + 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
 
@@ -79,25 +87,12 @@ class EpisodeReactionsViewController: UIViewController {
         setCurrentPosition(position: newPosition)
     }
 
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return reactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
