@@ -33,8 +33,6 @@ class EpisodeReactionsViewController: UIViewController {
         reactionPageCollectionView.dataSource = self
         reactionPageCollectionView.delegate = self
         reactionPageCollectionView.showsHorizontalScrollIndicator = false
-//       TODO: Revisit using isPagingEnabled
-//        searchResultPageCollectionView.isPagingEnabled = true
         reactionPageCollectionView.isScrollEnabled = false
         view.addSubview(reactionPageCollectionView)
         
@@ -60,6 +58,7 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     func setCurrentPosition(position: Int){
+        print("setcurrentposition called on \(position)")
         currentPosition = position
         let path = IndexPath(item: currentPosition, section: 0)
 
@@ -128,4 +127,14 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 //            }
 //        }
 //    }
+}
+
+extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+      
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    
+    }
+
 }

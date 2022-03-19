@@ -81,10 +81,10 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        reactionNameLabel.backgroundColor = selected ?  .lightGray2 : .clear
-    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//        reactionNameLabel.backgroundColor = selected ?  .lightGray2 : .clear
+//    }
 
     func configure(reactionName: String, reactionProfilePic: String, reactionContent: String, timeSince: String) {
         reactionNameLabel.text = "    \(reactionName)"
