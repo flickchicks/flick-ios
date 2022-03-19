@@ -1,5 +1,5 @@
 //
-//  ReactionsViewController.swift
+//  EpisodeReactionViewController.swift
 //  Telie
 //
 //  Created by Alanna Zhou on 3/8/22.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class ReactionsViewController: UIViewController {
+class EpisodeReactionViewController: UIViewController {
     
     // MARK: - Private View Vars
     private var reactionsTableView: UITableView!
-    private var reactionsCollectionView: UICollectionView!
+    
     
     // MARK: - Table View Sections
     private struct Section {
@@ -24,7 +24,8 @@ class ReactionsViewController: UIViewController {
         case comments
     }
     
-    // MARK: - Data Vars
+    // MARK: - Private Data Vars
+    private var currentPosition = 0
     private var sections: [Section] = []
     private var reactionName: String = "Cindy"
     private var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
@@ -142,7 +143,7 @@ class ReactionsViewController: UIViewController {
     }
 }
 
-extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
+extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = sections[section]
