@@ -45,7 +45,6 @@ class EpisodeReactionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .offWhite
         
         setupSections()
@@ -56,7 +55,6 @@ class EpisodeReactionViewController: UIViewController {
         reactionsTableView.delegate = self
         reactionsTableView.backgroundColor = .clear
         reactionsTableView.allowsMultipleSelection = false
-//        reactionsTableView.isScrollEnabled = true
         reactionsTableView.alwaysBounceVertical = true
         reactionsTableView.bounces = true
         reactionsTableView.showsVerticalScrollIndicator = false
@@ -82,7 +80,6 @@ class EpisodeReactionViewController: UIViewController {
 
     private func setupConstraints() {
         reactionsTableView.snp.makeConstraints { make in
-//            make.top.equalTo(view.safeAreaLayoutGuide)
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -102,21 +99,15 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             headerView.backgroundColor = .clear
             return headerView
         case .comments:
-            
             headerView.backgroundColor = .clear
-            
-            
             let headerLabel = UILabel()
             headerLabel.textColor = .lightGray
             headerLabel.font = .systemFont(ofSize: 12, weight: .medium)
             headerLabel.text = "\(commentContent.count) thoughts"
-            
-           
             headerView.addSubview(headerLabel)
             headerLabel.snp.makeConstraints { make in
                 make.leading.bottom.equalToSuperview().inset(20)
             }
-            
             let dividerView = UIView()
             dividerView.backgroundColor = .lightGray2
             headerView.addSubview(dividerView)
@@ -157,7 +148,5 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             cell.configure(reactionName: commentNames[indexPath.row], reactionProfilePic: commentProfilePics[indexPath.row], reactionContent: commentContent[indexPath.row], timeSince: timeSince)
             return cell
         }
-        
     }
-    
 }

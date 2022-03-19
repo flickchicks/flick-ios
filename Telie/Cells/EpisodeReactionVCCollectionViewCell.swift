@@ -9,6 +9,7 @@
 import UIKit
 
 class EpisodeReactionVCCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Public View Vars
     var viewController = EpisodeReactionViewController()
 
@@ -24,12 +25,10 @@ class EpisodeReactionVCCollectionViewCell: UICollectionViewCell {
 
     func configure() {
         print("configure called")
-//        viewController.searchType = searchType
     }
 
     override func prepareForReuse() {
         print("prepare for reuse called")
-//        viewController.clearContent()
     }
 
     required init?(coder: NSCoder) {

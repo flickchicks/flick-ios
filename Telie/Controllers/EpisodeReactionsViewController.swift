@@ -17,7 +17,6 @@ class EpisodeReactionsViewController: UIViewController {
     private var currentPosition = 0
     private var reactionsViewControllers = [EpisodeReactionViewController]()
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
-    
     private let reactions: [Int] = [0, 1, 2]
 
     override func viewDidLoad() {
@@ -54,7 +53,6 @@ class EpisodeReactionsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
@@ -108,12 +106,8 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     private func setupConstraints() {
-    
         reactionPageCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-          
-//            make.top.equalToSuperview()
-//            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -127,7 +121,6 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     func setCurrentPosition(position: Int){
-        print("setcurrentposition called on \(position)")
         currentPosition = position
         let path = IndexPath(item: currentPosition, section: 0)
 
@@ -147,7 +140,6 @@ class EpisodeReactionsViewController: UIViewController {
         let newPosition = currentPosition > 0 ? currentPosition - 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
-
 }
 
 extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -159,14 +151,11 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reactionPageReuseIdentifier, for: indexPath) as? EpisodeReactionVCCollectionViewCell else { return UICollectionViewCell() }
         cell.configure()
-//        cell.viewController.delegate = self
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setCurrentPosition(position: indexPath.item)
-        
-
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -175,14 +164,6 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
             setCurrentPosition(position: currentIndex)
         }
     }
-
-//    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-//        if scrollView == searchResultPageCollectionView {
-//            if let searchText = searchBar.text {
-//                searchByText(searchText: searchText)
-//            }
-//        }
-//    }
 }
 
 extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
@@ -192,5 +173,4 @@ extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     
     }
-
 }
