@@ -1,5 +1,5 @@
 //
-//  ReactionsViewController.swift
+//  EpisodeReactionViewController.swift
 //  Telie
 //
 //  Created by Alanna Zhou on 3/8/22.
@@ -8,10 +8,11 @@
 
 import UIKit
 
-class ReactionsViewController: UIViewController {
+class EpisodeReactionViewController: UIViewController {
     
     // MARK: - Private View Vars
-    private var episodesTableView: UITableView!
+    private var reactionsTableView: UITableView!
+    
     
     // MARK: - Table View Sections
     private struct Section {
@@ -23,7 +24,8 @@ class ReactionsViewController: UIViewController {
         case comments
     }
     
-    // MARK: - Data Vars
+    // MARK: - Private Data Vars
+    private var currentPosition = 0
     private var sections: [Section] = []
     private var reactionName: String = "Cindy"
     private var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
@@ -43,40 +45,31 @@ class ReactionsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Squid Game"
         view.backgroundColor = .offWhite
         
         setupSections()
         
-        episodesTableView = UITableView(frame: .zero, style: .plain)
-        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        episodesTableView.dataSource = self
-        episodesTableView.delegate = self
-        episodesTableView.backgroundColor = .clear
-        episodesTableView.allowsMultipleSelection = false
-        episodesTableView.isScrollEnabled = true
-        episodesTableView.alwaysBounceVertical = true
-        episodesTableView.bounces = true
-        episodesTableView.showsVerticalScrollIndicator = false
-        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
-        episodesTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
-        episodesTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
-        episodesTableView.separatorStyle = .none
-        view.addSubview(episodesTableView)
+        reactionsTableView = UITableView(frame: .zero, style: .plain)
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        reactionsTableView.dataSource = self
+        reactionsTableView.delegate = self
+        reactionsTableView.backgroundColor = .clear
+        reactionsTableView.allowsMultipleSelection = false
+        reactionsTableView.alwaysBounceVertical = true
+        reactionsTableView.bounces = true
+        reactionsTableView.showsVerticalScrollIndicator = false
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        reactionsTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
+        reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
+        reactionsTableView.isDirectionalLockEnabled = true
+        reactionsTableView.separatorStyle = .none
+        view.addSubview(reactionsTableView)
     
   
         setupConstraints()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           setupNavigationBar()
-       }
     
     private func setupSections() {
         let reactionSection = Section(type: .reaction)
@@ -84,56 +77,10 @@ class ReactionsViewController: UIViewController {
         sections = [reactionSection, commentsSection]
     }
     
-    private func setupNavigationBar() {
-        let backButtonSize = CGSize(width: 22, height: 18)
-        let iconButtonSize = CGSize(width: 30, height: 30)
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.navigationBar.barTintColor = .movieWhite
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.layer.masksToBounds = false
-        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
-        navigationController?.navigationBar.layer.shadowOpacity = 0.07
-        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
-        navigationController?.navigationBar.layer.shadowRadius = 8
-        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
-
-        let backButton = UIButton()
-        backButton.setImage(UIImage(named: "backArrow"), for: .normal)
-        backButton.tintColor = .black
-        backButton.snp.makeConstraints { make in
-            make.size.equalTo(backButtonSize)
-        }
-
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = backBarButtonItem
-    
-        let infoButton = UIButton()
-        infoButton.setImage(UIImage(named: "settingsInfoIcon"), for: .normal)
-        infoButton.tintColor = .black
-        infoButton.snp.makeConstraints { make in
-            make.size.equalTo(iconButtonSize)
-        }
-        infoButton.addTarget(self, action: #selector(iconButtonPressed), for: .touchUpInside)
-        let infoButtonItem = UIBarButtonItem(customView: infoButton)
-        navigationItem.rightBarButtonItem = infoButtonItem
-    }
-    
-    @objc private func backButtonPressed() {
-        print("back button pressed")
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func iconButtonPressed() {
-        print("icon button pressed")
-        navigationController?.popViewController(animated: true)
-    }
-
 
     private func setupConstraints() {
-        episodesTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+        reactionsTableView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -141,7 +88,7 @@ class ReactionsViewController: UIViewController {
     }
 }
 
-extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
+extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let section = sections[section]
@@ -152,21 +99,15 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
             headerView.backgroundColor = .clear
             return headerView
         case .comments:
-            
             headerView.backgroundColor = .clear
-            
-            
             let headerLabel = UILabel()
             headerLabel.textColor = .lightGray
             headerLabel.font = .systemFont(ofSize: 12, weight: .medium)
             headerLabel.text = "\(commentContent.count) thoughts"
-            
-           
             headerView.addSubview(headerLabel)
             headerLabel.snp.makeConstraints { make in
                 make.leading.bottom.equalToSuperview().inset(20)
             }
-            
             let dividerView = UIView()
             dividerView.backgroundColor = .lightGray2
             headerView.addSubview(dividerView)
@@ -207,7 +148,5 @@ extension ReactionsViewController: UITableViewDelegate, UITableViewDataSource {
             cell.configure(reactionName: commentNames[indexPath.row], reactionProfilePic: commentProfilePics[indexPath.row], reactionContent: commentContent[indexPath.row], timeSince: timeSince)
             return cell
         }
-        
     }
-    
 }
