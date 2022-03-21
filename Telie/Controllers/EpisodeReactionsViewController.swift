@@ -139,7 +139,7 @@ class EpisodeReactionsViewController: UIViewController {
         let path = IndexPath(item: currentPosition, section: 0)
 
         DispatchQueue.main.async {
-            self.reactionPageCollectionView.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
+            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: true)
         }
     }
     
