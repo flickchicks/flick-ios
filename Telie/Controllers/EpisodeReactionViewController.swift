@@ -48,9 +48,8 @@ class EpisodeReactionViewController: UIViewController {
         view.backgroundColor = .offWhite
         
         setupSections()
-        
+    
         reactionsTableView = UITableView(frame: .zero, style: .plain)
-        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         reactionsTableView.dataSource = self
         reactionsTableView.delegate = self
         reactionsTableView.backgroundColor = .clear
@@ -58,25 +57,27 @@ class EpisodeReactionViewController: UIViewController {
         reactionsTableView.alwaysBounceVertical = true
         reactionsTableView.bounces = true
         reactionsTableView.showsVerticalScrollIndicator = false
-        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
         reactionsTableView.register(ReactionsReactionTableViewCell.self, forCellReuseIdentifier: ReactionsReactionTableViewCell.reuseIdentifier)
         reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
         reactionsTableView.isDirectionalLockEnabled = true
         reactionsTableView.separatorStyle = .none
         view.addSubview(reactionsTableView)
-    
-  
+        
+        let gradient = CAGradientLayer()
+        gradient.frame = reactionsTableView.superview?.bounds ?? CGRect.null
+        gradient.colors = [UIColor.black.cgColor, UIColor.black.cgColor, UIColor.clear, UIColor.clear]
+        gradient.locations = [0.0, 0.5, 0.95, 1.0]
+        reactionsTableView.superview?.layer.mask = gradient
+        reactionsTableView.backgroundColor = UIColor.clear
+        
         setupConstraints()
     }
-
-    
     
     private func setupSections() {
         let reactionSection = Section(type: .reaction)
         let commentsSection = Section(type: .comments)
         sections = [reactionSection, commentsSection]
     }
-    
 
     private func setupConstraints() {
         reactionsTableView.snp.makeConstraints { make in
@@ -84,7 +85,6 @@ class EpisodeReactionViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-
     }
 }
 
