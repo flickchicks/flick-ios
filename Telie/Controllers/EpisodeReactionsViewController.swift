@@ -12,17 +12,23 @@ class EpisodeReactionsViewController: UIViewController {
   
     // MARK: - Private View Vars
     private var reactionPageCollectionView: UICollectionView!
-    
+    private let replyButton = UIButton()
+
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private var reactionsViewControllers = [EpisodeReactionViewController]()
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
-    private let reactions: [Int] = [0, 1, 2]
+    private let reactions: [Int] = [0, 1, 2, 3]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Squid Game"
         view.backgroundColor = .offWhite
+       
+        replyButton.setImage(UIImage(named: "reply"), for: .normal)
+        replyButton.tintColor = .black
+        replyButton.addTarget(self, action: #selector(replyButtonPressed), for: .touchUpInside)
+        view.addSubview(replyButton)
         
         let pageCollectionViewLayout = UICollectionViewFlowLayout()
         pageCollectionViewLayout.scrollDirection = .horizontal
@@ -104,11 +110,20 @@ class EpisodeReactionsViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @objc private func replyButtonPressed() {
+        print("reply button pressed")
+    }
+    
     private func setupConstraints() {
         reactionPageCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(100)
+        }
+        replyButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.size.equalTo(CGSize(width: 50, height: 50))
         }
     }
     
@@ -124,7 +139,7 @@ class EpisodeReactionsViewController: UIViewController {
         let path = IndexPath(item: currentPosition, section: 0)
 
         DispatchQueue.main.async {
-            self.reactionPageCollectionView.scrollToItem(at: path, at: .centeredHorizontally, animated: true)
+            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: true)
         }
     }
     
@@ -166,9 +181,8 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 }
 
 extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-    }
+            let width = self.view.frame.width - 40
+            return CGSize(width: width, height: collectionView.frame.height)
+        }
 }
