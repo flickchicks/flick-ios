@@ -53,25 +53,24 @@ class ReplyReactionViewController: UIViewController {
         navigationController?.navigationBar.layer.shadowRadius = 8
         navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
 
-        let backButton = UIButton()
-        backButton.setImage(UIImage(named: "cancel"), for: .normal)
-        backButton.tintColor = .black
-        backButton.snp.makeConstraints { make in
+        let cancelButton = UIButton()
+        cancelButton.setImage(UIImage(named: "cancel"), for: .normal)
+        cancelButton.tintColor = .black
+        cancelButton.snp.makeConstraints { make in
             make.size.equalTo(cancelButtonSize)
         }
 
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: cancelButton)
         navigationItem.leftBarButtonItem = backBarButtonItem
 
     }
     
-    @objc private func backButtonPressed() {
-        print("back button pressed")
+    @objc private func cancelButtonPressed() {
+        print("cancel button pressed")
         navigationController?.popViewController(animated: true)
     }
     
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         reactionTextView.becomeFirstResponder()
@@ -79,6 +78,8 @@ class ReplyReactionViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         setupNavigationBar()
     }
 
