@@ -207,6 +207,6 @@ extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
 
 extension MediaAllReactionsViewController: PushReactionsDelegate {
     func pushReactionsVC() {
-        navigationController?.pushViewController(ReactionsViewController(), animated: true)
+        navigationController?.pushViewController(EpisodeReactionsViewController(), animated: true)
     }
 }

@@ -20,8 +20,6 @@
 		3794093427D4148800F88CC3 /* EpisodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794093327D4148800F88CC3 /* EpisodeTableViewCell.swift */; };
 		37BC15A427D7DE3D00353CEE /* EpisodeReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A327D7DE3D00353CEE /* EpisodeReactionViewController.swift */; };
 		37BC15A627D7EA2400353CEE /* ReactionsReactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A527D7EA2400353CEE /* ReactionsReactionTableViewCell.swift */; };
-		37BC15A827D7ED1C00353CEE /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A727D7ED1C00353CEE /* PaddingLabel.swift */; };
-		37BC15AA27D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15A927D7F6AE00353CEE /* ReactionsCommentTableViewCell.swift */; };
 		37BC15AC27E5602400353CEE /* EpisodeReactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15AB27E5602400353CEE /* EpisodeReactionsViewController.swift */; };
 		37BC15AE27E5624A00353CEE /* EpisodeReactionVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BC15AD27E5624A00353CEE /* EpisodeReactionVCCollectionViewCell.swift */; };
 		6CAFD62DF3A00CA32F53D76B /* Pods_TelieTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 489A3B85957040634FBD6CD8 /* Pods_TelieTests.framework */; };
@@ -53,6 +51,7 @@
 		807CDC892656E4A000986B2E /* EditDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */; };
 		8080A66225CE2F4300A8FD9E /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */; };
 		8080A66725CE343800A8FD9E /* GroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */; };
+		808232B027EB82F20052DEB9 /* ReplyReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808232AF27EB82F10052DEB9 /* ReplyReactionViewController.swift */; };
 		8084954F27D1A5E1007415EB /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8084954E27D1A5E0007415EB /* Visibility.swift */; };
 		8084955D27D3A99B007415EB /* SearchForReactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */; };
 		80AB6AE325B1293500998FF0 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AB6AE225B1293500998FF0 /* LoginButton.swift */; };
@@ -241,6 +240,7 @@
 		807CDC882656E4A000986B2E /* EditDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDescriptionViewController.swift; sourceTree = "<group>"; };
 		8080A66125CE2F4200A8FD9E /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		8080A66625CE343800A8FD9E /* GroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTableViewCell.swift; sourceTree = "<group>"; };
+		808232AF27EB82F10052DEB9 /* ReplyReactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyReactionViewController.swift; sourceTree = "<group>"; };
 		8084954E27D1A5E0007415EB /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
 		8084955A27D2B714007415EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchForReactionViewController.swift; sourceTree = "<group>"; };
@@ -656,6 +656,7 @@
 				8023941727C18ECD003CC643 /* CreateReactionViewController.swift */,
 				8084955C27D3A99A007415EB /* SearchForReactionViewController.swift */,
 				800E14DE27E03D2C009AAD70 /* MediaAllReactionsViewController.swift */,
+				808232AF27EB82F10052DEB9 /* ReplyReactionViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1082,6 +1083,7 @@
 				D47866A3247C5805009E42FE /* User.swift in Sources */,
 				D40ED7CF25946CE9004C2F2C /* DiscoverContent.swift in Sources */,
 				803E5F8225A6BFD4004CF4B7 /* UserPreviewCollectionViewCell.swift in Sources */,
+				808232B027EB82F20052DEB9 /* ReplyReactionViewController.swift in Sources */,
 				D45DC62F24B933B000838DBF /* MediaSummary.swift in Sources */,
 				3095FF08247B93D700F08C60 /* RoundTopView.swift in Sources */,
 				37BC15AC27E5602400353CEE /* EpisodeReactionsViewController.swift in Sources */,
