@@ -39,6 +39,38 @@ class ReplyReactionViewController: UIViewController {
 
         setupConstraints()
     }
+    
+    private func setupNavigationBar() {
+        let cancelButtonSize = CGSize(width: 36, height: 36)
+
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.barTintColor = .movieWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+
+        let backButton = UIButton()
+        backButton.setImage(UIImage(named: "cancel"), for: .normal)
+        backButton.tintColor = .black
+        backButton.snp.makeConstraints { make in
+            make.size.equalTo(cancelButtonSize)
+        }
+
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+
+    }
+    
+    @objc private func backButtonPressed() {
+        print("back button pressed")
+        navigationController?.popViewController(animated: true)
+    }
+    
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -47,8 +79,7 @@ class ReplyReactionViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        setupNavigationBar()
     }
 
     private func setupConstraints() {
