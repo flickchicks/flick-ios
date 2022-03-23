@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol PushReactionsDelegate: AnyObject {
+    func pushReactionsVC()
+}
+
 class EpisodeReactionsTableViewCell: UITableViewCell {
 
     private let episodeNameLabel = UILabel()
     private var reactionsCollectionView: UICollectionView!
 
+    weak var delegate: PushReactionsDelegate?
     private var reactions = [Reaction]()
     static let reuseIdentifier = "EpisodeReactionsReuseIdentifier"
 
@@ -20,8 +25,8 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .offWhite
+        contentView.isUserInteractionEnabled = true
 
-        episodeNameLabel.text = "Episode 1"
         episodeNameLabel.textColor = .darkBlue
         episodeNameLabel.font = .systemFont(ofSize: 16)
         contentView.addSubview(episodeNameLabel)
@@ -80,6 +85,10 @@ extension EpisodeReactionsTableViewCell: UICollectionViewDataSource, UICollectio
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 100, height: 125)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.pushReactionsVC()
     }
 
 }

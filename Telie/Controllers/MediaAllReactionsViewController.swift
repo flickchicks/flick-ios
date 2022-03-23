@@ -157,6 +157,7 @@ extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDel
               let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
         let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails[indexPath.row]
         cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
+        cell.delegate = self
         return cell
     }
 
@@ -187,5 +188,11 @@ extension MediaAllReactionsViewController: UICollectionViewDataSource, UICollect
 extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 40)
+    }
+}
+
+extension MediaAllReactionsViewController: PushReactionsDelegate {
+    func pushReactionsVC() {
+        navigationController?.pushViewController(ReactionsViewController(), animated: true)
     }
 }

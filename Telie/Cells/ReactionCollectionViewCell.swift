@@ -20,22 +20,26 @@ class ReactionCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.isUserInteractionEnabled = true
         backgroundColor = .offWhite
 
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 10
         containerView.layer.backgroundColor = UIColor.white.cgColor
+        containerView.isUserInteractionEnabled = true
         contentView.addSubview(containerView)
 
         reactionTextView.font = .systemFont(ofSize: 12)
         reactionTextView.isEditable = false
         reactionTextView.isScrollEnabled = false
+        reactionTextView.isUserInteractionEnabled = false
         contentView.addSubview(reactionTextView)
 
         profileImageView.layer.borderWidth = 1
         profileImageView.layer.borderColor = UIColor.white.cgColor
         profileImageView.layer.cornerRadius = 20
         profileImageView.clipsToBounds = true
+        profileImageView.isUserInteractionEnabled = true
         contentView.addSubview(profileImageView)
 
         containerView.snp.makeConstraints { make in
