@@ -11,6 +11,7 @@ import UIKit
 class MediaAllReactionsViewController: UIViewController {
 
     private let episodesTableView = UITableView()
+    private var reactButton = UIButton()
     private var seasonsCollectionView: UICollectionView!
 
     private var reactionsForMedia: ReactionsForMedia?
@@ -55,6 +56,10 @@ class MediaAllReactionsViewController: UIViewController {
         seasonsCollectionView.showsHorizontalScrollIndicator = false
         view.addSubview(seasonsCollectionView)
 
+        reactButton.setImage(UIImage(named: "reactButton"), for: .normal)
+        reactButton.addTarget(self, action: #selector(reactButtonPressed), for: .touchUpInside)
+        view.addSubview(reactButton)
+
         setupConstraints()
     }
 
@@ -78,6 +83,11 @@ class MediaAllReactionsViewController: UIViewController {
         episodesTableView.snp.makeConstraints { make in
             make.top.equalTo(seasonsCollectionView.snp.bottom).offset(10)
             make.bottom.leading.trailing.equalToSuperview()
+        }
+
+        reactButton.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.size.equalTo(CGSize(width: 105, height: 48))
         }
     }
 
@@ -124,6 +134,10 @@ class MediaAllReactionsViewController: UIViewController {
     @objc func iconButtonPressed() {
         let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: media?.posterPic)
         navigationController?.pushViewController(mediaVC, animated: true)
+    }
+
+    @objc func reactButtonPressed() {
+        navigationController?.pushViewController(CreateReactionViewController(), animated: true)
     }
 
     private func getMediaInformation() {
