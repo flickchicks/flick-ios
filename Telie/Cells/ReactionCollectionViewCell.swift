@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import FBSDKMessengerShareKit
 
 class ReactionCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
+    private let reactionTextView = UITextView()
+    private let profileImageView = UIImageView()
 
     static let cellReuseIdentitifer = "ReactionCollectionViewCellReuseIdentifier"
 
@@ -24,23 +27,45 @@ class ReactionCollectionViewCell: UICollectionViewCell {
         containerView.layer.backgroundColor = UIColor.white.cgColor
         contentView.addSubview(containerView)
 
+        reactionTextView.font = .systemFont(ofSize: 12)
+        reactionTextView.isEditable = false
+        reactionTextView.isScrollEnabled = false
+        contentView.addSubview(reactionTextView)
+
+        profileImageView.layer.borderWidth = 1
+        profileImageView.layer.borderColor = UIColor.white.cgColor
+        profileImageView.layer.cornerRadius = 20
+        profileImageView.clipsToBounds = true
+        contentView.addSubview(profileImageView)
+
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
+        }
+
+        reactionTextView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView).inset(5)
+        }
+
+        profileImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 40, height: 40))
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(containerView.snp.bottom).inset(10)
         }
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 
-    func configure() {
-
+    func configure(reaction: Reaction) {
+        reactionTextView.text = reaction.text
+        if let imageUrl = URL(string: reaction.author.profilePicUrl ?? Constants.User.defaultImage) {
+            profileImageView.kf.setImage(with: imageUrl)
+        }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-//        providerImageView.image = nil
+        profileImageView.image = nil
     }
-    
 }

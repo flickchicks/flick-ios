@@ -13,6 +13,7 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
     private let episodeNameLabel = UILabel()
     private var reactionsCollectionView: UICollectionView!
 
+    private var reactions = [Reaction]()
     static let reuseIdentifier = "EpisodeReactionsReuseIdentifier"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -57,8 +58,10 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(episodeNum: Int) {
+    func configure(episodeNum: Int, reactions: [Reaction]) {
+        self.reactions = reactions
         episodeNameLabel.text = "Episode \(episodeNum)"
+        reactionsCollectionView.reloadData()
     }
 
 }
@@ -66,11 +69,12 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
 extension EpisodeReactionsTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return reactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReactionCollectionViewCell.cellReuseIdentitifer, for: indexPath) as? ReactionCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(reaction: reactions[indexPath.item])
         return cell
     }
 

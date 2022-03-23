@@ -11,8 +11,10 @@ import UIKit
 class MediaAllReactionsViewController: UIViewController {
 
     private let episodesTableView = UITableView()
+    private var seasonsCollectionView: UICollectionView!
 
     private var reactionsForMedia: ReactionsForMedia?
+    private var selectedSeasonIndex: Int = 0
     private var media: Media?
     private var mediaId: Int
     private var mediaName: String
@@ -40,6 +42,19 @@ class MediaAllReactionsViewController: UIViewController {
         episodesTableView.register(EpisodeReactionsTableViewCell.self, forCellReuseIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier)
         view.addSubview(episodesTableView)
 
+        let seasonsLayout = UICollectionViewFlowLayout()
+        seasonsLayout.minimumInteritemSpacing = 12
+        seasonsLayout.scrollDirection = .horizontal
+
+        seasonsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: seasonsLayout)
+        seasonsCollectionView.register(SeasonCollectionViewCell.self, forCellWithReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier)
+        seasonsCollectionView.delegate = self
+        seasonsCollectionView.dataSource = self
+        seasonsCollectionView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        seasonsCollectionView.backgroundColor = .clear
+        seasonsCollectionView.showsHorizontalScrollIndicator = false
+        view.addSubview(seasonsCollectionView)
+
         setupConstraints()
     }
 
@@ -54,8 +69,14 @@ class MediaAllReactionsViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        seasonsCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(40)
+        }
+
         episodesTableView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(seasonsCollectionView.snp.bottom).offset(10)
             make.bottom.leading.trailing.equalToSuperview()
         }
     }
@@ -118,6 +139,8 @@ class MediaAllReactionsViewController: UIViewController {
             print(reactionsForMedia)
             DispatchQueue.main.async {
                 self.episodesTableView.reloadData()
+                self.seasonsCollectionView.reloadData()
+                self.seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
             }
         }
     }
@@ -126,13 +149,14 @@ class MediaAllReactionsViewController: UIViewController {
 extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reactionsForMedia?.seasonDetails[0].episodeDetails.count ?? 0
+        return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell,
               let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
-        cell.configure(episodeNum: reactionsForMedia.seasonDetails[0].episodeDetails[indexPath.row].episodeNum)
+        let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails[indexPath.row]
+        cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
         return cell
     }
 
@@ -140,4 +164,28 @@ extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDel
         return 145
     }
 
+}
+
+extension MediaAllReactionsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return reactionsForMedia?.seasonDetails.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
+        cell.configure(seasonNumber: indexPath.item) // TODO: change to seasonNUm from backend
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedSeasonIndex = indexPath.item
+        episodesTableView.reloadData()
+    }
+}
+
+extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 80, height: 40)
+    }
 }

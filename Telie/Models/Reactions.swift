@@ -8,6 +8,13 @@
 
 import Foundation
 
+struct Reaction: Codable {
+    var id: Int
+    var text: String
+    var visibility: Visibility
+    var author: UserProfile
+}
+
 struct ReactionsForMedia: Codable {
     var id: Int
     var seasonDetails: [ReactionSeasonDetail]
