@@ -11,7 +11,7 @@ import SkeletonView
 
 protocol ListTableViewCellDelegate: class {
     func pushListViewController(listId: Int)
-    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?)
+    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?, mediaName: String)
 }
 
 class ListTableViewCell: UITableViewCell {
@@ -143,7 +143,7 @@ extension ListTableViewCell: SkeletonCollectionViewDelegate {
         if indexPath.item == 10 || indexPath.row >= media.count {
             delegate?.pushListViewController(listId: list.id)
         } else {
-            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic)
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic, mediaName: media[indexPath.row].title)
         }
     }
 }

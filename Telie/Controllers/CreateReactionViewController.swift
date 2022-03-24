@@ -165,6 +165,33 @@ class CreateReactionViewController: UIViewController {
         super.viewWillAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        setupNavigationBar()
+    }
+
+    private func setupNavigationBar() {
+        let cancelButtonSize = CGSize(width: 36, height: 36)
+
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.barTintColor = .movieWhite
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.layer.masksToBounds = false
+        navigationController?.navigationBar.layer.shadowColor = UIColor.blueGrayShadow.cgColor
+        navigationController?.navigationBar.layer.shadowOpacity = 0.07
+        navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0, height: 4)
+        navigationController?.navigationBar.layer.shadowRadius = 8
+        navigationController?.navigationBar.setBackgroundImage(nil, for: UIBarMetrics.default)
+
+        let cancelButton = UIButton()
+        cancelButton.setImage(UIImage(named: "cancel"), for: .normal)
+        cancelButton.tintColor = .black
+        cancelButton.snp.makeConstraints { make in
+            make.size.equalTo(cancelButtonSize)
+        }
+
+        cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
+        let backBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.leftBarButtonItem = backBarButtonItem
+
     }
 
     private func setupConstraints() {
@@ -292,6 +319,10 @@ class CreateReactionViewController: UIViewController {
         sendButton.snp.updateConstraints { update in
             update.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+    }
+
+    @objc func cancelButtonPressed() {
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func sendButtonTapped() {
