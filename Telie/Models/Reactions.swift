@@ -17,10 +17,5 @@ struct Reaction: Codable {
 
 struct ReactionsForMedia: Codable {
     var id: Int
-    var seasonDetails: [ReactionSeasonDetail]
-}
-
-struct ReactionSeasonDetail: Codable {
-    var id: Int
-    var episodeDetails: [EpisodeDetail]
+    var seasonDetails: [SeasonDetail]
 }

@@ -163,14 +163,15 @@ class MediaAllReactionsViewController: UIViewController {
 extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails.count ?? 0
+        return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell,
               let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
-        let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails[indexPath.row]
-        cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
+        if let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails?[indexPath.row] {
+            cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
+        }
         cell.delegate = self
         return cell
     }
@@ -189,7 +190,7 @@ extension MediaAllReactionsViewController: UICollectionViewDataSource, UICollect
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIdentifier, for: indexPath) as? SeasonCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure(seasonNumber: indexPath.item) // TODO: change to seasonNUm from backend
+        cell.configure(seasonNumber: reactionsForMedia?.seasonDetails[indexPath.item].seasonNum ?? 0)
         return cell
     }
 

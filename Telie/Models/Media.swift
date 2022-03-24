@@ -55,7 +55,6 @@ struct Media: Codable {
 struct SeasonDetail: Codable {
     var id: Int
     var seasonNum: Int
-    var episodeCount: Int
     var episodeDetails: [EpisodeDetail]?
 }
 
