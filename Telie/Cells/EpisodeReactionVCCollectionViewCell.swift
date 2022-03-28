@@ -11,20 +11,18 @@ import UIKit
 class EpisodeReactionVCCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Public View Vars
-    var viewController = EpisodeReactionViewController()
+    var viewController: EpisodeReactionViewController!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
 
-        contentView.addSubview(viewController.view)
-
+    func configure(vc: EpisodeReactionViewController) {
+        viewController = vc
+        contentView.addSubview(viewController.view) // TODO: might be bad to do this, can come back to it
         viewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-    }
-
-    func configure() {
-        print("configure called")
     }
 
     override func prepareForReuse() {

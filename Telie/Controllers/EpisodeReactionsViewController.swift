@@ -16,9 +16,22 @@ class EpisodeReactionsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var currentPosition = 0
-    private var reactionsViewControllers = [EpisodeReactionViewController]()
+    private var mediaId: Int
+    private var mediaPosterPic: String?
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
-    private let reactions: [Int] = [0, 1, 2, 3]
+    private var reactions = [Reaction]()
+    private var reactionsViewControllers = [EpisodeReactionViewController]()
+
+    init(mediaId: Int, mediaPosterPic: String?, reactions: [Reaction]) {
+        self.mediaId = mediaId
+        self.mediaPosterPic = mediaPosterPic
+        self.reactions = reactions
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +66,7 @@ class EpisodeReactionsViewController: UIViewController {
         
         setupConstraints()
         setupViewControllers()
-       }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -101,17 +114,16 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     @objc private func backButtonPressed() {
-        print("back button pressed")
         navigationController?.popViewController(animated: true)
     }
     
     @objc private func iconButtonPressed() {
-        print("icon button pressed")
-        navigationController?.popViewController(animated: true)
+        let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: mediaPosterPic)
+        navigationController?.pushViewController(mediaVC, animated: true)
     }
     
     @objc private func replyButtonPressed() {
-        print("reply button pressed")
+        navigationController?.pushViewController(ReplyReactionViewController(), animated: true)
     }
     
     private func setupConstraints() {
@@ -129,7 +141,7 @@ class EpisodeReactionsViewController: UIViewController {
     
     func setupViewControllers() {
         reactions.forEach { reaction in
-            let episodeReactionVC = EpisodeReactionViewController()
+            let episodeReactionVC = EpisodeReactionViewController(reaction: reaction)
             reactionsViewControllers.append(episodeReactionVC)
         }
     }
@@ -144,13 +156,11 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     @objc func leftSwipeDetected() {
-        print("left swipe detected")
         let newPosition = currentPosition < reactions.count - 1 ? currentPosition + 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
 
     @objc func rightSwipeDetected() {
-        print("right swipe detected")
         let newPosition = currentPosition > 0 ? currentPosition - 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
@@ -164,7 +174,7 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reactionPageReuseIdentifier, for: indexPath) as? EpisodeReactionVCCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure()
+        cell.configure(vc: reactionsViewControllers[indexPath.item])
         return cell
     }
 

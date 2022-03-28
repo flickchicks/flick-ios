@@ -170,7 +170,7 @@ extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDel
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell,
               let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
         if let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails?[indexPath.row] {
-            cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
+            cell.configure(episode: episode)
         }
         cell.delegate = self
         return cell
@@ -207,7 +207,12 @@ extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MediaAllReactionsViewController: PushReactionsDelegate {
-    func pushReactionsVC() {
-        navigationController?.pushViewController(EpisodeReactionsViewController(), animated: true)
+    func pushReactionsVC(episode: EpisodeDetail) {
+        NetworkManager.getEpisodeReactions(episodeId: episode.id) { [weak self] reactions in
+            guard let self = self else { return }
+            print(reactions)
+            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaPosterPic: self.media?.posterPic, reactions: reactions)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

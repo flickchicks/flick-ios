@@ -95,8 +95,6 @@ class ReactionsCommentTableViewCell: UITableViewCell {
         profileImageView.kf.setImage(with: imageUrl)
         timeSinceLabel.text = timeSince
     }
-    
-
 
     private func setupConstraints() {
         let verticalPadding: CGFloat = 0

@@ -43,13 +43,22 @@ class EpisodeReactionViewController: UIViewController {
         "i need medication",
     ]
 
+    init(reaction: Reaction) {
+        self.reaction = reaction
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .offWhite
         
         setupSections()
     
-        reactionsTableView = UITableView(frame: .zero, style: .plain)
+        reactionsTableView = UITableView(frame: .zero, style: .grouped)
         reactionsTableView.dataSource = self
         reactionsTableView.delegate = self
         reactionsTableView.backgroundColor = .clear
@@ -61,6 +70,7 @@ class EpisodeReactionViewController: UIViewController {
         reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
         reactionsTableView.isDirectionalLockEnabled = true
         reactionsTableView.separatorStyle = .none
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         view.addSubview(reactionsTableView)
         
         let gradient = CAGradientLayer()
@@ -140,7 +150,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
         switch section.type {
         case .reaction:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: reactionName, reactionProfilePic: reactionProfilePic, reactionContent: reactionContent, timeSince: timeSince)
+            cell.configure(reaction: reaction)
             return cell
             
         case .comments:

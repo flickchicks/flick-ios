@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PushReactionsDelegate: AnyObject {
-    func pushReactionsVC()
+    func pushReactionsVC(episode: EpisodeDetail)
 }
 
 class EpisodeReactionsTableViewCell: UITableViewCell {
@@ -18,6 +18,7 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
     private var reactionsCollectionView: UICollectionView!
 
     weak var delegate: PushReactionsDelegate?
+    private var episode: EpisodeDetail?
     private var reactions = [Reaction]()
     static let reuseIdentifier = "EpisodeReactionsReuseIdentifier"
 
@@ -63,9 +64,10 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         }
     }
 
-    func configure(episodeNum: Int, reactions: [Reaction]) {
-        self.reactions = reactions
-        episodeNameLabel.text = "Episode \(episodeNum)"
+    func configure(episode: EpisodeDetail) {
+        self.episode = episode
+        reactions = episode.reactions ?? []
+        episodeNameLabel.text = "Episode \(episode.episodeNum)"
         reactionsCollectionView.reloadData()
     }
 
@@ -88,7 +90,9 @@ extension EpisodeReactionsTableViewCell: UICollectionViewDataSource, UICollectio
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.pushReactionsVC()
+        if let episode = episode {
+            delegate?.pushReactionsVC(episode: episode)
+        }
     }
 
 }

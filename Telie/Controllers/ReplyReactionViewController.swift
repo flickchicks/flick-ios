@@ -67,7 +67,6 @@ class ReplyReactionViewController: UIViewController {
     }
     
     @objc private func cancelButtonPressed() {
-        print("cancel button pressed")
         navigationController?.popViewController(animated: true)
     }
     
