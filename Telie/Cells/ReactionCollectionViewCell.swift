@@ -7,13 +7,63 @@
 //
 
 import UIKit
-import FBSDKMessengerShareKit
+
+class BlurredTextView: UITextView {
+
+    func blur(_ blurRadius: Double = 2) {
+        let blurredImage = getBlurryImage(blurRadius)
+        let blurredImageView = UIImageView(image: blurredImage)
+        blurredImageView.translatesAutoresizingMaskIntoConstraints = false
+        blurredImageView.tag = 100
+        blurredImageView.contentMode = .center
+        blurredImageView.backgroundColor = .white
+        addSubview(blurredImageView)
+        NSLayoutConstraint.activate([
+            blurredImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            blurredImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+
+    func unblur() {
+        subviews.forEach { subview in
+            if subview.tag == 100 {
+                subview.removeFromSuperview()
+            }
+        }
+    }
+
+    private func getBlurryImage(_ blurRadius: Double = 2) -> UIImage? {
+        print(bounds)
+        UIGraphicsBeginImageContext(bounds.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext(),
+            let blurFilter = CIFilter(name: "CIGaussianBlur") else {
+            UIGraphicsEndImageContext()
+            return nil
+        }
+        UIGraphicsEndImageContext()
+
+        blurFilter.setDefaults()
+
+        blurFilter.setValue(CIImage(image: image), forKey: kCIInputImageKey)
+        blurFilter.setValue(blurRadius, forKey: kCIInputRadiusKey)
+
+        var convertedImage: UIImage?
+        let context = CIContext(options: nil)
+        if let blurOutputImage = blurFilter.outputImage,
+            let cgImage = context.createCGImage(blurOutputImage, from: blurOutputImage.extent) {
+            convertedImage = UIImage(cgImage: cgImage)
+        }
+
+        return convertedImage
+    }
+}
 
 class ReactionCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Private View Vars
     private let containerView = UIView()
-    private let reactionTextView = UITextView()
+    private let reactionTextView = BlurredTextView()
     private let profileImageView = UIImageView()
 
     static let cellReuseIdentitifer = "ReactionCollectionViewCellReuseIdentifier"
@@ -33,7 +83,7 @@ class ReactionCollectionViewCell: UICollectionViewCell {
         reactionTextView.isEditable = false
         reactionTextView.isScrollEnabled = false
         reactionTextView.isUserInteractionEnabled = false
-        contentView.addSubview(reactionTextView)
+        containerView.addSubview(reactionTextView)
 
         profileImageView.layer.borderWidth = 1
         profileImageView.layer.borderColor = UIColor.white.cgColor
@@ -47,7 +97,7 @@ class ReactionCollectionViewCell: UICollectionViewCell {
         }
 
         reactionTextView.snp.makeConstraints { make in
-            make.edges.equalTo(containerView).inset(5)
+            make.edges.equalToSuperview().inset(5)
         }
 
         profileImageView.snp.makeConstraints { make in
@@ -63,6 +113,8 @@ class ReactionCollectionViewCell: UICollectionViewCell {
 
     func configure(reaction: Reaction) {
         reactionTextView.text = reaction.text
+        reactionTextView.layoutIfNeeded()
+        reactionTextView.blur()
         if let imageUrl = URL(string: reaction.author.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
