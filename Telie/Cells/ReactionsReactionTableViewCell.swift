@@ -85,7 +85,7 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         if let imageUrl = URL(string: reaction.author.profilePicUrl ?? Constants.User.defaultImage) {
             profileImageView.kf.setImage(with: imageUrl)
         }
-        timeSinceLabel.text = "1d" // TODO: use timestamp
+        timeSinceLabel.text = Date().getDateLabelText(createdAt: reaction.createdAt)
     }
     
     private func setupConstraints() {

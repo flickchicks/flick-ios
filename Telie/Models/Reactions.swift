@@ -13,6 +13,8 @@ struct Reaction: Codable {
     var text: String
     var visibility: Visibility
     var author: UserProfile
+    var createdAt: String
+    var hasLiked: Bool
 }
 
 struct ReactionsForMedia: Codable {
