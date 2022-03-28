@@ -27,10 +27,8 @@ class EpisodeReactionViewController: UIViewController {
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private var sections: [Section] = []
-    private var reactionName: String = "Cindy"
-    private var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
-    private var reactionContent: String = "totally was\nnot expecting when they killed the \nold man TT \n\ni'm going to have an actual heart attack"
-    private var timeSince = "1d"
+    private var reaction: Reaction
+    private var timeSince = "1d" // TODO: use timestamp
     
     private var commentNames: [String] = ["Renee", "Renee", "Renee", "Renee", "Renee", "Renee"]
     private var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192","https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
