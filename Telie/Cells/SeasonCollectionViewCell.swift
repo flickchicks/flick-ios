@@ -21,11 +21,11 @@ class SeasonCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .clear
         isSelected = false
-        seasonLabel.textColor = .darkPurple
+        seasonLabel.textColor = .darkBlueGray2
         seasonLabel.textAlignment = .center
         seasonLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        seasonLabel.backgroundColor = .clear // .lightPurple
-        seasonLabel.layer.borderColor = UIColor.darkPurple.cgColor
+        seasonLabel.backgroundColor = .lightGray2
+        seasonLabel.layer.borderColor = UIColor.darkBlueGray2.cgColor
         seasonLabel.layer.borderWidth = 1
         seasonLabel.layer.cornerRadius = 13
         seasonLabel.layer.masksToBounds = true
@@ -36,7 +36,15 @@ class SeasonCollectionViewCell: UICollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            seasonLabel.backgroundColor = isSelected ? .lightPurple : .clear
+            if isSelected {
+                seasonLabel.textColor = .darkPurple
+                seasonLabel.backgroundColor = .lightPurple
+                seasonLabel.layer.borderColor = UIColor.darkPurple.cgColor
+            } else {
+                seasonLabel.textColor = .darkBlueGray2
+                seasonLabel.backgroundColor = .lightGray2
+                seasonLabel.layer.borderColor = UIColor.darkBlueGray2.cgColor
+            }
         }
     }
     
