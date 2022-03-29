@@ -111,7 +111,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             let headerLabel = UILabel()
             headerLabel.textColor = .lightGray
             headerLabel.font = .systemFont(ofSize: 12, weight: .medium)
-            headerLabel.text = "\(commentContent.count) thoughts"
+            headerLabel.text = "\(reaction.thoughts?.count ?? 0) thoughts"
             headerView.addSubview(headerLabel)
             headerLabel.snp.makeConstraints { make in
                 make.leading.bottom.equalToSuperview().inset(20)
@@ -120,9 +120,10 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             dividerView.backgroundColor = .lightGray2
             headerView.addSubview(dividerView)
             dividerView.snp.makeConstraints { make in
-                make.leading.equalTo(headerLabel).inset(70)
+                make.leading.equalTo(headerLabel.snp.trailing).inset(-10)
+                make.trailing.equalToSuperview().inset(20)
                 make.height.equalTo(1)
-                make.width.equalToSuperview().inset(55)
+                make.centerY.equalTo(headerLabel.snp.centerY)
             }
             return headerView
         }
@@ -139,7 +140,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
         case .reaction:
             return 1
         case .comments:
-            return commentContent.count
+            return reaction.thoughts?.count ?? 0
         }
     }
 
@@ -152,8 +153,9 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             return cell
             
         case .comments:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsCommentTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsCommentTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: commentNames[indexPath.row], reactionProfilePic: commentProfilePics[indexPath.row], reactionContent: commentContent[indexPath.row], timeSince: timeSince)
+            guard let thoughts = reaction.thoughts,
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
+            cell.configure(thought: thoughts[indexPath.row])
             return cell
         }
     }

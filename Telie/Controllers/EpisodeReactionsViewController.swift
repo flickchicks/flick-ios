@@ -123,7 +123,7 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     @objc private func replyButtonPressed() {
-        navigationController?.pushViewController(ReplyReactionViewController(), animated: true)
+        navigationController?.pushViewController(ReplyReactionViewController(reaction: reactions[currentPosition]), animated: true)
     }
     
     private func setupConstraints() {

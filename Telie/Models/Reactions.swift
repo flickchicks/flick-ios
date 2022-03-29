@@ -14,10 +14,17 @@ struct Reaction: Codable {
     var visibility: Visibility
     var author: UserProfile
     var createdAt: String
-    var hasLiked: Bool
+    var thoughts: [Thought]?
 }
 
 struct ReactionsForMedia: Codable {
     var id: Int
     var seasonDetails: [SeasonDetail]
+}
+
+struct Thought: Codable {
+    var id: Int
+    var text: String
+    var author: UserProfile
+    var createdAt: String
 }
