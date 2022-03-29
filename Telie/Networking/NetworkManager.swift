@@ -1119,6 +1119,7 @@ class NetworkManager {
     /// [GET] Get shorted reactions for a show [updated as of 3/10/22]
     static func getAllReactions(mediaId: Int, completion: @escaping (ReactionsForMedia) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(mediaId)/reactions/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -1152,6 +1153,25 @@ class NetworkManager {
                 }
             case .failure(let error):
                 print(error.localizedDescription)
+            }
+        }
+    }
+
+    /// [POST] Create thought [updated as of 3/29/22]
+    static func createThought(reactionId: Int, text: String, completion: @escaping (Bool) -> Void) {
+        let parameters: [String: Any] = [
+            "reaction_id": reactionId,
+            "text": text,
+        ]
+
+        AF.request("\(hostEndpoint)/api/thoughts/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
+            debugPrint(response)
+            switch response.result {
+            case .success:
+                completion(true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                completion(false)
             }
         }
     }

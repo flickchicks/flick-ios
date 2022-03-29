@@ -139,6 +139,12 @@ class ReplyReactionViewController: UIViewController {
     }
 
     @objc func sendButtonTapped() {
-       print("send button tapped")
+        print("send button tapped")
+        if let text = reactionTextView.text, !text.isEmpty {
+            NetworkManager.createThought(reactionId: reaction.id, text: text) { [weak self] _ in
+                guard let self = self else { return }
+                self.reactionTextView.text = ""
+            }
+        }
     }
 }
