@@ -211,7 +211,7 @@ extension MediaAllReactionsViewController: PushReactionsDelegate {
         NetworkManager.getEpisodeReactions(episodeId: episode.id) { [weak self] reactions in
             guard let self = self else { return }
             print(reactions)
-            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaPosterPic: self.media?.posterPic, reactions: reactions)
+            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaName: self.mediaName, mediaPosterPic: self.media?.posterPic, reactions: reactions)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

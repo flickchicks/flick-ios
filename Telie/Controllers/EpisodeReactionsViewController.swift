@@ -17,13 +17,15 @@ class EpisodeReactionsViewController: UIViewController {
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private var mediaId: Int
+    private var mediaName = ""
     private var mediaPosterPic: String?
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
     private var reactions = [Reaction]()
     private var reactionsViewControllers = [EpisodeReactionViewController]()
 
-    init(mediaId: Int, mediaPosterPic: String?, reactions: [Reaction]) {
+    init(mediaId: Int, mediaName: String, mediaPosterPic: String?, reactions: [Reaction]) {
         self.mediaId = mediaId
+        self.mediaName = mediaName
         self.mediaPosterPic = mediaPosterPic
         self.reactions = reactions
         super.init(nibName: nil, bundle: nil)
@@ -35,7 +37,7 @@ class EpisodeReactionsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Squid Game"
+        title = mediaName
         view.backgroundColor = .offWhite
        
         replyButton.setImage(UIImage(named: "reply"), for: .normal)
