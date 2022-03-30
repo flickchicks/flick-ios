@@ -81,19 +81,15 @@ class ReactionsCommentTableViewCell: UITableViewCell {
         super.prepareForReuse()
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        reactionNameLabel.backgroundColor = selected ?  .lightGray2 : .clear
-    }
 
-    func configure(reactionName: String, reactionProfilePic: String, reactionContent: String, timeSince: String) {
-        reactionNameLabel.text = "    \(reactionName)"
-        reactionContentLabel.text = reactionContent
-        
-       let imageUrl = URL(string: reactionProfilePic)
-        profileImageView.kf.setImage(with: imageUrl)
-        timeSinceLabel.text = timeSince
+    func configure(thought: Thought) {
+        reactionNameLabel.text = "    \(thought.author.name)"
+        reactionContentLabel.text = thought.text
+
+        if let imageUrl = URL(string: thought.author.profilePicUrl ?? Constants.User.defaultImage) {
+            profileImageView.kf.setImage(with: imageUrl)
+        }
+        timeSinceLabel.text = Date().getDateLabelText(createdAt: thought.createdAt)
     }
 
     private func setupConstraints() {

@@ -28,18 +28,6 @@ class EpisodeReactionViewController: UIViewController {
     private var currentPosition = 0
     private var sections: [Section] = []
     private var reaction: Reaction
-    private var timeSince = "1d" // TODO: use timestamp
-    
-    private var commentNames: [String] = ["Renee", "Renee", "Renee", "Renee", "Renee", "Renee"]
-    private var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192","https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
-    private var commentContent: [String] = [
-        "let me tell you that \nshit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
-        "oops",
-        "i need medication",
-        "let me tell you that shit ended meeee\neeeeeeeeeeeeeeeeeeeeee",
-        "oo\nps",
-        "i need medication",
-    ]
 
     init(reaction: Reaction) {
         self.reaction = reaction
@@ -154,7 +142,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             
         case .comments:
             guard let thoughts = reaction.thoughts,
-                    let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsCommentTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsCommentTableViewCell else { return UITableViewCell() }
             cell.configure(thought: thoughts[indexPath.row])
             return cell
         }

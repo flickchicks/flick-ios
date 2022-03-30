@@ -12,7 +12,7 @@ import UIKit
 
 protocol DiscoverSearchResultDelegate: class {
     func pushListViewController(listId: Int)
-    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?)
+    func pushMediaViewController(mediaId: Int, mediaName: String)
     func pushProfileViewController(userId: Int)
 }
 
@@ -209,7 +209,7 @@ extension DiscoverSearchResultViewController: SkeletonTableViewDelegate, Skeleto
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch searchType {
         case .movies, .shows, .media:
-            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaImageUrl: media[indexPath.row].posterPic)
+            delegate?.pushMediaViewController(mediaId: media[indexPath.row].id, mediaName: media[indexPath.row].title)
         case .people:
             delegate?.pushProfileViewController(userId: users[indexPath.row].id)
         case .lists:

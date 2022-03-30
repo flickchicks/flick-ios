@@ -11,7 +11,7 @@ import UIKit
 protocol DiscoverDelegate: class {
     func navigateFriend(id: Int)
     func navigateList(id: Int)
-    func navigateShow(id: Int, mediaImageUrl: String?)
+    func navigateShow(id: Int, mediaName: String)
 }
 
 class MutualFriendsTableViewCell: UITableViewCell {

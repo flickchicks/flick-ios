@@ -129,7 +129,7 @@ class RecommendedShowsCollectionViewCell: UICollectionViewCell {
 
     @objc func handleMediaTap() {
         guard let media = media else { return }
-        discoverDelegate?.navigateShow(id: media.id, mediaImageUrl: media.posterPic)
+        discoverDelegate?.navigateShow(id: media.id, mediaName: media.title)
         AnalyticsManager.logSelectContent(
             contentType: SelectContentType.Discover.showSuggestion,
             itemId: media.id

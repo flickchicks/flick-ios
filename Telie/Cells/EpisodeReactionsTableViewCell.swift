@@ -67,7 +67,11 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
     func configure(episode: EpisodeDetail) {
         self.episode = episode
         reactions = episode.reactions ?? []
-        episodeNameLabel.text = "Episode \(episode.episodeNum)"
+        if let name = episode.name {
+            episodeNameLabel.text = "Episode \(episode.episodeNum): \(name)"
+        } else {
+            episodeNameLabel.text = "Episode \(episode.episodeNum)"
+        }
         reactionsCollectionView.reloadData()
     }
 

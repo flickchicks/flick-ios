@@ -154,7 +154,10 @@ class MediaAllReactionsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.episodesTableView.reloadData()
                 self.seasonsCollectionView.reloadData()
-                self.seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
+                if !reactionsForMedia.seasonDetails.isEmpty {
+                    guard let episodeDetails = reactionsForMedia.seasonDetails[0].episodeDetails, !episodeDetails.isEmpty else { return }
+                    self.seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
+                }
             }
         }
     }
@@ -163,7 +166,10 @@ class MediaAllReactionsViewController: UIViewController {
 extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails?.count ?? 0
+        if let seasonDetails = reactionsForMedia?.seasonDetails, !seasonDetails.isEmpty {
+            return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails?.count ?? 0
+        }
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

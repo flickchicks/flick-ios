@@ -249,8 +249,8 @@ extension DiscoverViewController: DiscoverDelegate {
         navigationController?.pushViewController(profileViewController, animated: true)
     }
 
-    func navigateShow(id: Int, mediaImageUrl: String?) {
-        navigationController?.pushViewController(MediaViewController(mediaId: id, mediaImageUrl: mediaImageUrl), animated: true)
+    func navigateShow(id: Int, mediaName: String) {
+        navigationController?.pushViewController(MediaAllReactionsViewController(mediaId: id, mediaName: mediaName), animated: true)
     }
 
     func navigateList(id: Int) {

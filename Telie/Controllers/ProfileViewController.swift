@@ -476,7 +476,6 @@ extension ProfileViewController: ListTableViewCellDelegate {
     }
 
     func pushMediaViewController(mediaId: Int, mediaImageUrl: String?, mediaName: String) {
-//        let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: mediaImageUrl)
         let mediaVC = MediaAllReactionsViewController(mediaId: mediaId, mediaName: mediaName)
         navigationController?.pushViewController(mediaVC, animated: true)
     }
