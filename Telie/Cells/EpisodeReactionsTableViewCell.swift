@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PushReactionsDelegate: AnyObject {
-    func pushReactionsVC(episode: EpisodeDetail)
+    func pushReactionsVC(episode: EpisodeDetail, selectedReactionId: Int)
 }
 
 class EpisodeReactionsTableViewCell: UITableViewCell {
@@ -95,7 +95,7 @@ extension EpisodeReactionsTableViewCell: UICollectionViewDataSource, UICollectio
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let episode = episode {
-            delegate?.pushReactionsVC(episode: episode)
+            delegate?.pushReactionsVC(episode: episode, selectedReactionId: reactions[indexPath.item].id)
         }
     }
 

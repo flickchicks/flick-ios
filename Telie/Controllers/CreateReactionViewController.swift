@@ -6,6 +6,7 @@
 //  Copyright © 2022 Telie. All rights reserved.
 //
 
+import NotificationBannerSwift
 import UIKit
 
 class CreateReactionViewController: UIViewController {
@@ -42,6 +43,21 @@ class CreateReactionViewController: UIViewController {
     private var selectedMedia: Media?
     private var visibility = Visibility.friends
 
+    init(media: Media?) {
+        super.init(nibName: nil, bundle: nil)
+        selectedMedia = media
+        if let media = media {
+            titleTextLabel.text = media.title
+            mediaSelected(media: media)
+        } else {
+            titleTextLabel.text = " "
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Share Reactions"
@@ -52,7 +68,6 @@ class CreateReactionViewController: UIViewController {
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         view.addSubview(titleLabel)
 
-        titleTextLabel.text = " "
         titleTextLabel.textColor = .darkBlue
         titleTextLabel.font = .systemFont(ofSize: 16)
         view.addSubview(titleTextLabel)
@@ -409,6 +424,18 @@ class CreateReactionViewController: UIViewController {
         }
     }
 
+    private func mediaSelected(media: Media) {
+        if let seasonDetails = media.seasonDetails {
+            seasonDetails.forEach { seasonDetail in
+                if let episodeDetails = seasonDetail.episodeDetails {
+                    episodeDetails.forEach { episodeDetail in
+                        self.seasonsEpisodes.append(SeasonEpisode(episodeId: episodeDetail.id, episodeNum: episodeDetail.episodeNum, seasonNum: seasonDetail.seasonNum))
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 extension CreateReactionViewController: MediaForReactionDelegate, EpisodeForReactionDelegate {
@@ -419,15 +446,16 @@ extension CreateReactionViewController: MediaForReactionDelegate, EpisodeForReac
         NetworkManager.getMedia(mediaId: media.id) { [weak self] media in
             guard let self = self else { return }
             self.selectedMedia = media
-            if let seasonDetails = self.selectedMedia?.seasonDetails {
-                seasonDetails.forEach { seasonDetail in
-                    if let episodeDetails = seasonDetail.episodeDetails {
-                        episodeDetails.forEach { episodeDetail in
-                            self.seasonsEpisodes.append(SeasonEpisode(episodeId: episodeDetail.id, episodeNum: episodeDetail.episodeNum, seasonNum: seasonDetail.seasonNum))
-                        }
-                    }
-                }
-            }
+            self.mediaSelected(media: media)
+//            if let seasonDetails = self.selectedMedia?.seasonDetails {
+//                seasonDetails.forEach { seasonDetail in
+//                    if let episodeDetails = seasonDetail.episodeDetails {
+//                        episodeDetails.forEach { episodeDetail in
+//                            self.seasonsEpisodes.append(SeasonEpisode(episodeId: episodeDetail.id, episodeNum: episodeDetail.episodeNum, seasonNum: seasonDetail.seasonNum))
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 

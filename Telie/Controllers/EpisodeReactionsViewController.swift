@@ -22,12 +22,14 @@ class EpisodeReactionsViewController: UIViewController {
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
     private var reactions = [Reaction]()
     private var reactionsViewControllers = [EpisodeReactionViewController]()
+    private var selectedReactionId: Int
 
-    init(mediaId: Int, mediaName: String, mediaPosterPic: String?, reactions: [Reaction]) {
+    init(mediaId: Int, mediaName: String, mediaPosterPic: String?, reactions: [Reaction], selectedReactionId: Int) {
         self.mediaId = mediaId
         self.mediaName = mediaName
         self.mediaPosterPic = mediaPosterPic
         self.reactions = reactions
+        self.selectedReactionId = selectedReactionId
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -142,18 +144,23 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     func setupViewControllers() {
-        reactions.forEach { reaction in
+        var reactionIndex = 0
+        for (i, reaction) in reactions.enumerated() {
             let episodeReactionVC = EpisodeReactionViewController(reaction: reaction)
             reactionsViewControllers.append(episodeReactionVC)
+            if reaction.id == selectedReactionId {
+                reactionIndex = i
+            }
         }
+        setCurrentPosition(position: reactionIndex, animated: false)
     }
     
-    func setCurrentPosition(position: Int){
+    func setCurrentPosition(position: Int, animated: Bool = true){
         currentPosition = position
         let path = IndexPath(item: currentPosition, section: 0)
 
         DispatchQueue.main.async {
-            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: true)
+            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: animated)
         }
     }
     

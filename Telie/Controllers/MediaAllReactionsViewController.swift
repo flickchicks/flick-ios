@@ -137,7 +137,7 @@ class MediaAllReactionsViewController: UIViewController {
     }
 
     @objc func reactButtonPressed() {
-        navigationController?.pushViewController(CreateReactionViewController(), animated: true)
+        navigationController?.pushViewController(CreateReactionViewController(media: media), animated: true)
     }
 
     private func getMediaInformation() {
@@ -213,11 +213,11 @@ extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MediaAllReactionsViewController: PushReactionsDelegate {
-    func pushReactionsVC(episode: EpisodeDetail) {
+    func pushReactionsVC(episode: EpisodeDetail, selectedReactionId: Int) {
         NetworkManager.getEpisodeReactions(episodeId: episode.id) { [weak self] reactions in
             guard let self = self else { return }
             print(reactions)
-            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaName: self.mediaName, mediaPosterPic: self.media?.posterPic, reactions: reactions)
+            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaName: self.mediaName, mediaPosterPic: self.media?.posterPic, reactions: reactions, selectedReactionId: selectedReactionId)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
