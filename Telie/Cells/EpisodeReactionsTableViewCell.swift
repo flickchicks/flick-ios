@@ -33,7 +33,7 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         contentView.addSubview(episodeNameLabel)
 
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
 
         reactionsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -60,7 +60,8 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
 
         reactionsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(episodeNameLabel.snp.bottom).offset(10)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(10)
         }
     }
 

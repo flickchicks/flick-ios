@@ -26,7 +26,7 @@ class EpisodeReactionVCCollectionViewCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
-        print("prepare for reuse called")
+        viewController.view.removeFromSuperview()
     }
 
     required init?(coder: NSCoder) {

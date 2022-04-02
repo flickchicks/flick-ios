@@ -1105,7 +1105,6 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/reactions/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success:
                 completion(true)
@@ -1119,7 +1118,6 @@ class NetworkManager {
     /// [GET] Get shorted reactions for a show [updated as of 3/10/22]
     static func getAllReactions(mediaId: Int, completion: @escaping (ReactionsForMedia) -> Void) {
         AF.request("\(hostEndpoint)/api/show/\(mediaId)/reactions/", method: .get, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -1142,7 +1140,6 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/reactions/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success(let data):
                 let jsonDecoder = JSONDecoder()
@@ -1165,7 +1162,6 @@ class NetworkManager {
         ]
 
         AF.request("\(hostEndpoint)/api/thoughts/add/", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).validate().responseData { response in
-            debugPrint(response)
             switch response.result {
             case .success:
                 completion(true)

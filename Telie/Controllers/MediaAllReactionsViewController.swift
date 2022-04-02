@@ -75,7 +75,7 @@ class MediaAllReactionsViewController: UIViewController {
 
     private func setupConstraints() {
         seasonsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(40)
         }
@@ -183,7 +183,7 @@ extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDel
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 145
+        return 160
     }
 
 }

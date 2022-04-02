@@ -201,7 +201,7 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 
 extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = self.view.frame.width - 40
-            return CGSize(width: width, height: collectionView.frame.height)
-        }
+        let width = self.view.frame.width - 40
+        return CGSize(width: width, height: collectionView.frame.height)
+    }
 }
