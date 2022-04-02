@@ -447,15 +447,6 @@ extension CreateReactionViewController: MediaForReactionDelegate, EpisodeForReac
             guard let self = self else { return }
             self.selectedMedia = media
             self.mediaSelected(media: media)
-//            if let seasonDetails = self.selectedMedia?.seasonDetails {
-//                seasonDetails.forEach { seasonDetail in
-//                    if let episodeDetails = seasonDetail.episodeDetails {
-//                        episodeDetails.forEach { episodeDetail in
-//                            self.seasonsEpisodes.append(SeasonEpisode(episodeId: episodeDetail.id, episodeNum: episodeDetail.episodeNum, seasonNum: seasonDetail.seasonNum))
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
