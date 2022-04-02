@@ -15,6 +15,18 @@ class ReplyReactionViewController: UIViewController {
     private let reactionTextView = UITextView()
     private let sendButton = UIButton()
 
+    // MARK: - Private Data Vars
+    private var reaction: Reaction
+
+    init(reaction: Reaction) {
+        self.reaction = reaction
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Reply to Reaction"
@@ -67,7 +79,6 @@ class ReplyReactionViewController: UIViewController {
     }
     
     @objc private func cancelButtonPressed() {
-        print("cancel button pressed")
         navigationController?.popViewController(animated: true)
     }
     
@@ -128,6 +139,12 @@ class ReplyReactionViewController: UIViewController {
     }
 
     @objc func sendButtonTapped() {
-       print("send button tapped")
+        print("send button tapped")
+        if let text = reactionTextView.text, !text.isEmpty {
+            NetworkManager.createThought(reactionId: reaction.id, text: text) { [weak self] _ in
+                guard let self = self else { return }
+                self.reactionTextView.text = ""
+            }
+        }
     }
 }

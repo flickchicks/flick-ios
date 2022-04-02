@@ -78,15 +78,16 @@ class ReactionsReactionTableViewCell: UITableViewCell {
         profileImageView.kf.setImage(with: URL(string: Constants.User.defaultImage))
     }
 
-    func configure(reactionName: String, reactionProfilePic: String, reactionContent: String, timeSince: String) {
-        reactionNameLabel.text = "    \(reactionName)"
-        reactionContentLabel.text = reactionContent
-        
-       let imageUrl = URL(string: reactionProfilePic)
-        profileImageView.kf.setImage(with: imageUrl)
-        timeSinceLabel.text = timeSince
+    func configure(reaction: Reaction) {
+        reactionNameLabel.text = "    \(reaction.author.name)"
+        reactionContentLabel.text = reaction.text
+
+        if let imageUrl = URL(string: reaction.author.profilePicUrl ?? Constants.User.defaultImage) {
+            profileImageView.kf.setImage(with: imageUrl)
+        }
+        timeSinceLabel.text = Date().getDateLabelText(createdAt: reaction.createdAt)
     }
-    
+
     private func setupConstraints() {
         let verticalPadding: CGFloat = 11
         

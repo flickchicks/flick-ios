@@ -33,7 +33,6 @@ class BlurredTextView: UITextView {
     }
 
     private func getBlurryImage(_ blurRadius: Double = 2) -> UIImage? {
-        print(bounds)
         UIGraphicsBeginImageContext(bounds.size)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         guard let image = UIGraphicsGetImageFromCurrentImageContext(),

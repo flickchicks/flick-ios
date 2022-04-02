@@ -16,13 +16,30 @@ class EpisodeReactionsViewController: UIViewController {
 
     // MARK: - Private Data Vars
     private var currentPosition = 0
-    private var reactionsViewControllers = [EpisodeReactionViewController]()
+    private var mediaId: Int
+    private var mediaName = ""
+    private var mediaPosterPic: String?
     private let reactionPageReuseIdentifier = "reactionPageCollectionView"
-    private let reactions: [Int] = [0, 1, 2, 3]
+    private var reactions = [Reaction]()
+    private var reactionsViewControllers = [EpisodeReactionViewController]()
+    private var selectedReactionId: Int
+
+    init(mediaId: Int, mediaName: String, mediaPosterPic: String?, reactions: [Reaction], selectedReactionId: Int) {
+        self.mediaId = mediaId
+        self.mediaName = mediaName
+        self.mediaPosterPic = mediaPosterPic
+        self.reactions = reactions
+        self.selectedReactionId = selectedReactionId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Squid Game"
+        title = mediaName
         view.backgroundColor = .offWhite
        
         replyButton.setImage(UIImage(named: "reply"), for: .normal)
@@ -53,7 +70,7 @@ class EpisodeReactionsViewController: UIViewController {
         
         setupConstraints()
         setupViewControllers()
-       }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -101,17 +118,16 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     @objc private func backButtonPressed() {
-        print("back button pressed")
         navigationController?.popViewController(animated: true)
     }
     
     @objc private func iconButtonPressed() {
-        print("icon button pressed")
-        navigationController?.popViewController(animated: true)
+        let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: mediaPosterPic)
+        navigationController?.pushViewController(mediaVC, animated: true)
     }
     
     @objc private func replyButtonPressed() {
-        print("reply button pressed")
+        navigationController?.pushViewController(ReplyReactionViewController(reaction: reactions[currentPosition]), animated: true)
     }
     
     private func setupConstraints() {
@@ -128,29 +144,32 @@ class EpisodeReactionsViewController: UIViewController {
     }
     
     func setupViewControllers() {
-        reactions.forEach { reaction in
-            let episodeReactionVC = EpisodeReactionViewController()
+        var reactionIndex = 0
+        for (i, reaction) in reactions.enumerated() {
+            let episodeReactionVC = EpisodeReactionViewController(reaction: reaction)
             reactionsViewControllers.append(episodeReactionVC)
+            if reaction.id == selectedReactionId {
+                reactionIndex = i
+            }
         }
+        setCurrentPosition(position: reactionIndex, animated: false)
     }
     
-    func setCurrentPosition(position: Int){
+    func setCurrentPosition(position: Int, animated: Bool = true){
         currentPosition = position
         let path = IndexPath(item: currentPosition, section: 0)
 
         DispatchQueue.main.async {
-            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: true)
+            self.reactionPageCollectionView.scrollToItem(at: path, at: .left, animated: animated)
         }
     }
     
     @objc func leftSwipeDetected() {
-        print("left swipe detected")
         let newPosition = currentPosition < reactions.count - 1 ? currentPosition + 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
 
     @objc func rightSwipeDetected() {
-        print("right swipe detected")
         let newPosition = currentPosition > 0 ? currentPosition - 1 : currentPosition
         setCurrentPosition(position: newPosition)
     }
@@ -164,7 +183,7 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reactionPageReuseIdentifier, for: indexPath) as? EpisodeReactionVCCollectionViewCell else { return UICollectionViewCell() }
-        cell.configure()
+        cell.configure(vc: reactionsViewControllers[indexPath.item])
         return cell
     }
 
@@ -182,7 +201,7 @@ extension EpisodeReactionsViewController: UICollectionViewDataSource, UICollecti
 
 extension EpisodeReactionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = self.view.frame.width - 40
-            return CGSize(width: width, height: collectionView.frame.height)
-        }
+        let width = self.view.frame.width - 40
+        return CGSize(width: width, height: collectionView.frame.height)
+    }
 }

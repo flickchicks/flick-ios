@@ -27,21 +27,16 @@ class EpisodeReactionViewController: UIViewController {
     // MARK: - Private Data Vars
     private var currentPosition = 0
     private var sections: [Section] = []
-    private var reactionName: String = "Cindy"
-    private var reactionProfilePic: String = "https://ca.slack-edge.com/T02A2C679-UNM3E26BF-6cbf92410a3b-192"
-    private var reactionContent: String = "totally was\nnot expecting when they killed the \nold man TT \n\ni'm going to have an actual heart attack"
-    private var timeSince = "1d"
-    
-    private var commentNames: [String] = ["Renee", "Renee", "Renee", "Renee", "Renee", "Renee"]
-    private var commentProfilePics: [String] = ["https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192","https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192", "https://ca.slack-edge.com/T02A2C679-UTRUDG1JR-4df533288128-192"]
-    private var commentContent: [String] = [
-        "let me tell you that \nshit ended meeeeeeeeeeeeeeeeeeeeeeeeee",
-        "oops",
-        "i need medication",
-        "let me tell you that shit ended meeee\neeeeeeeeeeeeeeeeeeeeee",
-        "oo\nps",
-        "i need medication",
-    ]
+    private var reaction: Reaction
+
+    init(reaction: Reaction) {
+        self.reaction = reaction
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +44,7 @@ class EpisodeReactionViewController: UIViewController {
         
         setupSections()
     
-        reactionsTableView = UITableView(frame: .zero, style: .plain)
+        reactionsTableView = UITableView(frame: .zero, style: .grouped)
         reactionsTableView.dataSource = self
         reactionsTableView.delegate = self
         reactionsTableView.backgroundColor = .clear
@@ -61,6 +56,7 @@ class EpisodeReactionViewController: UIViewController {
         reactionsTableView.register(ReactionsCommentTableViewCell.self, forCellReuseIdentifier: ReactionsCommentTableViewCell.reuseIdentifier)
         reactionsTableView.isDirectionalLockEnabled = true
         reactionsTableView.separatorStyle = .none
+        reactionsTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         view.addSubview(reactionsTableView)
         
         let gradient = CAGradientLayer()
@@ -103,7 +99,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             let headerLabel = UILabel()
             headerLabel.textColor = .lightGray
             headerLabel.font = .systemFont(ofSize: 12, weight: .medium)
-            headerLabel.text = "\(commentContent.count) thoughts"
+            headerLabel.text = "\(reaction.thoughts?.count ?? 0) thoughts"
             headerView.addSubview(headerLabel)
             headerLabel.snp.makeConstraints { make in
                 make.leading.bottom.equalToSuperview().inset(20)
@@ -112,9 +108,10 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
             dividerView.backgroundColor = .lightGray2
             headerView.addSubview(dividerView)
             dividerView.snp.makeConstraints { make in
-                make.leading.equalTo(headerLabel).inset(70)
+                make.leading.equalTo(headerLabel.snp.trailing).inset(-10)
+                make.trailing.equalToSuperview().inset(20)
                 make.height.equalTo(1)
-                make.width.equalToSuperview().inset(55)
+                make.centerY.equalTo(headerLabel.snp.centerY)
             }
             return headerView
         }
@@ -131,7 +128,7 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
         case .reaction:
             return 1
         case .comments:
-            return commentContent.count
+            return reaction.thoughts?.count ?? 0
         }
     }
 
@@ -140,12 +137,13 @@ extension EpisodeReactionViewController: UITableViewDelegate, UITableViewDataSou
         switch section.type {
         case .reaction:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsReactionTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsReactionTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: reactionName, reactionProfilePic: reactionProfilePic, reactionContent: reactionContent, timeSince: timeSince)
+            cell.configure(reaction: reaction)
             return cell
             
         case .comments:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsCommentTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsCommentTableViewCell else { return UITableViewCell() }
-            cell.configure(reactionName: commentNames[indexPath.row], reactionProfilePic: commentProfilePics[indexPath.row], reactionContent: commentContent[indexPath.row], timeSince: timeSince)
+            guard let thoughts = reaction.thoughts,
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ReactionsCommentTableViewCell.reuseIdentifier, for: indexPath) as? ReactionsCommentTableViewCell else { return UITableViewCell() }
+            cell.configure(thought: thoughts[indexPath.row])
             return cell
         }
     }

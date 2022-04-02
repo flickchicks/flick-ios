@@ -75,7 +75,7 @@ class MediaAllReactionsViewController: UIViewController {
 
     private func setupConstraints() {
         seasonsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(40)
         }
@@ -137,7 +137,7 @@ class MediaAllReactionsViewController: UIViewController {
     }
 
     @objc func reactButtonPressed() {
-        navigationController?.pushViewController(CreateReactionViewController(), animated: true)
+        navigationController?.pushViewController(CreateReactionViewController(media: media), animated: true)
     }
 
     private func getMediaInformation() {
@@ -154,7 +154,10 @@ class MediaAllReactionsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.episodesTableView.reloadData()
                 self.seasonsCollectionView.reloadData()
-                self.seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
+                if !reactionsForMedia.seasonDetails.isEmpty {
+                    guard let episodeDetails = reactionsForMedia.seasonDetails[0].episodeDetails, !episodeDetails.isEmpty else { return }
+                    self.seasonsCollectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .left)
+                }
             }
         }
     }
@@ -163,21 +166,24 @@ class MediaAllReactionsViewController: UIViewController {
 extension MediaAllReactionsViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails?.count ?? 0
+        if let seasonDetails = reactionsForMedia?.seasonDetails, !seasonDetails.isEmpty {
+            return reactionsForMedia?.seasonDetails[selectedSeasonIndex].episodeDetails?.count ?? 0
+        }
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EpisodeReactionsTableViewCell.reuseIdentifier, for: indexPath) as? EpisodeReactionsTableViewCell,
               let reactionsForMedia = self.reactionsForMedia else { return UITableViewCell() }
         if let episode = reactionsForMedia.seasonDetails[selectedSeasonIndex].episodeDetails?[indexPath.row] {
-            cell.configure(episodeNum: episode.episodeNum, reactions: episode.reactions ?? [])
+            cell.configure(episode: episode)
         }
         cell.delegate = self
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 145
+        return 160
     }
 
 }
@@ -207,7 +213,12 @@ extension MediaAllReactionsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MediaAllReactionsViewController: PushReactionsDelegate {
-    func pushReactionsVC() {
-        navigationController?.pushViewController(EpisodeReactionsViewController(), animated: true)
+    func pushReactionsVC(episode: EpisodeDetail, selectedReactionId: Int) {
+        NetworkManager.getEpisodeReactions(episodeId: episode.id) { [weak self] reactions in
+            guard let self = self else { return }
+            print(reactions)
+            let vc = EpisodeReactionsViewController(mediaId: self.mediaId, mediaName: self.mediaName, mediaPosterPic: self.media?.posterPic, reactions: reactions, selectedReactionId: selectedReactionId)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

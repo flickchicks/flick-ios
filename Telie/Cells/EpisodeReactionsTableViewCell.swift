@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PushReactionsDelegate: AnyObject {
-    func pushReactionsVC()
+    func pushReactionsVC(episode: EpisodeDetail, selectedReactionId: Int)
 }
 
 class EpisodeReactionsTableViewCell: UITableViewCell {
@@ -18,6 +18,7 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
     private var reactionsCollectionView: UICollectionView!
 
     weak var delegate: PushReactionsDelegate?
+    private var episode: EpisodeDetail?
     private var reactions = [Reaction]()
     static let reuseIdentifier = "EpisodeReactionsReuseIdentifier"
 
@@ -32,7 +33,7 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
         contentView.addSubview(episodeNameLabel)
 
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 12
+        layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
 
         reactionsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -59,13 +60,19 @@ class EpisodeReactionsTableViewCell: UITableViewCell {
 
         reactionsCollectionView.snp.makeConstraints { make in
             make.top.equalTo(episodeNameLabel.snp.bottom).offset(10)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(10)
         }
     }
 
-    func configure(episodeNum: Int, reactions: [Reaction]) {
-        self.reactions = reactions
-        episodeNameLabel.text = "Episode \(episodeNum)"
+    func configure(episode: EpisodeDetail) {
+        self.episode = episode
+        reactions = episode.reactions ?? []
+        if let name = episode.name {
+            episodeNameLabel.text = "Episode \(episode.episodeNum): \(name)"
+        } else {
+            episodeNameLabel.text = "Episode \(episode.episodeNum)"
+        }
         reactionsCollectionView.reloadData()
     }
 
@@ -88,7 +95,9 @@ extension EpisodeReactionsTableViewCell: UICollectionViewDataSource, UICollectio
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.pushReactionsVC()
+        if let episode = episode {
+            delegate?.pushReactionsVC(episode: episode, selectedReactionId: reactions[indexPath.item].id)
+        }
     }
 
 }

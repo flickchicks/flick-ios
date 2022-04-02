@@ -283,7 +283,7 @@ extension ListViewController: UICollectionViewDataSource {
         switch section.type {
         case .mediaList:
             let media = section.items[indexPath.row]
-            let mediaViewController = MediaViewController(mediaId: media.id, mediaImageUrl: media.posterPic)
+            let mediaViewController = MediaAllReactionsViewController(mediaId: media.id, mediaName: media.title)
             navigationController?.pushViewController(mediaViewController, animated: true)
         default:
             return

@@ -124,7 +124,6 @@ class SelectEpisodeViewController: UIViewController {
         }
     
     @objc private func backButtonPressed() {
-            print("back button pressed")
             navigationController?.popViewController(animated: true)
         }
 

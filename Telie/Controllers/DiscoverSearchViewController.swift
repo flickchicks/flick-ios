@@ -243,8 +243,8 @@ extension DiscoverSearchViewController: UISearchBarDelegate {
 
 extension DiscoverSearchViewController: DiscoverSearchResultDelegate {
 
-    func pushMediaViewController(mediaId: Int, mediaImageUrl: String?) {
-        let mediaVC = MediaViewController(mediaId: mediaId, mediaImageUrl: mediaImageUrl)
+    func pushMediaViewController(mediaId: Int, mediaName: String) {
+        let mediaVC = MediaAllReactionsViewController(mediaId: mediaId, mediaName: mediaName)
         navigationController?.pushViewController(mediaVC, animated: true)
     }
 

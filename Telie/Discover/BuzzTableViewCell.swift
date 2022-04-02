@@ -208,7 +208,7 @@ class BuzzTableViewCell: UITableViewCell {
 
     @objc func handleCommentTap() {
         guard let show = show else { return }
-        discoverDelegate?.navigateShow(id: show.id, mediaImageUrl: show.posterPic)
+        discoverDelegate?.navigateShow(id: show.id, mediaName: show.title)
         guard let commentId = commentId else { return }
         AnalyticsManager.logSelectContent(
             contentType: SelectContentType.Discover.commentActivity,
