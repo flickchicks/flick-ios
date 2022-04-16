@@ -2,13 +2,13 @@
 //  WatchProgressListViewController.swift
 //  Telie
 //
-//  Created by Alanna Zhou on 4/15/22.
+//  Created by Alanna Zhou on 4/16/22.
 //  Copyright © 2022 Telie. All rights reserved.
 //
 
 import UIKit
 
-class WatchProgressListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WatchProgressListViewController: UIViewController {
     
     var progressList = [
         "Season 1": [
@@ -28,34 +28,33 @@ class WatchProgressListViewController: UIViewController, UITableViewDataSource, 
             ]
         ]
     ]
-    
 
-    
     // MARK: - Private View Vars
-    private var progressTableView: UITableView!
+    private var episodesTableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Watch Progress"
-        
-        progressTableView = UITableView(frame: .zero, style: .plain)
-        progressTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        progressTableView.dataSource = self
-        progressTableView.delegate = self
-        progressTableView.backgroundColor = .clear
-        progressTableView.allowsMultipleSelection = false
-        progressTableView.isScrollEnabled = true
-        progressTableView.alwaysBounceVertical = true
-        progressTableView.bounces = true
-        progressTableView.showsVerticalScrollIndicator = false
-        progressTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
-        progressTableView.register(WatchProgressTableViewCell.self, forCellReuseIdentifier: EpisodeTableViewCell.reuseIdentifier)
-        progressTableView.separatorStyle = .none
-        view.addSubview(progressTableView)
+        view.backgroundColor = .offWhite
 
-        // Do any additional setup after loading the view.
+        episodesTableView = UITableView(frame: .zero, style: .plain)
+        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        episodesTableView.dataSource = self
+        episodesTableView.delegate = self
+        episodesTableView.backgroundColor = .clear
+        episodesTableView.allowsMultipleSelection = false
+        episodesTableView.isScrollEnabled = true
+        episodesTableView.alwaysBounceVertical = true
+        episodesTableView.bounces = true
+        episodesTableView.showsVerticalScrollIndicator = false
+        episodesTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 40, right: 0)
+        episodesTableView.register(WatchProgressTableViewCell.self, forCellReuseIdentifier: WatchProgressTableViewCell.reuseIdentifier)
+        episodesTableView.separatorStyle = .none
+        view.addSubview(episodesTableView)
+  
+        setupConstraints()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -93,16 +92,34 @@ class WatchProgressListViewController: UIViewController, UITableViewDataSource, 
     @objc private func backButtonPressed() {
             navigationController?.popViewController(animated: true)
         }
-    
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupConstraints() {
+        let verticalPadding: CGFloat = 11
+        
+        episodesTableView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(verticalPadding)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+
     }
-    */
+}
+
+extension WatchProgressListViewController: UITableViewDelegate, UITableViewDataSource {
+   
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return progressList.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WatchProgressTableViewCell.reuseIdentifier, for: indexPath) as? WatchProgressTableViewCell else { return UITableViewCell() }
+        cell.configure(seasonName: Array(progressList.keys)[indexPath.row])
+        return cell
+    }
 
 }
